@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>Easnoth Battle arena</title>
+	<link rel="stylesheet" type="text/css" href="css/mainstyle.css">
+	<script type="text/javascript" src="js/style.js"></script>
+	<script>
+		function credits(){
+			document.getElementById("mainContent").innerHTML = "<!--<li>Project leader : Clément Béra</li><li>Contributors : Afaque Khan, Antoine Petit</li>--><li></li><li>A great thank to the wonderful game <a href='http://wesnoth.org/'>Battle for Wesnoth</a></li><li>That provided us the graphics we needed for development.</li><li><a href='javascript:back()'>> Back <</a></li>";
+			document.getElementById("mainContent").style.background = 'black';
+			document.getElementById("mainContent").style.border = '2px solid white';
+		}
+		
+		function back(){
+			document.getElementById("mainContent").innerHTML = "<li><a href='main.html'>Single player</a></li><li><a href='fight2players.html'>Multi player</a></li><li><a href='fight2players.html'>Multi player (Network)</a></li><li><a href='mapEditor.html'>Map Editor</a></li><li><a href='javascript:credits()'>Credits</a></li>";
+			document.getElementById("mainContent").style.background = 'transparent';
+			document.getElementById("mainContent").style.border = 'none';
+		}
+		
+		function notImplemented(htmlElement){
+			htmlElement.innerHTML = "Not implemented yet...";
+		}
+	</script>
+</head>
+
+<body class="intro" onload="javascript:adjust()" onResize="javascript:adjust()">
+	<h1>EASNOTH : BATTLE ARENA</h1>
+	<ul class="menu" id="mainContent">
+		<li><a href="#" onclick="javascript:notImplemented(this);">Single player</a></li>
+		<li><a href="choixMap.html">Multi player</a></li>
+		<li><a href="#" onclick="javascript:notImplemented(this);">Multi player (Network)</a></li>
+		<li><a href="#" onclick="javascript:notImplemented(this);">Map Editor</a></li>
+		<li><a href="javascript:credits()">Credits</a></li>
+	</ul>
+</body>
+
+</html>
