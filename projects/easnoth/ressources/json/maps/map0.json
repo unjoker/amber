@@ -1,0 +1,63 @@
+{
+	"name": "fullmonster",
+	"row":[
+		{
+			"cells":[
+				{
+					"tile":"savanna",
+					"overtiles":[
+						{"overtile":"road-s"},
+						{"overtile":"road-n"},
+						{"overtile":"road-sw-nw"}
+					],
+					"monster":{
+						"name":"shyde",
+						"side":-1
+					}
+				},
+				{
+					"tile":"road",
+					"overtiles":[
+						{"overtile":"road-sw-nw"},
+						{"overtile":"road-sw-nw"},
+						{"overtile":"road-sw-nw"}
+					],
+					"monster":{
+						"name":"specter",
+						"side":1
+					}
+				}
+			]
+		},
+		{
+			"cells":[
+				{
+					"tile":"savanna",
+					"overtiles":[
+						{"overtile":"road-s"},
+						{"overtile":"road-n"},
+						{"overtile":"road-sw-nw"}
+					],
+					"monster":{
+						"name":"wolfrider",
+						"side":1
+					}
+				},
+				{
+					"tile":"road",
+					"overtiles":[
+						{"overtile":"road-sw-nw"},
+						{"overtile":"road-sw-nw"},
+						{"overtile":"road-sw-nw"}
+					],
+					"monster":{
+						"name":"specter",
+						"side":1
+					}
+				}
+			]
+		}
+	]
+}
+		
+	
