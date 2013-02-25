@@ -261,6 +261,84 @@ updateStatsFromKey: aKey inMonster: aMonster
 	(self includesKey: aKey) ifTrue: [aMonster stats: (self at: aKey)].
 ! !
 
+Object subclass: #MapVisitor
+	instanceVariableNames: ''
+	package: 'Easnoth-Tools'!
+
+!MapVisitor methodsFor: 'low visiting'!
+
+visitBuilding: aBuilding
+	self subclassResponsibility
+!
+
+visitMonster: aMonster
+	self subclassResponsibility
+!
+
+visitOverTile: anOverTile
+	self subclassResponsibility
+!
+
+visitTile: aTile
+	self subclassResponsibility
+! !
+
+!MapVisitor methodsFor: 'visiting'!
+
+visitGameOverTiles: aMap
+	aMap cellsDo: [ :cell |
+      cell gameOverTile accept: self ].
+!
+
+visitMap: aMap
+	aMap cellsDo: [ :cell |
+      cell drawedObjects do: [:each |
+      	each accept: self ]].
+!
+
+visitMonsters: aMap
+	aMap cellsDo: [ :cell |
+      cell monster accept: self ].
+!
+
+visitOverTiles: aMap
+	aMap cellsDo: [ :cell |
+      cell overTiles do: [:each |
+      	each accept: self ]].
+!
+
+visitTiles: aMap
+	aMap cellsDo: [ :cell |
+      cell tile accept: self ].
+! !
+
+MapVisitor class instanceVariableNames: 'singleton'!
+
+!MapVisitor class methodsFor: 'visiting'!
+
+singleton
+	^singleton ifNil: [singleton := self new]
+! !
+
+MapVisitor subclass: #MapDrawer
+	instanceVariableNames: ''
+	package: 'Easnoth-Tools'!
+
+!MapDrawer methodsFor: 'visiting'!
+
+initialize
+!
+
+updateMap: aMap
+	self updateFloor: aMap.
+    self updateGameOverTiles: aMap.
+    self updateMonsters: aMap.
+!
+
+visitTile: aTile
+	self subclassResponsibility
+! !
+
 Object subclass: #State
 	instanceVariableNames: 'object'
 	package: 'Easnoth-Tools'!

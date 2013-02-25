@@ -22,9 +22,7 @@ mouseClick
 !
 
 removeSelector
-	self object overTiles do: [:overTile | 
-		overTile selector ifTrue: [self object drawedObjects remove: overTile]
-	].
+	self object removeGameOverTile
 ! !
 
 !CellState class methodsFor: 'instance creation'!
