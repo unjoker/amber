@@ -492,7 +492,7 @@ return smalltalk.withContext(function($ctx2) {return _st(self)._monster_(_st((s
 return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"parseJSONCell:",{aJsonCell:aJsonCell}, smalltalk.Cell)})},
 args: ["aJsonCell"],
-source: "parseJSONCell: aJsonCell\x0a\x09[self tile: (Tile newInCell: self jsonTile: aJsonCell tile)]on: Error do: [\x22no tile in this cell on json\x22].\x0a\x09[self overTiles: (aJsonCell overtiles collect: [:each | OverTile newInCell: self jsonOverTile: each overtile])] on: Error do: [\x22no overtile in this cell on json\x22].\x0a\x09[self monster: (Monster newInCell: self jsonMonster: aJsonCell monster)] on: Error do: [\x22no monster in this cell on json\x22]",
+source: "parseJSONCell: aJsonCell\x0a  \x09\x22|d|\x0a    d := Dictionary new.\x0a    aJsonCell addObjectVariablesTo: d.\x0a    1halt.\x0a    implement keys in JSProxyObject and use it\x22\x0a\x09[self tile: (Tile newInCell: self jsonTile: aJsonCell tile)]on: Error do: [\x22no tile in this cell on json\x22].\x0a\x09[self overTiles: (aJsonCell overtiles collect: [:each | OverTile newInCell: self jsonOverTile: each overtile])] on: Error do: [\x22no overtile in this cell on json\x22].\x0a\x09[self monster: (Monster newInCell: self jsonMonster: aJsonCell monster)] on: Error do: [\x22no monster in this cell on json\x22]",
 messageSends: ["on:do:", "tile:", "newInCell:jsonTile:", "tile", "overTiles:", "collect:", "newInCell:jsonOverTile:", "overtile", "overtiles", "monster:", "newInCell:jsonMonster:", "monster"],
 referencedClasses: ["Error", "Tile", "OverTile", "Monster"]
 }),
