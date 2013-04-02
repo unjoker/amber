@@ -156,6 +156,62 @@ referencedClasses: []
 smalltalk.Cell);
 
 smalltalk.addMethod(
+"_createMonster_",
+smalltalk.method({
+selector: "createMonster:",
+category: 'factory',
+fn: function (aJsonMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st((smalltalk.Monster || Monster))._newInCell_jsonMonster_(self,aJsonMonster);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"createMonster:",{aJsonMonster:aJsonMonster}, smalltalk.Cell)})},
+args: ["aJsonMonster"],
+source: "createMonster: aJsonMonster\x0a\x09^ Monster \x0a    \x09newInCell: self \x0a        jsonMonster: aJsonMonster",
+messageSends: ["newInCell:jsonMonster:"],
+referencedClasses: ["Monster"]
+}),
+smalltalk.Cell);
+
+smalltalk.addMethod(
+"_createOverTiles_",
+smalltalk.method({
+selector: "createOverTiles:",
+category: 'factory',
+fn: function (jsonOverTiles){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(jsonOverTiles)._collect_((function(each){
+return smalltalk.withContext(function($ctx2) {return _st((smalltalk.OverTile || OverTile))._newInCell_jsonOverTile_(self,_st(each)._overtile());
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"createOverTiles:",{jsonOverTiles:jsonOverTiles}, smalltalk.Cell)})},
+args: ["jsonOverTiles"],
+source: "createOverTiles: jsonOverTiles\x0a\x09^ jsonOverTiles collect: [:each | \x0a    \x09OverTile \x0a        \x09newInCell: self \x0a            jsonOverTile: each overtile]",
+messageSends: ["collect:", "newInCell:jsonOverTile:", "overtile"],
+referencedClasses: ["OverTile"]
+}),
+smalltalk.Cell);
+
+smalltalk.addMethod(
+"_createTile_",
+smalltalk.method({
+selector: "createTile:",
+category: 'factory',
+fn: function (aJsonTile){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st((smalltalk.Tile || Tile))._newInCell_jsonTile_(self,aJsonTile);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"createTile:",{aJsonTile:aJsonTile}, smalltalk.Cell)})},
+args: ["aJsonTile"],
+source: "createTile: aJsonTile\x0a\x09^ Tile \x0a    \x09newInCell: self \x0a        jsonTile: aJsonTile",
+messageSends: ["newInCell:jsonTile:"],
+referencedClasses: ["Tile"]
+}),
+smalltalk.Cell);
+
+smalltalk.addMethod(
 "_draw",
 smalltalk.method({
 selector: "draw",
@@ -476,25 +532,26 @@ selector: "parseJSONCell:",
 category: 'initialize-release',
 fn: function (aJsonCell){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st((function(){
-return smalltalk.withContext(function($ctx2) {return _st(self)._tile_(_st((smalltalk.Tile || Tile))._newInCell_jsonTile_(self,_st(aJsonCell)._tile()));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._on_do_((smalltalk.Error || Error),(function(){
-return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st((function(){
-return smalltalk.withContext(function($ctx2) {return _st(self)._overTiles_(_st(_st(aJsonCell)._overtiles())._collect_((function(each){
-return smalltalk.withContext(function($ctx3) {return _st((smalltalk.OverTile || OverTile))._newInCell_jsonOverTile_(self,_st(each)._overtile());
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})})));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._on_do_((smalltalk.Error || Error),(function(){
-return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st((function(){
-return smalltalk.withContext(function($ctx2) {return _st(self)._monster_(_st((smalltalk.Monster || Monster))._newInCell_jsonMonster_(self,_st(aJsonCell)._monster()));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._on_do_((smalltalk.Error || Error),(function(){
-return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"parseJSONCell:",{aJsonCell:aJsonCell}, smalltalk.Cell)})},
+var elements;
+return smalltalk.withContext(function($ctx1) { var $1,$2,$3;
+elements=_st(aJsonCell)._keys();
+$1=_st(_st(elements)._first()).__eq("tile");
+if(smalltalk.assert($1)){
+_st(self)._tile_(_st(self)._createTile_(_st(aJsonCell)._tile()));
+};
+$2=_st(elements)._includes_("overtiles");
+if(smalltalk.assert($2)){
+_st(self)._overTiles_(_st(self)._createOverTiles_(_st(aJsonCell)._overtiles()));
+};
+$3=_st(_st(elements)._last()).__eq("monster");
+if(smalltalk.assert($3)){
+_st(self)._monster_(_st(self)._createMonster_(_st(aJsonCell)._monster()));
+};
+return self}, function($ctx1) {$ctx1.fill(self,"parseJSONCell:",{aJsonCell:aJsonCell,elements:elements}, smalltalk.Cell)})},
 args: ["aJsonCell"],
-source: "parseJSONCell: aJsonCell\x0a  \x09\x22|d|\x0a    d := Dictionary new.\x0a    aJsonCell addObjectVariablesTo: d.\x0a    1halt.\x0a    implement keys in JSProxyObject and use it\x22\x0a\x09[self tile: (Tile newInCell: self jsonTile: aJsonCell tile)]on: Error do: [\x22no tile in this cell on json\x22].\x0a\x09[self overTiles: (aJsonCell overtiles collect: [:each | OverTile newInCell: self jsonOverTile: each overtile])] on: Error do: [\x22no overtile in this cell on json\x22].\x0a\x09[self monster: (Monster newInCell: self jsonMonster: aJsonCell monster)] on: Error do: [\x22no monster in this cell on json\x22]",
-messageSends: ["on:do:", "tile:", "newInCell:jsonTile:", "tile", "overTiles:", "collect:", "newInCell:jsonOverTile:", "overtile", "overtiles", "monster:", "newInCell:jsonMonster:", "monster"],
-referencedClasses: ["Error", "Tile", "OverTile", "Monster"]
+source: "parseJSONCell: aJsonCell\x0a\x0a    | elements |\x0a    \x0a    elements := aJsonCell keys.\x0a    \x0a    elements first = 'tile'\x0a    \x09ifTrue: [self tile: (self createTile: aJsonCell tile)].\x0a    (elements includes: 'overtiles')\x0a    \x09ifTrue: [self overTiles: (self createOverTiles: aJsonCell overtiles)].\x0a    elements last = 'monster'\x0a    \x09ifTrue: [self monster: (self createMonster: aJsonCell monster)].",
+messageSends: ["keys", "ifTrue:", "tile:", "createTile:", "tile", "=", "first", "overTiles:", "createOverTiles:", "overtiles", "includes:", "monster:", "createMonster:", "monster", "last"],
+referencedClasses: []
 }),
 smalltalk.Cell);
 
@@ -3108,4 +3165,48 @@ referencedClasses: []
 }),
 smalltalk.Map.klass);
 
+
+smalltalk.addMethod(
+"_keys",
+smalltalk.method({
+selector: "keys",
+category: '*Easnoth-Core',
+fn: function (){
+var self=this;
+var col;
+return smalltalk.withContext(function($ctx1) { var $1;
+col=_st((smalltalk.Array || Array))._new();
+_st(self)._keysDo_((function(key){
+return smalltalk.withContext(function($ctx2) {return _st(col)._add_(key);
+}, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
+$1=col;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"keys",{col:col}, smalltalk.JSObjectProxy)})},
+args: [],
+source: "keys\x0a\x09| col |\x0a    col := Array new.\x0a\x09self keysDo: [:key |\x0a    \x09col add: key ].\x0a       ^ col",
+messageSends: ["new", "keysDo:", "add:"],
+referencedClasses: ["Array"]
+}),
+smalltalk.JSObjectProxy);
+
+smalltalk.addMethod(
+"_keysDo_",
+smalltalk.method({
+selector: "keysDo:",
+category: '*Easnoth-Core',
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+    	var o = self['@jsObject'];
+    	for(var i in o) {
+			aBlock(i);
+		}
+    ;
+return self}, function($ctx1) {$ctx1.fill(self,"keysDo:",{aBlock:aBlock}, smalltalk.JSObjectProxy)})},
+args: ["aBlock"],
+source: "keysDo: aBlock\x0a\x09<\x0a    \x09var o = self['@jsObject'];\x0a    \x09for(var i in o) {\x0a\x09\x09\x09aBlock(i);\x0a\x09\x09}\x0a    >",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.JSObjectProxy);
 
