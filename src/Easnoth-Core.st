@@ -119,6 +119,11 @@ initializeState
 !
 
 parseJSONCell: aJsonCell
+  	"|d|
+    d := Dictionary new.
+    aJsonCell addObjectVariablesTo: d.
+    1halt.
+    implement keys in JSProxyObject and use it"
 	[self tile: (Tile newInCell: self jsonTile: aJsonCell tile)]on: Error do: ["no tile in this cell on json"].
 	[self overTiles: (aJsonCell overtiles collect: [:each | OverTile newInCell: self jsonOverTile: each overtile])] on: Error do: ["no overtile in this cell on json"].
 	[self monster: (Monster newInCell: self jsonMonster: aJsonCell monster)] on: Error do: ["no monster in this cell on json"]
