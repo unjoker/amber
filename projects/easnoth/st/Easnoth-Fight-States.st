@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Easnoth-Fight-States' properties: #{}!
+Smalltalk current createPackage: 'Easnoth-Fight-States'!
 State subclass: #CellState
 	instanceVariableNames: ''
 	package: 'Easnoth-Fight-States'!
@@ -22,9 +22,7 @@ mouseClick
 !
 
 removeSelector
-	self object overTiles do: [:overTile | 
-		overTile selector ifTrue: [self object drawedObjects remove: overTile]
-	].
+	self object removeGameOverTile
 ! !
 
 !CellState class methodsFor: 'instance creation'!
