@@ -71,11 +71,17 @@ selector: "removeSelector",
 category: 'eventHandling',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self)._object())._removeGameOverTile();
+return smalltalk.withContext(function($ctx1) { var $1;
+_st(_st(_st(self)._object())._overTiles())._do_((function(overTile){
+return smalltalk.withContext(function($ctx2) {$1=_st(overTile)._selector();
+if(smalltalk.assert($1)){
+return _st(_st(_st(self)._object())._drawedObjects())._remove_(overTile);
+};
+}, function($ctx2) {$ctx2.fillBlock({overTile:overTile},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"removeSelector",{}, smalltalk.CellState)})},
 args: [],
-source: "removeSelector\x0a\x09self object removeGameOverTile",
-messageSends: ["removeGameOverTile", "object"],
+source: "removeSelector\x0a\x09self object overTiles do: [:overTile | \x0a\x09\x09overTile selector ifTrue: [self object drawedObjects remove: overTile]\x0a\x09].",
+messageSends: ["do:", "ifTrue:", "remove:", "drawedObjects", "object", "selector", "overTiles"],
 referencedClasses: []
 }),
 smalltalk.CellState);

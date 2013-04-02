@@ -4,11 +4,11 @@ smalltalk.addMethod(
 "_addComponent_",
 smalltalk.method({
 selector: "addComponent:",
-fn: function (aComponent) {
+fn: function (aComponent){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(_st(self)._components())._add_(aComponent);
 _st(aComponent)._actionMenu_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"addComponent:",{aComponent:aComponent}, smalltalk.ActionMenu)});}
+return self}, function($ctx1) {$ctx1.fill(self,"addComponent:",{aComponent:aComponent}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -16,12 +16,12 @@ smalltalk.addMethod(
 "_components",
 smalltalk.method({
 selector: "components",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@components"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"components",{}, smalltalk.ActionMenu)});}
+}, function($ctx1) {$ctx1.fill(self,"components",{}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -29,10 +29,10 @@ smalltalk.addMethod(
 "_components_",
 smalltalk.method({
 selector: "components:",
-fn: function (aCol) {
+fn: function (aCol){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@components"]=aCol;
-return self}, function($ctx1) {$ctx1.fill(self,"components:",{aCol:aCol}, smalltalk.ActionMenu)});}
+return self}, function($ctx1) {$ctx1.fill(self,"components:",{aCol:aCol}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -40,10 +40,10 @@ smalltalk.addMethod(
 "_initialize",
 smalltalk.method({
 selector: "initialize",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(self)._components_(_st((smalltalk.Array || Array))._new());
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ActionMenu)});}
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -51,12 +51,12 @@ smalltalk.addMethod(
 "_map",
 smalltalk.method({
 selector: "map",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@map"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"map",{}, smalltalk.ActionMenu)});}
+}, function($ctx1) {$ctx1.fill(self,"map",{}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -64,10 +64,10 @@ smalltalk.addMethod(
 "_map_",
 smalltalk.method({
 selector: "map:",
-fn: function (aMap) {
+fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@map"]=aMap;
-return self}, function($ctx1) {$ctx1.fill(self,"map:",{aMap:aMap}, smalltalk.ActionMenu)});}
+return self}, function($ctx1) {$ctx1.fill(self,"map:",{aMap:aMap}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -75,12 +75,12 @@ smalltalk.addMethod(
 "_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
-fn: function (html) {
+fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(_st(self)._components())._collect_((function(each){
 return smalltalk.withContext(function($ctx2) {return _st(each)._renderOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.ActionMenu)});}
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.ActionMenu)})}
 }),
 smalltalk.ActionMenu);
 
@@ -89,7 +89,7 @@ smalltalk.addMethod(
 "_newFor_",
 smalltalk.method({
 selector: "newFor:",
-fn: function (aMap) {
+fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
 $2=_st(self)._new();
@@ -97,7 +97,7 @@ _st($2)._map_(aMap);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newFor:",{aMap:aMap}, smalltalk.ActionMenu.klass)});}
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{aMap:aMap}, smalltalk.ActionMenu.klass)})}
 }),
 smalltalk.ActionMenu.klass);
 
@@ -107,12 +107,12 @@ smalltalk.addMethod(
 "_actionMenu",
 smalltalk.method({
 selector: "actionMenu",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@actionMenu"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"actionMenu",{}, smalltalk.ActionMenuComponent)});}
+}, function($ctx1) {$ctx1.fill(self,"actionMenu",{}, smalltalk.ActionMenuComponent)})}
 }),
 smalltalk.ActionMenuComponent);
 
@@ -120,10 +120,10 @@ smalltalk.addMethod(
 "_actionMenu_",
 smalltalk.method({
 selector: "actionMenu:",
-fn: function (aMenu) {
+fn: function (aMenu){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@actionMenu"]=aMenu;
-return self}, function($ctx1) {$ctx1.fill(self,"actionMenu:",{aMenu:aMenu}, smalltalk.ActionMenuComponent)});}
+return self}, function($ctx1) {$ctx1.fill(self,"actionMenu:",{aMenu:aMenu}, smalltalk.ActionMenuComponent)})}
 }),
 smalltalk.ActionMenuComponent);
 
@@ -132,7 +132,7 @@ smalltalk.addMethod(
 "_newFor_",
 smalltalk.method({
 selector: "newFor:",
-fn: function (aMenu) {
+fn: function (aMenu){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
 $2=_st(self)._new();
@@ -140,7 +140,7 @@ _st($2)._actionMenu_(aMenu);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newFor:",{aMenu:aMenu}, smalltalk.ActionMenuComponent.klass)});}
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{aMenu:aMenu}, smalltalk.ActionMenuComponent.klass)})}
 }),
 smalltalk.ActionMenuComponent.klass);
 
@@ -150,7 +150,7 @@ smalltalk.addMethod(
 "_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
-fn: function (html) {
+fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$2;
 $1=_st(html)._div();
@@ -195,7 +195,7 @@ return smalltalk.withContext(function($ctx3) {return _st(_st(_st(self)._actionM
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $14;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.MapControls)});}
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.MapControls)})}
 }),
 smalltalk.MapControls);
 
@@ -206,12 +206,12 @@ smalltalk.addMethod(
 "_images",
 smalltalk.method({
 selector: "images",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@images"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"images",{}, smalltalk.Cache)});}
+}, function($ctx1) {$ctx1.fill(self,"images",{}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -219,10 +219,10 @@ smalltalk.addMethod(
 "_images_",
 smalltalk.method({
 selector: "images:",
-fn: function (anImageCache) {
+fn: function (anImageCache){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@images"]=anImageCache;
-return self}, function($ctx1) {$ctx1.fill(self,"images:",{anImageCache:anImageCache}, smalltalk.Cache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"images:",{anImageCache:anImageCache}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -230,12 +230,12 @@ smalltalk.addMethod(
 "_initialize",
 smalltalk.method({
 selector: "initialize",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { smalltalk.Dictionary.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._images_(_st((smalltalk.ImageCache || ImageCache))._newFor_(self));
 _st(self)._monsters_(_st((smalltalk.MonsterCache || MonsterCache))._newFor_(self));
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Cache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -243,7 +243,7 @@ smalltalk.addMethod(
 "_isLoaded",
 smalltalk.method({
 selector: "isLoaded",
-fn: function () {
+fn: function (){
 var self=this;
 var loaded;
 return smalltalk.withContext(function($ctx1) { var $1;
@@ -257,7 +257,7 @@ $1=loaded;
 if(smalltalk.assert($1)){
 _st(_st(self)._onload())._value();
 };
-return self}, function($ctx1) {$ctx1.fill(self,"isLoaded",{loaded:loaded}, smalltalk.Cache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"isLoaded",{loaded:loaded}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -265,12 +265,12 @@ smalltalk.addMethod(
 "_monsters",
 smalltalk.method({
 selector: "monsters",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@monsters"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"monsters",{}, smalltalk.Cache)});}
+}, function($ctx1) {$ctx1.fill(self,"monsters",{}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -278,10 +278,10 @@ smalltalk.addMethod(
 "_monsters_",
 smalltalk.method({
 selector: "monsters:",
-fn: function (aMonsterCache) {
+fn: function (aMonsterCache){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@monsters"]=aMonsterCache;
-return self}, function($ctx1) {$ctx1.fill(self,"monsters:",{aMonsterCache:aMonsterCache}, smalltalk.Cache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"monsters:",{aMonsterCache:aMonsterCache}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -289,12 +289,12 @@ smalltalk.addMethod(
 "_onload",
 smalltalk.method({
 selector: "onload",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@onload"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"onload",{}, smalltalk.Cache)});}
+}, function($ctx1) {$ctx1.fill(self,"onload",{}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -302,10 +302,10 @@ smalltalk.addMethod(
 "_onload_",
 smalltalk.method({
 selector: "onload:",
-fn: function (aBlock) {
+fn: function (aBlock){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@onload"]=aBlock;
-return self}, function($ctx1) {$ctx1.fill(self,"onload:",{aBlock:aBlock}, smalltalk.Cache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"onload:",{aBlock:aBlock}, smalltalk.Cache)})}
 }),
 smalltalk.Cache);
 
@@ -315,7 +315,7 @@ smalltalk.addMethod(
 "_getSingleton",
 smalltalk.method({
 selector: "getSingleton",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $2,$1;
 $2=self["@cache"];
@@ -326,7 +326,7 @@ $1=self["@cache"];
 $1=$2;
 };
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"getSingleton",{}, smalltalk.Cache.klass)});}
+}, function($ctx1) {$ctx1.fill(self,"getSingleton",{}, smalltalk.Cache.klass)})}
 }),
 smalltalk.Cache.klass);
 
@@ -336,12 +336,12 @@ smalltalk.addMethod(
 "_cache",
 smalltalk.method({
 selector: "cache",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@cache"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"cache",{}, smalltalk.CacheComponent)});}
+}, function($ctx1) {$ctx1.fill(self,"cache",{}, smalltalk.CacheComponent)})}
 }),
 smalltalk.CacheComponent);
 
@@ -349,10 +349,10 @@ smalltalk.addMethod(
 "_cache_",
 smalltalk.method({
 selector: "cache:",
-fn: function (aCache) {
+fn: function (aCache){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@cache"]=aCache;
-return self}, function($ctx1) {$ctx1.fill(self,"cache:",{aCache:aCache}, smalltalk.CacheComponent)});}
+return self}, function($ctx1) {$ctx1.fill(self,"cache:",{aCache:aCache}, smalltalk.CacheComponent)})}
 }),
 smalltalk.CacheComponent);
 
@@ -361,7 +361,7 @@ smalltalk.addMethod(
 "_newFor_",
 smalltalk.method({
 selector: "newFor:",
-fn: function (aCache) {
+fn: function (aCache){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
 $2=_st(self)._new();
@@ -369,7 +369,7 @@ _st($2)._cache_(aCache);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newFor:",{aCache:aCache}, smalltalk.CacheComponent.klass)});}
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{aCache:aCache}, smalltalk.CacheComponent.klass)})}
 }),
 smalltalk.CacheComponent.klass);
 
@@ -379,7 +379,7 @@ smalltalk.addMethod(
 "_addImageFromKey_fromDrawedObject_",
 smalltalk.method({
 selector: "addImageFromKey:fromDrawedObject:",
-fn: function (aKey, aDrawedObject) {
+fn: function (aKey,aDrawedObject){
 var self=this;
 var imageNew;
 return smalltalk.withContext(function($ctx1) { var $1;
@@ -391,7 +391,7 @@ return smalltalk.withContext(function($ctx2) {return _st(_st(self)._cache())._i
 _st(imageNew)._at_put_("src",_st(_st(_st(_st("ressources/images/").__comma(_st(aDrawedObject)._folderName())).__comma("/")).__comma(aKey)).__comma(".png"));
 $1=imageNew;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"addImageFromKey:fromDrawedObject:",{aKey:aKey,aDrawedObject:aDrawedObject,imageNew:imageNew}, smalltalk.ImageCache)});}
+}, function($ctx1) {$ctx1.fill(self,"addImageFromKey:fromDrawedObject:",{aKey:aKey,aDrawedObject:aDrawedObject,imageNew:imageNew}, smalltalk.ImageCache)})}
 }),
 smalltalk.ImageCache);
 
@@ -399,7 +399,7 @@ smalltalk.addMethod(
 "_preloadImages_",
 smalltalk.method({
 selector: "preloadImages:",
-fn: function (anImageCol) {
+fn: function (anImageCol){
 var self=this;
 var imageNew;
 return smalltalk.withContext(function($ctx1) { _st(anImageCol)._associationsDo_((function(assoc){
@@ -408,7 +408,7 @@ imageNew;
 _st(self)._at_put_(_st(assoc)._key(),imageNew);
 return _st(imageNew)._at_put_("src",_st(_st("ressources/images/").__comma(_st(assoc)._value())).__comma(".png"));
 }, function($ctx2) {$ctx2.fillBlock({assoc:assoc},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"preloadImages:",{anImageCol:anImageCol,imageNew:imageNew}, smalltalk.ImageCache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"preloadImages:",{anImageCol:anImageCol,imageNew:imageNew}, smalltalk.ImageCache)})}
 }),
 smalltalk.ImageCache);
 
@@ -416,12 +416,12 @@ smalltalk.addMethod(
 "_putImageWithKey_inDrawedObject_",
 smalltalk.method({
 selector: "putImageWithKey:inDrawedObject:",
-fn: function (aKey, aDrawedObject) {
+fn: function (aKey,aDrawedObject){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(aDrawedObject)._image_(_st(self)._at_ifAbsent_(aKey,(function(){
 return smalltalk.withContext(function($ctx2) {return _st(self)._addImageFromKey_fromDrawedObject_(aKey,aDrawedObject);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})})));
-return self}, function($ctx1) {$ctx1.fill(self,"putImageWithKey:inDrawedObject:",{aKey:aKey,aDrawedObject:aDrawedObject}, smalltalk.ImageCache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"putImageWithKey:inDrawedObject:",{aKey:aKey,aDrawedObject:aDrawedObject}, smalltalk.ImageCache)})}
 }),
 smalltalk.ImageCache);
 
@@ -432,7 +432,7 @@ smalltalk.addMethod(
 "_addStatsFromKey_inMonster_",
 smalltalk.method({
 selector: "addStatsFromKey:inMonster:",
-fn: function (aKey, aMonster) {
+fn: function (aKey,aMonster){
 var self=this;
 var success,keySuccess,callBack;
 return smalltalk.withContext(function($ctx1) { success=(function(statsNew){
@@ -448,7 +448,7 @@ return smalltalk.withContext(function($ctx3) {return _st(self)._at_(keySuccess)
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._value())._value_(data);
 }, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})});
 _st(self)._jsCall_cb_(aKey,callBack);
-return self}, function($ctx1) {$ctx1.fill(self,"addStatsFromKey:inMonster:",{aKey:aKey,aMonster:aMonster,success:success,keySuccess:keySuccess,callBack:callBack}, smalltalk.MonsterCache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"addStatsFromKey:inMonster:",{aKey:aKey,aMonster:aMonster,success:success,keySuccess:keySuccess,callBack:callBack}, smalltalk.MonsterCache)})}
 }),
 smalltalk.MonsterCache);
 
@@ -456,10 +456,10 @@ smalltalk.addMethod(
 "_jsCall_cb_",
 smalltalk.method({
 selector: "jsCall:cb:",
-fn: function (aKey, callBack) {
+fn: function (aKey,callBack){
 var self=this;
 return smalltalk.withContext(function($ctx1) { $.getJSON('ressources/json/monsters/' + aKey + '.json', callBack);
-return self}, function($ctx1) {$ctx1.fill(self,"jsCall:cb:",{aKey:aKey,callBack:callBack}, smalltalk.MonsterCache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"jsCall:cb:",{aKey:aKey,callBack:callBack}, smalltalk.MonsterCache)})}
 }),
 smalltalk.MonsterCache);
 
@@ -467,7 +467,7 @@ smalltalk.addMethod(
 "_putStatsWithKey_inMonster_",
 smalltalk.method({
 selector: "putStatsWithKey:inMonster:",
-fn: function (aKey, aMonster) {
+fn: function (aKey,aMonster){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=_st(self)._includesKey_(_st(aKey).__comma("success"));
@@ -476,7 +476,7 @@ _st(self)._updateStatsFromKey_inMonster_(aKey,aMonster);
 } else {
 _st(self)._addStatsFromKey_inMonster_(aKey,aMonster);
 };
-return self}, function($ctx1) {$ctx1.fill(self,"putStatsWithKey:inMonster:",{aKey:aKey,aMonster:aMonster}, smalltalk.MonsterCache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"putStatsWithKey:inMonster:",{aKey:aKey,aMonster:aMonster}, smalltalk.MonsterCache)})}
 }),
 smalltalk.MonsterCache);
 
@@ -484,7 +484,7 @@ smalltalk.addMethod(
 "_updateStatsFromKey_inMonster_",
 smalltalk.method({
 selector: "updateStatsFromKey:inMonster:",
-fn: function (aKey, aMonster) {
+fn: function (aKey,aMonster){
 var self=this;
 var keySuccess,oldCallBack;
 return smalltalk.withContext(function($ctx1) { var $1;
@@ -499,182 +499,9 @@ $1=_st(self)._includesKey_(aKey);
 if(smalltalk.assert($1)){
 _st(aMonster)._stats_(_st(self)._at_(aKey));
 };
-return self}, function($ctx1) {$ctx1.fill(self,"updateStatsFromKey:inMonster:",{aKey:aKey,aMonster:aMonster,keySuccess:keySuccess,oldCallBack:oldCallBack}, smalltalk.MonsterCache)});}
+return self}, function($ctx1) {$ctx1.fill(self,"updateStatsFromKey:inMonster:",{aKey:aKey,aMonster:aMonster,keySuccess:keySuccess,oldCallBack:oldCallBack}, smalltalk.MonsterCache)})}
 }),
 smalltalk.MonsterCache);
-
-
-
-smalltalk.addClass('MapVisitor', smalltalk.Object, [], 'Easnoth-Tools');
-smalltalk.addMethod(
-"_visitBuilding_",
-smalltalk.method({
-selector: "visitBuilding:",
-fn: function (aBuilding) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitBuilding:",{aBuilding:aBuilding}, smalltalk.MapVisitor)});}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitGameOverTiles_",
-smalltalk.method({
-selector: "visitGameOverTiles:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(aMap)._cellsDo_((function(cell){
-return smalltalk.withContext(function($ctx2) {return _st(_st(cell)._gameOverTile())._accept_(self);
-}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTiles:",{aMap:aMap}, smalltalk.MapVisitor)})}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitMap_",
-smalltalk.method({
-selector: "visitMap:",
-fn: function (aMap) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(aMap)._cellsDo_((function(cell){
-return smalltalk.withContext(function($ctx2) {return _st(_st(cell)._drawedObjects())._do_((function(each){
-return smalltalk.withContext(function($ctx3) {return _st(each)._accept_(self);
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitMap:",{aMap:aMap}, smalltalk.MapVisitor)});}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitMonster_",
-smalltalk.method({
-selector: "visitMonster:",
-fn: function (aMonster) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitMonster:",{aMonster:aMonster}, smalltalk.MapVisitor)});}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitMonsters_",
-smalltalk.method({
-selector: "visitMonsters:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(aMap)._cellsDo_((function(cell){
-return smalltalk.withContext(function($ctx2) {return _st(_st(cell)._monster())._accept_(self);
-}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitMonsters:",{aMap:aMap}, smalltalk.MapVisitor)})}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitOverTile_",
-smalltalk.method({
-selector: "visitOverTile:",
-fn: function (anOverTile) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{anOverTile:anOverTile}, smalltalk.MapVisitor)});}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitOverTiles_",
-smalltalk.method({
-selector: "visitOverTiles:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(aMap)._cellsDo_((function(cell){
-return smalltalk.withContext(function($ctx2) {return _st(_st(cell)._overTiles())._do_((function(each){
-return smalltalk.withContext(function($ctx3) {return _st(each)._accept_(self);
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitOverTiles:",{aMap:aMap}, smalltalk.MapVisitor)})}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitTile_",
-smalltalk.method({
-selector: "visitTile:",
-fn: function (aTile) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile}, smalltalk.MapVisitor)});}
-}),
-smalltalk.MapVisitor);
-
-smalltalk.addMethod(
-"_visitTiles_",
-smalltalk.method({
-selector: "visitTiles:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(aMap)._cellsDo_((function(cell){
-return smalltalk.withContext(function($ctx2) {return _st(_st(cell)._tile())._accept_(self);
-}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitTiles:",{aMap:aMap}, smalltalk.MapVisitor)})}
-}),
-smalltalk.MapVisitor);
-
-
-smalltalk.MapVisitor.klass.iVarNames = ['singleton'];
-smalltalk.addMethod(
-"_singleton",
-smalltalk.method({
-selector: "singleton",
-fn: function () {
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $2,$1;
-$2=self["@singleton"];
-if(($receiver = $2) == nil || $receiver == undefined){
-self["@singleton"]=_st(self)._new();
-$1=self["@singleton"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"singleton",{}, smalltalk.MapVisitor.klass)});}
-}),
-smalltalk.MapVisitor.klass);
-
-
-smalltalk.addClass('MapDrawer', smalltalk.MapVisitor, [], 'Easnoth-Tools');
-smalltalk.addMethod(
-"_initialize",
-smalltalk.method({
-selector: "initialize",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.MapDrawer)})}
-}),
-smalltalk.MapDrawer);
-
-smalltalk.addMethod(
-"_updateMap_",
-smalltalk.method({
-selector: "updateMap:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._updateFloor_(aMap);
-_st(self)._updateGameOverTiles_(aMap);
-_st(self)._updateMonsters_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"updateMap:",{aMap:aMap}, smalltalk.MapDrawer)})}
-}),
-smalltalk.MapDrawer);
-
-smalltalk.addMethod(
-"_visitTile_",
-smalltalk.method({
-selector: "visitTile:",
-fn: function (aTile) {
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile}, smalltalk.MapDrawer)});}
-}),
-smalltalk.MapDrawer);
 
 
 
@@ -683,11 +510,11 @@ smalltalk.addMethod(
 "_newState_for_",
 smalltalk.method({
 selector: "newState:for:",
-fn: function (aState, anObject) {
+fn: function (aState,anObject){
 var self=this;
 return smalltalk.withContext(function($ctx1) { _st(aState)._object_(anObject);
 _st(anObject)._state_(aState);
-return self}, function($ctx1) {$ctx1.fill(self,"newState:for:",{aState:aState,anObject:anObject}, smalltalk.State)});}
+return self}, function($ctx1) {$ctx1.fill(self,"newState:for:",{aState:aState,anObject:anObject}, smalltalk.State)})}
 }),
 smalltalk.State);
 
@@ -695,12 +522,12 @@ smalltalk.addMethod(
 "_object",
 smalltalk.method({
 selector: "object",
-fn: function () {
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $1;
 $1=self["@object"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"object",{}, smalltalk.State)});}
+}, function($ctx1) {$ctx1.fill(self,"object",{}, smalltalk.State)})}
 }),
 smalltalk.State);
 
@@ -708,10 +535,10 @@ smalltalk.addMethod(
 "_object_",
 smalltalk.method({
 selector: "object:",
-fn: function (anObject) {
+fn: function (anObject){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@object"]=anObject;
-return self}, function($ctx1) {$ctx1.fill(self,"object:",{anObject:anObject}, smalltalk.State)});}
+return self}, function($ctx1) {$ctx1.fill(self,"object:",{anObject:anObject}, smalltalk.State)})}
 }),
 smalltalk.State);
 
@@ -719,9 +546,9 @@ smalltalk.addMethod(
 "_setUp",
 smalltalk.method({
 selector: "setUp",
-fn: function () {
+fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setUp",{}, smalltalk.State)});}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"setUp",{}, smalltalk.State)})}
 }),
 smalltalk.State);
 
@@ -729,9 +556,9 @@ smalltalk.addMethod(
 "_tearDown",
 smalltalk.method({
 selector: "tearDown",
-fn: function () {
+fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"tearDown",{}, smalltalk.State)});}
+return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"tearDown",{}, smalltalk.State)})}
 }),
 smalltalk.State);
 
@@ -740,7 +567,7 @@ smalltalk.addMethod(
 "_newFor_",
 smalltalk.method({
 selector: "newFor:",
-fn: function (anObject) {
+fn: function (anObject){
 var self=this;
 return smalltalk.withContext(function($ctx1) { var $2,$3,$1;
 $2=_st(self)._new();
@@ -748,7 +575,7 @@ _st($2)._object_(anObject);
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newFor:",{anObject:anObject}, smalltalk.State.klass)});}
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{anObject:anObject}, smalltalk.State.klass)})}
 }),
 smalltalk.State.klass);
 
