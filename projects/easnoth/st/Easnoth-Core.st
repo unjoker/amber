@@ -1,41 +1,76 @@
-Smalltalk current createPackage: 'Easnoth-Core' properties: #{}!
+Smalltalk current createPackage: 'Easnoth-Core'!
 Object subclass: #Cell
-	instanceVariableNames: 'drawedObjects coods state map'
+	instanceVariableNames: 'tile gameOverTile overTiles monster coods state map'
 	package: 'Easnoth-Core'!
 !Cell commentStamp!
 "implementation of an hexagonal isometric cell"!
 
 !Cell methodsFor: 'accessing'!
 
+coods
+	^coods
+!
+
+coods: cood
+	coods := cood x rounded @ cood y rounded
+!
+
+drawedObjects
+	|drawedObjects|
+    drawedObjects := OrderedCollection new: 8.
+    drawedObjects add: self tile.
+    drawedObjects addAll: self overTiles.
+    drawedObjects add: self gameOverTile.
+    drawedObjects add: self monster.
+    ^drawedObjects
+!
+
+gameOverTile
+	^gameOverTile
+!
+
+gameOverTile: anOverTile
+	gameOverTile := anOverTile.
+    anOverTile cell: self
+!
+
+map
+	^map
+!
+
+map: aMap
+	map := aMap
+!
+
 monster
-	^self specificDrawedObject: Monster
+	^monster
 !
 
 monster: aMonster
-	self monster ifNil: [
-		self drawedObjects add: aMonster.
-		aMonster cell: self
-	] ifNotNil:[
-		self error: 'This cell has already a Monster'
-	].
+	monster := aMonster.
+    aMonster cell: self
 !
 
 overTiles
-	^self specificDrawedObjects: OverTile.
+	^overTiles
 !
 
 overTiles: aCollection
-	self drawedObjects addAll: aCollection.
-	aCollection do:[:each |
-		each cell: self]
+	overTiles := aCollection.
+    aCollection do: [:overtile |
+    	overtile ifNotNil: [overtile cell: self]]
+!
+
+removeGameOverTile
+	gameOverTile := nil
 !
 
 removeMonster
-	self drawedObjects remove: self monster
+	monster := nil
 !
 
 removeTile
-	self drawedObjects remove: self tile
+	tile := nil.
 !
 
 specificDrawedObject: aClass
@@ -50,45 +85,6 @@ specificDrawedObjects: aClass
 	^self drawedObjects select:[:each | each isKindOf: aClass]
 !
 
-tile
-	^self specificDrawedObject: Tile
-!
-
-tile: aTile
-	self tile ifNil: [
-		self drawedObjects add: aTile.
-		aTile cell: self
-	] ifNotNil:[
-		self error: 'This cell has already a Tile'
-	].
-! !
-
-!Cell methodsFor: 'accessing-direct'!
-
-coods
-	^coods
-!
-
-coods: cood
-	coods := cood x truncated @ cood y truncated
-!
-
-drawedObjects
-	^drawedObjects
-!
-
-drawedObjects: value
-	drawedObjects := value.
-!
-
-map
-	^map
-!
-
-map: aMap
-	map := aMap
-!
-
 state
 	state ifNil: [self initializeState].
 	^state
@@ -96,18 +92,32 @@ state
 
 state: aState
 	state := aState
+!
+
+tile
+	^tile
+!
+
+tile: aTile
+	tile := aTile.
+    aTile cell: self
+! !
+
+!Cell methodsFor: 'accessing-direct'!
+
+drawedObjects: value
+	drawedObjects := value.
 ! !
 
 !Cell methodsFor: 'displaying'!
 
 addSelectorColored: aSelector
-	self drawedObjects add: (OverTile newInCell: self jsonOverTile: aSelector selector: true).
-	self reorderDrawedObjects
+	self gameOverTile: (OverTile newInCell: self jsonOverTile: aSelector selector: true).
 !
 
 draw
 	self drawedObjects do: [ :drawedObject |
-		(drawedObject notNil & self coods notNil) ifTrue: [drawedObject drawX: self coods x y: self coods y]
+		(drawedObject notNil & self coods notNil) ifTrue: [drawedObject draw]
 	].
 !
 
@@ -126,11 +136,32 @@ updateCoods: cood
 	self coods: cood
 ! !
 
+!Cell methodsFor: 'factory'!
+
+createMonster: aJsonMonster
+	^ Monster 
+    	newInCell: self 
+        jsonMonster: aJsonMonster
+!
+
+createOverTiles: jsonOverTiles
+	^ jsonOverTiles collect: [:each | 
+    	OverTile 
+        	newInCell: self 
+            jsonOverTile: each overtile]
+!
+
+createTile: aJsonTile
+	^ Tile 
+    	newInCell: self 
+        jsonTile: aJsonTile
+! !
+
 !Cell methodsFor: 'initialize-release'!
 
 initialize
 	super initialize.
-	self drawedObjects: Array new.
+	self overTiles: (Array new: 5).
 !
 
 initializeState
@@ -138,10 +169,17 @@ initializeState
 !
 
 parseJSONCell: aJsonCell
-	"the order is important, other way add Cell>>reorderDrawedObjects at the end"
-	[self tile: (Tile newInCell: self jsonTile: aJsonCell tile)]on: Error do: ["no tile in this cell on json"].
-	[self overTiles: (aJsonCell overtiles collect: [:each | OverTile newInCell: self jsonOverTile: each overtile])] on: Error do: ["no overtile in this cell on json"].
-	[self monster: (Monster newInCell: self jsonMonster: aJsonCell monster)] on: Error do: ["no monster in this cell on json"]
+
+    | elements |
+    
+    elements := aJsonCell keys.
+    
+    elements first = 'tile'
+    	ifTrue: [self tile: (self createTile: aJsonCell tile)].
+    (elements includes: 'overtiles')
+    	ifTrue: [self overTiles: (self createOverTiles: aJsonCell overtiles)].
+    elements last = 'monster'
+    	ifTrue: [self monster: (self createMonster: aJsonCell monster)].
 ! !
 
 !Cell methodsFor: 'map-delegation'!
@@ -277,6 +315,12 @@ initializeCell: aCell imageKey: aKey
 	aCell map cache images putImageWithKey: aKey inDrawedObject: self
 ! !
 
+!DrawedObject methodsFor: 'visiting'!
+
+accept: aVisitor
+	self subclassResponsibilty
+! !
+
 DrawedObject subclass: #Ground
 	instanceVariableNames: ''
 	package: 'Easnoth-Core'!
@@ -285,21 +329,21 @@ DrawedObject subclass: #Ground
 
 !Ground methodsFor: 'displaying'!
 
-drawX: aX y: aY
-	"draw through isometric transformation, in js for performance issue"
+draw
+	"draw through isometric transformation"
 
 	|ctx|
 	ctx := self context.
-	<ctx.save();
-	ctx.translate(aX+45,aY-7);
-	ctx.scale(1,0.5);
-	ctx.rotate(Math.PI/4);
-	ctx.scale(1.4,1.32)>.
+	ctx save;
+		translate: self cell coods x + 45 y: self cell coods y-7;
+		scale: 1 y: 0.5;
+		rotate: Number pi / 4 ;
+		scale: 1.4 y: 1.23.
 	self displayX: 0 y: 0.
-	<ctx.restore()>.
+	ctx restore.
 !
 
-oldDrawX: aX y: aY
+drawX: aX y: aY
 	"draw through isometric transformation"
 
 	|ctx|
@@ -311,6 +355,20 @@ oldDrawX: aX y: aY
 		scale: 1.4 y: 1.23.
 	self displayX: 0 y: 0.
 	ctx restore.
+!
+
+jsdrawX: aX y: aY
+	"draw through isometric transformation, in js for performance issue"
+
+	"|ctx|
+	ctx := self context.
+	<ctx.save();
+	ctx.translate(aX+45,aY-7);
+	ctx.scale(1,0.5);
+	ctx.rotate(Math.PI/4);
+	ctx.scale(1.4,1.32)>.
+	self displayX: 0 y: 0.
+	<ctx.restore()>."
 ! !
 
 Ground subclass: #OverTile
@@ -331,6 +389,12 @@ selector: aBool
 
 folderName
 	^'overtiles'
+! !
+
+!OverTile methodsFor: 'visiting'!
+
+accept: aVisitor
+	^aVisitor visitOverTile: self
 ! !
 
 !OverTile class methodsFor: 'instance creation'!
@@ -366,6 +430,12 @@ folderName
 	^'tiles'
 ! !
 
+!Tile methodsFor: 'visiting'!
+
+accept: aVisitor
+	^aVisitor visitTile: self
+! !
+
 !Tile class methodsFor: 'instance creation'!
 
 newInCell: aCell jsonTile: aJsonTile
@@ -399,6 +469,12 @@ OverGround subclass: #Building
 
 folderName
 	^'buildings'
+! !
+
+!Building methodsFor: 'visiting'!
+
+accept: aVisitor
+	^aVisitor visitBuilding: self
 ! !
 
 OverGround subclass: #Monster
@@ -481,45 +557,11 @@ state: aState
 
 !Monster methodsFor: 'displaying'!
 
-drawAsHeroX: aX y: aY
-	|ctx|
-	ctx:= self context.
-	"87 = 72 (width image + 15"
-	(self side negative) ifTrue: [
-		<ctx.save();
-		ctx.translate(aX + 87,0);
-		ctx.scale(-1,1)>.
-		self displayX: 0 y: aY - 28.
-		<ctx.restore()>.
-	] ifFalse: [
-		self displayX: aX + 15 y: aY - 28.
-	]
-!
-
-drawAsUnitX: aX y: aY
-	|xArray yArray ctx|
-
-	xArray := #(17 37 -11 9).
-	yArray := #(33 23 26 15).
-	ctx := self context.
-	
-	(self side negative) ifTrue: [
-		(1 to: self hp) do: [ :i |
-                        <ctx.save();
-                        ctx.translate(aX + 72 + xArray[i - 1],0);
-                        ctx.scale(-1,1)>.
-                        self displayX: 0 y: aY - (yArray at: i).
-                        <ctx.restore()>.
-		].
-	] ifFalse: [
-		(1 to: self hp) do: [ :i |
-			self displayX: aX + (xArray at: i) y: aY - (yArray at: i).
-		]
-	]
-!
-
-drawX: aX y: aY
+draw
 	"drawAsHero ou drawAsUnit"
+    |aX aY|   
+    aX := self cell coods x.
+    aY := self cell coods y.
 	self heros ifTrue: [
 		self drawAsHeroX: aX y: aY
 	] ifFalse: [
@@ -527,7 +569,7 @@ drawX: aX y: aY
 	]
 !
 
-oldDrawAsHeroX: aX y: aY
+drawAsHeroX: aX y: aY
 	"87 = 72 (width image + 15"
 	(self side negative) ifTrue: [
 		self context save;
@@ -540,7 +582,7 @@ oldDrawAsHeroX: aX y: aY
 	]
 !
 
-oldDrawAsUnitX: aX y: aY
+drawAsUnitX: aX y: aY
 	|xArray yArray|
 
 	xArray := #(17 37 -11 9).
@@ -559,6 +601,52 @@ oldDrawAsUnitX: aX y: aY
 			self displayX: aX + (xArray at: i) y: aY - (yArray at: i).
 		]
 	]
+!
+
+drawX: aX y: aY
+	"drawAsHero ou drawAsUnit"
+	self heros ifTrue: [
+		self drawAsHeroX: aX y: aY
+	] ifFalse: [
+		self drawAsUnitX: aX y: aY
+	]
+!
+
+jsdrawAsHeroX: aX y: aY
+	|ctx|
+	ctx:= self context.
+	"87 = 72 (width image + 15"
+	"(self side negative) ifTrue: [
+		<ctx.save();
+		ctx.translate(aX + 87,0);
+		ctx.scale(-1,1)>.
+		self displayX: 0 y: aY - 28.
+		<ctx.restore()>.
+	] ifFalse: [
+		self displayX: aX + 15 y: aY - 28.
+	]"
+!
+
+jsdrawAsUnitX: aX y: aY
+	|xArray yArray ctx|
+
+	xArray := #(17 37 -11 9).
+	yArray := #(33 23 26 15).
+	ctx := self context.
+	
+	"(self side negative) ifTrue: [
+		(1 to: self hp) do: [ :i |
+                        <ctx.save();
+                        ctx.translate(aX + 72 + xArray[i - 1],0);
+                        ctx.scale(-1,1)>.
+                        self displayX: 0 y: aY - (yArray at: i).
+                        <ctx.restore()>.
+		].
+	] ifFalse: [
+		(1 to: self hp) do: [ :i |
+			self displayX: aX + (xArray at: i) y: aY - (yArray at: i).
+		]
+	]"
 ! !
 
 !Monster methodsFor: 'fighting'!
@@ -649,6 +737,12 @@ select
 	self state select
 ! !
 
+!Monster methodsFor: 'visiting'!
+
+accept: aVisitor
+	^aVisitor visitMonster: self
+! !
+
 !Monster class methodsFor: 'instance creation'!
 
 newInCell: aCell jsonMonster: aJsonMonster
@@ -712,7 +806,7 @@ coods: aPoint
 !
 
 currentCell: anEvent
-	|x y cood canvas|
+	|x y cood|
 	
         x := anEvent pageX - self canvas element offsetLeft.
         y := anEvent pageY - self canvas element offsetTop.
@@ -938,10 +1032,22 @@ mouseCoodToHexCoodX: x y: y
 	"there are issues from Amber kernel : the order of operations sometimes goes wrong in long lines :  inline compiler issue"
 	"so this algo is back to javascript. Moreover js make it faster"
 
-	| xHex yHex mapDisplayX mapDisplayY|
+	| xHex yHex array mapDisplayX mapDisplayY|
                 
 	mapDisplayX := self coods x.
 	mapDisplayY := self coods y.
+
+	array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.
+    
+    xHex := array at: 1.
+    yHex := array at: 2.
+    
+	^xHex @ yHex.
+!
+
+mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
+	"function that take mouse cood in pixel and return the coods of the tile selected"
+	"so this algo is back to javascript. Moreover js make it faster"
 
 		<function mod(n, mod) {
 			return ((mod+(n%mod))%mod);
@@ -987,9 +1093,11 @@ mouseCoodToHexCoodX: x y: y
 					xHex++;
 				}
 			}
-		}>.
-
-	^xHex @ yHex.
+		}
+        var a = new Array(2);
+        a[0] = xHex;
+        a[1] = yHex;
+        return a>
 !
 
 mouseMove: anEvent
@@ -1205,13 +1313,36 @@ getSingleton
 	^map ifNil:[map := self new.]
 !
 
-newWithMapIndex: aMapIndex
-	|success map|
-	
-	map := self getSingleton.
-	success := [:data | map initializeFromJson: data].
-	<$.getJSON('ressources/json/maps/map' + aMapIndex + '.json', success)>.
+jsCall: aMapIndex cb: success
+	<$.getJSON('ressources/json/maps/map' + aMapIndex + '.json', success)>
+!
 
-	^map
+newWithMapIndex: aMapIndex
+	|success map1|
+	
+	map1 := self getSingleton.
+	success := [:data | map1 initializeFromJson: data].
+    self jsCall: aMapIndex cb: success.
+
+	^map1
+! !
+
+!JSObjectProxy methodsFor: '*Easnoth-Core'!
+
+keys
+	| col |
+    col := Array new.
+	self keysDo: [:key |
+    	col add: key ].
+       ^ col
+!
+
+keysDo: aBlock
+	<
+    	var o = self['@jsObject'];
+    	for(var i in o) {
+			aBlock(i);
+		}
+    >
 ! !
 
