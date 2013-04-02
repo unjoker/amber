@@ -107,6 +107,27 @@ updateCoods: cood
 	self coods: cood
 ! !
 
+!Cell methodsFor: 'factory'!
+
+createMonster: aJsonMonster
+	^ Monster 
+    	newInCell: self 
+        jsonMonster: aJsonMonster
+!
+
+createOverTiles: jsonOverTiles
+	^ jsonOverTiles collect: [:each | 
+    	OverTile 
+        	newInCell: self 
+            jsonOverTile: each overtile]
+!
+
+createTile: aJsonTile
+	^ Tile 
+    	newInCell: self 
+        jsonTile: aJsonTile
+! !
+
 !Cell methodsFor: 'initialize-release'!
 
 initialize
@@ -119,14 +140,17 @@ initializeState
 !
 
 parseJSONCell: aJsonCell
-  	"|d|
-    d := Dictionary new.
-    aJsonCell addObjectVariablesTo: d.
-    1halt.
-    implement keys in JSProxyObject and use it"
-	[self tile: (Tile newInCell: self jsonTile: aJsonCell tile)]on: Error do: ["no tile in this cell on json"].
-	[self overTiles: (aJsonCell overtiles collect: [:each | OverTile newInCell: self jsonOverTile: each overtile])] on: Error do: ["no overtile in this cell on json"].
-	[self monster: (Monster newInCell: self jsonMonster: aJsonCell monster)] on: Error do: ["no monster in this cell on json"]
+
+    | elements |
+    
+    elements := aJsonCell keys.
+    
+    elements first = 'tile'
+    	ifTrue: [self tile: (self createTile: aJsonCell tile)].
+    (elements includes: 'overtiles')
+    	ifTrue: [self overTiles: (self createOverTiles: aJsonCell overtiles)].
+    elements last = 'monster'
+    	ifTrue: [self monster: (self createMonster: aJsonCell monster)].
 ! !
 
 !Cell methodsFor: 'map-delegation'!
@@ -1235,5 +1259,24 @@ newWithMapIndex: aMapIndex
     self jsCall: aMapIndex cb: success.
 
 	^map1
+! !
+
+!JSObjectProxy methodsFor: '*Easnoth-Core'!
+
+keys
+	| col |
+    col := Array new.
+	self keysDo: [:key |
+    	col add: key ].
+       ^ col
+!
+
+keysDo: aBlock
+	<
+    	var o = self['@jsObject'];
+    	for(var i in o) {
+			aBlock(i);
+		}
+    >
 ! !
 
