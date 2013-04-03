@@ -1,44 +1,4 @@
 smalltalk.addPackage('Easnoth-Core');
-smalltalk.addClass('CanvasWidget', smalltalk.Object, ['parentNode'], 'Easnoth-Core');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isRootWidget",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@parentNode"])._isNil();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"isRootWidget",{},smalltalk.CanvasWidget)})},
-messageSends: ["isNil"]}),
-smalltalk.CanvasWidget);
-
-
-
-smalltalk.addClass('CWLeaf', smalltalk.CanvasWidget, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWImageLeaf', smalltalk.CWLeaf, ['image'], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWBackground', smalltalk.CWImageLeaf, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWOverTile', smalltalk.CWBackground, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWGameOverTile', smalltalk.CWOverTile, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWTile', smalltalk.CWBackground, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWNode', smalltalk.CanvasWidget, ['subWidgets'], 'Easnoth-Core');
-
-
 smalltalk.addClass('Cell', smalltalk.Object, ['tile', 'gameOverTile', 'overTiles', 'monster', 'coods', 'state', 'map'], 'Easnoth-Core');
 smalltalk.addMethod(
 smalltalk.method({
@@ -1556,9 +1516,6 @@ messageSends: ["initializeCell:imageKey:", "name", "new", "initializeStats:", "i
 smalltalk.Monster.klass);
 
 
-smalltalk.addClass('GameBoard', smalltalk.Object, [], 'Easnoth-Core');
-
-
 smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache', 'drawer'], 'Easnoth-Core');
 smalltalk.addMethod(
 smalltalk.method({
@@ -2469,9 +2426,9 @@ selector: "jsCall:cb:",
 fn: function (aMapIndex,success){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-$.getJSON('ressources/json/maps/map' + aMapIndex + '.json', success);
+_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/maps/map").__comma(aMapIndex)).__comma(".json"),success);
 return self}, function($ctx1) {$ctx1.fill(self,"jsCall:cb:",{aMapIndex:aMapIndex,success:success},smalltalk.Map.klass)})},
-messageSends: []}),
+messageSends: ["getJSON:onSuccess:", ","]}),
 smalltalk.Map.klass);
 
 smalltalk.addMethod(
