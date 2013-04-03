@@ -672,12 +672,15 @@ smalltalk.MapVisitor.klass);
 smalltalk.addClass('MapDrawer', smalltalk.MapVisitor, [], 'Easnoth-Tools');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-fn: function (){
+selector: "cleanMap:",
+fn: function (aMap){
 var self=this;
+var elem;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.MapDrawer)})},
-messageSends: []}),
+elem=_st(_st(aMap)._canvas())._element();
+_st(_st(elem)._getContext_("2d"))._clearRect_y_width_height_((0),(0),_st(elem)._width(),_st(elem)._height());
+return self}, function($ctx1) {$ctx1.fill(self,"cleanMap:",{aMap:aMap,elem:elem},smalltalk.MapDrawer)})},
+messageSends: ["element", "canvas", "clearRect:y:width:height:", "width", "height", "getContext:"]}),
 smalltalk.MapDrawer);
 
 smalltalk.addMethod(
@@ -686,11 +689,32 @@ selector: "updateMap:",
 fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._updateFloor_(aMap);
-_st(self)._updateGameOverTiles_(aMap);
-_st(self)._updateMonsters_(aMap);
+_st(self)._cleanMap_(aMap);
+_st(self)._visitMap_(aMap);
 return self}, function($ctx1) {$ctx1.fill(self,"updateMap:",{aMap:aMap},smalltalk.MapDrawer)})},
-messageSends: ["updateFloor:", "updateGameOverTiles:", "updateMonsters:"]}),
+messageSends: ["cleanMap:", "visitMap:"]}),
+smalltalk.MapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitMonster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(aMonster)._draw();
+return self}, function($ctx1) {$ctx1.fill(self,"visitMonster:",{aMonster:aMonster},smalltalk.MapDrawer)})},
+messageSends: ["draw"]}),
+smalltalk.MapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitOverTile:",
+fn: function (anOverTile){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(anOverTile)._draw();
+return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{anOverTile:anOverTile},smalltalk.MapDrawer)})},
+messageSends: ["draw"]}),
 smalltalk.MapDrawer);
 
 smalltalk.addMethod(
@@ -699,9 +723,9 @@ selector: "visitTile:",
 fn: function (aTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
+_st(aTile)._draw();
 return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.MapDrawer)})},
-messageSends: ["subclassResponsibility"]}),
+messageSends: ["draw"]}),
 smalltalk.MapDrawer);
 
 

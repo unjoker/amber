@@ -1,4 +1,49 @@
 smalltalk.addPackage('Easnoth-Core');
+smalltalk.addClass('CanvasWidget', smalltalk.Object, ['parentNode'], 'Easnoth-Core');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRootWidget",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@parentNode"])._isNil();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isRootWidget",{},smalltalk.CanvasWidget)})},
+args: [],
+source: "isRootWidget\x0a\x09^ parentNode isNil",
+messageSends: ["isNil"],
+referencedClasses: []
+}),
+smalltalk.CanvasWidget);
+
+
+
+smalltalk.addClass('CWLeaf', smalltalk.CanvasWidget, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWImageLeaf', smalltalk.CWLeaf, ['image'], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWBackground', smalltalk.CWImageLeaf, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWOverTile', smalltalk.CWBackground, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWGameOverTile', smalltalk.CWOverTile, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWTile', smalltalk.CWBackground, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('CWNode', smalltalk.CanvasWidget, ['subWidgets'], 'Easnoth-Core');
+
+
 smalltalk.addClass('Cell', smalltalk.Object, ['tile', 'gameOverTile', 'overTiles', 'monster', 'coods', 'state', 'map'], 'Easnoth-Core');
 smalltalk.Cell.comment="\x22implementation of an hexagonal isometric cell\x22"
 smalltalk.addMethod(
@@ -299,21 +344,24 @@ category: 'accessing',
 fn: function (){
 var self=this;
 var drawedObjects;
-function $OrderedCollection(){return smalltalk.OrderedCollection||(typeof OrderedCollection=="undefined"?nil:OrderedCollection)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-drawedObjects=_st($OrderedCollection())._new_((8));
-_st(drawedObjects)._add_(_st(self)._tile());
-_st(drawedObjects)._addAll_(_st(self)._overTiles());
-_st(drawedObjects)._add_(_st(self)._gameOverTile());
-_st(drawedObjects)._add_(_st(self)._monster());
+drawedObjects=_st($Array())._new_((8));
+_st(drawedObjects)._addIfNotNil_(_st(self)._tile());
+_st(_st(self)._overTiles())._do_((function(ot){
+return smalltalk.withContext(function($ctx2) {
+return _st(drawedObjects)._addIfNotNil_(ot);
+}, function($ctx2) {$ctx2.fillBlock({ot:ot},$ctx1)})}));
+_st(drawedObjects)._addIfNotNil_(_st(self)._gameOverTile());
+_st(drawedObjects)._addIfNotNil_(_st(self)._monster());
 $1=drawedObjects;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"drawedObjects",{drawedObjects:drawedObjects},smalltalk.Cell)})},
 args: [],
-source: "drawedObjects\x0a\x09|drawedObjects|\x0a    drawedObjects := OrderedCollection new: 8.\x0a    drawedObjects add: self tile.\x0a    drawedObjects addAll: self overTiles.\x0a    drawedObjects add: self gameOverTile.\x0a    drawedObjects add: self monster.\x0a    ^drawedObjects",
-messageSends: ["new:", "add:", "tile", "addAll:", "overTiles", "gameOverTile", "monster"],
-referencedClasses: ["OrderedCollection"]
+source: "drawedObjects\x0a\x09|drawedObjects|\x0a    drawedObjects := Array new: 8.\x0a    drawedObjects addIfNotNil: self tile.\x0a    self overTiles do: [:ot |\x0a\x09\x09drawedObjects addIfNotNil: ot ]. \x0a    drawedObjects addIfNotNil: self gameOverTile.\x0a    drawedObjects addIfNotNil: self monster.\x0a    ^drawedObjects",
+messageSends: ["new:", "addIfNotNil:", "tile", "do:", "overTiles", "gameOverTile", "monster"],
+referencedClasses: ["Array"]
 }),
 smalltalk.Cell);
 
@@ -751,25 +799,6 @@ smalltalk.Cell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "reorderDrawedObjects",
-category: 'displaying',
-fn: function (){
-var self=this;
-var orderedDrawedObjects;
-return smalltalk.withContext(function($ctx1) { orderedDrawedObjects=_st((smalltalk.Array || Array))._with_(_st(self)._tile());
-_st(orderedDrawedObjects)._addAll_(_st(self)._overTiles());
-_st(orderedDrawedObjects)._add_(_st(self)._monster());
-_st(self)._drawedObjects_(orderedDrawedObjects);
-return self}, function($ctx1) {$ctx1.fill(self,"reorderDrawedObjects",{orderedDrawedObjects:orderedDrawedObjects}, smalltalk.Cell)})},
-args: [],
-source: "reorderDrawedObjects\x0a\x09|orderedDrawedObjects|\x0a\x09\x0a\x09\x22reorderDrawedObjects for display :  Tile, overTiles, monster then building\x22\x0a\x09orderedDrawedObjects := Array with: self tile.\x0a\x09orderedDrawedObjects addAll: self overTiles.\x0a\x09orderedDrawedObjects add: self monster.\x0a\x09\x0a\x09self drawedObjects: orderedDrawedObjects",
-messageSends: ["with:", "tile", "addAll:", "overTiles", "add:", "monster", "drawedObjects:"],
-referencedClasses: ["Array"]
-}),
-smalltalk.Cell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "selectableNeighboursSide:",
 category: 'map-delegation',
 fn: function (aSide){
@@ -990,15 +1019,15 @@ smalltalk.DrawedObject);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawX:y:",
+selector: "draw",
 category: 'displaying',
-fn: function (aX,aY){
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"drawX:y:",{aX:aX,aY:aY},smalltalk.DrawedObject)})},
-args: ["aX", "aY"],
-source: "drawX: aX y: aY\x0a\x09self subclassResponsibility",
+return self}, function($ctx1) {$ctx1.fill(self,"draw",{},smalltalk.DrawedObject)})},
+args: [],
+source: "draw\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
@@ -1099,45 +1128,6 @@ args: [],
 source: "draw\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09|ctx|\x0a\x09ctx := self context.\x0a\x09ctx save;\x0a\x09\x09translate: self cell coods x + 45 y: self cell coods y-7;\x0a\x09\x09scale: 1 y: 0.5;\x0a\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09scale: 1.4 y: 1.23.\x0a\x09self displayX: 0 y: 0.\x0a\x09ctx restore.",
 messageSends: ["context", "save", "translate:y:", "+", "x", "coods", "cell", "-", "y", "scale:y:", "rotate:", "/", "pi", "displayX:y:", "restore"],
 referencedClasses: ["Number"]
-}),
-smalltalk.Ground);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "drawX:y:",
-category: 'displaying',
-fn: function (aX,aY){
-var self=this;
-var ctx;
-return smalltalk.withContext(function($ctx1) { var $1,$2;
-ctx=_st(self)._context();
-$1=ctx;
-_st($1)._save();
-_st($1)._translate_y_(_st(aX).__plus((45)),_st(aY).__minus((7)));
-_st($1)._scale_y_((1),(0.5));
-_st($1)._rotate_(_st(_st((smalltalk.Number || Number))._pi()).__slash((4)));
-$2=_st($1)._scale_y_((1.4),(1.23));
-_st(self)._displayX_y_((0),(0));
-_st(ctx)._restore();
-return self}, function($ctx1) {$ctx1.fill(self,"drawX:y:",{aX:aX,aY:aY,ctx:ctx}, smalltalk.Ground)})},
-args: ["aX", "aY"],
-source: "drawX: aX y: aY\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09|ctx|\x0a\x09ctx := self context.\x0a\x09ctx save;\x0a\x09\x09translate: aX + 45 y: aY-7;\x0a\x09\x09scale: 1 y: 0.5;\x0a\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09scale: 1.4 y: 1.23.\x0a\x09self displayX: 0 y: 0.\x0a\x09ctx restore.",
-messageSends: ["context", "save", "translate:y:", "+", "-", "scale:y:", "rotate:", "/", "pi", "displayX:y:", "restore"],
-referencedClasses: ["Number"]
-}),
-smalltalk.Ground);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsdrawX:y:",
-category: 'displaying',
-fn: function (aX,aY){
-var self=this;
-return smalltalk.withContext(function($ctx1) { return self}, function($ctx1) {$ctx1.fill(self,"jsdrawX:y:",{aX:aX,aY:aY}, smalltalk.Ground)})},
-args: ["aX", "aY"],
-source: "jsdrawX: aX y: aY\x0a\x09\x22draw through isometric transformation, in js for performance issue\x22\x0a\x0a\x09\x22|ctx|\x0a\x09ctx := self context.\x0a\x09<ctx.save();\x0a\x09ctx.translate(aX+45,aY-7);\x0a\x09ctx.scale(1,0.5);\x0a\x09ctx.rotate(Math.PI/4);\x0a\x09ctx.scale(1.4,1.32)>.\x0a\x09self displayX: 0 y: 0.\x0a\x09<ctx.restore()>.\x22",
-messageSends: [],
-referencedClasses: []
 }),
 smalltalk.Ground);
 
@@ -1633,27 +1623,6 @@ smalltalk.Monster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawX:y:",
-category: 'displaying',
-fn: function (aX,aY){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(self)._heros();
-if(smalltalk.assert($1)){
-_st(self)._drawAsHeroX_y_(aX,aY);
-} else {
-_st(self)._drawAsUnitX_y_(aX,aY);
-};
-return self}, function($ctx1) {$ctx1.fill(self,"drawX:y:",{aX:aX,aY:aY}, smalltalk.Monster)})},
-args: ["aX", "aY"],
-source: "drawX: aX y: aY\x0a\x09\x22drawAsHero ou drawAsUnit\x22\x0a\x09self heros ifTrue: [\x0a\x09\x09self drawAsHeroX: aX y: aY\x0a\x09] ifFalse: [\x0a\x09\x09self drawAsUnitX: aX y: aY\x0a\x09]",
-messageSends: ["ifTrue:ifFalse:", "drawAsHeroX:y:", "drawAsUnitX:y:", "heros"],
-referencedClasses: []
-}),
-smalltalk.Monster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "folderName",
 category: 'initializing',
 fn: function (){
@@ -1745,42 +1714,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"initializeStats:",{aJsonMonster:
 args: ["aJsonMonster"],
 source: "initializeStats: aJsonMonster\x0a\x09self cell map cache monsters putStatsWithKey: aJsonMonster inMonster: self",
 messageSends: ["putStatsWithKey:inMonster:", "monsters", "cache", "map", "cell"],
-referencedClasses: []
-}),
-smalltalk.Monster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsdrawAsHeroX:y:",
-category: 'displaying',
-fn: function (aX,aY){
-var self=this;
-var ctx;
-return smalltalk.withContext(function($ctx1) { 
-ctx=_st(self)._context();
-return self}, function($ctx1) {$ctx1.fill(self,"jsdrawAsHeroX:y:",{aX:aX,aY:aY,ctx:ctx},smalltalk.Monster)})},
-args: ["aX", "aY"],
-source: "jsdrawAsHeroX: aX y: aY\x0a\x09|ctx|\x0a\x09ctx:= self context.\x0a\x09\x2287 = 72 (width image + 15\x22\x0a\x09\x22(self side negative) ifTrue: [\x0a\x09\x09<ctx.save();\x0a\x09\x09ctx.translate(aX + 87,0);\x0a\x09\x09ctx.scale(-1,1)>.\x0a\x09\x09self displayX: 0 y: aY - 28.\x0a\x09\x09<ctx.restore()>.\x0a\x09] ifFalse: [\x0a\x09\x09self displayX: aX + 15 y: aY - 28.\x0a\x09]\x22",
-messageSends: ["context"],
-referencedClasses: []
-}),
-smalltalk.Monster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsdrawAsUnitX:y:",
-category: 'displaying',
-fn: function (aX,aY){
-var self=this;
-var xArray,yArray,ctx;
-return smalltalk.withContext(function($ctx1) { 
-xArray=[(17), (37), (-11), (9)];
-yArray=[(33), (23), (26), (15)];
-ctx=_st(self)._context();
-return self}, function($ctx1) {$ctx1.fill(self,"jsdrawAsUnitX:y:",{aX:aX,aY:aY,xArray:xArray,yArray:yArray,ctx:ctx},smalltalk.Monster)})},
-args: ["aX", "aY"],
-source: "jsdrawAsUnitX: aX y: aY\x0a\x09|xArray yArray ctx|\x0a\x0a\x09xArray := #(17 37 -11 9).\x0a\x09yArray := #(33 23 26 15).\x0a\x09ctx := self context.\x0a\x09\x0a\x09\x22(self side negative) ifTrue: [\x0a\x09\x09(1 to: self hp) do: [ :i |\x0a                        <ctx.save();\x0a                        ctx.translate(aX + 72 + xArray[i - 1],0);\x0a                        ctx.scale(-1,1)>.\x0a                        self displayX: 0 y: aY - (yArray at: i).\x0a                        <ctx.restore()>.\x0a\x09\x09].\x0a\x09] ifFalse: [\x0a\x09\x09(1 to: self hp) do: [ :i |\x0a\x09\x09\x09self displayX: aX + (xArray at: i) y: aY - (yArray at: i).\x0a\x09\x09]\x0a\x09]\x22",
-messageSends: ["context"],
 referencedClasses: []
 }),
 smalltalk.Monster);
@@ -2177,7 +2110,10 @@ referencedClasses: []
 smalltalk.Monster.klass);
 
 
-smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache'], 'Easnoth-Core');
+smalltalk.addClass('GameBoard', smalltalk.Object, [], 'Easnoth-Core');
+
+
+smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache', 'drawer'], 'Easnoth-Core');
 smalltalk.Map.comment="\x22singleton Map, represents all the map drawed in the canvas\x22"
 smalltalk.addMethod(
 smalltalk.method({
@@ -2731,15 +2667,17 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
+function $MapDrawer(){return smalltalk.MapDrawer||(typeof MapDrawer=="undefined"?nil:MapDrawer)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._canvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
 _st(self)._coods_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
+self["@drawer"]=_st($MapDrawer())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.Map)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x0a\x09\x22set html5 canvas to map canvas\x22\x0a\x09self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09self coods: self canvasPadding @ self canvasPadding.",
-messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "coods:", "@", "canvasPadding"],
-referencedClasses: ["HTMLCanvas", "TagBrush"]
+source: "initialize\x0a\x09super initialize.\x0a\x0a\x09\x22set html5 canvas to map canvas\x22\x0a\x09self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09self coods: self canvasPadding @ self canvasPadding.\x0a\x0a\x09\x22set the canvas drawer\x22\x0a\x09drawer := MapDrawer new.",
+messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "coods:", "@", "canvasPadding", "new"],
+referencedClasses: ["HTMLCanvas", "TagBrush", "MapDrawer"]
 }),
 smalltalk.Map);
 
@@ -3276,7 +3214,7 @@ return _st(cell)._draw();
 }, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{elem:elem},smalltalk.Map)})},
 args: [],
-source: "update\x0a\x09|elem|\x0a\x0a\x09elem := self canvas element.\x0a\x09(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.\x0a\x0a\x09self cellsDo: [:cell | cell draw]",
+source: "update\x0a\x09\x22drawer updateMap: self.\x22\x0a\x09|elem|\x0a\x0a\x09elem := self canvas element.\x0a\x09(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.\x0a\x0a\x09self cellsDo: [:cell | cell draw]",
 messageSends: ["element", "canvas", "clearRect:y:width:height:", "width", "height", "getContext:", "cellsDo:", "draw"],
 referencedClasses: []
 }),
@@ -3371,6 +3309,28 @@ referencedClasses: []
 }),
 smalltalk.Map.klass);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "addIfNotNil:",
+category: '*Easnoth-Core',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=anObject;
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+_st(self)._add_(anObject);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"addIfNotNil:",{anObject:anObject},smalltalk.Array)})},
+args: ["anObject"],
+source: "addIfNotNil: anObject\x0a\x09anObject ifNotNil: [ self add: anObject ]",
+messageSends: ["ifNotNil:", "add:"],
+referencedClasses: []
+}),
+smalltalk.Array);
 
 smalltalk.addMethod(
 smalltalk.method({

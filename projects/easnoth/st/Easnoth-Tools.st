@@ -324,19 +324,31 @@ MapVisitor subclass: #MapDrawer
 	instanceVariableNames: ''
 	package: 'Easnoth-Tools'!
 
-!MapDrawer methodsFor: 'visiting'!
+!MapDrawer methodsFor: 'low visiting'!
 
-initialize
+visitMonster: aMonster
+	aMonster draw
 !
 
-updateMap: aMap
-	self updateFloor: aMap.
-    self updateGameOverTiles: aMap.
-    self updateMonsters: aMap.
+visitOverTile: anOverTile
+	anOverTile draw
 !
 
 visitTile: aTile
-	self subclassResponsibility
+	aTile draw
+! !
+
+!MapDrawer methodsFor: 'public'!
+
+cleanMap: aMap
+	| elem |
+	elem := aMap canvas element.
+	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
+!
+
+updateMap: aMap
+	self cleanMap: aMap.
+	self visitMap: aMap.
 ! !
 
 Object subclass: #State

@@ -1,4 +1,46 @@
 Smalltalk current createPackage: 'Easnoth-Core'!
+Object subclass: #CanvasWidget
+	instanceVariableNames: 'parentNode'
+	package: 'Easnoth-Core'!
+
+!CanvasWidget methodsFor: 'testing'!
+
+isRootWidget
+	^ parentNode isNil
+! !
+
+CanvasWidget subclass: #CWLeaf
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
+CWLeaf subclass: #CWImageLeaf
+	instanceVariableNames: 'image'
+	package: 'Easnoth-Core'!
+
+CWImageLeaf subclass: #CWBackground
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
+CWBackground subclass: #CWOverTile
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
+CWOverTile subclass: #CWGameOverTile
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
+CWBackground subclass: #CWTile
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
+CWImageLeaf subclass: #CWMonster
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
+CanvasWidget subclass: #CWNode
+	instanceVariableNames: 'subWidgets'
+	package: 'Easnoth-Core'!
+
 Object subclass: #Cell
 	instanceVariableNames: 'tile gameOverTile overTiles monster coods state map'
 	package: 'Easnoth-Core'!
@@ -17,11 +59,12 @@ coods: cood
 
 drawedObjects
 	|drawedObjects|
-    drawedObjects := OrderedCollection new: 8.
-    drawedObjects add: self tile.
-    drawedObjects addAll: self overTiles.
-    drawedObjects add: self gameOverTile.
-    drawedObjects add: self monster.
+    drawedObjects := Array new: 8.
+    drawedObjects addIfNotNil: self tile.
+    self overTiles do: [:ot |
+		drawedObjects addIfNotNil: ot ]. 
+    drawedObjects addIfNotNil: self gameOverTile.
+    drawedObjects addIfNotNil: self monster.
     ^drawedObjects
 !
 
@@ -107,17 +150,6 @@ draw
 	self drawedObjects do: [ :drawedObject |
 		(drawedObject notNil & self coods notNil) ifTrue: [drawedObject draw]
 	].
-!
-
-reorderDrawedObjects
-	|orderedDrawedObjects|
-	
-	"reorderDrawedObjects for display :  Tile, overTiles, monster then building"
-	orderedDrawedObjects := Array with: self tile.
-	orderedDrawedObjects addAll: self overTiles.
-	orderedDrawedObjects add: self monster.
-	
-	self drawedObjects: orderedDrawedObjects
 !
 
 updateCoods: cood
@@ -301,7 +333,7 @@ displayX: aX y: aY
 						y: aY.
 !
 
-drawX: aX y: aY
+draw
 	self subclassResponsibility
 ! !
 
@@ -342,34 +374,6 @@ draw
 		scale: 1.4 y: 1.23.
 	self displayX: 0 y: 0.
 	ctx restore.
-!
-
-drawX: aX y: aY
-	"draw through isometric transformation"
-
-	|ctx|
-	ctx := self context.
-	ctx save;
-		translate: aX + 45 y: aY-7;
-		scale: 1 y: 0.5;
-		rotate: Number pi / 4 ;
-		scale: 1.4 y: 1.23.
-	self displayX: 0 y: 0.
-	ctx restore.
-!
-
-jsdrawX: aX y: aY
-	"draw through isometric transformation, in js for performance issue"
-
-	"|ctx|
-	ctx := self context.
-	<ctx.save();
-	ctx.translate(aX+45,aY-7);
-	ctx.scale(1,0.5);
-	ctx.rotate(Math.PI/4);
-	ctx.scale(1.4,1.32)>.
-	self displayX: 0 y: 0.
-	<ctx.restore()>."
 ! !
 
 Ground subclass: #OverTile
@@ -602,52 +606,6 @@ drawAsUnitX: aX y: aY
 			self displayX: aX + (xArray at: i) y: aY - (yArray at: i).
 		]
 	]
-!
-
-drawX: aX y: aY
-	"drawAsHero ou drawAsUnit"
-	self heros ifTrue: [
-		self drawAsHeroX: aX y: aY
-	] ifFalse: [
-		self drawAsUnitX: aX y: aY
-	]
-!
-
-jsdrawAsHeroX: aX y: aY
-	|ctx|
-	ctx:= self context.
-	"87 = 72 (width image + 15"
-	"(self side negative) ifTrue: [
-		<ctx.save();
-		ctx.translate(aX + 87,0);
-		ctx.scale(-1,1)>.
-		self displayX: 0 y: aY - 28.
-		<ctx.restore()>.
-	] ifFalse: [
-		self displayX: aX + 15 y: aY - 28.
-	]"
-!
-
-jsdrawAsUnitX: aX y: aY
-	|xArray yArray ctx|
-
-	xArray := #(17 37 -11 9).
-	yArray := #(33 23 26 15).
-	ctx := self context.
-	
-	"(self side negative) ifTrue: [
-		(1 to: self hp) do: [ :i |
-                        <ctx.save();
-                        ctx.translate(aX + 72 + xArray[i - 1],0);
-                        ctx.scale(-1,1)>.
-                        self displayX: 0 y: aY - (yArray at: i).
-                        <ctx.restore()>.
-		].
-	] ifFalse: [
-		(1 to: self hp) do: [ :i |
-			self displayX: aX + (xArray at: i) y: aY - (yArray at: i).
-		]
-	]"
 ! !
 
 !Monster methodsFor: 'fighting'!
@@ -754,8 +712,12 @@ newInCell: aCell jsonMonster: aJsonMonster
 		yourself.
 ! !
 
+Object subclass: #GameBoard
+	instanceVariableNames: ''
+	package: 'Easnoth-Core'!
+
 Object subclass: #Map
-	instanceVariableNames: 'mapCoods cells canvas actionMenu cache'
+	instanceVariableNames: 'mapCoods cells canvas actionMenu cache drawer'
 	package: 'Easnoth-Core'!
 !Map commentStamp!
 "singleton Map, represents all the map drawed in the canvas"!
@@ -962,6 +924,7 @@ calculX: i y: j
 !
 
 update
+	"drawer updateMap: self."
 	|elem|
 
 	elem := self canvas element.
@@ -1210,6 +1173,9 @@ initialize
 	"set html5 canvas to map canvas"
 	self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
 	self coods: self canvasPadding @ self canvasPadding.
+
+	"set the canvas drawer"
+	drawer := MapDrawer new.
 !
 
 initializeCache
@@ -1326,6 +1292,12 @@ newWithMapIndex: aMapIndex
     self jsCall: aMapIndex cb: success.
 
 	^map1
+! !
+
+!Array methodsFor: '*Easnoth-Core'!
+
+addIfNotNil: anObject
+	anObject ifNotNil: [ self add: anObject ]
 ! !
 
 !JSObjectProxy methodsFor: '*Easnoth-Core'!
