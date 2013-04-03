@@ -1,7 +1,6 @@
-smalltalk.addPackage('Easnoth-Fight-Menu', {});
+smalltalk.addPackage('Easnoth-Fight-Menu');
 smalltalk.addClass('Dice', smalltalk.Widget, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_animate_callBack_",
 smalltalk.method({
 selector: "animate:callBack:",
 category: 'displaying',
@@ -20,7 +19,6 @@ referencedClasses: []
 smalltalk.Dice);
 
 smalltalk.addMethod(
-"_animate_callBack_random_url_",
 smalltalk.method({
 selector: "animate:callBack:random:url:",
 category: 'displaying',
@@ -64,7 +62,6 @@ referencedClasses: []
 smalltalk.Dice);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
@@ -81,7 +78,6 @@ referencedClasses: []
 smalltalk.Dice);
 
 smalltalk.addMethod(
-"_renderOn_callback_",
 smalltalk.method({
 selector: "renderOn:callback:",
 category: 'displaying',
@@ -97,7 +93,6 @@ referencedClasses: []
 smalltalk.Dice);
 
 smalltalk.addMethod(
-"_url",
 smalltalk.method({
 selector: "url",
 category: 'displaying',
@@ -116,7 +111,6 @@ smalltalk.Dice);
 
 smalltalk.addClass('DiceDeath', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_url",
 smalltalk.method({
 selector: "url",
 category: 'initialize-release',
@@ -135,7 +129,6 @@ smalltalk.DiceDeath);
 
 smalltalk.addClass('DiceKnockBack', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_url",
 smalltalk.method({
 selector: "url",
 category: 'not yet classified',
@@ -154,7 +147,6 @@ smalltalk.DiceKnockBack);
 
 smalltalk.addClass('DiceMiss', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_url",
 smalltalk.method({
 selector: "url",
 category: 'not yet classified',
@@ -173,7 +165,6 @@ smalltalk.DiceMiss);
 
 smalltalk.addClass('Dices', smalltalk.ActionMenuComponent, ['box'], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_box",
 smalltalk.method({
 selector: "box",
 category: 'accessing',
@@ -191,7 +182,6 @@ referencedClasses: []
 smalltalk.Dices);
 
 smalltalk.addMethod(
-"_box_",
 smalltalk.method({
 selector: "box:",
 category: 'accessing',
@@ -207,7 +197,6 @@ referencedClasses: []
 smalltalk.Dices);
 
 smalltalk.addMethod(
-"_firstLoad",
 smalltalk.method({
 selector: "firstLoad",
 category: 'displaying',
@@ -228,7 +217,6 @@ referencedClasses: ["DiceDeath", "DiceKnockBack", "DiceMiss"]
 smalltalk.Dices);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
@@ -249,7 +237,6 @@ referencedClasses: []
 smalltalk.Dices);
 
 smalltalk.addMethod(
-"_showDices_callback_",
 smalltalk.method({
 selector: "showDices:callback:",
 category: 'eventHandling',
@@ -268,7 +255,6 @@ referencedClasses: []
 smalltalk.Dices);
 
 smalltalk.addMethod(
-"_updateKill_kb_callBack_",
 smalltalk.method({
 selector: "updateKill:kb:callBack:",
 category: 'displaying',
@@ -316,7 +302,6 @@ smalltalk.Dices);
 
 smalltalk.addClass('FightMenu', smalltalk.ActionMenu, ['actionCell'], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_actionCell",
 smalltalk.method({
 selector: "actionCell",
 category: 'accessing',
@@ -334,7 +319,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_actionCell_",
 smalltalk.method({
 selector: "actionCell:",
 category: 'accessing',
@@ -351,7 +335,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_dices",
 smalltalk.method({
 selector: "dices",
 category: 'accessing',
@@ -369,7 +352,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_initialize",
 smalltalk.method({
 selector: "initialize",
 category: 'initialize-release',
@@ -390,7 +372,6 @@ referencedClasses: ["MonsterWatcher", "Dices", "TileWatcher", "MapControls", "Tu
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_monsterWatcher",
 smalltalk.method({
 selector: "monsterWatcher",
 category: 'accessing',
@@ -408,7 +389,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
@@ -424,7 +404,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_showMonster_",
 smalltalk.method({
 selector: "showMonster:",
 category: 'eventHandling',
@@ -440,7 +419,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_sidePlaying",
 smalltalk.method({
 selector: "sidePlaying",
 category: 'accessing',
@@ -458,7 +436,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_tileWatcher",
 smalltalk.method({
 selector: "tileWatcher",
 category: 'accessing',
@@ -476,7 +453,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_turnWatcher",
 smalltalk.method({
 selector: "turnWatcher",
 category: 'accessing',
@@ -494,7 +470,6 @@ referencedClasses: []
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
-"_unshowMonster",
 smalltalk.method({
 selector: "unshowMonster",
 category: 'eventHandling',
@@ -513,7 +488,6 @@ smalltalk.FightMenu);
 
 smalltalk.addClass('MonsterWatcher', smalltalk.ActionMenuComponent, ['monster', 'box'], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_box",
 smalltalk.method({
 selector: "box",
 category: 'accessing',
@@ -531,7 +505,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_box_",
 smalltalk.method({
 selector: "box:",
 category: 'accessing',
@@ -547,7 +520,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_emptyMonster",
 smalltalk.method({
 selector: "emptyMonster",
 category: 'accessing',
@@ -577,7 +549,6 @@ referencedClasses: ["NativeFunction", "Monster"]
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_monster",
 smalltalk.method({
 selector: "monster",
 category: 'accessing',
@@ -600,7 +571,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_monster_",
 smalltalk.method({
 selector: "monster:",
 category: 'accessing',
@@ -617,7 +587,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
@@ -638,7 +607,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_showMonster_",
 smalltalk.method({
 selector: "showMonster:",
 category: 'eventHandling',
@@ -655,7 +623,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_unshowMonster",
 smalltalk.method({
 selector: "unshowMonster",
 category: 'eventHandling',
@@ -671,7 +638,6 @@ referencedClasses: []
 smalltalk.MonsterWatcher);
 
 smalltalk.addMethod(
-"_update",
 smalltalk.method({
 selector: "update",
 category: 'displaying',
@@ -714,7 +680,6 @@ smalltalk.MonsterWatcher);
 
 smalltalk.addClass('TileWatcher', smalltalk.ActionMenuComponent, ['tile', 'box'], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_box",
 smalltalk.method({
 selector: "box",
 category: 'accessing',
@@ -732,7 +697,6 @@ referencedClasses: []
 smalltalk.TileWatcher);
 
 smalltalk.addMethod(
-"_box_",
 smalltalk.method({
 selector: "box:",
 category: 'accessing',
@@ -748,7 +712,6 @@ referencedClasses: []
 smalltalk.TileWatcher);
 
 smalltalk.addMethod(
-"_emptyTile",
 smalltalk.method({
 selector: "emptyTile",
 category: 'accessing',
@@ -769,7 +732,6 @@ referencedClasses: ["NativeFunction", "Tile"]
 smalltalk.TileWatcher);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
@@ -790,7 +752,6 @@ referencedClasses: []
 smalltalk.TileWatcher);
 
 smalltalk.addMethod(
-"_tile",
 smalltalk.method({
 selector: "tile",
 category: 'accessing',
@@ -813,7 +774,6 @@ referencedClasses: []
 smalltalk.TileWatcher);
 
 smalltalk.addMethod(
-"_tile_",
 smalltalk.method({
 selector: "tile:",
 category: 'accessing',
@@ -829,7 +789,6 @@ referencedClasses: []
 smalltalk.TileWatcher);
 
 smalltalk.addMethod(
-"_update",
 smalltalk.method({
 selector: "update",
 category: 'displaying',
@@ -857,7 +816,6 @@ smalltalk.TileWatcher);
 
 smalltalk.addClass('TurnWatcher', smalltalk.ActionMenuComponent, ['turnNumber', 'turnDisplay', 'sidePlaying'], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
-"_activateTwoMonsters",
 smalltalk.method({
 selector: "activateTwoMonsters",
 category: 'game-logic',
@@ -890,7 +848,6 @@ referencedClasses: ["Active"]
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_endPick",
 smalltalk.method({
 selector: "endPick",
 category: 'game-logic',
@@ -922,7 +879,6 @@ referencedClasses: ["Active"]
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_firstTurn",
 smalltalk.method({
 selector: "firstTurn",
 category: 'game-logic',
@@ -946,7 +902,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_increaseTurnNumber",
 smalltalk.method({
 selector: "increaseTurnNumber",
 category: 'game-logic',
@@ -963,7 +918,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_initialize",
 smalltalk.method({
 selector: "initialize",
 category: 'initialize-release',
@@ -979,7 +933,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_nextTurn",
 smalltalk.method({
 selector: "nextTurn",
 category: 'game-logic',
@@ -1000,7 +953,6 @@ referencedClasses: ["Inactive"]
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_pickMonster",
 smalltalk.method({
 selector: "pickMonster",
 category: 'game-logic',
@@ -1022,7 +974,6 @@ referencedClasses: ["ToPick"]
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_renderOn_",
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
@@ -1062,7 +1013,6 @@ referencedClasses: ["Browser"]
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_sidePlaying",
 smalltalk.method({
 selector: "sidePlaying",
 category: 'accessing',
@@ -1080,7 +1030,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_sidePlaying_",
 smalltalk.method({
 selector: "sidePlaying:",
 category: 'accessing',
@@ -1096,7 +1045,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_turnDisplay",
 smalltalk.method({
 selector: "turnDisplay",
 category: 'accessing',
@@ -1114,7 +1062,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_turnDisplay_",
 smalltalk.method({
 selector: "turnDisplay:",
 category: 'accessing',
@@ -1130,7 +1077,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_turnNumber",
 smalltalk.method({
 selector: "turnNumber",
 category: 'accessing',
@@ -1148,7 +1094,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_turnNumber_",
 smalltalk.method({
 selector: "turnNumber:",
 category: 'accessing',
@@ -1164,7 +1109,6 @@ referencedClasses: []
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
-"_update",
 smalltalk.method({
 selector: "update",
 category: 'displaying',
@@ -1182,7 +1126,6 @@ smalltalk.TurnWatcher);
 
 
 smalltalk.addMethod(
-"_imagesToPreload",
 smalltalk.method({
 selector: "imagesToPreload",
 category: '*Easnoth-Fight-Menu',
@@ -1206,7 +1149,6 @@ referencedClasses: ["Dictionary"]
 smalltalk.Map);
 
 smalltalk.addMethod(
-"_initializeActionMenu",
 smalltalk.method({
 selector: "initializeActionMenu",
 category: '*Easnoth-Fight-Menu',

@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Easnoth-Fight-Menu' properties: #{}!
+Smalltalk current createPackage: 'Easnoth-Fight-Menu'!
 Widget subclass: #Dice
 	instanceVariableNames: ''
 	package: 'Easnoth-Fight-Menu'!
@@ -6,13 +6,17 @@ Widget subclass: #Dice
 !Dice methodsFor: 'displaying'!
 
 animate: dice callBack: animationFinished
-        |i random url|
+        |random url|
 
 	random := 2 + 7 atRandom.
-	i := 0.
 	url := self url.
 
-	<function roll() {
+	self animate: dice callBack: animationFinished random: random url: url
+!
+
+animate: dice callBack: animationFinished random: random url: url
+<var i = 0;
+    function roll() {
 		dice.animate({'border-spacing': -100},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
@@ -39,7 +43,7 @@ animate: dice callBack: animationFinished
                         }
 		})
 	}
-	roll();>.
+	roll();>
 !
 
 renderOn: html
@@ -229,7 +233,7 @@ box: aBox
 
 emptyMonster
 	|imageVide|
-	imageVide := <new Image>.
+	imageVide := NativeFunction constructor: 'Image'.
 	imageVide at: 'src' put:'ressources/images/interro.png'.
 	^Monster new
 		image: imageVide;
@@ -313,7 +317,7 @@ box: aBox
 
 emptyTile
 	|imageVide|
-	imageVide := <new Image>.
+	imageVide := NativeFunction constructor: 'Image'.
 	imageVide at: 'src' put:'ressources/images/interro.png'.
 	^Tile new
 		image: imageVide.
