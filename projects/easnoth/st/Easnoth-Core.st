@@ -1,46 +1,4 @@
 Smalltalk current createPackage: 'Easnoth-Core'!
-Object subclass: #CanvasWidget
-	instanceVariableNames: 'parentNode'
-	package: 'Easnoth-Core'!
-
-!CanvasWidget methodsFor: 'testing'!
-
-isRootWidget
-	^ parentNode isNil
-! !
-
-CanvasWidget subclass: #CWLeaf
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
-
-CWLeaf subclass: #CWImageLeaf
-	instanceVariableNames: 'image'
-	package: 'Easnoth-Core'!
-
-CWImageLeaf subclass: #CWBackground
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
-
-CWBackground subclass: #CWOverTile
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
-
-CWOverTile subclass: #CWGameOverTile
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
-
-CWBackground subclass: #CWTile
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
-
-CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
-
-CanvasWidget subclass: #CWNode
-	instanceVariableNames: 'subWidgets'
-	package: 'Easnoth-Core'!
-
 Object subclass: #Cell
 	instanceVariableNames: 'tile gameOverTile overTiles monster coods state map'
 	package: 'Easnoth-Core'!
@@ -202,7 +160,6 @@ initializeState
 !
 
 parseJSONCell: aJsonCell
-
     | elements |
     
     elements := aJsonCell keys.
@@ -711,10 +668,6 @@ newInCell: aCell jsonMonster: aJsonMonster
 		initializeSide: aJsonMonster side;
 		yourself.
 ! !
-
-Object subclass: #GameBoard
-	instanceVariableNames: ''
-	package: 'Easnoth-Core'!
 
 Object subclass: #Map
 	instanceVariableNames: 'mapCoods cells canvas actionMenu cache drawer'
@@ -1281,7 +1234,7 @@ getSingleton
 !
 
 jsCall: aMapIndex cb: success
-	<$.getJSON('ressources/json/maps/map' + aMapIndex + '.json', success)>
+	jQuery getJSON: 'ressources/json/maps/map', aMapIndex, '.json' onSuccess: success
 !
 
 newWithMapIndex: aMapIndex

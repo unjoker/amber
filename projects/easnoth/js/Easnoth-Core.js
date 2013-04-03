@@ -1,49 +1,4 @@
 smalltalk.addPackage('Easnoth-Core');
-smalltalk.addClass('CanvasWidget', smalltalk.Object, ['parentNode'], 'Easnoth-Core');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isRootWidget",
-category: 'testing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@parentNode"])._isNil();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"isRootWidget",{},smalltalk.CanvasWidget)})},
-args: [],
-source: "isRootWidget\x0a\x09^ parentNode isNil",
-messageSends: ["isNil"],
-referencedClasses: []
-}),
-smalltalk.CanvasWidget);
-
-
-
-smalltalk.addClass('CWLeaf', smalltalk.CanvasWidget, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWImageLeaf', smalltalk.CWLeaf, ['image'], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWBackground', smalltalk.CWImageLeaf, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWOverTile', smalltalk.CWBackground, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWGameOverTile', smalltalk.CWOverTile, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWTile', smalltalk.CWBackground, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, [], 'Easnoth-Core');
-
-
-smalltalk.addClass('CWNode', smalltalk.CanvasWidget, ['subWidgets'], 'Easnoth-Core');
-
-
 smalltalk.addClass('Cell', smalltalk.Object, ['tile', 'gameOverTile', 'overTiles', 'monster', 'coods', 'state', 'map'], 'Easnoth-Core');
 smalltalk.Cell.comment="\x22implementation of an hexagonal isometric cell\x22"
 smalltalk.addMethod(
@@ -675,7 +630,7 @@ _st(self)._monster_(_st(self)._createMonster_(_st(aJsonCell)._monster()));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"parseJSONCell:",{aJsonCell:aJsonCell,elements:elements},smalltalk.Cell)})},
 args: ["aJsonCell"],
-source: "parseJSONCell: aJsonCell\x0a\x0a    | elements |\x0a    \x0a    elements := aJsonCell keys.\x0a    \x0a    elements first = 'tile'\x0a    \x09ifTrue: [self tile: (self createTile: aJsonCell tile)].\x0a    (elements includes: 'overtiles')\x0a    \x09ifTrue: [self overTiles: (self createOverTiles: aJsonCell overtiles)].\x0a    elements last = 'monster'\x0a    \x09ifTrue: [self monster: (self createMonster: aJsonCell monster)].",
+source: "parseJSONCell: aJsonCell\x0a    | elements |\x0a    \x0a    elements := aJsonCell keys.\x0a    \x0a    elements first = 'tile'\x0a    \x09ifTrue: [self tile: (self createTile: aJsonCell tile)].\x0a    (elements includes: 'overtiles')\x0a    \x09ifTrue: [self overTiles: (self createOverTiles: aJsonCell overtiles)].\x0a    elements last = 'monster'\x0a    \x09ifTrue: [self monster: (self createMonster: aJsonCell monster)].",
 messageSends: ["keys", "ifTrue:", "tile:", "createTile:", "tile", "=", "first", "overTiles:", "createOverTiles:", "overtiles", "includes:", "monster:", "createMonster:", "monster", "last"],
 referencedClasses: []
 }),
@@ -2110,9 +2065,6 @@ referencedClasses: []
 smalltalk.Monster.klass);
 
 
-smalltalk.addClass('GameBoard', smalltalk.Object, [], 'Easnoth-Core');
-
-
 smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache', 'drawer'], 'Easnoth-Core');
 smalltalk.Map.comment="\x22singleton Map, represents all the map drawed in the canvas\x22"
 smalltalk.addMethod(
@@ -3275,11 +3227,11 @@ category: 'instance creation',
 fn: function (aMapIndex,success){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-$.getJSON('ressources/json/maps/map' + aMapIndex + '.json', success);
+_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/maps/map").__comma(aMapIndex)).__comma(".json"),success);
 return self}, function($ctx1) {$ctx1.fill(self,"jsCall:cb:",{aMapIndex:aMapIndex,success:success},smalltalk.Map.klass)})},
 args: ["aMapIndex", "success"],
-source: "jsCall: aMapIndex cb: success\x0a\x09<$.getJSON('ressources/json/maps/map' + aMapIndex + '.json', success)>",
-messageSends: [],
+source: "jsCall: aMapIndex cb: success\x0a\x09jQuery getJSON: 'ressources/json/maps/map', aMapIndex, '.json' onSuccess: success",
+messageSends: ["getJSON:onSuccess:", ","],
 referencedClasses: []
 }),
 smalltalk.Map.klass);
