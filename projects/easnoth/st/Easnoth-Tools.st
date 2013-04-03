@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Easnoth-Tools' properties: #{}!
+Smalltalk current createPackage: 'Easnoth-Tools'!
 Widget subclass: #ActionMenu
 	instanceVariableNames: 'map components'
 	package: 'Easnoth-Tools'!
@@ -191,7 +191,7 @@ CacheComponent subclass: #ImageCache
 addImageFromKey: aKey fromDrawedObject: aDrawedObject
 	|imageNew|
 
-	imageNew := <new Image()>.
+	imageNew := NativeFunction constructor: 'Image'.
        	self at: aKey put: imageNew.
         imageNew at: 'onload' put: [self cache isLoaded].
         imageNew at: 'src' put:  'ressources/images/', aDrawedObject folderName, '/', aKey, '.png'.
@@ -203,7 +203,7 @@ preloadImages: anImageCol
 	|imageNew|
 
 	anImageCol associationsDo: [ :assoc |
-                imageNew := <new Image()>.
+                imageNew := NativeFunction constructor: 'Image'.
                 self at: assoc key put: imageNew.
                 imageNew at: 'src' put:  'ressources/images/',assoc value,'.png'.
 	].
@@ -233,7 +233,12 @@ addStatsFromKey: aKey inMonster: aMonster
        	self at: keySuccess put: success.
 	callBack := [:data | [self at: keySuccess] value value: data].
 
-	<$.getJSON('ressources/json/monsters/' + aKey + '.json', callBack)>.
+	self jsCall: aKey cb: callBack.
+!
+
+jsCall: aKey cb: callBack
+
+	<$.getJSON('ressources/json/monsters/' + aKey + '.json', callBack)>
 !
 
 putStatsWithKey: aKey inMonster: aMonster
@@ -254,6 +259,84 @@ updateStatsFromKey: aKey inMonster: aMonster
 			oldCallBack value: statsNew. 
 			self cache isLoaded].
 	(self includesKey: aKey) ifTrue: [aMonster stats: (self at: aKey)].
+! !
+
+Object subclass: #MapVisitor
+	instanceVariableNames: ''
+	package: 'Easnoth-Tools'!
+
+!MapVisitor methodsFor: 'low visiting'!
+
+visitBuilding: aBuilding
+	self subclassResponsibility
+!
+
+visitMonster: aMonster
+	self subclassResponsibility
+!
+
+visitOverTile: anOverTile
+	self subclassResponsibility
+!
+
+visitTile: aTile
+	self subclassResponsibility
+! !
+
+!MapVisitor methodsFor: 'visiting'!
+
+visitGameOverTiles: aMap
+	aMap cellsDo: [ :cell |
+      cell gameOverTile accept: self ].
+!
+
+visitMap: aMap
+	aMap cellsDo: [ :cell |
+      cell drawedObjects do: [:each |
+      	each accept: self ]].
+!
+
+visitMonsters: aMap
+	aMap cellsDo: [ :cell |
+      cell monster accept: self ].
+!
+
+visitOverTiles: aMap
+	aMap cellsDo: [ :cell |
+      cell overTiles do: [:each |
+      	each accept: self ]].
+!
+
+visitTiles: aMap
+	aMap cellsDo: [ :cell |
+      cell tile accept: self ].
+! !
+
+MapVisitor class instanceVariableNames: 'singleton'!
+
+!MapVisitor class methodsFor: 'visiting'!
+
+singleton
+	^singleton ifNil: [singleton := self new]
+! !
+
+MapVisitor subclass: #MapDrawer
+	instanceVariableNames: ''
+	package: 'Easnoth-Tools'!
+
+!MapDrawer methodsFor: 'visiting'!
+
+initialize
+!
+
+updateMap: aMap
+	self updateFloor: aMap.
+    self updateGameOverTiles: aMap.
+    self updateMonsters: aMap.
+!
+
+visitTile: aTile
+	self subclassResponsibility
 ! !
 
 Object subclass: #State

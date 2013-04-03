@@ -23,14 +23,13 @@ selector: "addSelectorColored:",
 category: 'displaying',
 fn: function (aSelector){
 var self=this;
-function $OverTile(){return smalltalk.OverTile||(typeof OverTile=="undefined"?nil:OverTile)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(_st($OverTile())._newInCell_jsonOverTile_selector_(self,aSelector,true));
+_st(self)._gameOverTile_(_st(self)._createGameOverTile_(aSelector));
 return self}, function($ctx1) {$ctx1.fill(self,"addSelectorColored:",{aSelector:aSelector},smalltalk.Cell)})},
 args: ["aSelector"],
-source: "addSelectorColored: aSelector\x0a\x09self gameOverTile: (OverTile newInCell: self jsonOverTile: aSelector selector: true).",
-messageSends: ["gameOverTile:", "newInCell:jsonOverTile:selector:"],
-referencedClasses: ["OverTile"]
+source: "addSelectorColored: aSelector\x0a\x09self gameOverTile: (self createGameOverTile: aSelector)",
+messageSends: ["gameOverTile:", "createGameOverTile:"],
+referencedClasses: []
 }),
 smalltalk.Cell);
 
@@ -158,6 +157,24 @@ smalltalk.Cell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "createGameOverTile:",
+category: 'factory',
+fn: function (jsonOverTile){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._createOverTile_selector_(jsonOverTile,true);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"createGameOverTile:",{jsonOverTile:jsonOverTile},smalltalk.Cell)})},
+args: ["jsonOverTile"],
+source: "createGameOverTile: jsonOverTile\x0a\x09^ self createOverTile: jsonOverTile selector: true",
+messageSends: ["createOverTile:selector:"],
+referencedClasses: []
+}),
+smalltalk.Cell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "createMonster:",
 category: 'factory',
 fn: function (aJsonMonster){
@@ -177,23 +194,59 @@ smalltalk.Cell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "createOverTiles:",
+selector: "createOverTile:",
 category: 'factory',
-fn: function (jsonOverTiles){
+fn: function (jsonOverTile){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._createOverTile_selector_(jsonOverTile,false);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"createOverTile:",{jsonOverTile:jsonOverTile},smalltalk.Cell)})},
+args: ["jsonOverTile"],
+source: "createOverTile: jsonOverTile\x0a\x09^ self createOverTile: jsonOverTile selector: false",
+messageSends: ["createOverTile:selector:"],
+referencedClasses: []
+}),
+smalltalk.Cell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "createOverTile:selector:",
+category: 'factory',
+fn: function (jsonOverTile,aBool){
 var self=this;
 function $OverTile(){return smalltalk.OverTile||(typeof OverTile=="undefined"?nil:OverTile)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+$1=_st($OverTile())._newInCell_jsonOverTile_selector_(self,jsonOverTile,aBool);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"createOverTile:selector:",{jsonOverTile:jsonOverTile,aBool:aBool},smalltalk.Cell)})},
+args: ["jsonOverTile", "aBool"],
+source: "createOverTile: jsonOverTile selector: aBool\x0a\x09^ OverTile \x0a\x09\x09newInCell: self \x0a\x09\x09jsonOverTile: jsonOverTile \x0a\x09\x09selector: aBool",
+messageSends: ["newInCell:jsonOverTile:selector:"],
+referencedClasses: ["OverTile"]
+}),
+smalltalk.Cell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "createOverTiles:",
+category: 'factory',
+fn: function (jsonOverTiles){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 $1=_st(jsonOverTiles)._collect_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st($OverTile())._newInCell_jsonOverTile_(self,_st(each)._overtile());
+return _st(self)._createOverTile_(_st(each)._overtile());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"createOverTiles:",{jsonOverTiles:jsonOverTiles},smalltalk.Cell)})},
 args: ["jsonOverTiles"],
-source: "createOverTiles: jsonOverTiles\x0a\x09^ jsonOverTiles collect: [:each | \x0a    \x09OverTile \x0a        \x09newInCell: self \x0a            jsonOverTile: each overtile]",
-messageSends: ["collect:", "newInCell:jsonOverTile:", "overtile"],
-referencedClasses: ["OverTile"]
+source: "createOverTiles: jsonOverTiles\x0a\x09^ jsonOverTiles collect: [:each | \x0a    \x09self createOverTile: each overtile ]",
+messageSends: ["collect:", "createOverTile:", "overtile"],
+referencedClasses: []
 }),
 smalltalk.Cell);
 
@@ -729,51 +782,6 @@ return $1;
 args: ["aSide"],
 source: "selectableNeighboursSide: aSide\x0a\x09^self map selectableCellsNextTo: self side: aSide cycle: self monster move",
 messageSends: ["selectableCellsNextTo:side:cycle:", "move", "monster", "map"],
-referencedClasses: []
-}),
-smalltalk.Cell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "specificDrawedObject:",
-category: 'accessing',
-fn: function (aClass){
-var self=this;
-var objectsFound;
-return smalltalk.withContext(function($ctx1) { var $1;
-var $early={};
-try {
-objectsFound=_st(self)._specificDrawedObjects_(aClass);
-_st(objectsFound)._ifEmpty_((function(){
-return smalltalk.withContext(function($ctx2) {throw $early=[nil];
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$1=_st(objectsFound)._at_((1));
-return $1;
-}
-catch(e) {if(e===$early)return e[0]; throw e}
-}, function($ctx1) {$ctx1.fill(self,"specificDrawedObject:",{aClass:aClass,objectsFound:objectsFound}, smalltalk.Cell)})},
-args: ["aClass"],
-source: "specificDrawedObject: aClass\x0a\x09|objectsFound|\x0a\x0a  \x09objectsFound := self specificDrawedObjects: aClass.\x0a\x09objectsFound ifEmpty:[^nil].\x0a\x09^objectsFound at: 1",
-messageSends: ["specificDrawedObjects:", "ifEmpty:", "at:"],
-referencedClasses: []
-}),
-smalltalk.Cell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "specificDrawedObjects:",
-category: 'accessing',
-fn: function (aClass){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._drawedObjects())._select_((function(each){
-return smalltalk.withContext(function($ctx2) {return _st(each)._isKindOf_(aClass);
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"specificDrawedObjects:",{aClass:aClass}, smalltalk.Cell)})},
-args: ["aClass"],
-source: "specificDrawedObjects: aClass\x0a\x09^self drawedObjects select:[:each | each isKindOf: aClass]",
-messageSends: ["select:", "isKindOf:", "drawedObjects"],
 referencedClasses: []
 }),
 smalltalk.Cell);
