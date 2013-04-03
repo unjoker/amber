@@ -73,18 +73,6 @@ removeTile
 	tile := nil.
 !
 
-specificDrawedObject: aClass
-	|objectsFound|
-
-  	objectsFound := self specificDrawedObjects: aClass.
-	objectsFound ifEmpty:[^nil].
-	^objectsFound at: 1
-!
-
-specificDrawedObjects: aClass
-	^self drawedObjects select:[:each | each isKindOf: aClass]
-!
-
 state
 	state ifNil: [self initializeState].
 	^state
@@ -112,7 +100,7 @@ drawedObjects: value
 !Cell methodsFor: 'displaying'!
 
 addSelectorColored: aSelector
-	self gameOverTile: (OverTile newInCell: self jsonOverTile: aSelector selector: true).
+	self gameOverTile: (self createGameOverTile: aSelector)
 !
 
 draw
@@ -138,17 +126,30 @@ updateCoods: cood
 
 !Cell methodsFor: 'factory'!
 
+createGameOverTile: jsonOverTile
+	^ self createOverTile: jsonOverTile selector: true
+!
+
 createMonster: aJsonMonster
 	^ Monster 
     	newInCell: self 
         jsonMonster: aJsonMonster
 !
 
+createOverTile: jsonOverTile
+	^ self createOverTile: jsonOverTile selector: false
+!
+
+createOverTile: jsonOverTile selector: aBool
+	^ OverTile 
+		newInCell: self 
+		jsonOverTile: jsonOverTile 
+		selector: aBool
+!
+
 createOverTiles: jsonOverTiles
 	^ jsonOverTiles collect: [:each | 
-    	OverTile 
-        	newInCell: self 
-            jsonOverTile: each overtile]
+    	self createOverTile: each overtile ]
 !
 
 createTile: aJsonTile
