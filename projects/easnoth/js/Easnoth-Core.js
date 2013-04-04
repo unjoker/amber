@@ -1,4 +1,7 @@
 smalltalk.addPackage('Easnoth-Core');
+smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu', 'cache'], 'Easnoth-Core');
+
+
 smalltalk.addClass('Cell', smalltalk.Object, ['tile', 'gameOverTile', 'overTiles', 'monster', 'coods', 'state', 'map'], 'Easnoth-Core');
 smalltalk.Cell.comment="\x22implementation of an hexagonal isometric cell\x22"
 smalltalk.addMethod(
@@ -1075,12 +1078,12 @@ _st($1)._save();
 _st($1)._translate_y_(_st(_st(_st(_st(self)._cell())._coods())._x()).__plus((45)),_st(_st(_st(_st(self)._cell())._coods())._y()).__minus((7)));
 _st($1)._scale_y_((1),(0.5));
 _st($1)._rotate_(_st(_st($Number())._pi()).__slash((4)));
-$2=_st($1)._scale_y_((1.4),(1.23));
+$2=_st($1)._scale_y_((1.4),(1.33));
 _st(self)._displayX_y_((0),(0));
 _st(ctx)._restore();
 return self}, function($ctx1) {$ctx1.fill(self,"draw",{ctx:ctx},smalltalk.Ground)})},
 args: [],
-source: "draw\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09|ctx|\x0a\x09ctx := self context.\x0a\x09ctx save;\x0a\x09\x09translate: self cell coods x + 45 y: self cell coods y-7;\x0a\x09\x09scale: 1 y: 0.5;\x0a\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09scale: 1.4 y: 1.23.\x0a\x09self displayX: 0 y: 0.\x0a\x09ctx restore.",
+source: "draw\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09|ctx|\x0a\x09ctx := self context.\x0a\x09ctx save;\x0a\x09\x09translate: self cell coods x + 45 y: self cell coods y-7;\x0a\x09\x09scale: 1 y: 0.5;\x0a\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09scale: 1.4 y: 1.33.\x0a\x09self displayX: 0 y: 0.\x0a\x09ctx restore.",
 messageSends: ["context", "save", "translate:y:", "+", "x", "coods", "cell", "-", "y", "scale:y:", "rotate:", "/", "pi", "displayX:y:", "restore"],
 referencedClasses: ["Number"]
 }),
@@ -2065,7 +2068,7 @@ referencedClasses: []
 smalltalk.Monster.klass);
 
 
-smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache', 'drawer'], 'Easnoth-Core');
+smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache'], 'Easnoth-Core');
 smalltalk.Map.comment="\x22singleton Map, represents all the map drawed in the canvas\x22"
 smalltalk.addMethod(
 smalltalk.method({
@@ -2204,7 +2207,7 @@ $1=cood;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"calculX:y:",{i:i,j:j,xpos:xpos,ypos:ypos,temp:temp,cood:cood,sin45:sin45,sin15:sin15,sin135:sin135,sin75:sin75},smalltalk.Map)})},
 args: ["i", "j"],
-source: "calculX: i y: j\x0a\x09|xpos ypos temp cood sin45 sin15 sin135 sin75|\x0a\x0a\x09sin45 := 0.707106781. \x22Pi/4\x22\x0a\x09sin15 := 0.258819045. \x22Pi/12\x22\x0a\x09sin135 := 0.233445364. \x22???->I used Approximation\x22\x0a\x09sin75 := 0.965925826. \x225*Pi/12\x22\x0a\x0a\x09temp := (j + ((i + 1)/2)) truncated.\x0a\x09xpos := (i * (sin45 + sin75) - (temp* (sin15 + sin75))) * self tileUnit + self coods x.\x0a\x09ypos := (temp * (sin15 + sin75) / 2 + (i * sin135)) * self tileUnit + self coods y.\x0a\x09cood := xpos @ ypos.\x0a\x09\x0a\x09^cood",
+source: "calculX: i y: j\x0a\x09|xpos ypos temp cood sin45 sin15 sin135 sin75 |\x0a\x0a\x09sin45 := 0.707106781. \x22Pi/4\x22\x0a\x09sin15 := 0.258819045. \x22Pi/12\x22\x0a\x09sin135 := 0.233445364. \x22???->I used Approximation\x22\x0a\x09sin75 := 0.965925826. \x225*Pi/12\x22\x0a\x0a\x09temp := (j + ((i + 1)/2)) truncated.\x0a\x09xpos := (i * (sin45 + sin75) - (temp* (sin15 + sin75))) * self tileUnit + self coods x.\x0a\x09ypos := (temp * (sin15 + sin75) / 2 + (i * sin135)) * self tileUnit + self coods y.\x0a\x09cood := xpos @ ypos.\x0a\x09\x0a\x09^cood",
 messageSends: ["truncated", "+", "/", "x", "coods", "*", "tileUnit", "-", "y", "@"],
 referencedClasses: []
 }),
@@ -2619,17 +2622,15 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
-function $MapDrawer(){return smalltalk.MapDrawer||(typeof MapDrawer=="undefined"?nil:MapDrawer)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._canvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
 _st(self)._coods_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
-self["@drawer"]=_st($MapDrawer())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.Map)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x0a\x09\x22set html5 canvas to map canvas\x22\x0a\x09self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09self coods: self canvasPadding @ self canvasPadding.\x0a\x0a\x09\x22set the canvas drawer\x22\x0a\x09drawer := MapDrawer new.",
-messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "coods:", "@", "canvasPadding", "new"],
-referencedClasses: ["HTMLCanvas", "TagBrush", "MapDrawer"]
+source: "initialize\x0a\x09super initialize.\x0a\x0a\x09\x22set html5 canvas to map canvas\x22\x0a\x09self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09self coods: self canvasPadding @ self canvasPadding.",
+messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "coods:", "@", "canvasPadding"],
+referencedClasses: ["HTMLCanvas", "TagBrush"]
 }),
 smalltalk.Map);
 
@@ -2651,7 +2652,7 @@ return _st(_st(".loading")._asJQuery())._animate_duration_(smalltalk.HashedColle
 _st(_st(_st(self)._cache())._images())._preloadImages_(_st(self)._imagesToPreload());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeCache",{},smalltalk.Map)})},
 args: [],
-source: "initializeCache\x0a\x09\x0a\x09\x22cache initializing\x22\x0a\x09self cache: Cache getSingleton.\x0a\x09self cache onload: [self update. \x0a\x09\x09\x09self actionMenu turnWatcher firstTurn.\x0a\x09\x09\x09'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500].\x0a\x0a\x09self cache images preloadImages: self imagesToPreload",
+source: "initializeCache\x0a\x09\x0a\x09\x22cache initializing\x22\x0a\x09self cache: Cache getSingleton.\x0a\x09self cache onload: [\x0a\x09\x09\x09self update. \x0a\x09\x09\x09self actionMenu turnWatcher firstTurn.\x0a\x09\x09\x09'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500].\x0a\x0a\x09self cache images preloadImages: self imagesToPreload",
 messageSends: ["cache:", "getSingleton", "onload:", "update", "firstTurn", "turnWatcher", "actionMenu", "animate:duration:", "->", "asJQuery", "cache", "preloadImages:", "imagesToPreload", "images"],
 referencedClasses: ["Cache"]
 }),

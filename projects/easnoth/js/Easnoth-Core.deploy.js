@@ -1,4 +1,7 @@
 smalltalk.addPackage('Easnoth-Core');
+smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu', 'cache'], 'Easnoth-Core');
+
+
 smalltalk.addClass('Cell', smalltalk.Object, ['tile', 'gameOverTile', 'overTiles', 'monster', 'coods', 'state', 'map'], 'Easnoth-Core');
 smalltalk.addMethod(
 smalltalk.method({
@@ -781,7 +784,7 @@ _st($1)._save();
 _st($1)._translate_y_(_st(_st(_st(_st(self)._cell())._coods())._x()).__plus((45)),_st(_st(_st(_st(self)._cell())._coods())._y()).__minus((7)));
 _st($1)._scale_y_((1),(0.5));
 _st($1)._rotate_(_st(_st($Number())._pi()).__slash((4)));
-$2=_st($1)._scale_y_((1.4),(1.23));
+$2=_st($1)._scale_y_((1.4),(1.33));
 _st(self)._displayX_y_((0),(0));
 _st(ctx)._restore();
 return self}, function($ctx1) {$ctx1.fill(self,"draw",{ctx:ctx},smalltalk.Ground)})},
@@ -1516,7 +1519,7 @@ messageSends: ["initializeCell:imageKey:", "name", "new", "initializeStats:", "i
 smalltalk.Monster.klass);
 
 
-smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache', 'drawer'], 'Easnoth-Core');
+smalltalk.addClass('Map', smalltalk.Object, ['mapCoods', 'cells', 'canvas', 'actionMenu', 'cache'], 'Easnoth-Core');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "actionMenu",
@@ -1938,14 +1941,12 @@ fn: function (){
 var self=this;
 function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
-function $MapDrawer(){return smalltalk.MapDrawer||(typeof MapDrawer=="undefined"?nil:MapDrawer)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._canvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
 _st(self)._coods_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
-self["@drawer"]=_st($MapDrawer())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.Map)})},
-messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "coods:", "@", "canvasPadding", "new"]}),
+messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "coods:", "@", "canvasPadding"]}),
 smalltalk.Map);
 
 smalltalk.addMethod(

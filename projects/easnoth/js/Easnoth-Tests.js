@@ -1,4 +1,4 @@
-smalltalk.addPackage('Easnoth-Tests', {});
+smalltalk.addPackage('Easnoth-Tests');
 smalltalk.addClass('EasnothTest', smalltalk.TestCase, [], 'Easnoth-Tests');
 
 

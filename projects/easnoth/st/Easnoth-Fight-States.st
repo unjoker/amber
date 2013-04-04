@@ -1,4 +1,41 @@
 Smalltalk current createPackage: 'Easnoth-Fight-States'!
+Object subclass: #State
+	instanceVariableNames: 'object'
+	package: 'Easnoth-Fight-States'!
+
+!State methodsFor: 'accessing'!
+
+object
+	^object
+!
+
+object: anObject
+	object := anObject
+! !
+
+!State methodsFor: 'initialize-release'!
+
+newState: aState for: anObject
+	"anObject state tearDown."
+	aState object: anObject.
+	anObject state: aState.
+	"aState setUp."
+!
+
+setUp
+!
+
+tearDown
+! !
+
+!State class methodsFor: 'instance creation'!
+
+newFor: anObject
+	^self new
+		object: anObject;
+		yourself.
+! !
+
 State subclass: #CellState
 	instanceVariableNames: ''
 	package: 'Easnoth-Fight-States'!
@@ -251,6 +288,10 @@ attackTo: aCell toState: aState
                 actionCell map removeSelection.
                 monster select.
 
+	"RELEASE ADD ON"
+		aState checkForNextTurn.
+	"END"
+	
 		actionCell map update.
 	].
 !
@@ -282,7 +323,11 @@ moveTo: aCell toState: aState callback: callback
 		monster select.
 
 		actionCell map update.
-
+		
+		"RELEASE ADD ON"
+		aState checkForNextTurn.
+		"END"
+		
 		callback value
 	].
 ! !
@@ -297,10 +342,16 @@ MonsterState subclass: #Active
 
 attackTo: aCell
 	(aCell neighbours includes: self object cell) ifFalse: [
-		self moveTo: ((aCell neighbours select: [:each | each state isKindOf: FreeSelected ]) asArray at: 1) toState: HasMoved new callback: [self object state attackTo: aCell].		
+		self moveTo: ((aCell neighbours select: [:each | each state isKindOf: FreeSelected ]) asArray at: 1) toState: HasMoved new callback: [
+			self object state attackTo: aCell.
+			self object cell map update.].		
 	] ifTrue: [
 		self attackTo: aCell toState: HasAttacked new.
 	]
+!
+
+checkForNextTurn
+	self error: 'should not happen'
 !
 
 moveTo: aCell
@@ -330,6 +381,10 @@ attackTo: aCell
 	self error:'has already attacked'
 !
 
+checkForNextTurn
+	self object cell movableNeighbours ifEmpty: [ self object cell map actionMenu turnWatcher nextTurn ]
+!
+
 moveTo: aCell
 	self moveTo: aCell toState: Inactive new
 !
@@ -355,6 +410,10 @@ MonsterState subclass: #HasMoved
 
 attackTo: aCell
 	self attackTo: aCell toState: Inactive new.
+!
+
+checkForNextTurn
+	(self object cell attackableNeighboursSide: self object side) ifEmpty: [ self object cell map actionMenu turnWatcher nextTurn ]
 !
 
 moveTo: aCell
@@ -384,6 +443,10 @@ attackTo: aCell
 	self error:'inactive'
 !
 
+checkForNextTurn
+	self object cell map actionMenu turnWatcher nextTurn
+!
+
 moveTo: aCell
 	self error:'inactive'
 !
@@ -407,6 +470,10 @@ MonsterState subclass: #ToPick
 
 attackTo:aCell
 	self error: 'topick monster'
+!
+
+checkForNextTurn
+	self error: 'this state should ot happen any more'.
 !
 
 moveTo:aCell

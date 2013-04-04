@@ -1,4 +1,109 @@
 smalltalk.addPackage('Easnoth-Fight-States');
+smalltalk.addClass('State', smalltalk.Object, ['object'], 'Easnoth-Fight-States');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newState:for:",
+category: 'initialize-release',
+fn: function (aState,anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(aState)._object_(anObject);
+_st(anObject)._state_(aState);
+return self}, function($ctx1) {$ctx1.fill(self,"newState:for:",{aState:aState,anObject:anObject},smalltalk.State)})},
+args: ["aState", "anObject"],
+source: "newState: aState for: anObject\x0a\x09\x22anObject state tearDown.\x22\x0a\x09aState object: anObject.\x0a\x09anObject state: aState.\x0a\x09\x22aState setUp.\x22",
+messageSends: ["object:", "state:"],
+referencedClasses: []
+}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "object",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@object"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"object",{},smalltalk.State)})},
+args: [],
+source: "object\x0a\x09^object",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "object:",
+category: 'accessing',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@object"]=anObject;
+return self}, function($ctx1) {$ctx1.fill(self,"object:",{anObject:anObject},smalltalk.State)})},
+args: ["anObject"],
+source: "object: anObject\x0a\x09object := anObject",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setUp",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"setUp",{},smalltalk.State)})},
+args: [],
+source: "setUp",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "tearDown",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"tearDown",{},smalltalk.State)})},
+args: [],
+source: "tearDown",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.State);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newFor:",
+category: 'instance creation',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._object_(anObject);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{anObject:anObject},smalltalk.State.klass)})},
+args: ["anObject"],
+source: "newFor: anObject\x0a\x09^self new\x0a\x09\x09object: anObject;\x0a\x09\x09yourself.",
+messageSends: ["object:", "new", "yourself"],
+referencedClasses: []
+}),
+smalltalk.State.klass);
+
+
 smalltalk.addClass('CellState', smalltalk.State, [], 'Easnoth-Fight-States');
 smalltalk.addMethod(
 smalltalk.method({
@@ -598,12 +703,13 @@ return smalltalk.withContext(function($ctx2) {
 _st(_st(aCell)._monster())._removeHP_(_st(diceRes)._x());
 _st(_st(actionCell)._map())._removeSelection();
 _st(monster)._select();
+_st(aState)._checkForNextTurn();
 return _st(_st(actionCell)._map())._update();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:toState:",{aCell:aCell,aState:aState,actionCell:actionCell,monster:monster,diceRes:diceRes},smalltalk.MonsterState)})},
 args: ["aCell", "aState"],
-source: "attackTo: aCell toState: aState\x0a\x09|actionCell monster diceRes|\x0a\x09\x0a\x09\x22variables\x22\x0a\x09monster := self object.\x0a\x09actionCell := monster cell.\x0a\x0a\x09\x22animation\x22\x0a\x09\x22TODO\x22\x0a\x0a\x09\x22states\x22\x0a        monster changeState: aState.\x0a        \x22aCell changeState: Free new. -> moved to Monster>>removeHP\x22\x0a\x0a        \x22selection\x22\x0a        actionCell map removeSelection.\x0a        \x22monster select.\x22\x0a\x0a\x09\x22attackCalcul\x22\x0a\x09diceRes := monster rollDicesCallBack: [\x0a\x09\x09aCell monster removeHP: diceRes x.\x0a\x0a                \x22selection\x22\x0a                actionCell map removeSelection.\x0a                monster select.\x0a\x0a\x09\x09actionCell map update.\x0a\x09].",
-messageSends: ["object", "cell", "changeState:", "removeSelection", "map", "rollDicesCallBack:", "removeHP:", "x", "monster", "select", "update"],
+source: "attackTo: aCell toState: aState\x0a\x09|actionCell monster diceRes|\x0a\x09\x0a\x09\x22variables\x22\x0a\x09monster := self object.\x0a\x09actionCell := monster cell.\x0a\x0a\x09\x22animation\x22\x0a\x09\x22TODO\x22\x0a\x0a\x09\x22states\x22\x0a        monster changeState: aState.\x0a        \x22aCell changeState: Free new. -> moved to Monster>>removeHP\x22\x0a\x0a        \x22selection\x22\x0a        actionCell map removeSelection.\x0a        \x22monster select.\x22\x0a\x0a\x09\x22attackCalcul\x22\x0a\x09diceRes := monster rollDicesCallBack: [\x0a\x09\x09aCell monster removeHP: diceRes x.\x0a\x0a                \x22selection\x22\x0a                actionCell map removeSelection.\x0a                monster select.\x0a\x0a\x09\x22RELEASE ADD ON\x22\x0a\x09\x09aState checkForNextTurn.\x0a\x09\x22END\x22\x0a\x09\x0a\x09\x09actionCell map update.\x0a\x09].",
+messageSends: ["object", "cell", "changeState:", "removeSelection", "map", "rollDicesCallBack:", "removeHP:", "x", "monster", "select", "checkForNextTurn", "update"],
 referencedClasses: []
 }),
 smalltalk.MonsterState);
@@ -664,12 +770,13 @@ _st(aCell)._changeState_(_st($HasMonster())._new());
 _st(_st(_st(_st(self)._object())._cell())._map())._removeSelection();
 _st(monster)._select();
 _st(_st(actionCell)._map())._update();
+_st(aState)._checkForNextTurn();
 return _st(callback)._value();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"moveTo:toState:callback:",{aCell:aCell,aState:aState,callback:callback,actionCell:actionCell,monster:monster},smalltalk.MonsterState)})},
 args: ["aCell", "aState", "callback"],
-source: "moveTo: aCell toState: aState callback: callback\x0a\x09|actionCell monster|\x0a\x0a\x09\x22variables\x22\x0a\x09monster := self object.\x0a\x09actionCell := monster cell.\x0a\x0a\x09\x22selection\x22\x0a\x09self object cell map removeSelection.\x0a\x09monster select.\x0a\x0a\x09\x22animation\x22\x0a\x09self animationMoveFrom: actionCell to: aCell callback:[\x09\x0a                \x22states\x22\x0a                actionCell changeState: Free new.\x0a                monster changeState: aState.\x0a                aCell changeState: HasMonster new.\x0a\x0a\x09\x09\x22selection\x22\x0a\x09\x09self object cell map removeSelection.\x0a\x09\x09monster select.\x0a\x0a\x09\x09actionCell map update.\x0a\x0a\x09\x09callback value\x0a\x09].",
-messageSends: ["object", "cell", "removeSelection", "map", "select", "animationMoveFrom:to:callback:", "changeState:", "new", "update", "value"],
+source: "moveTo: aCell toState: aState callback: callback\x0a\x09|actionCell monster|\x0a\x0a\x09\x22variables\x22\x0a\x09monster := self object.\x0a\x09actionCell := monster cell.\x0a\x0a\x09\x22selection\x22\x0a\x09self object cell map removeSelection.\x0a\x09monster select.\x0a\x0a\x09\x22animation\x22\x0a\x09self animationMoveFrom: actionCell to: aCell callback:[\x09\x0a                \x22states\x22\x0a                actionCell changeState: Free new.\x0a                monster changeState: aState.\x0a                aCell changeState: HasMonster new.\x0a\x0a\x09\x09\x22selection\x22\x0a\x09\x09self object cell map removeSelection.\x0a\x09\x09monster select.\x0a\x0a\x09\x09actionCell map update.\x0a\x09\x09\x0a\x09\x09\x22RELEASE ADD ON\x22\x0a\x09\x09aState checkForNextTurn.\x0a\x09\x09\x22END\x22\x0a\x09\x09\x0a\x09\x09callback value\x0a\x09].",
+messageSends: ["object", "cell", "removeSelection", "map", "select", "animationMoveFrom:to:callback:", "changeState:", "new", "update", "checkForNextTurn", "value"],
 referencedClasses: ["Free", "HasMonster"]
 }),
 smalltalk.MonsterState);
@@ -714,14 +821,31 @@ return smalltalk.withContext(function($ctx2) {
 return _st(_st(each)._state())._isKindOf_($FreeSelected());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})))._asArray())._at_((1)),_st($HasMoved())._new(),(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(_st(self)._object())._state())._attackTo_(aCell);
+_st(_st(_st(self)._object())._state())._attackTo_(aCell);
+return _st(_st(_st(_st(self)._object())._cell())._map())._update();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:",{aCell:aCell},smalltalk.Active)})},
 args: ["aCell"],
-source: "attackTo: aCell\x0a\x09(aCell neighbours includes: self object cell) ifFalse: [\x0a\x09\x09self moveTo: ((aCell neighbours select: [:each | each state isKindOf: FreeSelected ]) asArray at: 1) toState: HasMoved new callback: [self object state attackTo: aCell].\x09\x09\x0a\x09] ifTrue: [\x0a\x09\x09self attackTo: aCell toState: HasAttacked new.\x0a\x09]",
-messageSends: ["ifFalse:ifTrue:", "moveTo:toState:callback:", "at:", "asArray", "select:", "isKindOf:", "state", "neighbours", "new", "attackTo:", "object", "attackTo:toState:", "includes:", "cell"],
+source: "attackTo: aCell\x0a\x09(aCell neighbours includes: self object cell) ifFalse: [\x0a\x09\x09self moveTo: ((aCell neighbours select: [:each | each state isKindOf: FreeSelected ]) asArray at: 1) toState: HasMoved new callback: [\x0a\x09\x09\x09self object state attackTo: aCell.\x0a\x09\x09\x09self object cell map update.].\x09\x09\x0a\x09] ifTrue: [\x0a\x09\x09self attackTo: aCell toState: HasAttacked new.\x0a\x09]",
+messageSends: ["ifFalse:ifTrue:", "moveTo:toState:callback:", "at:", "asArray", "select:", "isKindOf:", "state", "neighbours", "new", "attackTo:", "object", "update", "map", "cell", "attackTo:toState:", "includes:"],
 referencedClasses: ["FreeSelected", "HasMoved", "HasAttacked"]
+}),
+smalltalk.Active);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+category: 'eventHandling',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.Active)})},
+args: [],
+source: "checkForNextTurn\x0a\x09self error: 'should not happen'",
+messageSends: ["error:"],
+referencedClasses: []
 }),
 smalltalk.Active);
 
@@ -779,6 +903,25 @@ return self}, function($ctx1) {$ctx1.fill(self,"attackTo:",{aCell:aCell},smallta
 args: ["aCell"],
 source: "attackTo: aCell\x0a\x09self error:'has already attacked'",
 messageSends: ["error:"],
+referencedClasses: []
+}),
+smalltalk.HasAttacked);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+category: 'eventHandling',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(_st(self)._object())._cell())._movableNeighbours())._ifEmpty_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(_st(_st(_st(self)._object())._cell())._map())._actionMenu())._turnWatcher())._nextTurn();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.HasAttacked)})},
+args: [],
+source: "checkForNextTurn\x0a\x09self object cell movableNeighbours ifEmpty: [ self object cell map actionMenu turnWatcher nextTurn ]",
+messageSends: ["ifEmpty:", "nextTurn", "turnWatcher", "actionMenu", "map", "cell", "object", "movableNeighbours"],
 referencedClasses: []
 }),
 smalltalk.HasAttacked);
@@ -847,6 +990,25 @@ smalltalk.HasMoved);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "checkForNextTurn",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(_st(self)._object())._cell())._attackableNeighboursSide_(_st(_st(self)._object())._side()))._ifEmpty_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(_st(_st(_st(self)._object())._cell())._map())._actionMenu())._turnWatcher())._nextTurn();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.HasMoved)})},
+args: [],
+source: "checkForNextTurn\x0a\x09(self object cell attackableNeighboursSide: self object side) ifEmpty: [ self object cell map actionMenu turnWatcher nextTurn ]",
+messageSends: ["ifEmpty:", "nextTurn", "turnWatcher", "actionMenu", "map", "cell", "object", "attackableNeighboursSide:", "side"],
+referencedClasses: []
+}),
+smalltalk.HasMoved);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "moveTo:",
 category: 'not yet classified',
 fn: function (aCell){
@@ -907,6 +1069,22 @@ smalltalk.Inactive);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "checkForNextTurn",
+category: 'eventHandling',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(_st(_st(_st(self)._object())._cell())._map())._actionMenu())._turnWatcher())._nextTurn();
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.Inactive)})},
+args: [],
+source: "checkForNextTurn\x0a\x09self object cell map actionMenu turnWatcher nextTurn",
+messageSends: ["nextTurn", "turnWatcher", "actionMenu", "map", "cell", "object"],
+referencedClasses: []
+}),
+smalltalk.Inactive);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "moveTo:",
 category: 'eventHandling',
 fn: function (aCell){
@@ -955,6 +1133,22 @@ _st(self)._error_("topick monster");
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:",{aCell:aCell},smalltalk.ToPick)})},
 args: ["aCell"],
 source: "attackTo:aCell\x0a\x09self error: 'topick monster'",
+messageSends: ["error:"],
+referencedClasses: []
+}),
+smalltalk.ToPick);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+category: 'eventHandling',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("this state should ot happen any more");
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.ToPick)})},
+args: [],
+source: "checkForNextTurn\x0a\x09self error: 'this state should ot happen any more'.",
 messageSends: ["error:"],
 referencedClasses: []
 }),
