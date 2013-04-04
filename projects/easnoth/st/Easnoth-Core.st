@@ -1,4 +1,8 @@
 Smalltalk current createPackage: 'Easnoth-Core'!
+Object subclass: #CWGameBoard
+	instanceVariableNames: 'map drawer menu cache'
+	package: 'Easnoth-Core'!
+
 Object subclass: #Cell
 	instanceVariableNames: 'tile gameOverTile overTiles monster coods state map'
 	package: 'Easnoth-Core'!
@@ -328,7 +332,7 @@ draw
 		translate: self cell coods x + 45 y: self cell coods y-7;
 		scale: 1 y: 0.5;
 		rotate: Number pi / 4 ;
-		scale: 1.4 y: 1.23.
+		scale: 1.4 y: 1.33.
 	self displayX: 0 y: 0.
 	ctx restore.
 ! !
@@ -670,7 +674,7 @@ newInCell: aCell jsonMonster: aJsonMonster
 ! !
 
 Object subclass: #Map
-	instanceVariableNames: 'mapCoods cells canvas actionMenu cache drawer'
+	instanceVariableNames: 'mapCoods cells canvas actionMenu cache'
 	package: 'Easnoth-Core'!
 !Map commentStamp!
 "singleton Map, represents all the map drawed in the canvas"!
@@ -861,7 +865,7 @@ updateCellsCoods
 !Map methodsFor: 'displaying'!
 
 calculX: i y: j
-	|xpos ypos temp cood sin45 sin15 sin135 sin75|
+	|xpos ypos temp cood sin45 sin15 sin135 sin75 |
 
 	sin45 := 0.707106781. "Pi/4"
 	sin15 := 0.258819045. "Pi/12"
@@ -1126,16 +1130,14 @@ initialize
 	"set html5 canvas to map canvas"
 	self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
 	self coods: self canvasPadding @ self canvasPadding.
-
-	"set the canvas drawer"
-	drawer := MapDrawer new.
 !
 
 initializeCache
 	
 	"cache initializing"
 	self cache: Cache getSingleton.
-	self cache onload: [self update. 
+	self cache onload: [
+			self update. 
 			self actionMenu turnWatcher firstTurn.
 			'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500].
 

@@ -1,65 +1,242 @@
 smalltalk.addPackage('Easnoth-Fight-Menu');
-smalltalk.addClass('Dice', smalltalk.Widget, [], 'Easnoth-Fight-Menu');
+smalltalk.addClass('ActionMenu', smalltalk.Widget, ['map', 'components'], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "animate:callBack:",
-category: 'displaying',
-fn: function (dice,animationFinished){
+selector: "addComponent:",
+category: 'accessing',
+fn: function (aComponent){
 var self=this;
-var random,url;
-return smalltalk.withContext(function($ctx1) { random=_st((2)).__plus(_st((7))._atRandom());
-url=_st(self)._url();
-_st(self)._animate_callBack_random_url_(dice,animationFinished,random,url);
-return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished,random:random,url:url}, smalltalk.Dice)})},
-args: ["dice", "animationFinished"],
-source: "animate: dice callBack: animationFinished\x0a        |random url|\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
-messageSends: ["+", "atRandom", "url", "animate:callBack:random:url:"],
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._components())._add_(aComponent);
+_st(aComponent)._actionMenu_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"addComponent:",{aComponent:aComponent},smalltalk.ActionMenu)})},
+args: ["aComponent"],
+source: "addComponent: aComponent\x0a\x09self components add: aComponent.\x0a\x09aComponent actionMenu: self",
+messageSends: ["add:", "components", "actionMenu:"],
 referencedClasses: []
 }),
-smalltalk.Dice);
+smalltalk.ActionMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "animate:callBack:random:url:",
-category: 'displaying',
-fn: function (dice,animationFinished,random,url){
+selector: "components",
+category: 'accessing',
+fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var i = 0;
-    function roll() {
-		dice.animate({'border-spacing': -100},
-                        {step: function(now, fx) {
-                                $(fx.elem).css('background-position', '1px '+now+'px');
-                        },
-                        duration: 200,
-                        easing: 'linear',
-                        complete: function (){
-                                i++;
-                                if (i< random){
-                                        roll();
-                                } else {
-                                        i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},
-                                                {step: function(now, fx) {
-                                                        $(fx.elem).css('background-position', '1px '+now+'px');
-                                                        },
-                                                        duration: 200,
-                                                        easing: 'linear',
-							complete: function(){
-								animationFinished();
-							}
-                                                })
-                                }
-                        }
-		})
-	}
-	roll();;
-return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:random:url:",{dice:dice,animationFinished:animationFinished,random:random,url:url}, smalltalk.Dice)})},
-args: ["dice", "animationFinished", "random", "url"],
-source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -100},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@components"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"components",{},smalltalk.ActionMenu)})},
+args: [],
+source: "components\x0a\x09^components",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.Dice);
+smalltalk.ActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "components:",
+category: 'accessing',
+fn: function (aCol){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@components"]=aCol;
+return self}, function($ctx1) {$ctx1.fill(self,"components:",{aCol:aCol},smalltalk.ActionMenu)})},
+args: ["aCol"],
+source: "components: aCol\x0a\x09components := aCol",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._components_(_st($Array())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.ActionMenu)})},
+args: [],
+source: "initialize\x0a\x09self components: Array new",
+messageSends: ["components:", "new"],
+referencedClasses: ["Array"]
+}),
+smalltalk.ActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "map",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@map"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"map",{},smalltalk.ActionMenu)})},
+args: [],
+source: "map\x0a\x09^map",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "map:",
+category: 'accessing',
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@map"]=aMap;
+return self}, function($ctx1) {$ctx1.fill(self,"map:",{aMap:aMap},smalltalk.ActionMenu)})},
+args: ["aMap"],
+source: "map: aMap\x0a\x09map := aMap",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.ActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+category: 'initialize-release',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._components())._collect_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._renderOn_(html);
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.ActionMenu)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09self components collect: [:each |\x0a\x09\x09each renderOn: html ].",
+messageSends: ["collect:", "renderOn:", "components"],
+referencedClasses: []
+}),
+smalltalk.ActionMenu);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newFor:",
+category: 'instance-creation',
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._map_(aMap);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{aMap:aMap},smalltalk.ActionMenu.klass)})},
+args: ["aMap"],
+source: "newFor: aMap\x0a\x09^self new\x0a\x09\x09map: aMap;\x0a\x09\x09yourself.",
+messageSends: ["map:", "new", "yourself"],
+referencedClasses: []
+}),
+smalltalk.ActionMenu.klass);
+
+
+smalltalk.addClass('FightMenu', smalltalk.ActionMenu, ['actionCell'], 'Easnoth-Fight-Menu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "actionCell",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=self["@actionCell"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"actionCell",{}, smalltalk.FightMenu)})},
+args: [],
+source: "actionCell\x0a\x09^actionCell",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "actionCell:",
+category: 'accessing',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { self["@actionCell"]=aCell;
+_st(self)._showMonster_(_st(self["@actionCell"])._monster());
+return self}, function($ctx1) {$ctx1.fill(self,"actionCell:",{aCell:aCell}, smalltalk.FightMenu)})},
+args: ["aCell"],
+source: "actionCell: aCell\x0a\x09actionCell := aCell.\x0a\x09self showMonster: actionCell monster.",
+messageSends: ["showMonster:", "monster"],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "dices",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._components())._at_((2));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"dices",{}, smalltalk.FightMenu)})},
+args: [],
+source: "dices\x0a\x09^self components at: 2",
+messageSends: ["at:", "components"],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+function $MonsterWatcher(){return smalltalk.MonsterWatcher||(typeof MonsterWatcher=="undefined"?nil:MonsterWatcher)}
+function $Dices(){return smalltalk.Dices||(typeof Dices=="undefined"?nil:Dices)}
+function $TileWatcher(){return smalltalk.TileWatcher||(typeof TileWatcher=="undefined"?nil:TileWatcher)}
+function $MapControls(){return smalltalk.MapControls||(typeof MapControls=="undefined"?nil:MapControls)}
+function $TurnWatcher(){return smalltalk.TurnWatcher||(typeof TurnWatcher=="undefined"?nil:TurnWatcher)}
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.ActionMenu.fn.prototype._initialize.apply(_st(self), []);
+_st(self)._addComponent_(_st($MonsterWatcher())._new());
+_st(self)._addComponent_(_st($Dices())._new());
+_st(self)._addComponent_(_st($TileWatcher())._new());
+_st(self)._addComponent_(_st($MapControls())._new());
+_st(self)._addComponent_(_st($TurnWatcher())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.FightMenu)})},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: MonsterWatcher new.\x0a\x09self addComponent: Dices new.\x0a\x09self addComponent: TileWatcher new.\x0a\x09self addComponent: MapControls new.\x0a\x09self addComponent: TurnWatcher new.",
+messageSends: ["initialize", "addComponent:", "new"],
+referencedClasses: ["MonsterWatcher", "Dices", "TileWatcher", "MapControls", "TurnWatcher"]
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monsterWatcher",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._components())._at_((1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monsterWatcher",{}, smalltalk.FightMenu)})},
+args: [],
+source: "monsterWatcher\x0a\x09^self components at: 1",
+messageSends: ["at:", "components"],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -67,100 +244,154 @@ selector: "renderOn:",
 category: 'displaying',
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._renderOn_callback_(html,(function(){
-return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Dice)})},
+return smalltalk.withContext(function($ctx1) { smalltalk.ActionMenu.fn.prototype._renderOn_.apply(_st(self), [html]);
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.FightMenu)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09 self renderOn: html callback: []",
-messageSends: ["renderOn:callback:"],
+source: "renderOn: html\x0a\x09super renderOn: html.",
+messageSends: ["renderOn:"],
 referencedClasses: []
 }),
-smalltalk.Dice);
+smalltalk.FightMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "renderOn:callback:",
-category: 'displaying',
-fn: function (html,cb){
+selector: "showMonster:",
+category: 'eventHandling',
+fn: function (aMonster){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._animate_callBack_(_st(_st(_st(html)._img_("ressources/images/fight/diceBackground.png"))._asJQuery())._css_put_("background","url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0"),cb);
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:callback:",{html:html,cb:cb}, smalltalk.Dice)})},
-args: ["html", "cb"],
-source: "renderOn: html callback: cb\x0a\x09 self animate: ((html img: 'ressources/images/fight/diceBackground.png') asJQuery css: 'background' put: 'url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0') callBack: cb",
-messageSends: ["animate:callBack:", "css:put:", "asJQuery", "img:"],
+return smalltalk.withContext(function($ctx1) { _st(_st(self)._monsterWatcher())._showMonster_(aMonster);
+return self}, function($ctx1) {$ctx1.fill(self,"showMonster:",{aMonster:aMonster}, smalltalk.FightMenu)})},
+args: ["aMonster"],
+source: "showMonster: aMonster\x0a\x09self monsterWatcher showMonster: aMonster.",
+messageSends: ["showMonster:", "monsterWatcher"],
 referencedClasses: []
 }),
-smalltalk.Dice);
+smalltalk.FightMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "url",
-category: 'displaying',
+selector: "sidePlaying",
+category: 'accessing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.Dice)})},
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._turnWatcher())._sidePlaying();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sidePlaying",{}, smalltalk.FightMenu)})},
 args: [],
-source: "url\x0a\x09self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "sidePlaying\x0a\x09^self turnWatcher sidePlaying",
+messageSends: ["sidePlaying", "turnWatcher"],
 referencedClasses: []
 }),
-smalltalk.Dice);
+smalltalk.FightMenu);
 
-
-
-smalltalk.addClass('DiceDeath', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "url",
-category: 'initialize-release',
+selector: "tileWatcher",
+category: 'accessing',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return "ressources/images/fight/diceDeath.png";
-}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.DiceDeath)})},
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._components())._at_((3));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"tileWatcher",{}, smalltalk.FightMenu)})},
 args: [],
-source: "url\x0a\x09^'ressources/images/fight/diceDeath.png'",
+source: "tileWatcher\x0a\x09^self components at: 3",
+messageSends: ["at:", "components"],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "turnWatcher",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var $1;
+$1=_st(_st(self)._components())._at_((5));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"turnWatcher",{}, smalltalk.FightMenu)})},
+args: [],
+source: "turnWatcher\x0a\x09^self components at: 5",
+messageSends: ["at:", "components"],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "unshowMonster",
+category: 'eventHandling',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(_st(self)._monsterWatcher())._unshowMonster();
+return self}, function($ctx1) {$ctx1.fill(self,"unshowMonster",{}, smalltalk.FightMenu)})},
+args: [],
+source: "unshowMonster\x0a\x09self monsterWatcher unshowMonster",
+messageSends: ["unshowMonster", "monsterWatcher"],
+referencedClasses: []
+}),
+smalltalk.FightMenu);
+
+
+
+smalltalk.addClass('ActionMenuComponent', smalltalk.Widget, ['actionMenu'], 'Easnoth-Fight-Menu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "actionMenu",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@actionMenu"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"actionMenu",{},smalltalk.ActionMenuComponent)})},
+args: [],
+source: "actionMenu\x0a\x09^actionMenu",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.DiceDeath);
+smalltalk.ActionMenuComponent);
 
-
-
-smalltalk.addClass('DiceKnockBack', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "url",
-category: 'not yet classified',
-fn: function (){
+selector: "actionMenu:",
+category: 'accessing',
+fn: function (aMenu){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return "ressources/images/fight/diceKnockBack.png";
-}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.DiceKnockBack)})},
-args: [],
-source: "url\x0a\x09^'ressources/images/fight/diceKnockBack.png'",
+return smalltalk.withContext(function($ctx1) { 
+self["@actionMenu"]=aMenu;
+return self}, function($ctx1) {$ctx1.fill(self,"actionMenu:",{aMenu:aMenu},smalltalk.ActionMenuComponent)})},
+args: ["aMenu"],
+source: "actionMenu: aMenu\x0a\x09actionMenu := aMenu",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.DiceKnockBack);
+smalltalk.ActionMenuComponent);
 
 
-
-smalltalk.addClass('DiceMiss', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
 smalltalk.method({
-selector: "url",
-category: 'not yet classified',
-fn: function (){
+selector: "newFor:",
+category: 'instance-creation',
+fn: function (aMenu){
 var self=this;
-return smalltalk.withContext(function($ctx1) { return "ressources/images/fight/diceMiss.png";
-}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.DiceMiss)})},
-args: [],
-source: "url\x0a\x09^'ressources/images/fight/diceMiss.png'",
-messageSends: [],
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._actionMenu_(aMenu);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{aMenu:aMenu},smalltalk.ActionMenuComponent.klass)})},
+args: ["aMenu"],
+source: "newFor: aMenu\x0a\x09^self new\x0a\x09\x09actionMenu: aMenu;\x0a\x09\x09yourself.",
+messageSends: ["actionMenu:", "new", "yourself"],
 referencedClasses: []
 }),
-smalltalk.DiceMiss);
-
+smalltalk.ActionMenuComponent.klass);
 
 
 smalltalk.addClass('Dices', smalltalk.ActionMenuComponent, ['box'], 'Easnoth-Fight-Menu');
@@ -300,189 +531,56 @@ smalltalk.Dices);
 
 
 
-smalltalk.addClass('FightMenu', smalltalk.ActionMenu, ['actionCell'], 'Easnoth-Fight-Menu');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "actionCell",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=self["@actionCell"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"actionCell",{}, smalltalk.FightMenu)})},
-args: [],
-source: "actionCell\x0a\x09^actionCell",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "actionCell:",
-category: 'accessing',
-fn: function (aCell){
-var self=this;
-return smalltalk.withContext(function($ctx1) { self["@actionCell"]=aCell;
-_st(self)._showMonster_(_st(self["@actionCell"])._monster());
-return self}, function($ctx1) {$ctx1.fill(self,"actionCell:",{aCell:aCell}, smalltalk.FightMenu)})},
-args: ["aCell"],
-source: "actionCell: aCell\x0a\x09actionCell := aCell.\x0a\x09self showMonster: actionCell monster.",
-messageSends: ["showMonster:", "monster"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "dices",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._components())._at_((2));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"dices",{}, smalltalk.FightMenu)})},
-args: [],
-source: "dices\x0a\x09^self components at: 2",
-messageSends: ["at:", "components"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { smalltalk.ActionMenu.fn.prototype._initialize.apply(_st(self), []);
-_st(self)._addComponent_(_st((smalltalk.MonsterWatcher || MonsterWatcher))._new());
-_st(self)._addComponent_(_st((smalltalk.Dices || Dices))._new());
-_st(self)._addComponent_(_st((smalltalk.TileWatcher || TileWatcher))._new());
-_st(self)._addComponent_(_st((smalltalk.MapControls || MapControls))._new());
-_st(self)._addComponent_(_st((smalltalk.TurnWatcher || TurnWatcher))._new());
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{}, smalltalk.FightMenu)})},
-args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: MonsterWatcher new.\x0a\x09self addComponent: Dices new.\x0a\x09self addComponent: TileWatcher new.\x0a\x09self addComponent: MapControls new.\x0a\x09self addComponent: TurnWatcher new.",
-messageSends: ["initialize", "addComponent:", "new"],
-referencedClasses: ["MonsterWatcher", "Dices", "TileWatcher", "MapControls", "TurnWatcher"]
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "monsterWatcher",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._components())._at_((1));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"monsterWatcher",{}, smalltalk.FightMenu)})},
-args: [],
-source: "monsterWatcher\x0a\x09^self components at: 1",
-messageSends: ["at:", "components"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
+smalltalk.addClass('MapControls', smalltalk.ActionMenuComponent, [], 'Easnoth-Fight-Menu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
 category: 'displaying',
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { smalltalk.ActionMenu.fn.prototype._renderOn_.apply(_st(self), [html]);
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.FightMenu)})},
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
+$1=_st(html)._div();
+_st($1)._class_("mapWatcher");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._h4())._with_("map controls");
+$3=_st(html)._button();
+_st($3)._with_("left");
+$4=_st($3)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(_st(self)._actionMenu())._map())._goLeft();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$4;
+$5=_st(html)._button();
+_st($5)._with_("right");
+$6=_st($5)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(_st(self)._actionMenu())._map())._goRight();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$6;
+$7=_st(html)._button();
+_st($7)._with_("down");
+$8=_st($7)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(_st(self)._actionMenu())._map())._goDown();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$8;
+$9=_st(html)._button();
+_st($9)._with_("up");
+$10=_st($9)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(_st(self)._actionMenu())._map())._goUp();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $10;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.MapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09super renderOn: html.",
-messageSends: ["renderOn:"],
+source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self actionMenu map goLeft].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self actionMenu map goRight].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self actionMenu map goDown].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self actionMenu map goUp].\x0a\x09\x09\x22html span \x0a\x09\x09\x09with: '-'.\x0a                html button\x0a                        with: 'mh';\x0a                        onClick: [self actionMenu map mirrorHorizontal].\x0a                html button\x0a                        with: 'vh';\x0a                        onClick: [self actionMenu map mirrorVertical].\x22\x0a\x09].",
+messageSends: ["class:", "div", "with:", "h4", "button", "onClick:", "goLeft", "map", "actionMenu", "goRight", "goDown", "goUp"],
 referencedClasses: []
 }),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "showMonster:",
-category: 'eventHandling',
-fn: function (aMonster){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self)._monsterWatcher())._showMonster_(aMonster);
-return self}, function($ctx1) {$ctx1.fill(self,"showMonster:",{aMonster:aMonster}, smalltalk.FightMenu)})},
-args: ["aMonster"],
-source: "showMonster: aMonster\x0a\x09self monsterWatcher showMonster: aMonster.",
-messageSends: ["showMonster:", "monsterWatcher"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "sidePlaying",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._turnWatcher())._sidePlaying();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"sidePlaying",{}, smalltalk.FightMenu)})},
-args: [],
-source: "sidePlaying\x0a\x09^self turnWatcher sidePlaying",
-messageSends: ["sidePlaying", "turnWatcher"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "tileWatcher",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._components())._at_((3));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"tileWatcher",{}, smalltalk.FightMenu)})},
-args: [],
-source: "tileWatcher\x0a\x09^self components at: 3",
-messageSends: ["at:", "components"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "turnWatcher",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { var $1;
-$1=_st(_st(self)._components())._at_((5));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"turnWatcher",{}, smalltalk.FightMenu)})},
-args: [],
-source: "turnWatcher\x0a\x09^self components at: 5",
-messageSends: ["at:", "components"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "unshowMonster",
-category: 'eventHandling',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self)._monsterWatcher())._unshowMonster();
-return self}, function($ctx1) {$ctx1.fill(self,"unshowMonster",{}, smalltalk.FightMenu)})},
-args: [],
-source: "unshowMonster\x0a\x09self monsterWatcher unshowMonster",
-messageSends: ["unshowMonster", "monsterWatcher"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
+smalltalk.MapControls);
 
 
 
@@ -643,35 +741,36 @@ selector: "update",
 category: 'displaying',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1,$2;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 _st(_st(self)._box())._contents_((function(html){
-return smalltalk.withContext(function($ctx2) {_st(_st(html)._h4())._with_("selected monsters");
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._h4())._with_("selected monster");
 _st(html)._img_(_st(_st(_st(self)._monster())._image())._at_("src"));
 $1=_st(html)._table();
 _st($1)._class_("tableStats");
 $2=_st($1)._with_((function(){
-return smalltalk.withContext(function($ctx3) {_st(_st(html)._tr())._with_((function(){
-return smalltalk.withContext(function($ctx4) {_st(_st(html)._td())._with_((function(){
-return smalltalk.withContext(function($ctx5) {_st(_st(html)._tr())._with_(_st("hp : ").__comma(_st(_st(self)._monster())._hp()));
-_st(_st(html)._tr())._with_(_st("move : ").__comma(_st(_st(self)._monster())._move()));
-return _st(_st(html)._tr())._with_(_st("range : ").__comma(_st(_st(self)._monster())._range()));
+return smalltalk.withContext(function($ctx3) {
+return _st(_st(html)._tr())._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._td())._with_((function(){
+return smalltalk.withContext(function($ctx5) {
+_st(_st(html)._tr())._with_(_st("hp : ").__comma(_st(_st(self)._monster())._hp()));
+return _st(_st(html)._tr())._with_(_st("move : ").__comma(_st(_st(self)._monster())._move()));
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 return _st(_st(html)._td())._with_((function(){
-return smalltalk.withContext(function($ctx5) {_st(_st(html)._tr())._with_(_st("dices : ").__comma(_st(_st(self)._monster())._dices()));
-_st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._monster())._attack())).__comma(" %"));
-return _st(_st(html)._tr())._with_(_st(_st("knockBack : ").__comma(_st(_st(self)._monster())._knockback())).__comma(" %"));
+return smalltalk.withContext(function($ctx5) {
+_st(_st(html)._tr())._with_(_st("dices : ").__comma(_st(_st(self)._monster())._dices()));
+return _st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._monster())._attack())).__comma(" %"));
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-return _st(_st(html)._tr())._with_(_st("special : ").__comma(_st(_st(self)._monster())._special()));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$2;
-_st(_st(html)._h5())._with_("debug");
-return _st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._monster())._state())._class()));
+return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"update",{}, smalltalk.MonsterWatcher)})},
+return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.MonsterWatcher)})},
 args: [],
-source: "update\x0a        self box contents: [:html | \x0a\x09\x09html h4 with: 'selected monsters'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ',self monster hp.\x0a                        \x09\x09html tr with: 'move : ',self monster move.\x0a                        \x09\x09html tr with: 'range : ',self monster range.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ',self monster dices.\x0a                        \x09\x09html tr with: 'attack : ',self monster attack,' %'.\x0a                       \x09\x09\x09html tr with: 'knockBack : ',self monster knockback,' %'.\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09\x09html tr with: 'special : ',self monster special.\x0a\x09\x09].\x0a\x09\x09html h5 with: 'debug'.\x0a                html span with: 'state : ',self monster state class.\x0a        ].",
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "range", "td", "dices", "attack", "knockback", "special", "h5", "class", "state", "span", "box"],
+source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        self box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ',self monster hp.\x0a                        \x09\x09html tr with: 'move : ',self monster move.\x0a                        \x09\x09\x22html tr with: 'range : ',self monster range.\x22\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ',self monster dices.\x0a                        \x09\x09html tr with: 'attack : ',self monster attack,' %'.\x0a                       \x09\x09\x09\x22html tr with: 'knockBack : ',self monster knockback,' %'.\x22\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09\x09\x22html tr with: 'special : ',self monster special.\x22\x0a\x09\x09].\x0a\x09\x09\x22html h5 with: 'debug'.\x0a                html span with: 'state : ',self monster state class.\x22\x0a        ].",
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "td", "dices", "attack", "box"],
 referencedClasses: []
 }),
 smalltalk.MonsterWatcher);
@@ -794,20 +893,11 @@ selector: "update",
 category: 'displaying',
 fn: function (){
 var self=this;
-return smalltalk.withContext(function($ctx1) { _st(_st(self)._box())._contents_((function(html){
-return smalltalk.withContext(function($ctx2) {_st(_st(html)._h4())._with_("Tile");
-_st(html)._img_(_st(_st(_st(self)._tile())._image())._at_("src"));
-_st(html)._br();
-return _st(_st(html)._span())._with_(_st(_st(_st("isWall : ").__comma(_st(_st(self)._tile())._isWall())).__comma(" - monster : ")).__comma(_st(_st(_st(self)._tile())._cell())._ifNotNil_ifNil_((function(){
-return smalltalk.withContext(function($ctx3) {return _st(_st(_st(self)._tile())._cell())._hasMonster();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}),(function(){
-return smalltalk.withContext(function($ctx3) {return "empty";
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))));
-}, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"update",{}, smalltalk.TileWatcher)})},
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.TileWatcher)})},
 args: [],
-source: "update\x0a        self box contents: [:html | \x0a\x09\x09html h4 with: 'Tile'.\x0a                html img: (self tile image at: 'src').\x0a\x09\x09html br.\x0a\x09\x09html span with: 'isWall : ' , self tile isWall , ' - monster : ' , (self tile cell ifNotNil: [self tile cell hasMonster] ifNil: ['empty']).\x0a        ].",
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "tile", "br", ",", "ifNotNil:ifNil:", "hasMonster", "cell", "isWall", "span", "box"],
+source: "update\x0a        \x22self box contents: [:html | \x0a\x09\x09html h4 with: 'Tile'.\x0a                html img: (self tile image at: 'src').\x0a\x09\x09html br.\x0a\x09\x09html span with: 'isWall : ' , self tile isWall , ' - monster : ' , (self tile cell ifNotNil: [self tile cell hasMonster] ifNil: ['empty']).\x0a        ].\x22",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.TileWatcher);
@@ -821,28 +911,32 @@ selector: "activateTwoMonsters",
 category: 'game-logic',
 fn: function (){
 var self=this;
-var armyPlaying;
-return smalltalk.withContext(function($ctx1) { var $1,$2;
+var armyPlaying,monster1;
+function $Active(){return smalltalk.Active||(typeof Active=="undefined"?nil:Active)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
 armyPlaying=_st(_st(_st(self)._actionMenu())._map())._monstersFromSide_(_st(self)._sidePlaying());
 $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
 _st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(self)._sidePlaying())._negated()));
 } else {
-$2=_st(_st(armyPlaying)._size()).__gt((2));
+$2=_st(_st(armyPlaying)._size()).__gt((1));
 if(smalltalk.assert($2)){
 _st(self)._pickMonster();
 } else {
-_st(armyPlaying)._collect_((function(monster){
-return smalltalk.withContext(function($ctx2) {return _st(monster)._changeState_(_st((smalltalk.Active || Active))._new());
-}, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
-_st(_st(_st(self)._actionMenu())._map())._showActiveMonsters();
+monster1=_st(_st(armyPlaying)._collect_((function(monster){
+return smalltalk.withContext(function($ctx2) {
+return _st(monster)._changeState_(_st($Active())._new());
+}, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})})))._at_((1));
+monster1;
+_st(monster1)._select();
 _st(_st(_st(self)._actionMenu())._map())._update();
 };
 };
-return self}, function($ctx1) {$ctx1.fill(self,"activateTwoMonsters",{armyPlaying:armyPlaying}, smalltalk.TurnWatcher)})},
+return self}, function($ctx1) {$ctx1.fill(self,"activateTwoMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.TurnWatcher)})},
 args: [],
-source: "activateTwoMonsters\x0a\x09|armyPlaying|\x0a\x0a\x09armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.\x0a\x0a\x09(armyPlaying size = 0) ifTrue: [\x0a\x09\x09window alert: 'Someone just won. Guess who ? winner : ' , self sidePlaying negated\x0a\x09] ifFalse: [\x0a\x09\x09(armyPlaying size > 2) ifTrue: [\x0a\x09\x09\x09self pickMonster\x0a\x09\x09] ifFalse: [\x0a\x09\x09\x09armyPlaying collect: [:monster | monster changeState: Active new].\x0a\x09\x09\x09self actionMenu map showActiveMonsters.\x0a\x09\x09\x09self actionMenu map update\x0a\x09\x09]\x0a\x09]",
-messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "collect:", "changeState:", "new", "showActiveMonsters", "update", ">", "size", "="],
+source: "activateTwoMonsters\x0a\x09|armyPlaying monster1|\x0a\x0a\x09armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.\x0a\x0a\x09(armyPlaying size = 0) ifTrue: [\x0a\x09\x09window alert: 'Someone just won. Guess who ? winner : ' , self sidePlaying negated\x0a\x09] ifFalse: [\x0a\x09\x09(armyPlaying size > 1) ifTrue: [\x0a\x09\x09\x09self pickMonster\x0a\x09\x09] ifFalse: [\x0a\x09\x09\x09monster1 := (armyPlaying collect: [:monster | monster changeState: Active new]) at: 1.\x0a\x09\x09\x09monster1 select.\x0a\x09\x09\x09self actionMenu map update.\x0a\x09\x09\x09\x22self actionMenu map showActiveMonsters.\x22\x0a\x09\x09]\x0a\x09]",
+messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "at:", "collect:", "changeState:", "new", "select", "update", ">", "size", "="],
 referencedClasses: ["Active"]
 }),
 smalltalk.TurnWatcher);
@@ -854,26 +948,24 @@ category: 'game-logic',
 fn: function (){
 var self=this;
 var armyPlaying,monsterActivated;
-return smalltalk.withContext(function($ctx1) { var $1,$2;
+function $Active(){return smalltalk.Active||(typeof Active=="undefined"?nil:Active)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
 armyPlaying=_st(_st(_st(self)._actionMenu())._map())._monstersFromSide_(_st(self)._sidePlaying());
 _st(armyPlaying)._collect_((function(monster){
-return smalltalk.withContext(function($ctx2) {$1=_st(_st(monster)._state())._isKindOf_((smalltalk.Active || Active));
+return smalltalk.withContext(function($ctx2) {
+$1=_st(_st(_st(monster)._state())._class()).__eq($Active());
 if(smalltalk.assert($1)){
 monsterActivated=monster;
 return monsterActivated;
 };
 }, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
-$2=_st(_st(armyPlaying)._size()).__eq((1));
-if(! smalltalk.assert($2)){
-_st(armyPlaying)._remove_(monsterActivated);
-_st(_st(armyPlaying)._atRandom())._changeState_(_st((smalltalk.Active || Active))._new());
-};
-_st(_st(_st(self)._actionMenu())._map())._showActiveMonsters();
+_st(monsterActivated)._select();
 _st(_st(_st(self)._actionMenu())._map())._update();
-return self}, function($ctx1) {$ctx1.fill(self,"endPick",{armyPlaying:armyPlaying,monsterActivated:monsterActivated}, smalltalk.TurnWatcher)})},
+return self}, function($ctx1) {$ctx1.fill(self,"endPick",{armyPlaying:armyPlaying,monsterActivated:monsterActivated},smalltalk.TurnWatcher)})},
 args: [],
-source: "endPick\x0a\x09|armyPlaying monsterActivated|\x0a\x0a\x09\x22activate 1 monster randomly\x22\x0a\x09armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.\x0a\x09armyPlaying collect: [ :monster | \x0a\x09\x09(monster state isKindOf: Active) ifTrue: [monsterActivated := monster]].\x0a\x0a\x09(armyPlaying size = 1) ifFalse: [\x0a\x09\x09armyPlaying remove: monsterActivated.\x0a\x09\x09armyPlaying atRandom changeState: Active new\x0a\x09].\x0a\x0a\x09self actionMenu map showActiveMonsters.\x0a\x09self actionMenu map update",
-messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "collect:", "ifTrue:", "isKindOf:", "state", "ifFalse:", "remove:", "changeState:", "new", "atRandom", "=", "size", "showActiveMonsters", "update"],
+source: "endPick\x0a\x09|armyPlaying monsterActivated|\x0a\x0a\x09\x22activate 1 monster randomly\x22\x0a\x09armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.\x0a\x09armyPlaying collect: [ :monster | \x0a\x09\x09(monster state class = Active) ifTrue: [monsterActivated := monster]].\x0a\x0a\x09\x22removed the random thingy\x0a\x09(armyPlaying size = 1) ifFalse: [\x0a\x09\x09armyPlaying remove: monsterActivated.\x0a\x09\x09armyPlaying atRandom changeState: Active new\x0a\x09].\x22\x0a\x0a\x09\x22self actionMenu map showActiveMonsters.\x22\x0a\x09monsterActivated select.\x0a\x09self actionMenu map update",
+messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "collect:", "ifTrue:", "=", "class", "state", "select", "update"],
 referencedClasses: ["Active"]
 }),
 smalltalk.TurnWatcher);
@@ -1122,6 +1214,170 @@ messageSends: ["contents:", ",", "turnNumber", "turnDisplay"],
 referencedClasses: []
 }),
 smalltalk.TurnWatcher);
+
+
+
+smalltalk.addClass('Dice', smalltalk.Widget, [], 'Easnoth-Fight-Menu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "animate:callBack:",
+category: 'displaying',
+fn: function (dice,animationFinished){
+var self=this;
+var random,url;
+return smalltalk.withContext(function($ctx1) { random=_st((2)).__plus(_st((7))._atRandom());
+url=_st(self)._url();
+_st(self)._animate_callBack_random_url_(dice,animationFinished,random,url);
+return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished,random:random,url:url}, smalltalk.Dice)})},
+args: ["dice", "animationFinished"],
+source: "animate: dice callBack: animationFinished\x0a        |random url|\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
+messageSends: ["+", "atRandom", "url", "animate:callBack:random:url:"],
+referencedClasses: []
+}),
+smalltalk.Dice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "animate:callBack:random:url:",
+category: 'displaying',
+fn: function (dice,animationFinished,random,url){
+var self=this;
+return smalltalk.withContext(function($ctx1) { var i = 0;
+    function roll() {
+		dice.animate({'border-spacing': -100},
+                        {step: function(now, fx) {
+                                $(fx.elem).css('background-position', '1px '+now+'px');
+                        },
+                        duration: 200,
+                        easing: 'linear',
+                        complete: function (){
+                                i++;
+                                if (i< random){
+                                        roll();
+                                } else {
+                                        i = 0;
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},
+                                                {step: function(now, fx) {
+                                                        $(fx.elem).css('background-position', '1px '+now+'px');
+                                                        },
+                                                        duration: 200,
+                                                        easing: 'linear',
+							complete: function(){
+								animationFinished();
+							}
+                                                })
+                                }
+                        }
+		})
+	}
+	roll();;
+return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:random:url:",{dice:dice,animationFinished:animationFinished,random:random,url:url}, smalltalk.Dice)})},
+args: ["dice", "animationFinished", "random", "url"],
+source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -100},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Dice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+category: 'displaying',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._renderOn_callback_(html,(function(){
+return smalltalk.withContext(function($ctx2) {}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.Dice)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09 self renderOn: html callback: []",
+messageSends: ["renderOn:callback:"],
+referencedClasses: []
+}),
+smalltalk.Dice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:callback:",
+category: 'displaying',
+fn: function (html,cb){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._animate_callBack_(_st(_st(_st(html)._img_("ressources/images/fight/diceBackground.png"))._asJQuery())._css_put_("background","url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0"),cb);
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:callback:",{html:html,cb:cb}, smalltalk.Dice)})},
+args: ["html", "cb"],
+source: "renderOn: html callback: cb\x0a\x09 self animate: ((html img: 'ressources/images/fight/diceBackground.png') asJQuery css: 'background' put: 'url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0') callBack: cb",
+messageSends: ["animate:callBack:", "css:put:", "asJQuery", "img:"],
+referencedClasses: []
+}),
+smalltalk.Dice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+category: 'displaying',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { _st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.Dice)})},
+args: [],
+source: "url\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.Dice);
+
+
+
+smalltalk.addClass('DiceDeath', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return "ressources/images/fight/diceDeath.png";
+}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.DiceDeath)})},
+args: [],
+source: "url\x0a\x09^'ressources/images/fight/diceDeath.png'",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.DiceDeath);
+
+
+
+smalltalk.addClass('DiceKnockBack', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return "ressources/images/fight/diceKnockBack.png";
+}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.DiceKnockBack)})},
+args: [],
+source: "url\x0a\x09^'ressources/images/fight/diceKnockBack.png'",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.DiceKnockBack);
+
+
+
+smalltalk.addClass('DiceMiss', smalltalk.Dice, [], 'Easnoth-Fight-Menu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { return "ressources/images/fight/diceMiss.png";
+}, function($ctx1) {$ctx1.fill(self,"url",{}, smalltalk.DiceMiss)})},
+args: [],
+source: "url\x0a\x09^'ressources/images/fight/diceMiss.png'",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.DiceMiss);
 
 
 

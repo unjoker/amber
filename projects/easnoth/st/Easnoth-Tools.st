@@ -1,7 +1,7 @@
 Smalltalk current createPackage: 'Easnoth-Tools'!
 Widget subclass: #ActionMenu
 	instanceVariableNames: 'map components'
-	package: 'Easnoth-Tools'!
+	package: 'Easnoth-Fight-Menu'!
 
 !ActionMenu methodsFor: 'accessing'!
 
@@ -47,7 +47,7 @@ newFor: aMap
 
 Widget subclass: #ActionMenuComponent
 	instanceVariableNames: 'actionMenu'
-	package: 'Easnoth-Tools'!
+	package: 'Easnoth-Fight-Menu'!
 
 !ActionMenuComponent methodsFor: 'accessing'!
 
@@ -69,7 +69,7 @@ newFor: aMenu
 
 ActionMenuComponent subclass: #MapControls
 	instanceVariableNames: ''
-	package: 'Easnoth-Tools'!
+	package: 'Easnoth-Fight-Menu'!
 
 !MapControls methodsFor: 'displaying'!
 
@@ -259,132 +259,5 @@ updateStatsFromKey: aKey inMonster: aMonster
 			oldCallBack value: statsNew. 
 			self cache isLoaded].
 	(self includesKey: aKey) ifTrue: [aMonster stats: (self at: aKey)].
-! !
-
-Object subclass: #MapVisitor
-	instanceVariableNames: ''
-	package: 'Easnoth-Tools'!
-
-!MapVisitor methodsFor: 'low visiting'!
-
-visitBuilding: aBuilding
-	self subclassResponsibility
-!
-
-visitMonster: aMonster
-	self subclassResponsibility
-!
-
-visitOverTile: anOverTile
-	self subclassResponsibility
-!
-
-visitTile: aTile
-	self subclassResponsibility
-! !
-
-!MapVisitor methodsFor: 'visiting'!
-
-visitGameOverTiles: aMap
-	aMap cellsDo: [ :cell |
-      cell gameOverTile accept: self ].
-!
-
-visitMap: aMap
-	aMap cellsDo: [ :cell |
-      cell drawedObjects do: [:each |
-      	each accept: self ]].
-!
-
-visitMonsters: aMap
-	aMap cellsDo: [ :cell |
-      cell monster accept: self ].
-!
-
-visitOverTiles: aMap
-	aMap cellsDo: [ :cell |
-      cell overTiles do: [:each |
-      	each accept: self ]].
-!
-
-visitTiles: aMap
-	aMap cellsDo: [ :cell |
-      cell tile accept: self ].
-! !
-
-MapVisitor class instanceVariableNames: 'singleton'!
-
-!MapVisitor class methodsFor: 'visiting'!
-
-singleton
-	^singleton ifNil: [singleton := self new]
-! !
-
-MapVisitor subclass: #MapDrawer
-	instanceVariableNames: ''
-	package: 'Easnoth-Tools'!
-
-!MapDrawer methodsFor: 'low visiting'!
-
-visitMonster: aMonster
-	aMonster draw
-!
-
-visitOverTile: anOverTile
-	anOverTile draw
-!
-
-visitTile: aTile
-	aTile draw
-! !
-
-!MapDrawer methodsFor: 'public'!
-
-cleanMap: aMap
-	| elem |
-	elem := aMap canvas element.
-	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
-!
-
-updateMap: aMap
-	self cleanMap: aMap.
-	self visitMap: aMap.
-! !
-
-Object subclass: #State
-	instanceVariableNames: 'object'
-	package: 'Easnoth-Tools'!
-
-!State methodsFor: 'accessing'!
-
-object
-	^object
-!
-
-object: anObject
-	object := anObject
-! !
-
-!State methodsFor: 'initialize-release'!
-
-newState: aState for: anObject
-	"anObject state tearDown."
-	aState object: anObject.
-	anObject state: aState.
-	"aState setUp."
-!
-
-setUp
-!
-
-tearDown
-! !
-
-!State class methodsFor: 'instance creation'!
-
-newFor: anObject
-	^self new
-		object: anObject;
-		yourself.
 ! !
 

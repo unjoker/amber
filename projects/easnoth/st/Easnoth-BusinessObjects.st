@@ -17,8 +17,8 @@ parent
 	^ parent
 !
 
-parent: aCoreWidget
-	parent := aCoreWidget
+parent: object
+	parent := object
 ! !
 
 !CWBusinessObject methodsFor: 'factory'!
@@ -33,8 +33,8 @@ newChild: aClass
 
 !CWBusinessObject methodsFor: 'nodes'!
 
-addChild: aCoreWidget
-	^ children add: aCoreWidget
+addChild: object
+	^ children add: object
 !
 
 addChildren: aCollection
@@ -45,12 +45,16 @@ childAt: index
 	^ children at: index
 !
 
-childAt: index put: aCoreWidget
-	^ children at: index put: aCoreWidget
+childAt: index put: object
+	^ children at: index put: object
 !
 
 childBasicClass
 	self subclassResponsibility
+!
+
+removeChild: object
+	^ children remove: object
 ! !
 
 !CWBusinessObject methodsFor: 'testing'!
@@ -75,25 +79,19 @@ accept: aVisitor
 ! !
 
 CWBusinessObject subclass: #CWCell
-	instanceVariableNames: 'canvasCoods mapCoods'
+	instanceVariableNames: 'mapCoods'
 	package: 'Easnoth-BusinessObjects'!
+!CWCell commentStamp!
+canvasCoods is a cache not to recalcul it each time!
 
 !CWCell methodsFor: 'accessing'!
-
-canvasCoods
-	^ canvasCoods
-!
-
-canvasCoods: aPoint
-	canvasCoods := aPoint
-!
 
 mapCoods
 	^ mapCoods
 !
 
 mapCoods: aPoint
-	mapCoods := aPoint
+	mapCoods := aPoint.
 ! !
 
 !CWCell methodsFor: 'factory'!
@@ -129,7 +127,7 @@ initializeFromJson: aJsonCell
     	ifTrue: [ self addChild: (self newTile initializeFromJson: aJsonCell tile) ].
     (elements includes: 'overtiles') 
     	ifTrue: [ self addChildren: (aJsonCell overtiles collect: [:each | 
-			self newOverTile initializeFromJson: each] ) ].
+			self newOverTile initializeFromJson: each overtile] ) ].
     elements last = 'monster'
     	ifTrue: [ self addChild: (self newHeros initializeFromJson: aJsonCell monster) ].
 ! !
@@ -168,6 +166,10 @@ CWBusinessObject subclass: #CWImageLeaf
 
 !CWImageLeaf methodsFor: 'accessing'!
 
+image
+	^ image
+!
+
 keyFor: aJson
 	^ aJson
 ! !
@@ -179,16 +181,53 @@ folderName
 !
 
 initializeFromJson: aJson
-		| imageNew |
-		imageNew := NativeFunction constructor: 'Image'.
-       "imageNew at: 'onload' put: []."
-        imageNew at: 'src' put:  'ressources/images/', self folderName, '/', (self keyFor: aJson), '.png'.
+	image := self class imageCacheAt: (self keyFor: aJson) ifAbsent: [ self newImageFrom: aJson ]
+!
+
+newImageFrom: aJson
+	"Create a new image and cache it"
+	
+	| key |
+	
+	key := self keyFor: aJson.
+	image := NativeFunction constructor: 'Image'.
+	
+	self class imageCache at: key put: image.
+	
+    image at: 'onload' put: [
+		"This should be managed differently later"
+		MapDrawer new drawMap: self parent parent parent].
+    image at: 'src' put:  'ressources/images/', self folderName, '/', key, '.png'.
+	
+	^ image
+! !
+
+!CWImageLeaf methodsFor: 'testing'!
+
+isLeaf
+	^ true
 ! !
 
 !CWImageLeaf methodsFor: 'visiting'!
 
 accept: aVisitor
 	self shouldNotImplement
+! !
+
+CWImageLeaf class instanceVariableNames: 'imageCache'!
+
+!CWImageLeaf class methodsFor: 'caching'!
+
+imageCache
+	^ imageCache ifNil: [ imageCache := Dictionary new ]
+!
+
+imageCacheAt: aKey ifAbsent: aBlock
+	^ self imageCache at: aKey ifAbsent: aBlock
+!
+
+imageCacheAt: aKey put: anImage
+	^ self imageCache at: aKey put: anImage
 ! !
 
 CWImageLeaf subclass: #CWBackground
@@ -265,6 +304,8 @@ accept: aVisitor
 	self shouldNotImplement
 ! !
 
+CWMonster class instanceVariableNames: 'jsonStatCache'!
+
 CWMonster subclass: #CWHeros
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
@@ -286,7 +327,7 @@ accept: aVisitor
 ! !
 
 CWBusinessObject subclass: #CWMap
-	instanceVariableNames: 'canvasCoods'
+	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
 !CWMap methodsFor: 'accessing'!
@@ -315,12 +356,7 @@ tileUnit
 
 !CWMap methodsFor: 'initialize-release'!
 
-initialize
-	super initialize.
-	canvasCoods := (self canvasPadding @ self canvasPadding).
-!
-
-initializeChildrenFromJson: jsonMap
+initializeFromJson: jsonMap
 	"initialize the children of the map (the rows)"
 	
 	| child rows |
@@ -328,17 +364,9 @@ initializeChildrenFromJson: jsonMap
 	self children: (Array new: rows size).
 	rows withIndexDo: [:row :i |
 		child := self newChild.
+		self childAt: i put: child.
 		child rowIndex: i.
-		child initializeFromJson: row.
-		self childAt: i put: child ]
-!
-
-initializeFromJson: jsonMap
-
-	"mapX adjustment according to mapSize"
-	self canvasCoods x: self canvasCoods x + ((jsonMap row at:1) cells size * self tileUnit * 1.17).
-	
-	self initializeChildrenFromJson: jsonMap
+		child initializeFromJson: row ]
 ! !
 
 !CWMap methodsFor: 'nodes'!
@@ -353,15 +381,22 @@ accept: aVisitor
 	^ aVisitor visitMap: self
 ! !
 
+CWMap class instanceVariableNames: 'default'!
+
 !CWMap class methodsFor: 'instance creation'!
+
+default
+	^ default ifNil: [ default := self new ]
+!
 
 newWithMapIndex: aMapIndex
 	| map |
 	
-	map := self new.
+	map := self default.
     jQuery 
 		getJSON: 'ressources/json/maps/map', aMapIndex, '.json' 
-		onSuccess: [:data | map initializeFromJson: data].
+		onSuccess: [:data | 
+			map initializeFromJson: data].
 
 	^ map
 ! !
@@ -406,8 +441,4 @@ childBasicClass
 accept: aVisitor
 	^ aVisitor visitRow: self
 ! !
-
-Object subclass: #CWGameBoard
-	instanceVariableNames: 'map drawer menu cache'
-	package: 'Easnoth-BusinessObjects'!
 

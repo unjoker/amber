@@ -1,4 +1,79 @@
 smalltalk.addPackage('Easnoth-Fight-States');
+smalltalk.addClass('State', smalltalk.Object, ['object'], 'Easnoth-Fight-States');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newState:for:",
+fn: function (aState,anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(aState)._object_(anObject);
+_st(anObject)._state_(aState);
+return self}, function($ctx1) {$ctx1.fill(self,"newState:for:",{aState:aState,anObject:anObject},smalltalk.State)})},
+messageSends: ["object:", "state:"]}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "object",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@object"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"object",{},smalltalk.State)})},
+messageSends: []}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "object:",
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@object"]=anObject;
+return self}, function($ctx1) {$ctx1.fill(self,"object:",{anObject:anObject},smalltalk.State)})},
+messageSends: []}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setUp",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"setUp",{},smalltalk.State)})},
+messageSends: []}),
+smalltalk.State);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "tearDown",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"tearDown",{},smalltalk.State)})},
+messageSends: []}),
+smalltalk.State);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newFor:",
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st(self)._new();
+_st($2)._object_(anObject);
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newFor:",{anObject:anObject},smalltalk.State.klass)})},
+messageSends: ["object:", "new", "yourself"]}),
+smalltalk.State.klass);
+
+
 smalltalk.addClass('CellState', smalltalk.State, [], 'Easnoth-Fight-States');
 smalltalk.addMethod(
 smalltalk.method({
@@ -438,10 +513,11 @@ return smalltalk.withContext(function($ctx2) {
 _st(_st(aCell)._monster())._removeHP_(_st(diceRes)._x());
 _st(_st(actionCell)._map())._removeSelection();
 _st(monster)._select();
+_st(aState)._checkForNextTurn();
 return _st(_st(actionCell)._map())._update();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:toState:",{aCell:aCell,aState:aState,actionCell:actionCell,monster:monster,diceRes:diceRes},smalltalk.MonsterState)})},
-messageSends: ["object", "cell", "changeState:", "removeSelection", "map", "rollDicesCallBack:", "removeHP:", "x", "monster", "select", "update"]}),
+messageSends: ["object", "cell", "changeState:", "removeSelection", "map", "rollDicesCallBack:", "removeHP:", "x", "monster", "select", "checkForNextTurn", "update"]}),
 smalltalk.MonsterState);
 
 smalltalk.addMethod(
@@ -489,10 +565,11 @@ _st(aCell)._changeState_(_st($HasMonster())._new());
 _st(_st(_st(_st(self)._object())._cell())._map())._removeSelection();
 _st(monster)._select();
 _st(_st(actionCell)._map())._update();
+_st(aState)._checkForNextTurn();
 return _st(callback)._value();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"moveTo:toState:callback:",{aCell:aCell,aState:aState,callback:callback,actionCell:actionCell,monster:monster},smalltalk.MonsterState)})},
-messageSends: ["object", "cell", "removeSelection", "map", "select", "animationMoveFrom:to:callback:", "changeState:", "new", "update", "value"]}),
+messageSends: ["object", "cell", "removeSelection", "map", "select", "animationMoveFrom:to:callback:", "changeState:", "new", "update", "checkForNextTurn", "value"]}),
 smalltalk.MonsterState);
 
 smalltalk.addMethod(
@@ -528,11 +605,23 @@ return smalltalk.withContext(function($ctx2) {
 return _st(_st(each)._state())._isKindOf_($FreeSelected());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})))._asArray())._at_((1)),_st($HasMoved())._new(),(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(_st(self)._object())._state())._attackTo_(aCell);
+_st(_st(_st(self)._object())._state())._attackTo_(aCell);
+return _st(_st(_st(_st(self)._object())._cell())._map())._update();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:",{aCell:aCell},smalltalk.Active)})},
-messageSends: ["ifFalse:ifTrue:", "moveTo:toState:callback:", "at:", "asArray", "select:", "isKindOf:", "state", "neighbours", "new", "attackTo:", "object", "attackTo:toState:", "includes:", "cell"]}),
+messageSends: ["ifFalse:ifTrue:", "moveTo:toState:callback:", "at:", "asArray", "select:", "isKindOf:", "state", "neighbours", "new", "attackTo:", "object", "update", "map", "cell", "attackTo:toState:", "includes:"]}),
+smalltalk.Active);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.Active)})},
+messageSends: ["error:"]}),
 smalltalk.Active);
 
 smalltalk.addMethod(
@@ -575,6 +664,20 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._error_("has already attacked");
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:",{aCell:aCell},smalltalk.HasAttacked)})},
 messageSends: ["error:"]}),
+smalltalk.HasAttacked);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(_st(self)._object())._cell())._movableNeighbours())._ifEmpty_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(_st(_st(_st(self)._object())._cell())._map())._actionMenu())._turnWatcher())._nextTurn();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.HasAttacked)})},
+messageSends: ["ifEmpty:", "nextTurn", "turnWatcher", "actionMenu", "map", "cell", "object", "movableNeighbours"]}),
 smalltalk.HasAttacked);
 
 smalltalk.addMethod(
@@ -625,6 +728,20 @@ smalltalk.HasMoved);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "checkForNextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(_st(self)._object())._cell())._attackableNeighboursSide_(_st(_st(self)._object())._side()))._ifEmpty_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(_st(_st(_st(self)._object())._cell())._map())._actionMenu())._turnWatcher())._nextTurn();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.HasMoved)})},
+messageSends: ["ifEmpty:", "nextTurn", "turnWatcher", "actionMenu", "map", "cell", "object", "attackableNeighboursSide:", "side"]}),
+smalltalk.HasMoved);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "moveTo:",
 fn: function (aCell){
 var self=this;
@@ -669,6 +786,17 @@ smalltalk.Inactive);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "checkForNextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(_st(_st(_st(self)._object())._cell())._map())._actionMenu())._turnWatcher())._nextTurn();
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.Inactive)})},
+messageSends: ["nextTurn", "turnWatcher", "actionMenu", "map", "cell", "object"]}),
+smalltalk.Inactive);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "moveTo:",
 fn: function (aCell){
 var self=this;
@@ -703,6 +831,17 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._error_("topick monster");
 return self}, function($ctx1) {$ctx1.fill(self,"attackTo:",{aCell:aCell},smalltalk.ToPick)})},
+messageSends: ["error:"]}),
+smalltalk.ToPick);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("this state should ot happen any more");
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.ToPick)})},
 messageSends: ["error:"]}),
 smalltalk.ToPick);
 
