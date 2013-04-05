@@ -1,9 +1,9 @@
 Smalltalk current createPackage: 'Easnoth-BusinessObjects'!
-Object subclass: #CWBusinessObject
+Object subclass: #CWNode
 	instanceVariableNames: 'parent children'
 	package: 'Easnoth-BusinessObjects'!
 
-!CWBusinessObject methodsFor: 'accessing'!
+!CWNode methodsFor: 'accessing'!
 
 children
 	^ children
@@ -21,7 +21,7 @@ parent: object
 	parent := object
 ! !
 
-!CWBusinessObject methodsFor: 'factory'!
+!CWNode methodsFor: 'factory'!
 
 newChild
 	^ self newChild: self childBasicClass
@@ -31,7 +31,7 @@ newChild: aClass
 	^ aClass new parent: self
 ! !
 
-!CWBusinessObject methodsFor: 'nodes'!
+!CWNode methodsFor: 'nodes'!
 
 addChild: object
 	^ children add: object
@@ -57,7 +57,7 @@ removeChild: object
 	^ children remove: object
 ! !
 
-!CWBusinessObject methodsFor: 'testing'!
+!CWNode methodsFor: 'testing'!
 
 initialize
 	super initialize.
@@ -72,13 +72,13 @@ isRoot
 	^ parent isNil
 ! !
 
-!CWBusinessObject methodsFor: 'visiting'!
+!CWNode methodsFor: 'visiting'!
 
 accept: aVisitor
 	self subclassResponsibility
 ! !
 
-CWBusinessObject subclass: #CWCell
+CWNode subclass: #CWCell
 	instanceVariableNames: 'mapCoods'
 	package: 'Easnoth-BusinessObjects'!
 !CWCell commentStamp!
@@ -160,7 +160,7 @@ accept: aVisitor
 	^ aVisitor visitCell: self
 ! !
 
-CWBusinessObject subclass: #CWImageLeaf
+CWNode subclass: #CWImageLeaf
 	instanceVariableNames: 'image'
 	package: 'Easnoth-BusinessObjects'!
 
@@ -282,6 +282,16 @@ accept: aVisitor
 	^ aVisitor visitTile: self
 ! !
 
+CWTile subclass: #CWWall
+	instanceVariableNames: ''
+	package: 'Easnoth-BusinessObjects'!
+
+!CWWall methodsFor: 'visiting'!
+
+accept: aVisitor
+	^ aVisitor visitWall: self
+! !
+
 CWImageLeaf subclass: #CWMonster
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
@@ -326,7 +336,7 @@ accept: aVisitor
 	^ aVisitor visitTroop: self
 ! !
 
-CWBusinessObject subclass: #CWMap
+CWNode subclass: #CWMap
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
@@ -401,7 +411,7 @@ newWithMapIndex: aMapIndex
 	^ map
 ! !
 
-CWBusinessObject subclass: #CWRow
+CWNode subclass: #CWRow
 	instanceVariableNames: 'rowIndex'
 	package: 'Easnoth-BusinessObjects'!
 

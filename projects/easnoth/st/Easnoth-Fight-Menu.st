@@ -206,7 +206,7 @@ renderOn: html
 	html div 
 		class: 'mapWatcher';
 		with: [
-                html h4
+                "html h4
                         with: 'map controls'.
                 html button
                         with: 'left';
@@ -219,7 +219,7 @@ renderOn: html
                         onClick: [self actionMenu map goDown].
                 html button
                         with: 'up';
-                        onClick: [self actionMenu map goUp].
+                        onClick: [self actionMenu map goUp]."
 		"html span 
 			with: '-'.
                 html button

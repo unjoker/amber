@@ -398,43 +398,14 @@ selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
+var $1,$2;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h4())._with_("map controls");
-$3=_st(html)._button();
-_st($3)._with_("left");
-$4=_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goLeft();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$4;
-$5=_st(html)._button();
-_st($5)._with_("right");
-$6=_st($5)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goRight();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$6;
-$7=_st(html)._button();
-_st($7)._with_("down");
-$8=_st($7)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goDown();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$8;
-$9=_st(html)._button();
-_st($9)._with_("up");
-$10=_st($9)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goUp();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.MapControls)})},
-messageSends: ["class:", "div", "with:", "h4", "button", "onClick:", "goLeft", "map", "actionMenu", "goRight", "goDown", "goUp"]}),
+messageSends: ["class:", "div", "with:"]}),
 smalltalk.MapControls);
 
 

@@ -539,45 +539,16 @@ category: 'displaying',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
+var $1,$2;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h4())._with_("map controls");
-$3=_st(html)._button();
-_st($3)._with_("left");
-$4=_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goLeft();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$4;
-$5=_st(html)._button();
-_st($5)._with_("right");
-$6=_st($5)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goRight();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$6;
-$7=_st(html)._button();
-_st($7)._with_("down");
-$8=_st($7)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goDown();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$8;
-$9=_st(html)._button();
-_st($9)._with_("up");
-$10=_st($9)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(_st(_st(self)._actionMenu())._map())._goUp();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.MapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self actionMenu map goLeft].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self actionMenu map goRight].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self actionMenu map goDown].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self actionMenu map goUp].\x0a\x09\x09\x22html span \x0a\x09\x09\x09with: '-'.\x0a                html button\x0a                        with: 'mh';\x0a                        onClick: [self actionMenu map mirrorHorizontal].\x0a                html button\x0a                        with: 'vh';\x0a                        onClick: [self actionMenu map mirrorVertical].\x22\x0a\x09].",
-messageSends: ["class:", "div", "with:", "h4", "button", "onClick:", "goLeft", "map", "actionMenu", "goRight", "goDown", "goUp"],
+source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09with: [\x0a                \x22html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self actionMenu map goLeft].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self actionMenu map goRight].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self actionMenu map goDown].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self actionMenu map goUp].\x22\x0a\x09\x09\x22html span \x0a\x09\x09\x09with: '-'.\x0a                html button\x0a                        with: 'mh';\x0a                        onClick: [self actionMenu map mirrorHorizontal].\x0a                html button\x0a                        with: 'vh';\x0a                        onClick: [self actionMenu map mirrorVertical].\x22\x0a\x09].",
+messageSends: ["class:", "div", "with:"],
 referencedClasses: []
 }),
 smalltalk.MapControls);

@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Visitors');
-smalltalk.addClass('MapVisitor', smalltalk.Object, [], 'Easnoth-Visitors');
+smalltalk.addClass('CWVisitor', smalltalk.Object, [], 'Easnoth-Visitors');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "visitCell:",
@@ -14,26 +14,26 @@ source: "visitCell: aCell\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "visitChildren:",
-category: 'visiting helper',
-fn: function (aNode){
+selector: "visitChildTrees:",
+category: 'visiting tree',
+fn: function (aBusinessObject){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(aNode)._children())._do_((function(each){
+_st(_st(aBusinessObject)._children())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._accept_(self);
+return _st(self)._visitTree_(each);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitChildren:",{aNode:aNode},smalltalk.MapVisitor)})},
-args: ["aNode"],
-source: "visitChildren: aNode\x0a\x09aNode children do: [ :each |\x0a\x09\x09each accept: self ]",
-messageSends: ["do:", "accept:", "children"],
+return self}, function($ctx1) {$ctx1.fill(self,"visitChildTrees:",{aBusinessObject:aBusinessObject},smalltalk.MapVisitor)})},
+args: ["aBusinessObject"],
+source: "visitChildTrees: aBusinessObject\x0a\x09aBusinessObject children do: [:each |\x0a\x09\x09self visitTree: each ]",
+messageSends: ["do:", "visitTree:", "children"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -49,7 +49,7 @@ source: "visitGameOverTile: aGameOverTile\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -65,7 +65,7 @@ source: "visitHeros: aHeros\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -81,7 +81,7 @@ source: "visitMap: aMap\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -97,7 +97,7 @@ source: "visitOverTile: anOverTile\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -113,7 +113,7 @@ source: "visitRow: aRow\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -129,7 +129,24 @@ source: "visitTile: aTile\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitTree:",
+category: 'visiting tree',
+fn: function (aBusinessObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(aBusinessObject)._accept_(self);
+_st(self)._visitChildTrees_(aBusinessObject);
+return self}, function($ctx1) {$ctx1.fill(self,"visitTree:",{aBusinessObject:aBusinessObject},smalltalk.MapVisitor)})},
+args: ["aBusinessObject"],
+source: "visitTree: aBusinessObject\x0a\x09aBusinessObject accept: self.\x0a\x09self visitChildTrees: aBusinessObject",
+messageSends: ["accept:", "visitChildTrees:"],
+referencedClasses: []
+}),
+smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -145,36 +162,12 @@ source: "visitTroop: aTroop\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
-smalltalk.MapVisitor);
+smalltalk.CWVisitor);
 
 
-smalltalk.MapVisitor.klass.iVarNames = ['singleton'];
-smalltalk.addMethod(
-smalltalk.method({
-selector: "singleton",
-category: 'visiting',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self["@singleton"];
-if(($receiver = $2) == nil || $receiver == undefined){
-self["@singleton"]=_st(self)._new();
-$1=self["@singleton"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"singleton",{},smalltalk.MapVisitor.klass)})},
-args: [],
-source: "singleton\x0a\x09^singleton ifNil: [singleton := self new]",
-messageSends: ["ifNil:", "new"],
-referencedClasses: []
-}),
-smalltalk.MapVisitor.klass);
+smalltalk.CWVisitor.klass.iVarNames = ['singleton'];
 
-
-smalltalk.addClass('MapDrawer', smalltalk.MapVisitor, ['canvas', 'mapCoods', 'currentPoint'], 'Easnoth-Visitors');
+smalltalk.addClass('CWDrawer', smalltalk.CWVisitor, ['canvas', 'mapCoods', 'currentPoint'], 'Easnoth-Visitors');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "calculCanvasCoods:",
@@ -201,7 +194,7 @@ source: "calculCanvasCoods: coods\x0a\x09\x22Takes the coods of the cell in the 
 messageSends: ["x", "y", "*", "+", "truncated", "/", "mapCoods", "tileUnit", "-", "@", "rounded"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -219,7 +212,7 @@ source: "canvas\x0a\x09^ canvas",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -235,7 +228,7 @@ source: "canvas: aCanvas\x0a\x09canvas := aCanvas",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -251,7 +244,7 @@ source: "canvasId\x0a\x09\x22id of the main canvas for the css\x22\x0a\x0a\x09^ 
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -269,11 +262,11 @@ source: "canvasPadding\x0a\x09\x22padding between the border of the web page and
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "cleanMap",
+selector: "cleanCanvas",
 category: 'public',
 fn: function (){
 var self=this;
@@ -281,13 +274,13 @@ var elem;
 return smalltalk.withContext(function($ctx1) { 
 elem=_st(_st(self)._canvas())._element();
 _st(_st(elem)._getContext_("2d"))._clearRect_y_width_height_((0),(0),_st(elem)._width(),_st(elem)._height());
-return self}, function($ctx1) {$ctx1.fill(self,"cleanMap",{elem:elem},smalltalk.MapDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"cleanCanvas",{elem:elem},smalltalk.CWBusinessObject)})},
 args: [],
-source: "cleanMap\x0a\x09\x22to change\x22\x0a\x09\x0a\x09| elem |\x0a\x09elem := self canvas element.\x0a\x09(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.\x0a ",
+source: "cleanCanvas\x0a\x09| elem |\x0a\x09elem := self canvas element.\x0a\x09(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.\x0a ",
 messageSends: ["element", "canvas", "clearRect:y:width:height:", "width", "height", "getContext:"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -305,7 +298,7 @@ source: "context\x0a\x09^ canvas element getContext: '2d'",
 messageSends: ["getContext:", "element"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -321,7 +314,7 @@ source: "display: object\x0a\x09self display: object X: 0 y: 0",
 messageSends: ["display:X:y:"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -337,7 +330,25 @@ source: "display: object X: x y: y\x0a\x09self context \x0a\x09\x09drawImage: ob
 messageSends: ["drawImage:x:y:", "image", "context"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "drawBusinessObject:",
+category: 'public',
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanCanvas();
+_st(_st(self)._mapCoods())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(aMap)._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
+_st(self)._visitTree_(aMap);
+return self}, function($ctx1) {$ctx1.fill(self,"drawBusinessObject:",{aMap:aMap},smalltalk.CWBusinessObject)})},
+args: ["aMap"],
+source: "drawBusinessObject: aMap\x0a\x09self cleanCanvas.\x0a\x09\x22The following line should be put somewhere else\x22\x0a\x09self mapCoods x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).\x0a\x09self visitTree: aMap.\x0a ",
+messageSends: ["cleanCanvas", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "mapCoods", "visitTree:"],
+referencedClasses: []
+}),
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -364,25 +375,7 @@ source: "drawIsometric: object\x0a\x09\x22draw through isometric transformation\
 messageSends: ["context", "save", "translate:y:", "+", "x", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:", "restore"],
 referencedClasses: ["Number"]
 }),
-smalltalk.MapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "drawMap:",
-category: 'public',
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._cleanMap();
-_st(_st(self)._mapCoods())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(aMap)._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
-_st(self)._visitMap_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"drawMap:",{aMap:aMap},smalltalk.MapDrawer)})},
-args: ["aMap"],
-source: "drawMap: aMap\x0a\x09self cleanMap.\x0a\x09self mapCoods x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).\x0a\x09self visitMap: aMap.\x0a ",
-messageSends: ["cleanMap", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "mapCoods", "visitMap:"],
-referencedClasses: []
-}),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -397,7 +390,7 @@ source: "imageOf: object\x0a\x09\x22I cannot remove this method ... \x22",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -408,16 +401,16 @@ var self=this;
 function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.MapVisitor.fn.prototype._initialize.apply(_st(self), []);
-self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
-self["@mapCoods"]=_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding());
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.MapDrawer)})},
+smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
+_st(self)._canvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
+_st(self)._mapCoods_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDrawer)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09canvas := (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09mapCoods := (self canvasPadding @ self canvasPadding).",
-messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "@", "canvasPadding"],
+source: "initialize\x0a\x09super initialize. \x0a\x09self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09self mapCoods: (self canvasPadding @ self canvasPadding).",
+messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "mapCoods:", "@", "canvasPadding"],
 referencedClasses: ["HTMLCanvas", "TagBrush"]
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -435,7 +428,7 @@ source: "mapCoods\x0a\x09^ mapCoods",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -451,7 +444,7 @@ source: "mapCoods: aPoint\x0a\x09mapCoods := aPoint",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -469,7 +462,7 @@ source: "tileUnit\x0a\x09\x22scale of the images\x22\x0a\x0a\x09^ 50",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -479,14 +472,13 @@ fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@currentPoint"]=_st(self)._calculCanvasCoods_(_st(aCell)._mapCoods());
-_st(self)._visitChildren_(aCell);
 return self}, function($ctx1) {$ctx1.fill(self,"visitCell:",{aCell:aCell},smalltalk.MapDrawer)})},
 args: ["aCell"],
-source: "visitCell: aCell\x0a\x09currentPoint := (self calculCanvasCoods: aCell mapCoods).\x0a \x09self visitChildren: aCell",
-messageSends: ["calculCanvasCoods:", "mapCoods", "visitChildren:"],
+source: "visitCell: aCell\x0a\x09currentPoint := (self calculCanvasCoods: aCell mapCoods).",
+messageSends: ["calculCanvasCoods:", "mapCoods"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -502,7 +494,7 @@ source: "visitGameOverTile: got\x0a\x09self drawIsometric: got.",
 messageSends: ["drawIsometric:"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -518,7 +510,7 @@ source: "visitHeros: heros\x0a\x09self display: heros X: currentPoint x + 15 y: 
 messageSends: ["display:X:y:", "+", "x", "-", "y"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -527,14 +519,13 @@ category: 'visiting',
 fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._visitChildren_(aMap);
 return self}, function($ctx1) {$ctx1.fill(self,"visitMap:",{aMap:aMap},smalltalk.MapDrawer)})},
 args: ["aMap"],
-source: "visitMap: aMap\x0a \x09self visitChildren: aMap",
-messageSends: ["visitChildren:"],
+source: "visitMap: aMap",
+messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -550,7 +541,7 @@ source: "visitOverTile: ot\x0a\x09self drawIsometric: ot.",
 messageSends: ["drawIsometric:"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -559,14 +550,13 @@ category: 'visiting',
 fn: function (aRow){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._visitChildren_(aRow);
 return self}, function($ctx1) {$ctx1.fill(self,"visitRow:",{aRow:aRow},smalltalk.MapDrawer)})},
 args: ["aRow"],
-source: "visitRow: aRow\x0a \x09self visitChildren: aRow",
-messageSends: ["visitChildren:"],
+source: "visitRow: aRow",
+messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -582,7 +572,7 @@ source: "visitTile: aTile\x0a\x09self drawIsometric: aTile.",
 messageSends: ["drawIsometric:"],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -597,7 +587,7 @@ source: "visitTroop: aTile",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.MapDrawer);
+smalltalk.CWDrawer);
 
 
 
