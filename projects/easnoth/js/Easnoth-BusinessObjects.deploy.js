@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-BusinessObjects');
-smalltalk.addClass('CWBusinessObject', smalltalk.Object, ['parent', 'children'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWNode', smalltalk.Object, ['parent', 'children'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -9,7 +9,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CoreWidget)})},
 messageSends: ["subclassResponsibility"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -22,7 +22,7 @@ $1=_st(self["@children"])._add_(object);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"addChild:",{object:object},smalltalk.CWBusinessObject)})},
 messageSends: ["add:"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -35,7 +35,7 @@ $1=_st(self["@children"])._addAll_(aCollection);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"addChildren:",{aCollection:aCollection},smalltalk.CoreWidget)})},
 messageSends: ["addAll:"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -48,7 +48,7 @@ $1=_st(self["@children"])._at_(index);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"childAt:",{index:index},smalltalk.CoreWidget)})},
 messageSends: ["at:"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -61,7 +61,7 @@ $1=_st(self["@children"])._at_put_(index,object);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"childAt:put:",{index:index,object:object},smalltalk.CWBusinessObject)})},
 messageSends: ["at:put:"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -72,7 +72,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CoreWidget)})},
 messageSends: ["subclassResponsibility"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -85,7 +85,7 @@ $1=self["@children"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CoreWidget)})},
 messageSends: []}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -96,7 +96,7 @@ return smalltalk.withContext(function($ctx1) {
 self["@children"]=aCollection;
 return self}, function($ctx1) {$ctx1.fill(self,"children:",{aCollection:aCollection},smalltalk.CoreWidget)})},
 messageSends: []}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -109,7 +109,7 @@ smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@children"]=_st($Array())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CoreWidget)})},
 messageSends: ["initialize", "new"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -122,7 +122,7 @@ $1=_st(self["@children"])._isEmpty();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"isLeaf",{},smalltalk.CoreWidget)})},
 messageSends: ["isEmpty"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -135,7 +135,7 @@ $1=_st(self["@parent"])._isNil();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"isRoot",{},smalltalk.CoreWidget)})},
 messageSends: ["isNil"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -148,7 +148,7 @@ $1=_st(self)._newChild_(_st(self)._childBasicClass());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newChild",{},smalltalk.CoreWidget)})},
 messageSends: ["newChild:", "childBasicClass"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -161,7 +161,7 @@ $1=_st(_st(aClass)._new())._parent_(self);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newChild:",{aClass:aClass},smalltalk.CoreWidget)})},
 messageSends: ["parent:", "new"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -174,7 +174,7 @@ $1=self["@parent"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"parent",{},smalltalk.CoreWidget)})},
 messageSends: []}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -185,7 +185,7 @@ return smalltalk.withContext(function($ctx1) {
 self["@parent"]=object;
 return self}, function($ctx1) {$ctx1.fill(self,"parent:",{object:object},smalltalk.CWBusinessObject)})},
 messageSends: []}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -198,11 +198,11 @@ $1=_st(self["@children"])._remove_(object);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"removeChild:",{object:object},smalltalk.CWBusinessObject)})},
 messageSends: ["remove:"]}),
-smalltalk.CWBusinessObject);
+smalltalk.CWNode);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWBusinessObject, ['mapCoods'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWCell', smalltalk.CWNode, ['mapCoods'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -405,7 +405,7 @@ smalltalk.CWCell);
 
 
 
-smalltalk.addClass('CWImageLeaf', smalltalk.CWBusinessObject, ['image'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWImageLeaf', smalltalk.CWNode, ['image'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -636,6 +636,22 @@ smalltalk.CWTile);
 
 
 
+smalltalk.addClass('CWWall', smalltalk.CWTile, [], 'Easnoth-BusinessObjects');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aVisitor)._visitWall_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWWall)})},
+messageSends: ["visitWall:"]}),
+smalltalk.CWWall);
+
+
+
 smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, [], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
@@ -707,7 +723,7 @@ smalltalk.CWTroop);
 
 
 
-smalltalk.addClass('CWMap', smalltalk.CWBusinessObject, [], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMap', smalltalk.CWNode, [], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -848,7 +864,7 @@ messageSends: ["default", "getJSON:onSuccess:", ",", "initializeFromJson:"]}),
 smalltalk.CWMap.klass);
 
 
-smalltalk.addClass('CWRow', smalltalk.CWBusinessObject, ['rowIndex'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWRow', smalltalk.CWNode, ['rowIndex'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",

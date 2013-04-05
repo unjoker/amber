@@ -75,6 +75,8 @@ button {
 	margin:0 auto;
 	border: 1px solid black; 
 	background-color: #ccc;
+	background-image:url(../ressources/images/backTile.png);
+	background-repeat:no-repeat;
 }
 
 #loadBar {
