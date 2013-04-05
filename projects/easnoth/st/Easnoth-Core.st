@@ -525,7 +525,9 @@ state: aState
 
 draw
 	"drawAsHero ou drawAsUnit"
+	"on Error for release"
     |aX aY|   
+	[
     aX := self cell coods x.
     aY := self cell coods y.
 	self heros ifTrue: [
@@ -533,6 +535,7 @@ draw
 	] ifFalse: [
 		self drawAsUnitX: aX y: aY
 	]
+	] on: Error do: []
 !
 
 drawAsHeroX: aX y: aY

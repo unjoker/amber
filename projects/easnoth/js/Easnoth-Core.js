@@ -1496,21 +1496,29 @@ category: 'displaying',
 fn: function (){
 var self=this;
 var aX,aY;
+function $Error(){return smalltalk.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
 aX=_st(_st(_st(self)._cell())._coods())._x();
+aX;
 aY=_st(_st(_st(self)._cell())._coods())._y();
+aY;
 $1=_st(self)._heros();
 if(smalltalk.assert($1)){
-_st(self)._drawAsHeroX_y_(aX,aY);
+return _st(self)._drawAsHeroX_y_(aX,aY);
 } else {
-_st(self)._drawAsUnitX_y_(aX,aY);
+return _st(self)._drawAsUnitX_y_(aX,aY);
 };
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._on_do_($Error(),(function(){
+return smalltalk.withContext(function($ctx2) {
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"draw",{aX:aX,aY:aY},smalltalk.Monster)})},
 args: [],
-source: "draw\x0a\x09\x22drawAsHero ou drawAsUnit\x22\x0a    |aX aY|   \x0a    aX := self cell coods x.\x0a    aY := self cell coods y.\x0a\x09self heros ifTrue: [\x0a\x09\x09self drawAsHeroX: aX y: aY\x0a\x09] ifFalse: [\x0a\x09\x09self drawAsUnitX: aX y: aY\x0a\x09]",
-messageSends: ["x", "coods", "cell", "y", "ifTrue:ifFalse:", "drawAsHeroX:y:", "drawAsUnitX:y:", "heros"],
-referencedClasses: []
+source: "draw\x0a\x09\x22drawAsHero ou drawAsUnit\x22\x0a\x09\x22on Error for release\x22\x0a    |aX aY|   \x0a\x09[\x0a    aX := self cell coods x.\x0a    aY := self cell coods y.\x0a\x09self heros ifTrue: [\x0a\x09\x09self drawAsHeroX: aX y: aY\x0a\x09] ifFalse: [\x0a\x09\x09self drawAsUnitX: aX y: aY\x0a\x09]\x0a\x09] on: Error do: []",
+messageSends: ["on:do:", "x", "coods", "cell", "y", "ifTrue:ifFalse:", "drawAsHeroX:y:", "drawAsUnitX:y:", "heros"],
+referencedClasses: ["Error"]
 }),
 smalltalk.Monster);
 
