@@ -1086,18 +1086,26 @@ selector: "draw",
 fn: function (){
 var self=this;
 var aX,aY;
+function $Error(){return smalltalk.Error||(typeof Error=="undefined"?nil:Error)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
 aX=_st(_st(_st(self)._cell())._coods())._x();
+aX;
 aY=_st(_st(_st(self)._cell())._coods())._y();
+aY;
 $1=_st(self)._heros();
 if(smalltalk.assert($1)){
-_st(self)._drawAsHeroX_y_(aX,aY);
+return _st(self)._drawAsHeroX_y_(aX,aY);
 } else {
-_st(self)._drawAsUnitX_y_(aX,aY);
+return _st(self)._drawAsUnitX_y_(aX,aY);
 };
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._on_do_($Error(),(function(){
+return smalltalk.withContext(function($ctx2) {
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"draw",{aX:aX,aY:aY},smalltalk.Monster)})},
-messageSends: ["x", "coods", "cell", "y", "ifTrue:ifFalse:", "drawAsHeroX:y:", "drawAsUnitX:y:", "heros"]}),
+messageSends: ["on:do:", "x", "coods", "cell", "y", "ifTrue:ifFalse:", "drawAsHeroX:y:", "drawAsUnitX:y:", "heros"]}),
 smalltalk.Monster);
 
 smalltalk.addMethod(
