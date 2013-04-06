@@ -17,15 +17,18 @@
 			}
 			
 			loadAmber({
-			files: ['Easnoth-Core.js','Easnoth-Tools.js','Easnoth-Fight-Menu.js','Easnoth-Fight-States.js','Easnoth-BusinessObjects.js', 'Easnoth-Visitors.js'],
+			files: ['Easnoth-Core.js','Easnoth-Tools.js','Easnoth-Fight-Menu.js','Easnoth-Fight-States.js','Easnoth-BusinessObjects.js', 'Easnoth-Visitors.js', 'Easnoth-Events.js'],
 			prefix: 'projects/easnoth/js'/*,
 			deploy: true*/}); 
 		</script>
 		<title>Easnoth : Battle Arena</title>
 	</head>
 	<body class="editor"onload="adjust();smalltalk.Map._newWithMapIndex_(mapIndex);"> 
-        <canvas id="main" width="1366" height="768"> 
+        <canvas id="background" width="1366" height="768"> 
                Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
+        </canvas>
+        <canvas id="eventManager" width="1366" height="768">
+            Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
         </canvas>
 		<div class="menuEditor" id="menuEditor">
 		</div>

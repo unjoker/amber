@@ -667,9 +667,7 @@ selector: "addStats:",
 fn: function (aKey){
 var self=this;
 var keySuccess;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
-_st($Transcript())._show_(_st("addStats : ").__comma(aKey));
 keySuccess=_st(aKey).__comma("success");
 _st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
 return smalltalk.withContext(function($ctx2) {
@@ -681,7 +679,7 @@ return smalltalk.withContext(function($ctx2) {
 return _st(_st(_st(self)._class())._jsonStatCacheAt_(keySuccess))._value_(data);
 }, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"addStats:",{aKey:aKey,keySuccess:keySuccess},smalltalk.CWMonster)})},
-messageSends: ["show:", ",", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"]}),
+messageSends: [",", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -889,10 +887,8 @@ selector: "updateStats:",
 fn: function (aKey){
 var self=this;
 var keySuccess,oldCallBack;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st($Transcript())._show_(_st("updateStats : ").__comma(aKey));
 keySuccess=_st(aKey).__comma("success");
 oldCallBack=_st(_st(self)._class())._jsonStatCacheAt_(keySuccess);
 _st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
@@ -905,7 +901,7 @@ if(smalltalk.assert($1)){
 _st(self)._stats_(_st(_st(self)._class())._jsonStatCacheAt_(aKey));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"updateStats:",{aKey:aKey,keySuccess:keySuccess,oldCallBack:oldCallBack},smalltalk.CWMonster)})},
-messageSends: ["show:", ",", "jsonStatCacheAt:", "class", "jsonStatCacheAt:put:", "stats:", "value:", "ifTrue:", "includesKey:", "jsonStatCache"]}),
+messageSends: [",", "jsonStatCacheAt:", "class", "jsonStatCacheAt:put:", "stats:", "value:", "ifTrue:", "includesKey:", "jsonStatCache"]}),
 smalltalk.CWMonster);
 
 

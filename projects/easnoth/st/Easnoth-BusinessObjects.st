@@ -353,8 +353,6 @@ side: int
 addStats: aKey
 	| keySuccess |
 	
-	Transcript show: 'addStats : ', aKey.
-	
 	keySuccess := aKey,'success'.
 	
     self class 
@@ -401,8 +399,6 @@ stats: jsonStats
 updateStats: aKey 
 	|keySuccess oldCallBack|
 
-	Transcript show: 'updateStats : ', aKey.
-	
 	keySuccess := aKey,'success'.
 	oldCallBack := self class jsonStatCacheAt: keySuccess.
 	self class jsonStatCacheAt: keySuccess put: [:statsNew | 

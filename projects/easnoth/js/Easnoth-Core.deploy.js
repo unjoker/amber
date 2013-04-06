@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Core');
-smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu'], 'Easnoth-Core');
+smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu'], 'Easnoth-Events');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -1706,7 +1706,7 @@ selector: "canvasId",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return "#main";
+return "#background";
 }, function($ctx1) {$ctx1.fill(self,"canvasId",{},smalltalk.Map)})},
 messageSends: []}),
 smalltalk.Map);

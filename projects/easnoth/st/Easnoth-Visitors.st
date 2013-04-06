@@ -108,7 +108,7 @@ calculCanvasCoods: coods
 canvasId
 	"id of the main canvas for the css"
 
-	^ '#main'
+	^ '#background'
 !
 
 canvasPadding
@@ -171,10 +171,6 @@ drawIsometric: object
 		scale: 1.4 y: 1.33.
 	self display: object.
 	ctx restore.
-!
-
-imageOf: object
-	"I cannot remove this method ... "
 ! !
 
 !CWDrawer methodsFor: 'visiting'!

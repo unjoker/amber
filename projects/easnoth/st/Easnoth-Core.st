@@ -1,7 +1,7 @@
 Smalltalk current createPackage: 'Easnoth-Core'!
 Object subclass: #CWGameBoard
 	instanceVariableNames: 'map drawer menu'
-	package: 'Easnoth-Core'!
+	package: 'Easnoth-Events'!
 
 !CWGameBoard methodsFor: 'initialize-release'!
 
@@ -1138,7 +1138,7 @@ oldAlgoMouseCoodToHexCoodX: x y: y inMap: aMap
 !Map methodsFor: 'initialize-release'!
 
 canvasId
-	^'#main'
+	^'#background'
 !
 
 canvasPadding
