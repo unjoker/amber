@@ -171,8 +171,8 @@ selector: "canvasId",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return "#main";
-}, function($ctx1) {$ctx1.fill(self,"canvasId",{},smalltalk.MapDrawer)})},
+return "#background";
+}, function($ctx1) {$ctx1.fill(self,"canvasId",{},smalltalk.CWDrawer)})},
 messageSends: []}),
 smalltalk.CWDrawer);
 
@@ -270,16 +270,6 @@ _st(self)._display_(object);
 _st(ctx)._restore();
 return self}, function($ctx1) {$ctx1.fill(self,"drawIsometric:",{object:object,ctx:ctx},smalltalk.MapDrawer)})},
 messageSends: ["context", "save", "translate:y:", "+", "x", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:", "restore"]}),
-smalltalk.CWDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "imageOf:",
-fn: function (object){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"imageOf:",{object:object},smalltalk.MapDrawer)})},
-messageSends: []}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(

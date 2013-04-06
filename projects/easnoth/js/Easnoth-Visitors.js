@@ -239,10 +239,10 @@ category: 'constant',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return "#main";
-}, function($ctx1) {$ctx1.fill(self,"canvasId",{},smalltalk.MapDrawer)})},
+return "#background";
+}, function($ctx1) {$ctx1.fill(self,"canvasId",{},smalltalk.CWDrawer)})},
 args: [],
-source: "canvasId\x0a\x09\x22id of the main canvas for the css\x22\x0a\x0a\x09^ '#main'",
+source: "canvasId\x0a\x09\x22id of the main canvas for the css\x22\x0a\x0a\x09^ '#background'",
 messageSends: [],
 referencedClasses: []
 }),
@@ -376,21 +376,6 @@ args: ["object"],
 source: "drawIsometric: object\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09|ctx|\x0a\x09ctx := self context.\x0a\x09ctx save;\x0a\x09\x09translate: currentPoint x + 45 y: currentPoint y - 7;\x0a\x09\x09scale: 1 y: 0.5;\x0a\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09scale: 1.4 y: 1.33.\x0a\x09self display: object.\x0a\x09ctx restore.",
 messageSends: ["context", "save", "translate:y:", "+", "x", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:", "restore"],
 referencedClasses: ["Number"]
-}),
-smalltalk.CWDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "imageOf:",
-category: 'rendering',
-fn: function (object){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"imageOf:",{object:object},smalltalk.MapDrawer)})},
-args: ["object"],
-source: "imageOf: object\x0a\x09\x22I cannot remove this method ... \x22",
-messageSends: [],
-referencedClasses: []
 }),
 smalltalk.CWDrawer);
 

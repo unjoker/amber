@@ -70,13 +70,23 @@ button {
 
 /*main.html*/
 
-#main {
+#background {
 	text-align:center;
 	margin:0 auto;
 	border: 1px solid black; 
 	background-color: #ccc;
 	background-image:url(../ressources/images/backTile.png);
 	background-repeat:no-repeat;
+}
+
+#eventManager {
+    position: absolute;
+	top:0px;
+	left:0px;
+	text-align:center;
+	margin:0 auto;
+	border: 1px solid black; 
+	background-color: transparent;
 }
 
 #loadBar {

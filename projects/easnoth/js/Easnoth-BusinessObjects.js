@@ -913,9 +913,7 @@ category: 'initialize-release',
 fn: function (aKey){
 var self=this;
 var keySuccess;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
-_st($Transcript())._show_(_st("addStats : ").__comma(aKey));
 keySuccess=_st(aKey).__comma("success");
 _st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
 return smalltalk.withContext(function($ctx2) {
@@ -928,9 +926,9 @@ return _st(_st(_st(self)._class())._jsonStatCacheAt_(keySuccess))._value_(data);
 }, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"addStats:",{aKey:aKey,keySuccess:keySuccess},smalltalk.CWMonster)})},
 args: ["aKey"],
-source: "addStats: aKey\x0a\x09| keySuccess |\x0a\x09\x0a\x09Transcript show: 'addStats : ', aKey.\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09\x0a    self class \x0a\x09\x09jsonStatCacheAt: keySuccess \x0a\x09\x09put: [:statsNew | \x0a\x09\x09\x09self class jsonStatCacheAt: aKey put: statsNew.\x0a       \x09\x09self stats: statsNew ].\x0a\x0a\x09jQuery \x0a\x09\x09getJSON: 'ressources/json/monsters/', aKey, '.json' \x0a\x09\x09onSuccess: [:data | (self class jsonStatCacheAt: keySuccess) value: data]",
-messageSends: ["show:", ",", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"],
-referencedClasses: ["Transcript"]
+source: "addStats: aKey\x0a\x09| keySuccess |\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09\x0a    self class \x0a\x09\x09jsonStatCacheAt: keySuccess \x0a\x09\x09put: [:statsNew | \x0a\x09\x09\x09self class jsonStatCacheAt: aKey put: statsNew.\x0a       \x09\x09self stats: statsNew ].\x0a\x0a\x09jQuery \x0a\x09\x09getJSON: 'ressources/json/monsters/', aKey, '.json' \x0a\x09\x09onSuccess: [:data | (self class jsonStatCacheAt: keySuccess) value: data]",
+messageSends: [",", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -1220,10 +1218,8 @@ category: 'initialize-release',
 fn: function (aKey){
 var self=this;
 var keySuccess,oldCallBack;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st($Transcript())._show_(_st("updateStats : ").__comma(aKey));
 keySuccess=_st(aKey).__comma("success");
 oldCallBack=_st(_st(self)._class())._jsonStatCacheAt_(keySuccess);
 _st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
@@ -1237,9 +1233,9 @@ _st(self)._stats_(_st(_st(self)._class())._jsonStatCacheAt_(aKey));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"updateStats:",{aKey:aKey,keySuccess:keySuccess,oldCallBack:oldCallBack},smalltalk.CWMonster)})},
 args: ["aKey"],
-source: "updateStats: aKey \x0a\x09|keySuccess oldCallBack|\x0a\x0a\x09Transcript show: 'updateStats : ', aKey.\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09oldCallBack := self class jsonStatCacheAt: keySuccess.\x0a\x09self class jsonStatCacheAt: keySuccess put: [:statsNew | \x0a\x09\x09\x09self stats: statsNew. \x0a\x09\x09\x09oldCallBack value: statsNew ].\x0a\x09\x09\x09\x0a\x09\x22Case where the json file finished loading during the execution of this method but before the new call back was set up\x22\x0a\x09(self class jsonStatCache includesKey: aKey) \x0a\x09\x09ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].",
-messageSends: ["show:", ",", "jsonStatCacheAt:", "class", "jsonStatCacheAt:put:", "stats:", "value:", "ifTrue:", "includesKey:", "jsonStatCache"],
-referencedClasses: ["Transcript"]
+source: "updateStats: aKey \x0a\x09|keySuccess oldCallBack|\x0a\x0a\x09keySuccess := aKey,'success'.\x0a\x09oldCallBack := self class jsonStatCacheAt: keySuccess.\x0a\x09self class jsonStatCacheAt: keySuccess put: [:statsNew | \x0a\x09\x09\x09self stats: statsNew. \x0a\x09\x09\x09oldCallBack value: statsNew ].\x0a\x09\x09\x09\x0a\x09\x22Case where the json file finished loading during the execution of this method but before the new call back was set up\x22\x0a\x09(self class jsonStatCache includesKey: aKey) \x0a\x09\x09ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].",
+messageSends: [",", "jsonStatCacheAt:", "class", "jsonStatCacheAt:put:", "stats:", "value:", "ifTrue:", "includesKey:", "jsonStatCache"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
