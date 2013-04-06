@@ -1,5 +1,6 @@
 smalltalk.addPackage('Easnoth-Visitors');
 smalltalk.addClass('CWVisitor', smalltalk.Object, [], 'Easnoth-Visitors');
+smalltalk.CWVisitor.comment="I am an abstract visitor that can visit the whole tree of business objects."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "visitCell:",
@@ -168,6 +169,7 @@ smalltalk.CWVisitor);
 smalltalk.CWVisitor.klass.iVarNames = ['singleton'];
 
 smalltalk.addClass('CWDrawer', smalltalk.CWVisitor, ['canvas', 'mapCoods', 'currentPoint'], 'Easnoth-Visitors');
+smalltalk.CWDrawer.comment="I am a drawer that can draw the business objects through a visit of its tree."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "calculCanvasCoods:",
@@ -334,7 +336,7 @@ smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawBusinessObject:",
+selector: "draw:",
 category: 'public',
 fn: function (aMap){
 var self=this;
@@ -342,9 +344,9 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._cleanCanvas();
 _st(_st(self)._mapCoods())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(aMap)._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
 _st(self)._visitTree_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"drawBusinessObject:",{aMap:aMap},smalltalk.CWBusinessObject)})},
+return self}, function($ctx1) {$ctx1.fill(self,"draw:",{aMap:aMap},smalltalk.CWDrawer)})},
 args: ["aMap"],
-source: "drawBusinessObject: aMap\x0a\x09self cleanCanvas.\x0a\x09\x22The following line should be put somewhere else\x22\x0a\x09self mapCoods x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).\x0a\x09self visitTree: aMap.\x0a ",
+source: "draw: aMap\x0a\x09self cleanCanvas.\x0a\x09\x22The following line should be put somewhere else\x22\x0a\x09self mapCoods x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).\x0a\x09self visitTree: aMap.\x0a ",
 messageSends: ["cleanCanvas", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "mapCoods", "visitTree:"],
 referencedClasses: []
 }),
@@ -503,11 +505,23 @@ category: 'visiting',
 fn: function (heros){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3;
+$1=_st(_st(heros)._side())._negative();
+if(smalltalk.assert($1)){
+$2=_st(self)._context();
+_st($2)._save();
+_st($2)._translate_y_(_st(_st(self["@currentPoint"])._x()).__plus((87)),(0));
+$3=_st($2)._scale_y_((-1),(1));
+$3;
+_st(self)._display_X_y_(heros,(0),_st(_st(self["@currentPoint"])._y()).__minus((28)));
+_st(_st(self)._context())._restore();
+} else {
 _st(self)._display_X_y_(heros,_st(_st(self["@currentPoint"])._x()).__plus((15)),_st(_st(self["@currentPoint"])._y()).__minus((28)));
-return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.MapDrawer)})},
+};
+return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWDrawer)})},
 args: ["heros"],
-source: "visitHeros: heros\x0a\x09self display: heros X: currentPoint x + 15 y: currentPoint y - 28.",
-messageSends: ["display:X:y:", "+", "x", "-", "y"],
+source: "visitHeros: heros\x0a\x09\x2287 = 72 (width image + 15\x22\x0a\x09\x0a\x09(heros side negative) ifTrue: [\x0a\x09\x09self context save;\x0a\x09\x09\x09translate: currentPoint x + 87 y: 0;\x0a\x09\x09\x09scale: -1 y: 1.\x0a\x09\x09self display: heros X: 0 y: currentPoint y - 28.\x0a\x09\x09self context restore.\x0a\x09] ifFalse: [\x0a\x09\x09self display: heros X: currentPoint x + 15 y: currentPoint y - 28.\x0a\x09]\x0a\x09",
+messageSends: ["ifTrue:ifFalse:", "save", "context", "translate:y:", "+", "x", "scale:y:", "display:X:y:", "-", "y", "restore", "negative", "side"],
 referencedClasses: []
 }),
 smalltalk.CWDrawer);
@@ -578,13 +592,32 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "visitTroop:",
 category: 'visiting',
-fn: function (aTile){
+fn: function (aTroop){
 var self=this;
+var xArray,yArray;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTile:aTile},smalltalk.MapDrawer)})},
-args: ["aTile"],
-source: "visitTroop: aTile",
-messageSends: [],
+var $1,$2,$3;
+xArray=[(17), (37), (-11), (9)];
+yArray=[(33), (23), (26), (15)];
+_st(_st((1))._to_(_st(aTroop)._hp()))._do_((function(i){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(_st(aTroop)._side())._negative();
+if(smalltalk.assert($1)){
+$2=_st(self)._context();
+_st($2)._save();
+_st($2)._translate_y_(_st(_st(_st(self["@currentPoint"])._x()).__plus((72))).__plus(_st(xArray)._at_(i)),(0));
+$3=_st($2)._scale_y_((-1),(1));
+$3;
+_st(self)._display_X_y_(aTroop,(0),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
+return _st(_st(self)._context())._restore();
+} else {
+return _st(self)._display_X_y_(aTroop,_st(_st(self["@currentPoint"])._x()).__plus(_st(xArray)._at_(i)),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
+};
+}, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop,xArray:xArray,yArray:yArray},smalltalk.CWDrawer)})},
+args: ["aTroop"],
+source: "visitTroop: aTroop\x0a\x09|xArray yArray|\x0a\x0a\x09xArray := #(17 37 -11 9).\x0a\x09yArray := #(33 23 26 15).\x0a\x0a\x09(1 to: aTroop hp) do: [ :i |\x0a\x09\x09(aTroop side negative) ifTrue: [\x0a\x09\x09\x09\x09self context save;\x0a\x09\x09\x09\x09\x09translate: currentPoint x + 72 + (xArray at: i) y: 0;\x0a\x09\x09\x09\x09\x09scale: -1 y: 1.\x0a\x09\x09\x09\x09self display: aTroop X: 0 y: currentPoint y - (yArray at: i).\x0a\x09\x09\x09\x09self context restore.\x0a\x09\x09\x09] ifFalse: [\x0a\x09\x09\x09\x09self display: aTroop X: currentPoint x + (xArray at: i) y: currentPoint y - (yArray at: i)\x0a\x09\x09\x09]\x0a\x09]",
+messageSends: ["do:", "ifTrue:ifFalse:", "save", "context", "translate:y:", "+", "at:", "x", "scale:y:", "display:X:y:", "-", "y", "restore", "negative", "side", "to:", "hp"],
 referencedClasses: []
 }),
 smalltalk.CWDrawer);

@@ -400,9 +400,9 @@ turnNumber: anInt
 renderOn: html
 	html div class: 'stuff'; with: [
 		self turnDisplay: html h5.
-                html button with: 'next turn (= enter)';
+                html button with: 'next turn';
                         onClick: [self nextTurn].
-		'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].
+		"'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]]."
                 html button with: 'class browser';
                         onClick: [Browser open].
 	].

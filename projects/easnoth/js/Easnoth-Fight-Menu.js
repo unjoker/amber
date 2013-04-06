@@ -1042,35 +1042,34 @@ selector: "renderOn:",
 category: 'displaying',
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1,$3,$4,$5,$6,$7,$2;
+function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$2;
 $1=_st(html)._div();
 _st($1)._class_("stuff");
 $2=_st($1)._with_((function(){
-return smalltalk.withContext(function($ctx2) {_st(self)._turnDisplay_(_st(html)._h5());
+return smalltalk.withContext(function($ctx2) {
+_st(self)._turnDisplay_(_st(html)._h5());
 $3=_st(html)._button();
-_st($3)._with_("next turn (= enter)");
+_st($3)._with_("next turn");
 $4=_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {return _st(self)._nextTurn();
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._nextTurn();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $4;
-_st(_st("body")._asJQuery())._keyup_((function(event){
-return smalltalk.withContext(function($ctx3) {$5=_st(_st(event)._keyCode()).__eq((13));
-if(smalltalk.assert($5)){
-return _st(self)._nextTurn();
-};
-}, function($ctx3) {$ctx3.fillBlock({event:event},$ctx1)})}));
-$6=_st(html)._button();
-_st($6)._with_("class browser");
-$7=_st($6)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {return _st((smalltalk.Browser || Browser))._open();
+$5=_st(html)._button();
+_st($5)._with_("class browser");
+$6=_st($5)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $7;
+return $6;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st(self)._update();
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.TurnWatcher)})},
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.TurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div class: 'stuff'; with: [\x0a\x09\x09self turnDisplay: html h5.\x0a                html button with: 'next turn (= enter)';\x0a                        onClick: [self nextTurn].\x0a\x09\x09'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09].\x0a\x09self update.",
-messageSends: ["class:", "div", "with:", "turnDisplay:", "h5", "button", "onClick:", "nextTurn", "keyup:", "ifTrue:", "=", "keyCode", "asJQuery", "open", "update"],
+source: "renderOn: html\x0a\x09html div class: 'stuff'; with: [\x0a\x09\x09self turnDisplay: html h5.\x0a                html button with: 'next turn';\x0a                        onClick: [self nextTurn].\x0a\x09\x09\x22'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].\x22\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09].\x0a\x09self update.",
+messageSends: ["class:", "div", "with:", "turnDisplay:", "h5", "button", "onClick:", "nextTurn", "open", "update"],
 referencedClasses: ["Browser"]
 }),
 smalltalk.TurnWatcher);

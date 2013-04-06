@@ -239,14 +239,14 @@ smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawBusinessObject:",
+selector: "draw:",
 fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._cleanCanvas();
 _st(_st(self)._mapCoods())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(aMap)._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
 _st(self)._visitTree_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"drawBusinessObject:",{aMap:aMap},smalltalk.CWBusinessObject)})},
+return self}, function($ctx1) {$ctx1.fill(self,"draw:",{aMap:aMap},smalltalk.CWDrawer)})},
 messageSends: ["cleanCanvas", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "mapCoods", "visitTree:"]}),
 smalltalk.CWDrawer);
 
@@ -362,9 +362,21 @@ selector: "visitHeros:",
 fn: function (heros){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3;
+$1=_st(_st(heros)._side())._negative();
+if(smalltalk.assert($1)){
+$2=_st(self)._context();
+_st($2)._save();
+_st($2)._translate_y_(_st(_st(self["@currentPoint"])._x()).__plus((87)),(0));
+$3=_st($2)._scale_y_((-1),(1));
+$3;
+_st(self)._display_X_y_(heros,(0),_st(_st(self["@currentPoint"])._y()).__minus((28)));
+_st(_st(self)._context())._restore();
+} else {
 _st(self)._display_X_y_(heros,_st(_st(self["@currentPoint"])._x()).__plus((15)),_st(_st(self["@currentPoint"])._y()).__minus((28)));
-return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.MapDrawer)})},
-messageSends: ["display:X:y:", "+", "x", "-", "y"]}),
+};
+return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWDrawer)})},
+messageSends: ["ifTrue:ifFalse:", "save", "context", "translate:y:", "+", "x", "scale:y:", "display:X:y:", "-", "y", "restore", "negative", "side"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -412,11 +424,30 @@ smalltalk.CWDrawer);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "visitTroop:",
-fn: function (aTile){
+fn: function (aTroop){
 var self=this;
+var xArray,yArray;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTile:aTile},smalltalk.MapDrawer)})},
-messageSends: []}),
+var $1,$2,$3;
+xArray=[(17), (37), (-11), (9)];
+yArray=[(33), (23), (26), (15)];
+_st(_st((1))._to_(_st(aTroop)._hp()))._do_((function(i){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(_st(aTroop)._side())._negative();
+if(smalltalk.assert($1)){
+$2=_st(self)._context();
+_st($2)._save();
+_st($2)._translate_y_(_st(_st(_st(self["@currentPoint"])._x()).__plus((72))).__plus(_st(xArray)._at_(i)),(0));
+$3=_st($2)._scale_y_((-1),(1));
+$3;
+_st(self)._display_X_y_(aTroop,(0),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
+return _st(_st(self)._context())._restore();
+} else {
+return _st(self)._display_X_y_(aTroop,_st(_st(self["@currentPoint"])._x()).__plus(_st(xArray)._at_(i)),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
+};
+}, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop,xArray:xArray,yArray:yArray},smalltalk.CWDrawer)})},
+messageSends: ["do:", "ifTrue:ifFalse:", "save", "context", "translate:y:", "+", "at:", "x", "scale:y:", "display:X:y:", "-", "y", "restore", "negative", "side", "to:", "hp"]}),
 smalltalk.CWDrawer);
 
 

@@ -1,5 +1,6 @@
 smalltalk.addPackage('Easnoth-BusinessObjects');
 smalltalk.addClass('CWNode', smalltalk.Object, ['parent', 'children'], 'Easnoth-BusinessObjects');
+smalltalk.CWNode.comment="I represent a business object of the game. The business objects are managed in a tree : you have a root object that has children (and children can also have children).\x0a\x0aGame logic is implemented in my subclasses. For Displaying, look at CWDrawer."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -283,7 +284,7 @@ smalltalk.CWNode);
 
 
 smalltalk.addClass('CWCell', smalltalk.CWNode, ['mapCoods'], 'Easnoth-BusinessObjects');
-smalltalk.CWCell.comment="canvasCoods is a cache not to recalcul it each time"
+smalltalk.CWCell.comment="I represent an hexagon cell in the map."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -348,7 +349,7 @@ fn: function (aJsonCell){
 var self=this;
 var elements;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
+var $1,$2,$3,$4;
 elements=_st(aJsonCell)._keys();
 $1=_st(_st(elements)._first()).__eq("tile");
 if(smalltalk.assert($1)){
@@ -361,14 +362,18 @@ return smalltalk.withContext(function($ctx2) {
 return _st(_st(self)._newOverTile())._initializeFromJson_(_st(each)._overtile());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})));
 };
-$3=_st(_st(elements)._last()).__eq("monster");
+$3=_st(_st(elements)._last()).__eq("heros");
 if(smalltalk.assert($3)){
-_st(self)._addChild_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._monster()));
+_st(self)._addChild_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._heros()));
+};
+$4=_st(_st(elements)._last()).__eq("troop");
+if(smalltalk.assert($4)){
+_st(self)._addChild_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements},smalltalk.CWCell)})},
 args: ["aJsonCell"],
-source: "initializeFromJson: aJsonCell\x0a    | elements |\x0a    \x0a    elements := aJsonCell keys.\x0a    \x0a    elements first = 'tile'\x0a    \x09ifTrue: [ self addChild: (self newTile initializeFromJson: aJsonCell tile) ].\x0a    (elements includes: 'overtiles') \x0a    \x09ifTrue: [ self addChildren: (aJsonCell overtiles collect: [:each | \x0a\x09\x09\x09self newOverTile initializeFromJson: each overtile] ) ].\x0a    elements last = 'monster'\x0a    \x09ifTrue: [ self addChild: (self newHeros initializeFromJson: aJsonCell monster) ].",
-messageSends: ["keys", "ifTrue:", "addChild:", "initializeFromJson:", "tile", "newTile", "=", "first", "addChildren:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "monster", "newHeros", "last"],
+source: "initializeFromJson: aJsonCell\x0a    | elements |\x0a    \x0a    elements := aJsonCell keys.\x0a    \x0a    elements first = 'tile'\x0a    \x09ifTrue: [ self addChild: (self newTile initializeFromJson: aJsonCell tile) ].\x0a    (elements includes: 'overtiles') \x0a    \x09ifTrue: [ self addChildren: (aJsonCell overtiles collect: [:each | \x0a\x09\x09\x09self newOverTile initializeFromJson: each overtile] ) ].\x0a    elements last = 'heros'\x0a    \x09ifTrue: [ self addChild: (self newHeros initializeFromJson: aJsonCell heros) ].\x0a    elements last = 'troop'\x0a    \x09ifTrue: [ self addChild: (self newTroop initializeFromJson: aJsonCell troop) ].",
+messageSends: ["keys", "ifTrue:", "addChild:", "initializeFromJson:", "tile", "newTile", "=", "first", "addChildren:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "heros", "newHeros", "last", "troop", "newTroop"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -557,6 +562,7 @@ smalltalk.CWCell);
 
 
 smalltalk.addClass('CWImageLeaf', smalltalk.CWNode, ['image'], 'Easnoth-BusinessObjects');
+smalltalk.CWImageLeaf.comment="I represent a leaf of the business objects tree that has an image. Usually only my instances are rendered when the CWDrawer visits the business object graph."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -614,14 +620,14 @@ category: 'initialize-release',
 fn: function (aJson){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@image"]=_st(_st(self)._class())._imageCacheAt_ifAbsent_(_st(self)._keyFor_(aJson),(function(){
+self["@image"]=_st(_st(self)._class())._imageCacheAt_ifAbsent_(aJson,(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._newImageFrom_(aJson);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJson:aJson},smalltalk.CWImageLeaf)})},
 args: ["aJson"],
-source: "initializeFromJson: aJson\x0a\x09image := self class imageCacheAt: (self keyFor: aJson) ifAbsent: [ self newImageFrom: aJson ]",
-messageSends: ["imageCacheAt:ifAbsent:", "keyFor:", "newImageFrom:", "class"],
+source: "initializeFromJson: aJson\x0a\x09image := self class \x0a\x09\x09imageCacheAt: aJson\x0a\x09\x09ifAbsent: [ self newImageFrom: aJson ]",
+messageSends: ["imageCacheAt:ifAbsent:", "newImageFrom:", "class"],
 referencedClasses: []
 }),
 smalltalk.CWImageLeaf);
@@ -666,26 +672,19 @@ selector: "newImageFrom:",
 category: 'initialize-release',
 fn: function (aJson){
 var self=this;
-var key;
 function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
-function $MapDrawer(){return smalltalk.MapDrawer||(typeof MapDrawer=="undefined"?nil:MapDrawer)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-key=_st(self)._keyFor_(aJson);
 self["@image"]=_st($NativeFunction())._constructor_("Image");
-_st(_st(_st(self)._class())._imageCache())._at_put_(key,self["@image"]);
-_st(self["@image"])._at_put_("onload",(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(_st($MapDrawer())._new())._drawMap_(_st(_st(_st(self)._parent())._parent())._parent());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(self["@image"])._at_put_("src",_st(_st(_st(_st("ressources/images/").__comma(_st(self)._folderName())).__comma("/")).__comma(key)).__comma(".png"));
+_st(_st(_st(self)._class())._imageCache())._at_put_(aJson,self["@image"]);
+_st(self["@image"])._at_put_("src",_st(_st(_st(_st("ressources/images/").__comma(_st(self)._folderName())).__comma("/")).__comma(aJson)).__comma(".png"));
 $1=self["@image"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newImageFrom:",{aJson:aJson,key:key},smalltalk.CWImageLeaf)})},
+}, function($ctx1) {$ctx1.fill(self,"newImageFrom:",{aJson:aJson},smalltalk.CWImageLeaf)})},
 args: ["aJson"],
-source: "newImageFrom: aJson\x0a\x09\x22Create a new image and cache it\x22\x0a\x09\x0a\x09| key |\x0a\x09\x0a\x09key := self keyFor: aJson.\x0a\x09image := NativeFunction constructor: 'Image'.\x0a\x09\x0a\x09self class imageCache at: key put: image.\x0a\x09\x0a    image at: 'onload' put: [\x0a\x09\x09\x22This should be managed differently later\x22\x0a\x09\x09MapDrawer new drawMap: self parent parent parent].\x0a    image at: 'src' put:  'ressources/images/', self folderName, '/', key, '.png'.\x0a\x09\x0a\x09^ image",
-messageSends: ["keyFor:", "constructor:", "at:put:", "imageCache", "class", "drawMap:", "parent", "new", ",", "folderName"],
-referencedClasses: ["NativeFunction", "MapDrawer"]
+source: "newImageFrom: aJson\x0a\x09\x22Create a new image and cache it\x22\x0a\x09\x0a\x09image := NativeFunction constructor: 'Image'.\x0a\x09self class imageCache at: aJson put: image.\x0a    image at: 'src' put:  'ressources/images/', self folderName, '/', aJson, '.png'.\x0a\x09\x0a\x09^ image",
+messageSends: ["constructor:", "at:put:", "imageCache", "class", ",", "folderName"],
+referencedClasses: ["NativeFunction"]
 }),
 smalltalk.CWImageLeaf);
 
@@ -754,6 +753,7 @@ smalltalk.CWImageLeaf.klass);
 
 
 smalltalk.addClass('CWBackground', smalltalk.CWImageLeaf, [], 'Easnoth-BusinessObjects');
+smalltalk.CWBackground.comment="I represent an element of the background (tiles, overtiles, ...). "
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -888,7 +888,8 @@ smalltalk.CWWall);
 
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, [], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'move', 'attack', 'dices', 'hp'], 'Easnoth-BusinessObjects');
+smalltalk.CWMonster.comment="I represent people on the map. My instances variables are the stats of the guy I represent."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -901,6 +902,118 @@ return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},sma
 args: ["aVisitor"],
 source: "accept: aVisitor\x0a\x09self shouldNotImplement",
 messageSends: ["shouldNotImplement"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "addStats:",
+category: 'initialize-release',
+fn: function (aKey){
+var self=this;
+var keySuccess;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+return smalltalk.withContext(function($ctx1) { 
+_st($Transcript())._show_(_st("addStats : ").__comma(aKey));
+keySuccess=_st(aKey).__comma("success");
+_st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(self)._class())._jsonStatCacheAt_put_(aKey,statsNew);
+return _st(self)._stats_(statsNew);
+}, function($ctx2) {$ctx2.fillBlock({statsNew:statsNew},$ctx1)})}));
+_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/monsters/").__comma(aKey)).__comma(".json"),(function(data){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self)._class())._jsonStatCacheAt_(keySuccess))._value_(data);
+}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"addStats:",{aKey:aKey,keySuccess:keySuccess},smalltalk.CWMonster)})},
+args: ["aKey"],
+source: "addStats: aKey\x0a\x09| keySuccess |\x0a\x09\x0a\x09Transcript show: 'addStats : ', aKey.\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09\x0a    self class \x0a\x09\x09jsonStatCacheAt: keySuccess \x0a\x09\x09put: [:statsNew | \x0a\x09\x09\x09self class jsonStatCacheAt: aKey put: statsNew.\x0a       \x09\x09self stats: statsNew ].\x0a\x0a\x09jQuery \x0a\x09\x09getJSON: 'ressources/json/monsters/', aKey, '.json' \x0a\x09\x09onSuccess: [:data | (self class jsonStatCacheAt: keySuccess) value: data]",
+messageSends: ["show:", ",", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"],
+referencedClasses: ["Transcript"]
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "attack",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@attack"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attack",{},smalltalk.CWMonster)})},
+args: [],
+source: "attack\x0a\x09^ attack",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "attack:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@attack"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"attack:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "attack: int\x0a\x09attack := int",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultHp",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWMonster)})},
+args: [],
+source: "defaultHp\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "dices",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@dices"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"dices",{},smalltalk.CWMonster)})},
+args: [],
+source: "dices\x0a\x09^ dices",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "dices:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@dices"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"dices:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "dices: int\x0a\x09dices := int",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -923,6 +1036,58 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hp",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@hp"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hp",{},smalltalk.CWMonster)})},
+args: [],
+source: "hp\x0a\x09^ hp",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hp:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@hp"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"hp:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "hp: int\x0a\x09hp := int",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeFromJson:",
+category: 'initialize-release',
+fn: function (aJson){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWImageLeaf.fn.prototype._initializeFromJson_.apply(_st(self), [_st(aJson)._name()]);
+_st(self)._side_(_st(aJson)._side());
+_st(self)._loadStats_(_st(aJson)._name());
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJson:aJson},smalltalk.CWMonster)})},
+args: ["aJson"],
+source: "initializeFromJson: aJson\x0a\x09super initializeFromJson: aJson name.\x0a\x09self side: aJson side.\x0a\x09self loadStats: aJson name.",
+messageSends: ["initializeFromJson:", "name", "side:", "side", "loadStats:"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "keyFor:",
 category: 'accessing',
 fn: function (aJson){
@@ -939,8 +1104,226 @@ referencedClasses: []
 }),
 smalltalk.CWMonster);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "loadStats:",
+category: 'initialize-release',
+fn: function (aJson){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self)._class())._jsonStatCache())._includesKey_(_st(aJson).__comma("success"));
+if(smalltalk.assert($1)){
+_st(self)._updateStats_(aJson);
+} else {
+_st(self)._addStats_(aJson);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"loadStats:",{aJson:aJson},smalltalk.CWMonster)})},
+args: ["aJson"],
+source: "loadStats: aJson\x0a\x09(self class jsonStatCache includesKey: aJson,'success') \x0a\x09\x09ifTrue: [ self updateStats: aJson ] \x0a\x09\x09ifFalse: [ self addStats: aJson ].",
+messageSends: ["ifTrue:ifFalse:", "updateStats:", "addStats:", "includesKey:", ",", "jsonStatCache", "class"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "move",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@move"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"move",{},smalltalk.CWMonster)})},
+args: [],
+source: "move\x0a\x09^ move",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "move:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@move"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"move:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "move: int\x0a\x09move := int",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "side",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@side"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"side",{},smalltalk.CWMonster)})},
+args: [],
+source: "side\x0a\x09^ side",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "side:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@side"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"side:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "side: int\x0a\x09side := int",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "stats:",
+category: 'initialize-release',
+fn: function (jsonStats){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._move_(_st(jsonStats)._move());
+_st(self)._attack_(_st(jsonStats)._attack());
+_st(self)._dices_(_st(jsonStats)._dices());
+_st(self)._hp_(_st(self)._defaultHp());
+return self}, function($ctx1) {$ctx1.fill(self,"stats:",{jsonStats:jsonStats},smalltalk.CWMonster)})},
+args: ["jsonStats"],
+source: "stats: jsonStats\x0a\x09self move: jsonStats move.\x0a\x09\x22self range: jsonStats range.\x22\x0a\x09self attack: jsonStats attack.\x0a\x09\x22self knockback: jsonStats knockback.\x22\x0a\x09self dices: jsonStats dices.\x0a\x09\x22self special: jsonStats special.\x22\x0a\x09self hp: self defaultHp.",
+messageSends: ["move:", "move", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateStats:",
+category: 'initialize-release',
+fn: function (aKey){
+var self=this;
+var keySuccess,oldCallBack;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+_st($Transcript())._show_(_st("updateStats : ").__comma(aKey));
+keySuccess=_st(aKey).__comma("success");
+oldCallBack=_st(_st(self)._class())._jsonStatCacheAt_(keySuccess);
+_st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
+return smalltalk.withContext(function($ctx2) {
+_st(self)._stats_(statsNew);
+return _st(oldCallBack)._value_(statsNew);
+}, function($ctx2) {$ctx2.fillBlock({statsNew:statsNew},$ctx1)})}));
+$1=_st(_st(_st(self)._class())._jsonStatCache())._includesKey_(aKey);
+if(smalltalk.assert($1)){
+_st(self)._stats_(_st(_st(self)._class())._jsonStatCacheAt_(aKey));
+};
+return self}, function($ctx1) {$ctx1.fill(self,"updateStats:",{aKey:aKey,keySuccess:keySuccess,oldCallBack:oldCallBack},smalltalk.CWMonster)})},
+args: ["aKey"],
+source: "updateStats: aKey \x0a\x09|keySuccess oldCallBack|\x0a\x0a\x09Transcript show: 'updateStats : ', aKey.\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09oldCallBack := self class jsonStatCacheAt: keySuccess.\x0a\x09self class jsonStatCacheAt: keySuccess put: [:statsNew | \x0a\x09\x09\x09self stats: statsNew. \x0a\x09\x09\x09oldCallBack value: statsNew ].\x0a\x09\x09\x09\x0a\x09\x22Case where the json file finished loading during the execution of this method but before the new call back was set up\x22\x0a\x09(self class jsonStatCache includesKey: aKey) \x0a\x09\x09ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].",
+messageSends: ["show:", ",", "jsonStatCacheAt:", "class", "jsonStatCacheAt:put:", "stats:", "value:", "ifTrue:", "includesKey:", "jsonStatCache"],
+referencedClasses: ["Transcript"]
+}),
+smalltalk.CWMonster);
+
 
 smalltalk.CWMonster.klass.iVarNames = ['jsonStatCache'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jsonStatCache",
+category: 'caching',
+fn: function (){
+var self=this;
+function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self["@jsonStatCache"];
+if(($receiver = $2) == nil || $receiver == undefined){
+self["@jsonStatCache"]=_st($Dictionary())._new();
+$1=self["@jsonStatCache"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"jsonStatCache",{},smalltalk.CWMonster.klass)})},
+args: [],
+source: "jsonStatCache\x0a\x09^ jsonStatCache ifNil: [ jsonStatCache := Dictionary new ]",
+messageSends: ["ifNil:", "new"],
+referencedClasses: ["Dictionary"]
+}),
+smalltalk.CWMonster.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jsonStatCacheAt:",
+category: 'caching',
+fn: function (aKey){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._jsonStatCache())._at_(aKey);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:",{aKey:aKey},smalltalk.CWMonster.klass)})},
+args: ["aKey"],
+source: "jsonStatCacheAt: aKey\x0a\x09^ self jsonStatCache at: aKey",
+messageSends: ["at:", "jsonStatCache"],
+referencedClasses: []
+}),
+smalltalk.CWMonster.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jsonStatCacheAt:ifAbsent:",
+category: 'caching',
+fn: function (aKey,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._jsonStatCache())._at_ifAbsent_(aKey,aBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:ifAbsent:",{aKey:aKey,aBlock:aBlock},smalltalk.CWMonster.klass)})},
+args: ["aKey", "aBlock"],
+source: "jsonStatCacheAt: aKey ifAbsent: aBlock\x0a\x09^ self jsonStatCache at: aKey ifAbsent: aBlock",
+messageSends: ["at:ifAbsent:", "jsonStatCache"],
+referencedClasses: []
+}),
+smalltalk.CWMonster.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jsonStatCacheAt:put:",
+category: 'caching',
+fn: function (aKey,aJson){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._jsonStatCache())._at_put_(aKey,aJson);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:put:",{aKey:aKey,aJson:aJson},smalltalk.CWMonster.klass)})},
+args: ["aKey", "aJson"],
+source: "jsonStatCacheAt: aKey put: aJson\x0a\x09^ self jsonStatCache at: aKey put: aJson",
+messageSends: ["at:put:", "jsonStatCache"],
+referencedClasses: []
+}),
+smalltalk.CWMonster.klass);
+
 
 smalltalk.addClass('CWHeros', smalltalk.CWMonster, [], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
@@ -957,6 +1340,24 @@ return $1;
 args: ["aVisitor"],
 source: "accept: aVisitor\x0a\x09^ aVisitor visitHeros: self",
 messageSends: ["visitHeros:"],
+referencedClasses: []
+}),
+smalltalk.CWHeros);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultHp",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=(2);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWHeros)})},
+args: [],
+source: "defaultHp\x0a\x09^ 2",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWHeros);
@@ -982,9 +1383,28 @@ referencedClasses: []
 }),
 smalltalk.CWTroop);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultHp",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=(4);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWTroop)})},
+args: [],
+source: "defaultHp\x0a\x09^ 4",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWTroop);
+
 
 
 smalltalk.addClass('CWMap', smalltalk.CWNode, [], 'Easnoth-BusinessObjects');
+smalltalk.CWMap.comment="I represent the whole map in the game. "
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -1171,6 +1591,7 @@ smalltalk.CWMap.klass);
 
 
 smalltalk.addClass('CWRow', smalltalk.CWNode, ['rowIndex'], 'Easnoth-BusinessObjects');
+smalltalk.CWRow.comment="I represent a row of cells in the map."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
