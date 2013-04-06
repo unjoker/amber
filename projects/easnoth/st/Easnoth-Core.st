@@ -1,26 +1,4 @@
 Smalltalk current createPackage: 'Easnoth-Core'!
-Object subclass: #CWGameBoard
-	instanceVariableNames: 'map drawer menu'
-	package: 'Easnoth-Events'!
-
-!CWGameBoard methodsFor: 'initialize-release'!
-
-initialize
-	super initialize.
-	drawer := CWDrawer new.
-	menu := FightMenu newFor: self
-!
-
-initializeMapWithIndex: index
-	map := CWMap newWithMapIndex: index.
-! !
-
-!CWGameBoard class methodsFor: 'instance creation'!
-
-newWithMapIndex: index
-	^ self new initializeMapWithIndex: index
-! !
-
 Object subclass: #Cell
 	instanceVariableNames: 'tile gameOverTile overTiles monster coods state map'
 	package: 'Easnoth-Core'!
