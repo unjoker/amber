@@ -1,5 +1,60 @@
 smalltalk.addPackage('Easnoth-Core');
-smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu', 'cache'], 'Easnoth-Core');
+smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu'], 'Easnoth-Core');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+function $CWDrawer(){return smalltalk.CWDrawer||(typeof CWDrawer=="undefined"?nil:CWDrawer)}
+function $FightMenu(){return smalltalk.FightMenu||(typeof FightMenu=="undefined"?nil:FightMenu)}
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+self["@drawer"]=_st($CWDrawer())._new();
+self["@menu"]=_st($FightMenu())._newFor_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameBoard)})},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09drawer := CWDrawer new.\x0a\x09menu := FightMenu newFor: self",
+messageSends: ["initialize", "new", "newFor:"],
+referencedClasses: ["CWDrawer", "FightMenu"]
+}),
+smalltalk.CWGameBoard);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeMapWithIndex:",
+category: 'initialize-release',
+fn: function (index){
+var self=this;
+function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
+return smalltalk.withContext(function($ctx1) { 
+self["@map"]=_st($CWMap())._newWithMapIndex_(index);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeMapWithIndex:",{index:index},smalltalk.CWGameBoard)})},
+args: ["index"],
+source: "initializeMapWithIndex: index\x0a\x09map := CWMap newWithMapIndex: index.",
+messageSends: ["newWithMapIndex:"],
+referencedClasses: ["CWMap"]
+}),
+smalltalk.CWGameBoard);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newWithMapIndex:",
+category: 'instance creation',
+fn: function (index){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._new())._initializeMapWithIndex_(index);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGameBoard.klass)})},
+args: ["index"],
+source: "newWithMapIndex: index\x0a\x09^ self new initializeMapWithIndex: index",
+messageSends: ["initializeMapWithIndex:", "new"],
+referencedClasses: []
+}),
+smalltalk.CWGameBoard.klass);
 
 
 smalltalk.addClass('Cell', smalltalk.Object, ['tile', 'gameOverTile', 'overTiles', 'monster', 'coods', 'state', 'map'], 'Easnoth-Core');

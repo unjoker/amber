@@ -2,6 +2,10 @@ Smalltalk current createPackage: 'Easnoth-BusinessObjects'!
 Object subclass: #CWNode
 	instanceVariableNames: 'parent children'
 	package: 'Easnoth-BusinessObjects'!
+!CWNode commentStamp!
+I represent a business object of the game. The business objects are managed in a tree : you have a root object that has children (and children can also have children).
+
+Game logic is implemented in my subclasses. For Displaying, look at CWDrawer.!
 
 !CWNode methodsFor: 'accessing'!
 
@@ -82,7 +86,7 @@ CWNode subclass: #CWCell
 	instanceVariableNames: 'mapCoods'
 	package: 'Easnoth-BusinessObjects'!
 !CWCell commentStamp!
-canvasCoods is a cache not to recalcul it each time!
+I represent an hexagon cell in the map.!
 
 !CWCell methodsFor: 'accessing'!
 
@@ -128,8 +132,10 @@ initializeFromJson: aJsonCell
     (elements includes: 'overtiles') 
     	ifTrue: [ self addChildren: (aJsonCell overtiles collect: [:each | 
 			self newOverTile initializeFromJson: each overtile] ) ].
-    elements last = 'monster'
-    	ifTrue: [ self addChild: (self newHeros initializeFromJson: aJsonCell monster) ].
+    elements last = 'heros'
+    	ifTrue: [ self addChild: (self newHeros initializeFromJson: aJsonCell heros) ].
+    elements last = 'troop'
+    	ifTrue: [ self addChild: (self newTroop initializeFromJson: aJsonCell troop) ].
 ! !
 
 !CWCell methodsFor: 'nodes'!
@@ -163,6 +169,8 @@ accept: aVisitor
 CWNode subclass: #CWImageLeaf
 	instanceVariableNames: 'image'
 	package: 'Easnoth-BusinessObjects'!
+!CWImageLeaf commentStamp!
+I represent a leaf of the business objects tree that has an image. Usually only my instances are rendered when the CWDrawer visits the business object graph.!
 
 !CWImageLeaf methodsFor: 'accessing'!
 
@@ -181,23 +189,17 @@ folderName
 !
 
 initializeFromJson: aJson
-	image := self class imageCacheAt: (self keyFor: aJson) ifAbsent: [ self newImageFrom: aJson ]
+	image := self class 
+		imageCacheAt: aJson
+		ifAbsent: [ self newImageFrom: aJson ]
 !
 
 newImageFrom: aJson
 	"Create a new image and cache it"
 	
-	| key |
-	
-	key := self keyFor: aJson.
 	image := NativeFunction constructor: 'Image'.
-	
-	self class imageCache at: key put: image.
-	
-    image at: 'onload' put: [
-		"This should be managed differently later"
-		MapDrawer new drawMap: self parent parent parent].
-    image at: 'src' put:  'ressources/images/', self folderName, '/', key, '.png'.
+	self class imageCache at: aJson put: image.
+    image at: 'src' put:  'ressources/images/', self folderName, '/', aJson, '.png'.
 	
 	^ image
 ! !
@@ -233,6 +235,8 @@ imageCacheAt: aKey put: anImage
 CWImageLeaf subclass: #CWBackground
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
+!CWBackground commentStamp!
+I represent an element of the background (tiles, overtiles, ...).!
 
 !CWBackground methodsFor: 'visiting'!
 
@@ -293,19 +297,121 @@ accept: aVisitor
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: ''
+	instanceVariableNames: 'side move attack dices hp'
 	package: 'Easnoth-BusinessObjects'!
+!CWMonster commentStamp!
+I represent people on the map. My instances variables are the stats of the guy I represent.!
 
 !CWMonster methodsFor: 'accessing'!
 
+attack
+	^ attack
+!
+
+attack: int
+	attack := int
+!
+
+dices
+	^ dices
+!
+
+dices: int
+	dices := int
+!
+
+hp
+	^ hp
+!
+
+hp: int
+	hp := int
+!
+
 keyFor: aJson
 	^ aJson name
+!
+
+move
+	^ move
+!
+
+move: int
+	move := int
+!
+
+side
+	^ side
+!
+
+side: int
+	side := int
 ! !
 
 !CWMonster methodsFor: 'initialize-release'!
 
+addStats: aKey
+	| keySuccess |
+	
+	Transcript show: 'addStats : ', aKey.
+	
+	keySuccess := aKey,'success'.
+	
+    self class 
+		jsonStatCacheAt: keySuccess 
+		put: [:statsNew | 
+			self class jsonStatCacheAt: aKey put: statsNew.
+       		self stats: statsNew ].
+
+	jQuery 
+		getJSON: 'ressources/json/monsters/', aKey, '.json' 
+		onSuccess: [:data | (self class jsonStatCacheAt: keySuccess) value: data]
+!
+
+defaultHp
+	self subclassResponsibility
+!
+
 folderName
 	^ 'monsters'
+!
+
+initializeFromJson: aJson
+	super initializeFromJson: aJson name.
+	self side: aJson side.
+	self loadStats: aJson name.
+!
+
+loadStats: aJson
+	(self class jsonStatCache includesKey: aJson,'success') 
+		ifTrue: [ self updateStats: aJson ] 
+		ifFalse: [ self addStats: aJson ].
+!
+
+stats: jsonStats
+	self move: jsonStats move.
+	"self range: jsonStats range."
+	self attack: jsonStats attack.
+	"self knockback: jsonStats knockback."
+	self dices: jsonStats dices.
+	"self special: jsonStats special."
+	self hp: self defaultHp.
+!
+
+updateStats: aKey 
+	|keySuccess oldCallBack|
+
+	Transcript show: 'updateStats : ', aKey.
+	
+	keySuccess := aKey,'success'.
+	oldCallBack := self class jsonStatCacheAt: keySuccess.
+	self class jsonStatCacheAt: keySuccess put: [:statsNew | 
+			self stats: statsNew. 
+			oldCallBack value: statsNew ].
+			
+	"Case where the json file finished loading during the execution of this method but before the new call back was set up"
+	(self class jsonStatCache includesKey: aKey) 
+		ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].
 ! !
 
 !CWMonster methodsFor: 'visiting'!
@@ -316,9 +422,33 @@ accept: aVisitor
 
 CWMonster class instanceVariableNames: 'jsonStatCache'!
 
+!CWMonster class methodsFor: 'caching'!
+
+jsonStatCache
+	^ jsonStatCache ifNil: [ jsonStatCache := Dictionary new ]
+!
+
+jsonStatCacheAt: aKey
+	^ self jsonStatCache at: aKey
+!
+
+jsonStatCacheAt: aKey ifAbsent: aBlock
+	^ self jsonStatCache at: aKey ifAbsent: aBlock
+!
+
+jsonStatCacheAt: aKey put: aJson
+	^ self jsonStatCache at: aKey put: aJson
+! !
+
 CWMonster subclass: #CWHeros
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
+
+!CWHeros methodsFor: 'initialize-release'!
+
+defaultHp
+	^ 2
+! !
 
 !CWHeros methodsFor: 'visiting'!
 
@@ -330,6 +460,12 @@ CWMonster subclass: #CWTroop
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
+!CWTroop methodsFor: 'initialize-release'!
+
+defaultHp
+	^ 4
+! !
+
 !CWTroop methodsFor: 'visiting'!
 
 accept: aVisitor
@@ -339,6 +475,8 @@ accept: aVisitor
 CWNode subclass: #CWMap
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
+!CWMap commentStamp!
+I represent the whole map in the game.!
 
 !CWMap methodsFor: 'accessing'!
 
@@ -414,6 +552,8 @@ newWithMapIndex: aMapIndex
 CWNode subclass: #CWRow
 	instanceVariableNames: 'rowIndex'
 	package: 'Easnoth-BusinessObjects'!
+!CWRow commentStamp!
+I represent a row of cells in the map.!
 
 !CWRow methodsFor: 'accessing'!
 

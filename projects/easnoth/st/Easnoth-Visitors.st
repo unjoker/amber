@@ -2,6 +2,8 @@ Smalltalk current createPackage: 'Easnoth-Visitors'!
 Object subclass: #CWVisitor
 	instanceVariableNames: ''
 	package: 'Easnoth-Visitors'!
+!CWVisitor commentStamp!
+I am an abstract visitor that can visit the whole tree of business objects.!
 
 !CWVisitor methodsFor: 'visiting'!
 
@@ -54,6 +56,8 @@ CWVisitor class instanceVariableNames: 'singleton'!
 CWVisitor subclass: #CWDrawer
 	instanceVariableNames: 'canvas mapCoods currentPoint'
 	package: 'Easnoth-Visitors'!
+!CWDrawer commentStamp!
+I am a drawer that can draw the business objects through a visit of its tree.!
 
 !CWDrawer methodsFor: 'accessing'!
 
@@ -135,7 +139,7 @@ cleanCanvas
 	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
 !
 
-drawBusinessObject: aMap
+draw: aMap
 	self cleanCanvas.
 	"The following line should be put somewhere else"
 	self mapCoods x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).
@@ -184,7 +188,17 @@ visitGameOverTile: got
 !
 
 visitHeros: heros
-	self display: heros X: currentPoint x + 15 y: currentPoint y - 28.
+	"87 = 72 (width image + 15"
+	
+	(heros side negative) ifTrue: [
+		self context save;
+			translate: currentPoint x + 87 y: 0;
+			scale: -1 y: 1.
+		self display: heros X: 0 y: currentPoint y - 28.
+		self context restore.
+	] ifFalse: [
+		self display: heros X: currentPoint x + 15 y: currentPoint y - 28.
+	]
 !
 
 visitMap: aMap
@@ -201,6 +215,22 @@ visitTile: aTile
 	self drawIsometric: aTile.
 !
 
-visitTroop: aTile
+visitTroop: aTroop
+	|xArray yArray|
+
+	xArray := #(17 37 -11 9).
+	yArray := #(33 23 26 15).
+
+	(1 to: aTroop hp) do: [ :i |
+		(aTroop side negative) ifTrue: [
+				self context save;
+					translate: currentPoint x + 72 + (xArray at: i) y: 0;
+					scale: -1 y: 1.
+				self display: aTroop X: 0 y: currentPoint y - (yArray at: i).
+				self context restore.
+			] ifFalse: [
+				self display: aTroop X: currentPoint x + (xArray at: i) y: currentPoint y - (yArray at: i)
+			]
+	]
 ! !
 

@@ -17,7 +17,7 @@
 				},
 				{
 					"tile":"savanna",
-					"monster":{
+					"troop":{
 						"name":"fighter",
 						"side":1
 					}
@@ -27,7 +27,7 @@
 				},
 				{
 					"tile":"savanna",
-					"monster":{
+					"heros":{
 						"name":"shyde",
 						"side":1
 					}
@@ -57,7 +57,7 @@
 				},
 				{
 					"tile":"savanna",
-					"monster":{
+					"troop":{
 						"name":"fighter",
 						"side":1
 					}
@@ -92,7 +92,7 @@
 				},
 				{
 					"tile":"savanna",
-					"monster":{
+					"troop":{
 						"name":"fighter",
 						"side":1
 					}
@@ -131,7 +131,7 @@
 			"cells":[
 				{
 					"tile":"road",
-					"monster":{
+					"troop":{
 						"name":"thief",
 						"side":-1
 					}
@@ -156,7 +156,7 @@
 				},
 				{
 					"tile":"savanna",
-					"monster":{
+					"troop":{
 						"name":"fighter",
 						"side":1
 					}
@@ -173,7 +173,7 @@
 				},
 				{
 					"tile":"road",
-					"monster":{
+					"heros":{
 						"name":"specter",
 						"side":-1
 					}
@@ -208,7 +208,7 @@
 				},
 				{
 					"tile":"road",
-					"monster":{
+					"troop":{
 						"name":"thief",
 						"side":-1
 					}
@@ -243,7 +243,7 @@
 				},
 				{
 					"tile":"road",
-					"monster":{
+					"troop":{
 						"name":"thief",
 						"side":-1
 					}
@@ -275,7 +275,7 @@
 				},
 				{
 					"tile":"road",
-					"monster":{
+					"heros":{
 						"name":"specter",
 						"side":-1
 					}

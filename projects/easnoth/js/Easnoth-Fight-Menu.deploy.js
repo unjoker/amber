@@ -781,33 +781,32 @@ smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
-return smalltalk.withContext(function($ctx1) { var $1,$3,$4,$5,$6,$7,$2;
+function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$2;
 $1=_st(html)._div();
 _st($1)._class_("stuff");
 $2=_st($1)._with_((function(){
-return smalltalk.withContext(function($ctx2) {_st(self)._turnDisplay_(_st(html)._h5());
+return smalltalk.withContext(function($ctx2) {
+_st(self)._turnDisplay_(_st(html)._h5());
 $3=_st(html)._button();
-_st($3)._with_("next turn (= enter)");
+_st($3)._with_("next turn");
 $4=_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {return _st(self)._nextTurn();
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._nextTurn();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $4;
-_st(_st("body")._asJQuery())._keyup_((function(event){
-return smalltalk.withContext(function($ctx3) {$5=_st(_st(event)._keyCode()).__eq((13));
-if(smalltalk.assert($5)){
-return _st(self)._nextTurn();
-};
-}, function($ctx3) {$ctx3.fillBlock({event:event},$ctx1)})}));
-$6=_st(html)._button();
-_st($6)._with_("class browser");
-$7=_st($6)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {return _st((smalltalk.Browser || Browser))._open();
+$5=_st(html)._button();
+_st($5)._with_("class browser");
+$6=_st($5)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $7;
+return $6;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st(self)._update();
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.TurnWatcher)})},
-messageSends: ["class:", "div", "with:", "turnDisplay:", "h5", "button", "onClick:", "nextTurn", "keyup:", "ifTrue:", "=", "keyCode", "asJQuery", "open", "update"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.TurnWatcher)})},
+messageSends: ["class:", "div", "with:", "turnDisplay:", "h5", "button", "onClick:", "nextTurn", "open", "update"]}),
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(
