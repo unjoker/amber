@@ -117,7 +117,55 @@ smalltalk.CWVisitor);
 
 smalltalk.CWVisitor.klass.iVarNames = ['singleton'];
 
-smalltalk.addClass('CWDrawer', smalltalk.CWVisitor, ['canvas', 'mapCoods', 'currentPoint'], 'Easnoth-Visitors');
+smalltalk.addClass('CWDrawer', smalltalk.CWVisitor, ['backgroundCanvas', 'monsterCanvas', 'gameCanvas', 'padding', 'currentPoint'], 'Easnoth-Visitors');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backgroundCanvas",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@backgroundCanvas"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"backgroundCanvas",{},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backgroundCanvas:",
+fn: function (aCanvas){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@backgroundCanvas"]=aCanvas;
+return self}, function($ctx1) {$ctx1.fill(self,"backgroundCanvas:",{aCanvas:aCanvas},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backgroundCanvasId",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "#background";
+}, function($ctx1) {$ctx1.fill(self,"backgroundCanvasId",{},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backgroundContext",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self)._backgroundCanvas())._element())._getContext_("2d");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"backgroundContext",{},smalltalk.CWDrawer)})},
+messageSends: ["getContext:", "element", "backgroundCanvas"]}),
+smalltalk.CWDrawer);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "calculCanvasCoods:",
@@ -133,47 +181,12 @@ sin15=(0.258819045);
 sin135=(0.233445364);
 sin75=(0.965925826);
 temp=_st(_st(_st(j).__plus(_st(_st(i).__plus((1))).__slash((2))))._truncated()).__star(_st(sin15).__plus(sin75));
-xpos=_st(_st(_st(_st(i).__star(_st(sin45).__plus(sin75))).__minus(temp)).__star(_st(self)._tileUnit())).__plus(_st(_st(self)._mapCoods())._x());
-ypos=_st(_st(_st(_st(temp).__slash((2))).__plus(_st(i).__star(sin135))).__star(_st(self)._tileUnit())).__plus(_st(_st(self)._mapCoods())._y());
+xpos=_st(_st(_st(_st(i).__star(_st(sin45).__plus(sin75))).__minus(temp)).__star(_st(self)._tileUnit())).__plus(_st(_st(self)._padding())._x());
+ypos=_st(_st(_st(_st(temp).__slash((2))).__plus(_st(i).__star(sin135))).__star(_st(self)._tileUnit())).__plus(_st(_st(self)._padding())._y());
 $1=_st(_st(xpos)._rounded()).__at(_st(ypos)._rounded());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"calculCanvasCoods:",{coods:coods,xpos:xpos,ypos:ypos,temp:temp,sin45:sin45,sin15:sin15,sin135:sin135,sin75:sin75,i:i,j:j},smalltalk.MapDrawer)})},
-messageSends: ["x", "y", "*", "+", "truncated", "/", "mapCoods", "tileUnit", "-", "@", "rounded"]}),
-smalltalk.CWDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canvas",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@canvas"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"canvas",{},smalltalk.MapDrawer)})},
-messageSends: []}),
-smalltalk.CWDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canvas:",
-fn: function (aCanvas){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@canvas"]=aCanvas;
-return self}, function($ctx1) {$ctx1.fill(self,"canvas:",{aCanvas:aCanvas},smalltalk.MapDrawer)})},
-messageSends: []}),
-smalltalk.CWDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canvasId",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return "#background";
-}, function($ctx1) {$ctx1.fill(self,"canvasId",{},smalltalk.CWDrawer)})},
-messageSends: []}),
+}, function($ctx1) {$ctx1.fill(self,"calculCanvasCoods:",{coods:coods,xpos:xpos,ypos:ypos,temp:temp,sin45:sin45,sin15:sin15,sin135:sin135,sin75:sin75,i:i,j:j},smalltalk.CWDrawer)})},
+messageSends: ["x", "y", "*", "+", "truncated", "/", "padding", "tileUnit", "-", "@", "rounded"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -194,47 +207,47 @@ smalltalk.method({
 selector: "cleanCanvas",
 fn: function (){
 var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanCanvas_(_st(self)._backgroundCanvas());
+_st(self)._cleanCanvas_(_st(self)._gameCanvas());
+_st(self)._cleanCanvas_(_st(self)._monsterCanvas());
+return self}, function($ctx1) {$ctx1.fill(self,"cleanCanvas",{},smalltalk.CWDrawer)})},
+messageSends: ["cleanCanvas:", "backgroundCanvas", "gameCanvas", "monsterCanvas"]}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "cleanCanvas:",
+fn: function (aCanvas){
+var self=this;
 var elem;
 return smalltalk.withContext(function($ctx1) { 
-elem=_st(_st(self)._canvas())._element();
+elem=_st(aCanvas)._element();
 _st(_st(elem)._getContext_("2d"))._clearRect_y_width_height_((0),(0),_st(elem)._width(),_st(elem)._height());
-return self}, function($ctx1) {$ctx1.fill(self,"cleanCanvas",{elem:elem},smalltalk.CWBusinessObject)})},
-messageSends: ["element", "canvas", "clearRect:y:width:height:", "width", "height", "getContext:"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"cleanCanvas:",{aCanvas:aCanvas,elem:elem},smalltalk.CWDrawer)})},
+messageSends: ["element", "clearRect:y:width:height:", "width", "height", "getContext:"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "context",
-fn: function (){
+selector: "display:inContext:",
+fn: function (object,ctx){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self["@canvas"])._element())._getContext_("2d");
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"context",{},smalltalk.MapDrawer)})},
-messageSends: ["getContext:", "element"]}),
+_st(self)._display_inContext_X_y_(object,ctx,(0),(0));
+return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:",{object:object,ctx:ctx},smalltalk.CWDrawer)})},
+messageSends: ["display:inContext:X:y:"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "display:",
-fn: function (object){
+selector: "display:inContext:X:y:",
+fn: function (object,ctx,x,y){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._display_X_y_(object,(0),(0));
-return self}, function($ctx1) {$ctx1.fill(self,"display:",{object:object},smalltalk.MapDrawer)})},
-messageSends: ["display:X:y:"]}),
-smalltalk.CWDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "display:X:y:",
-fn: function (object,x,y){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._context())._drawImage_x_y_(_st(object)._image(),x,y);
-return self}, function($ctx1) {$ctx1.fill(self,"display:X:y:",{object:object,x:x,y:y},smalltalk.MapDrawer)})},
-messageSends: ["drawImage:x:y:", "image", "context"]}),
+_st(ctx)._drawImage_x_y_(_st(object)._image(),x,y);
+return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:X:y:",{object:object,ctx:ctx,x:x,y:y},smalltalk.CWDrawer)})},
+messageSends: ["drawImage:x:y:", "image"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -244,32 +257,84 @@ fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._cleanCanvas();
-_st(_st(self)._mapCoods())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(aMap)._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
+_st(_st(self)._padding())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(aMap)._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
 _st(self)._visitTree_(aMap);
 return self}, function($ctx1) {$ctx1.fill(self,"draw:",{aMap:aMap},smalltalk.CWDrawer)})},
-messageSends: ["cleanCanvas", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "mapCoods", "visitTree:"]}),
+messageSends: ["cleanCanvas", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "visitTree:"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawIsometric:",
-fn: function (object){
+selector: "drawIsometric:inContext:",
+fn: function (object,ctx){
 var self=this;
-var ctx;
 function $Number(){return smalltalk.Number||(typeof Number=="undefined"?nil:Number)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-ctx=_st(self)._context();
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
 $1=ctx;
 _st($1)._save();
 _st($1)._translate_y_(_st(_st(self["@currentPoint"])._x()).__plus((45)),_st(_st(self["@currentPoint"])._y()).__minus((7)));
 _st($1)._scale_y_((1),(0.5));
 _st($1)._rotate_(_st(_st($Number())._pi()).__slash((4)));
 $2=_st($1)._scale_y_((1.4),(1.33));
-_st(self)._display_(object);
-_st(ctx)._restore();
-return self}, function($ctx1) {$ctx1.fill(self,"drawIsometric:",{object:object,ctx:ctx},smalltalk.MapDrawer)})},
-messageSends: ["context", "save", "translate:y:", "+", "x", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:", "restore"]}),
+$2;
+return _st(self)._display_inContext_(object,ctx);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._ensure_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(ctx)._restore();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"drawIsometric:inContext:",{object:object,ctx:ctx},smalltalk.CWDrawer)})},
+messageSends: ["ensure:", "restore", "save", "translate:y:", "+", "x", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:inContext:"]}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "gameCanvas",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@gameCanvas"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"gameCanvas",{},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "gameCanvas:",
+fn: function (aCanvas){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@gameCanvas"]=aCanvas;
+return self}, function($ctx1) {$ctx1.fill(self,"gameCanvas:",{aCanvas:aCanvas},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "gameCanvasId",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "#game";
+}, function($ctx1) {$ctx1.fill(self,"gameCanvasId",{},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "gameContext",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self)._gameCanvas())._element())._getContext_("2d");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"gameContext",{},smalltalk.CWDrawer)})},
+messageSends: ["getContext:", "element", "gameCanvas"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -281,33 +346,83 @@ function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefin
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
-_st(self)._canvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
-_st(self)._mapCoods_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
+_st(self)._backgroundCanvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._backgroundCanvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
+_st(self)._gameCanvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._gameCanvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
+_st(self)._monsterCanvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._monsterCanvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
+_st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDrawer)})},
-messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:", "mapCoods:", "@", "canvasPadding"]}),
+messageSends: ["initialize", "backgroundCanvas:", "fromJQuery:canvas:", "asJQuery", "backgroundCanvasId", "onJQuery:", "gameCanvas:", "gameCanvasId", "monsterCanvas:", "monsterCanvasId", "padding:", "@", "canvasPadding"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "mapCoods",
+selector: "monsterCanvas",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@mapCoods"];
+$1=self["@monsterCanvas"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"mapCoods",{},smalltalk.MapDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"monsterCanvas",{},smalltalk.CWDrawer)})},
 messageSends: []}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "mapCoods:",
+selector: "monsterCanvas:",
+fn: function (aCanvas){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@monsterCanvas"]=aCanvas;
+return self}, function($ctx1) {$ctx1.fill(self,"monsterCanvas:",{aCanvas:aCanvas},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monsterCanvasId",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "#monster";
+}, function($ctx1) {$ctx1.fill(self,"monsterCanvasId",{},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monsterContext",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self)._monsterCanvas())._element())._getContext_("2d");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monsterContext",{},smalltalk.CWDrawer)})},
+messageSends: ["getContext:", "element", "monsterCanvas"]}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "padding",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@padding"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"padding",{},smalltalk.CWDrawer)})},
+messageSends: []}),
+smalltalk.CWDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "padding:",
 fn: function (aPoint){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@mapCoods"]=aPoint;
-return self}, function($ctx1) {$ctx1.fill(self,"mapCoods:",{aPoint:aPoint},smalltalk.MapDrawer)})},
+self["@padding"]=aPoint;
+return self}, function($ctx1) {$ctx1.fill(self,"padding:",{aPoint:aPoint},smalltalk.CWDrawer)})},
 messageSends: []}),
 smalltalk.CWDrawer);
 
@@ -341,9 +456,9 @@ selector: "visitGameOverTile:",
 fn: function (got){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._drawIsometric_(got);
-return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{got:got},smalltalk.MapDrawer)})},
-messageSends: ["drawIsometric:"]}),
+_st(self)._drawIsometric_inContext_(got,_st(self)._gameContext());
+return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{got:got},smalltalk.CWDrawer)})},
+messageSends: ["drawIsometric:inContext:", "gameContext"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -351,22 +466,29 @@ smalltalk.method({
 selector: "visitHeros:",
 fn: function (heros){
 var self=this;
+var ctx;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3;
+ctx=_st(self)._monsterContext();
 $1=_st(_st(heros)._side())._negative();
 if(smalltalk.assert($1)){
-$2=_st(self)._context();
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+$2=ctx;
 _st($2)._save();
 _st($2)._translate_y_(_st(_st(self["@currentPoint"])._x()).__plus((87)),(0));
 $3=_st($2)._scale_y_((-1),(1));
 $3;
-_st(self)._display_X_y_(heros,(0),_st(_st(self["@currentPoint"])._y()).__minus((28)));
-_st(_st(self)._context())._restore();
+return _st(self)._display_inContext_X_y_(heros,ctx,(0),_st(_st(self["@currentPoint"])._y()).__minus((28)));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._ensure_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(ctx)._restore();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 } else {
-_st(self)._display_X_y_(heros,_st(_st(self["@currentPoint"])._x()).__plus((15)),_st(_st(self["@currentPoint"])._y()).__minus((28)));
+_st(self)._display_inContext_X_y_(heros,ctx,_st(_st(self["@currentPoint"])._x()).__plus((15)),_st(_st(self["@currentPoint"])._y()).__minus((28)));
 };
-return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWDrawer)})},
-messageSends: ["ifTrue:ifFalse:", "save", "context", "translate:y:", "+", "x", "scale:y:", "display:X:y:", "-", "y", "restore", "negative", "side"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros,ctx:ctx},smalltalk.CWDrawer)})},
+messageSends: ["monsterContext", "ifTrue:ifFalse:", "ensure:", "restore", "save", "translate:y:", "+", "x", "scale:y:", "display:inContext:X:y:", "-", "y", "negative", "side"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -375,7 +497,7 @@ selector: "visitMap:",
 fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitMap:",{aMap:aMap},smalltalk.MapDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitMap:",{aMap:aMap},smalltalk.CWDrawer)})},
 messageSends: []}),
 smalltalk.CWDrawer);
 
@@ -385,9 +507,9 @@ selector: "visitOverTile:",
 fn: function (ot){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._drawIsometric_(ot);
-return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{ot:ot},smalltalk.MapDrawer)})},
-messageSends: ["drawIsometric:"]}),
+_st(self)._drawIsometric_inContext_(ot,_st(self)._backgroundContext());
+return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{ot:ot},smalltalk.CWDrawer)})},
+messageSends: ["drawIsometric:inContext:", "backgroundContext"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -396,7 +518,7 @@ selector: "visitRow:",
 fn: function (aRow){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitRow:",{aRow:aRow},smalltalk.MapDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitRow:",{aRow:aRow},smalltalk.CWDrawer)})},
 messageSends: []}),
 smalltalk.CWDrawer);
 
@@ -406,9 +528,9 @@ selector: "visitTile:",
 fn: function (aTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._drawIsometric_(aTile);
-return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.MapDrawer)})},
-messageSends: ["drawIsometric:"]}),
+_st(self)._drawIsometric_inContext_(aTile,_st(self)._backgroundContext());
+return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.CWDrawer)})},
+messageSends: ["drawIsometric:inContext:", "backgroundContext"]}),
 smalltalk.CWDrawer);
 
 smalltalk.addMethod(
@@ -416,28 +538,34 @@ smalltalk.method({
 selector: "visitTroop:",
 fn: function (aTroop){
 var self=this;
-var xArray,yArray;
+var xArray,yArray,ctx;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3;
 xArray=[(17), (37), (-11), (9)];
 yArray=[(33), (23), (26), (15)];
+ctx=_st(self)._monsterContext();
 _st(_st((1))._to_(_st(aTroop)._hp()))._do_((function(i){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(_st(aTroop)._side())._negative();
 if(smalltalk.assert($1)){
-$2=_st(self)._context();
+return _st((function(){
+return smalltalk.withContext(function($ctx3) {
+$2=ctx;
 _st($2)._save();
 _st($2)._translate_y_(_st(_st(_st(self["@currentPoint"])._x()).__plus((72))).__plus(_st(xArray)._at_(i)),(0));
 $3=_st($2)._scale_y_((-1),(1));
 $3;
-_st(self)._display_X_y_(aTroop,(0),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
-return _st(_st(self)._context())._restore();
+return _st(self)._display_inContext_X_y_(aTroop,ctx,(0),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._ensure_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(ctx)._restore();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 } else {
-return _st(self)._display_X_y_(aTroop,_st(_st(self["@currentPoint"])._x()).__plus(_st(xArray)._at_(i)),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
+return _st(self)._display_inContext_X_y_(aTroop,ctx,_st(_st(self["@currentPoint"])._x()).__plus(_st(xArray)._at_(i)),_st(_st(self["@currentPoint"])._y()).__minus(_st(yArray)._at_(i)));
 };
 }, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop,xArray:xArray,yArray:yArray},smalltalk.CWDrawer)})},
-messageSends: ["do:", "ifTrue:ifFalse:", "save", "context", "translate:y:", "+", "at:", "x", "scale:y:", "display:X:y:", "-", "y", "restore", "negative", "side", "to:", "hp"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop,xArray:xArray,yArray:yArray,ctx:ctx},smalltalk.CWDrawer)})},
+messageSends: ["monsterContext", "do:", "ifTrue:ifFalse:", "ensure:", "restore", "save", "translate:y:", "+", "at:", "x", "scale:y:", "display:inContext:X:y:", "-", "y", "negative", "side", "to:", "hp"]}),
 smalltalk.CWDrawer);
 
 
