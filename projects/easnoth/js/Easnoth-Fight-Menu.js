@@ -889,7 +889,6 @@ var $1,$2;
 armyPlaying=_st(_st(_st(self)._actionMenu())._map())._monstersFromSide_(_st(self)._sidePlaying());
 $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
-_st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(self)._sidePlaying())._negated()));
 } else {
 $2=_st(_st(armyPlaying)._size()).__gt((1));
 if(smalltalk.assert($2)){
@@ -906,8 +905,8 @@ _st(_st(_st(self)._actionMenu())._map())._update();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"activateTwoMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.TurnWatcher)})},
 args: [],
-source: "activateTwoMonsters\x0a\x09|armyPlaying monster1|\x0a\x0a\x09armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.\x0a\x0a\x09(armyPlaying size = 0) ifTrue: [\x0a\x09\x09window alert: 'Someone just won. Guess who ? winner : ' , self sidePlaying negated\x0a\x09] ifFalse: [\x0a\x09\x09(armyPlaying size > 1) ifTrue: [\x0a\x09\x09\x09self pickMonster\x0a\x09\x09] ifFalse: [\x0a\x09\x09\x09monster1 := (armyPlaying collect: [:monster | monster changeState: Active new]) at: 1.\x0a\x09\x09\x09monster1 select.\x0a\x09\x09\x09self actionMenu map update.\x0a\x09\x09\x09\x22self actionMenu map showActiveMonsters.\x22\x0a\x09\x09]\x0a\x09]",
-messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "at:", "collect:", "changeState:", "new", "select", "update", ">", "size", "="],
+source: "activateTwoMonsters\x0a\x09|armyPlaying monster1|\x0a\x0a\x09armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.\x0a\x0a\x09(armyPlaying size = 0) ifTrue: [\x0a\x09\x09\x22window alert: 'Someone just won. Guess who ? winner : ' , self sidePlaying negated\x22\x0a\x09] ifFalse: [\x0a\x09\x09(armyPlaying size > 1) ifTrue: [\x0a\x09\x09\x09self pickMonster\x0a\x09\x09] ifFalse: [\x0a\x09\x09\x09monster1 := (armyPlaying collect: [:monster | monster changeState: Active new]) at: 1.\x0a\x09\x09\x09monster1 select.\x0a\x09\x09\x09self actionMenu map update.\x0a\x09\x09\x09\x22self actionMenu map showActiveMonsters.\x22\x0a\x09\x09]\x0a\x09]",
+messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "ifTrue:ifFalse:", "pickMonster", "at:", "collect:", "changeState:", "new", "select", "update", ">", "size", "="],
 referencedClasses: ["Active"]
 }),
 smalltalk.TurnWatcher);

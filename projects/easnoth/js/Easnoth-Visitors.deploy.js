@@ -341,7 +341,7 @@ smalltalk.addClass('CWJsonWriter', smalltalk.CWVisitor, [], 'Easnoth-Visitors');
 smalltalk.addClass('CWLeafSelector', smalltalk.CWVisitor, [], 'Easnoth-Visitors');
 
 
-smalltalk.addClass('CWMapDrawer', smalltalk.CWVisitor, ['backgroundCanvas', 'monsterCanvas', 'gameCanvas', 'padding', 'executionContext'], 'Easnoth-Visitors');
+smalltalk.addClass('CWMapDrawer', smalltalk.CWVisitor, ['layers', 'padding', 'executionContext'], 'Easnoth-Visitors');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "backgroundCanvas",
@@ -349,21 +349,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@backgroundCanvas"];
+$1=_st(self["@layers"])._at_((1));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"backgroundCanvas",{},smalltalk.CWDrawer)})},
-messageSends: []}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "backgroundCanvas:",
-fn: function (aCanvas){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@backgroundCanvas"]=aCanvas;
-return self}, function($ctx1) {$ctx1.fill(self,"backgroundCanvas:",{aCanvas:aCanvas},smalltalk.CWDrawer)})},
-messageSends: []}),
+}, function($ctx1) {$ctx1.fill(self,"backgroundCanvas",{},smalltalk.CWMapDrawer)})},
+messageSends: ["at:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -384,10 +373,25 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(_st(self)._backgroundCanvas())._element())._getContext_("2d");
+$1=_st(self)._contextForCanvas_(_st(self)._backgroundCanvas());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"backgroundContext",{},smalltalk.CWDrawer)})},
-messageSends: ["getContext:", "element", "backgroundCanvas"]}),
+}, function($ctx1) {$ctx1.fill(self,"backgroundContext",{},smalltalk.CWMapDrawer)})},
+messageSends: ["contextForCanvas:", "backgroundCanvas"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canvasForId:",
+fn: function (id){
+var self=this;
+function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
+function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($TagBrush())._fromJQuery_canvas_(_st(id)._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canvasForId:",{id:id},smalltalk.CWMapDrawer)})},
+messageSends: ["fromJQuery:canvas:", "asJQuery", "onJQuery:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -427,6 +431,19 @@ elem=_st(aCanvas)._element();
 _st(_st(elem)._getContext_("2d"))._clearRect_y_width_height_((0),(0),_st(elem)._width(),_st(elem)._height());
 return self}, function($ctx1) {$ctx1.fill(self,"cleanCanvas:",{aCanvas:aCanvas,elem:elem},smalltalk.CWDrawer)})},
 messageSends: ["element", "clearRect:y:width:height:", "width", "height", "getContext:"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "contextForCanvas:",
+fn: function (canvas){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(canvas)._element())._getContext_("2d");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"contextForCanvas:",{canvas:canvas},smalltalk.CWMapDrawer)})},
+messageSends: ["getContext:", "element"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -549,21 +566,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@gameCanvas"];
+$1=_st(self["@layers"])._at_((2));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"gameCanvas",{},smalltalk.CWDrawer)})},
-messageSends: []}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "gameCanvas:",
-fn: function (aCanvas){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@gameCanvas"]=aCanvas;
-return self}, function($ctx1) {$ctx1.fill(self,"gameCanvas:",{aCanvas:aCanvas},smalltalk.CWDrawer)})},
-messageSends: []}),
+}, function($ctx1) {$ctx1.fill(self,"gameCanvas",{},smalltalk.CWMapDrawer)})},
+messageSends: ["at:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -584,10 +590,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(_st(self)._gameCanvas())._element())._getContext_("2d");
+$1=_st(self)._contextForCanvas_(_st(self)._gameCanvas());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"gameContext",{},smalltalk.CWDrawer)})},
-messageSends: ["getContext:", "element", "gameCanvas"]}),
+}, function($ctx1) {$ctx1.fill(self,"gameContext",{},smalltalk.CWMapDrawer)})},
+messageSends: ["contextForCanvas:", "gameCanvas"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -595,16 +601,12 @@ smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
-function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
-function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
-_st(self)._backgroundCanvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._backgroundCanvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
-_st(self)._gameCanvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._gameCanvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
-_st(self)._monsterCanvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._monsterCanvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
+_st(self)._initializeLayers();
 _st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDrawer)})},
-messageSends: ["initialize", "backgroundCanvas:", "fromJQuery:canvas:", "asJQuery", "backgroundCanvasId", "onJQuery:", "gameCanvas:", "gameCanvasId", "monsterCanvas:", "monsterCanvasId", "padding:", "@", "canvasPadding"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMapDrawer)})},
+messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -620,26 +622,33 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeLayers",
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st($Array())._new();
+_st($1)._at_put_((1),_st(self)._canvasForId_(_st(self)._backgroundCanvasId()));
+_st($1)._at_put_((2),_st(self)._canvasForId_(_st(self)._gameCanvasId()));
+_st($1)._at_put_((3),_st(self)._canvasForId_(_st(self)._monsterCanvasId()));
+$2=_st($1)._yourself();
+self["@layers"]=$2;
+return self}, function($ctx1) {$ctx1.fill(self,"initializeLayers",{},smalltalk.CWMapDrawer)})},
+messageSends: ["at:put:", "canvasForId:", "backgroundCanvasId", "new", "gameCanvasId", "monsterCanvasId", "yourself"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "monsterCanvas",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@monsterCanvas"];
+$1=_st(self["@layers"])._at_((3));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"monsterCanvas",{},smalltalk.CWDrawer)})},
-messageSends: []}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "monsterCanvas:",
-fn: function (aCanvas){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@monsterCanvas"]=aCanvas;
-return self}, function($ctx1) {$ctx1.fill(self,"monsterCanvas:",{aCanvas:aCanvas},smalltalk.CWDrawer)})},
-messageSends: []}),
+}, function($ctx1) {$ctx1.fill(self,"monsterCanvas",{},smalltalk.CWMapDrawer)})},
+messageSends: ["at:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -660,10 +669,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(_st(self)._monsterCanvas())._element())._getContext_("2d");
+$1=_st(self)._contextForCanvas_(_st(self)._monsterCanvas());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"monsterContext",{},smalltalk.CWDrawer)})},
-messageSends: ["getContext:", "element", "monsterCanvas"]}),
+}, function($ctx1) {$ctx1.fill(self,"monsterContext",{},smalltalk.CWMapDrawer)})},
+messageSends: ["contextForCanvas:", "monsterCanvas"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -910,6 +919,22 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self)._executionContext())._visitTroop_(aTroop);
 return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWMapDrawer)})},
 messageSends: ["visitTroop:", "executionContext"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "xxxDoIt",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._initializeLayers();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._value();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"xxxDoIt",{},smalltalk.CWMapDrawer)})},
+messageSends: ["value", "initializeLayers"]}),
 smalltalk.CWMapDrawer);
 
 
