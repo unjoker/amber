@@ -567,7 +567,7 @@ smalltalk.CWOneChildClass);
 
 
 
-smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -606,6 +606,19 @@ $1=_st(self)._rows();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CWMap)})},
 messageSends: ["rows"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWOneChildClass.fn.prototype._initialize.apply(_st(self), []);
+self["@drawer"]=_st($CWMapDrawer())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMap)})},
+messageSends: ["initialize", "new"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -651,6 +664,39 @@ $1=self["@rows"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"rows",{},smalltalk.CWMap)})},
 messageSends: []}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "update",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._updateMap_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMap)})},
+messageSends: ["updateMap:"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateGOTs",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._updateGOTs_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMap)})},
+messageSends: ["updateGOTs:"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateMonstersAndGOTs",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._updateMonstersAndGOTs_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMap)})},
+messageSends: ["updateMonstersAndGOTs:"]}),
 smalltalk.CWMap);
 
 

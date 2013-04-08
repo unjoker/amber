@@ -41,14 +41,13 @@ initialize
 ! !
 
 Object subclass: #CWGameBoard
-	instanceVariableNames: 'map drawer menu eventManager'
+	instanceVariableNames: 'map menu eventManager'
 	package: 'Easnoth-Events'!
 
 !CWGameBoard methodsFor: 'initialize-release'!
 
 initialize
 	super initialize.
-	drawer := CWDrawer new.
 	menu := FightMenu newFor: self.
 	eventManager := CWEventManager new
 !
@@ -62,9 +61,9 @@ initializeMapWithIndex: index
 examples
 	"To remove when model ok"
 	CWMap newWithMapIndex: 5.
-	CWMapDrawer new drawMap: CWMap default.
-	CWMapDrawer new drawGOTs: CWMap default.
-	CWMapDrawer new drawMonstersAndGOTs: CWMap default.
+	CWMap default update.
+	CWMap default updateGOTs.
+	CWMap default updateMonstersAndGOTs.
 	CWEasnothAnnouncer current.
 ! !
 
