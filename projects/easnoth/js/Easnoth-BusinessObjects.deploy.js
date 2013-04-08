@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-BusinessObjects');
-smalltalk.addClass('CWNode', smalltalk.Object, ['parent', 'children'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWComponent', smalltalk.Object, ['parent'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -9,70 +9,21 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CoreWidget)})},
 messageSends: ["subclassResponsibility"]}),
-smalltalk.CWNode);
+smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "addChild:",
-fn: function (object){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@children"])._add_(object);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"addChild:",{object:object},smalltalk.CWBusinessObject)})},
-messageSends: ["add:"]}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "addChildren:",
-fn: function (aCollection){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@children"])._addAll_(aCollection);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"addChildren:",{aCollection:aCollection},smalltalk.CoreWidget)})},
-messageSends: ["addAll:"]}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "childAt:",
-fn: function (index){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@children"])._at_(index);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"childAt:",{index:index},smalltalk.CoreWidget)})},
-messageSends: ["at:"]}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "childAt:put:",
-fn: function (index,object){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@children"])._at_put_(index,object);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"childAt:put:",{index:index,object:object},smalltalk.CWBusinessObject)})},
-messageSends: ["at:put:"]}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "childBasicClass",
+selector: "announcer",
 fn: function (){
 var self=this;
+function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CoreWidget)})},
-messageSends: ["subclassResponsibility"]}),
-smalltalk.CWNode);
+var $1;
+$1=_st($CWEasnothAnnouncer())._current();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWNode)})},
+messageSends: ["current"]}),
+smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -80,36 +31,10 @@ selector: "children",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@children"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CoreWidget)})},
-messageSends: []}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "children:",
-fn: function (aCollection){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@children"]=aCollection;
-return self}, function($ctx1) {$ctx1.fill(self,"children:",{aCollection:aCollection},smalltalk.CoreWidget)})},
-messageSends: []}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-fn: function (){
-var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@children"]=_st($Array())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CoreWidget)})},
-messageSends: ["initialize", "new"]}),
-smalltalk.CWNode);
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CWComponent)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -117,12 +42,10 @@ selector: "isLeaf",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@children"])._isEmpty();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"isLeaf",{},smalltalk.CoreWidget)})},
-messageSends: ["isEmpty"]}),
-smalltalk.CWNode);
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isLeaf",{},smalltalk.CWComponent)})},
+messageSends: []}),
+smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -130,38 +53,10 @@ selector: "isRoot",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@parent"])._isNil();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"isRoot",{},smalltalk.CoreWidget)})},
-messageSends: ["isNil"]}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newChild",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self)._newChild_(_st(self)._childBasicClass());
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newChild",{},smalltalk.CoreWidget)})},
-messageSends: ["newChild:", "childBasicClass"]}),
-smalltalk.CWNode);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newChild:",
-fn: function (aClass){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(aClass)._new())._parent_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newChild:",{aClass:aClass},smalltalk.CoreWidget)})},
-messageSends: ["parent:", "new"]}),
-smalltalk.CWNode);
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isRoot",{},smalltalk.CWComponent)})},
+messageSends: []}),
+smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -174,7 +69,7 @@ $1=self["@parent"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"parent",{},smalltalk.CoreWidget)})},
 messageSends: []}),
-smalltalk.CWNode);
+smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -185,24 +80,62 @@ return smalltalk.withContext(function($ctx1) {
 self["@parent"]=object;
 return self}, function($ctx1) {$ctx1.fill(self,"parent:",{object:object},smalltalk.CWBusinessObject)})},
 messageSends: []}),
-smalltalk.CWNode);
+smalltalk.CWComponent);
+
+
+
+smalltalk.addClass('CWComposite', smalltalk.CWComponent, [], 'Easnoth-BusinessObjects');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWComposite)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWComposite);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "removeChild:",
-fn: function (object){
+selector: "childAt:",
+fn: function (index){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self["@children"])._remove_(object);
+$1=_st(_st(self)._children())._at_(index);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"removeChild:",{object:object},smalltalk.CWBusinessObject)})},
-messageSends: ["remove:"]}),
-smalltalk.CWNode);
+}, function($ctx1) {$ctx1.fill(self,"childAt:",{index:index},smalltalk.CWComposite)})},
+messageSends: ["at:", "children"]}),
+smalltalk.CWComposite);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "children",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CWComposite)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWComposite);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newChild:",
+fn: function (aClass){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(aClass)._new())._parent_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newChild:",{aClass:aClass},smalltalk.CWComposite)})},
+messageSends: ["parent:", "new"]}),
+smalltalk.CWComposite);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWNode, ['mapCoods'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -214,6 +147,109 @@ $1=_st(aVisitor)._visitCell_(self);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWCell)})},
 messageSends: ["visitCell:"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "background",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self["@background"];
+if(($receiver = $2) == nil || $receiver == undefined){
+$1=_st(self)._error_("should be initialized");
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"background",{},smalltalk.CWCell)})},
+messageSends: ["ifNil:", "error:"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backgroundAdd:",
+fn: function (aBackground){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._background())._add_(aBackground);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"backgroundAdd:",{aBackground:aBackground},smalltalk.CWCell)})},
+messageSends: ["add:", "background"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backgroundAddAll:",
+fn: function (aCol){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._background())._addAll_(aCol);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"backgroundAddAll:",{aCol:aCol},smalltalk.CWCell)})},
+messageSends: ["addAll:", "background"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "children",
+fn: function (){
+var self=this;
+var children;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$4,$5,$3;
+children=_st($Array())._new();
+$1=_st(self)._monster();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var var_;
+var_=$receiver;
+_st(children)._add_(var_);
+};
+$2=_st(self)._gameOverTile();
+if(($receiver = $2) == nil || $receiver == undefined){
+$2;
+} else {
+var var2;
+var2=$receiver;
+_st(children)._add_(var2);
+};
+$4=children;
+_st($4)._addAll_(_st(self)._background());
+$5=_st($4)._yourself();
+$3=$5;
+return $3;
+}, function($ctx1) {$ctx1.fill(self,"children",{children:children},smalltalk.CWCell)})},
+messageSends: ["new", "ifNotNil:", "add:", "monster", "gameOverTile", "addAll:", "background", "yourself"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "gameOverTile",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@gameOverTile"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"gameOverTile",{},smalltalk.CWCell)})},
+messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "gameOverTile:",
+fn: function (aGOT){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@gameOverTile"]=aGOT;
+return self}, function($ctx1) {$ctx1.fill(self,"gameOverTile:",{aGOT:aGOT},smalltalk.CWCell)})},
+messageSends: []}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -250,30 +286,32 @@ selector: "initializeFromJson:",
 fn: function (aJsonCell){
 var self=this;
 var elements;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4;
 elements=_st(aJsonCell)._keys();
+self["@background"]=_st($Array())._new();
 $1=_st(_st(elements)._first()).__eq("tile");
 if(smalltalk.assert($1)){
-_st(self)._addChild_(_st(_st(self)._newTile())._initializeFromJson_(_st(aJsonCell)._tile()));
+_st(self)._backgroundAdd_(_st(_st(self)._newTile())._initializeFromJson_(_st(aJsonCell)._tile()));
 };
 $2=_st(elements)._includes_("overtiles");
 if(smalltalk.assert($2)){
-_st(self)._addChildren_(_st(_st(aJsonCell)._overtiles())._collect_((function(each){
+_st(self)._backgroundAddAll_(_st(_st(aJsonCell)._overtiles())._collect_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(self)._newOverTile())._initializeFromJson_(_st(each)._overtile());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})));
 };
 $3=_st(_st(elements)._last()).__eq("heros");
 if(smalltalk.assert($3)){
-_st(self)._addChild_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._heros()));
+_st(self)._monster_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._heros()));
 };
 $4=_st(_st(elements)._last()).__eq("troop");
 if(smalltalk.assert($4)){
-_st(self)._addChild_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
+_st(self)._monster_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements},smalltalk.CWCell)})},
-messageSends: ["keys", "ifTrue:", "addChild:", "initializeFromJson:", "tile", "newTile", "=", "first", "addChildren:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "heros", "newHeros", "last", "troop", "newTroop"]}),
+messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromJson:", "tile", "newTile", "=", "first", "backgroundAddAll:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "monster:", "heros", "newHeros", "last", "troop", "newTroop"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -298,6 +336,49 @@ return smalltalk.withContext(function($ctx1) {
 self["@mapCoods"]=aPoint;
 return self}, function($ctx1) {$ctx1.fill(self,"mapCoods:",{aPoint:aPoint},smalltalk.CWCell)})},
 messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@monster"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster",{},smalltalk.CWCell)})},
+messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@monster"]=aMonster;
+return self}, function($ctx1) {$ctx1.fill(self,"monster:",{aMonster:aMonster},smalltalk.CWCell)})},
+messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "neighbours",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self["@neighboursCache"];
+if(($receiver = $2) == nil || $receiver == undefined){
+self["@neighboursCache"]=_st(_st(self)._parent())._neighboursOf_(self);
+$1=self["@neighboursCache"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"neighbours",{},smalltalk.CWCell)})},
+messageSends: ["ifNil:", "neighboursOf:", "parent"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -409,7 +490,336 @@ smalltalk.CWCell);
 
 
 
-smalltalk.addClass('CWImageLeaf', smalltalk.CWNode, ['image'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWOneChildClass', smalltalk.CWComposite, [], 'Easnoth-BusinessObjects');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWOneChildClass)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWOneChildClass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "addChild:",
+fn: function (object){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._children())._add_(object);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"addChild:",{object:object},smalltalk.CWOneChildClass)})},
+messageSends: ["add:", "children"]}),
+smalltalk.CWOneChildClass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "childAt:put:",
+fn: function (index,object){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._children())._at_put_(index,object);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"childAt:put:",{index:index,object:object},smalltalk.CWOneChildClass)})},
+messageSends: ["at:put:", "children"]}),
+smalltalk.CWOneChildClass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "childBasicClass",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CWOneChildClass)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWOneChildClass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newChild",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newChild_(_st(self)._childBasicClass());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newChild",{},smalltalk.CWOneChildClass)})},
+messageSends: ["newChild:", "childBasicClass"]}),
+smalltalk.CWOneChildClass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeChild:",
+fn: function (object){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._children())._remove_(object);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"removeChild:",{object:object},smalltalk.CWOneChildClass)})},
+messageSends: ["remove:", "children"]}),
+smalltalk.CWOneChildClass);
+
+
+
+smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows'], 'Easnoth-BusinessObjects');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aVisitor)._visitMap_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWMap)})},
+messageSends: ["visitMap:"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "childBasicClass",
+fn: function (){
+var self=this;
+function $CWRow(){return smalltalk.CWRow||(typeof CWRow=="undefined"?nil:CWRow)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=$CWRow();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CWMap)})},
+messageSends: []}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "children",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._rows();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CWMap)})},
+messageSends: ["rows"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeFromJson:",
+fn: function (jsonMap){
+var self=this;
+var child,rows1;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+rows1=_st(jsonMap)._row();
+self["@rows"]=_st($Array())._new_(_st(rows1)._size());
+_st(rows1)._withIndexDo_((function(row,i){
+return smalltalk.withContext(function($ctx2) {
+child=_st(self)._newChild();
+child;
+_st(self)._childAt_put_(i,child);
+return _st(child)._initializeFromJson_(row);
+}, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{jsonMap:jsonMap,child:child,rows1:rows1},smalltalk.CWMap)})},
+messageSends: ["row", "new:", "size", "withIndexDo:", "newChild", "childAt:put:", "initializeFromJson:"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRoot",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isRoot",{},smalltalk.CWMap)})},
+messageSends: []}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "rows",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@rows"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"rows",{},smalltalk.CWMap)})},
+messageSends: []}),
+smalltalk.CWMap);
+
+
+smalltalk.CWMap.klass.iVarNames = ['default'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "default",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self["@default"];
+if(($receiver = $2) == nil || $receiver == undefined){
+self["@default"]=_st(self)._new();
+$1=self["@default"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMap.klass)})},
+messageSends: ["ifNil:", "new"]}),
+smalltalk.CWMap.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newWithMapIndex:",
+fn: function (aMapIndex){
+var self=this;
+var map;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+map=_st(self)._default();
+_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/maps/map").__comma(aMapIndex)).__comma(".json"),(function(data){
+return smalltalk.withContext(function($ctx2) {
+return _st(map)._initializeFromJson_(data);
+}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
+$1=map;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{aMapIndex:aMapIndex,map:map},smalltalk.CWMap.klass)})},
+messageSends: ["default", "getJSON:onSuccess:", ",", "initializeFromJson:"]}),
+smalltalk.CWMap.klass);
+
+
+smalltalk.addClass('CWRow', smalltalk.CWOneChildClass, ['cells'], 'Easnoth-BusinessObjects');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aVisitor)._visitRow_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWRow)})},
+messageSends: ["visitRow:"]}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "cells",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@cells"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"cells",{},smalltalk.CWRow)})},
+messageSends: []}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "childBasicClass",
+fn: function (){
+var self=this;
+function $CWCell(){return smalltalk.CWCell||(typeof CWCell=="undefined"?nil:CWCell)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=$CWCell();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CWRow)})},
+messageSends: []}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "children",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._cells();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CWRow)})},
+messageSends: ["cells"]}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeFromJson:",
+fn: function (jsonRow){
+var self=this;
+var cells1,child;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+cells1=_st(jsonRow)._cells();
+self["@cells"]=_st($Array())._new_(_st(cells1)._size());
+_st(cells1)._withIndexDo_((function(cell,i){
+return smalltalk.withContext(function($ctx2) {
+child=_st(self)._newChild();
+child;
+_st(child)._initializeFromJson_(cell);
+return _st(self)._childAt_put_(i,child);
+}, function($ctx2) {$ctx2.fillBlock({cell:cell,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{jsonRow:jsonRow,cells1:cells1,child:child},smalltalk.CWRow)})},
+messageSends: ["cells", "new:", "size", "withIndexDo:", "newChild", "initializeFromJson:", "childAt:put:"]}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "neighboursOf:",
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"neighboursOf:",{aCell:aCell},smalltalk.CWRow)})},
+messageSends: []}),
+smalltalk.CWRow);
+
+
+
+smalltalk.addClass('CWLeaf', smalltalk.CWComponent, [], 'Easnoth-BusinessObjects');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWLeaf)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWLeaf);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "children",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=[];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"children",{},smalltalk.CWLeaf)})},
+messageSends: []}),
+smalltalk.CWLeaf);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isLeaf",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isLeaf",{},smalltalk.CWLeaf)})},
+messageSends: []}),
+smalltalk.CWLeaf);
+
+
+
+smalltalk.addClass('CWImageLeaf', smalltalk.CWLeaf, ['image'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -1021,223 +1431,6 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWTroop)})},
 messageSends: []}),
 smalltalk.CWTroop);
-
-
-
-smalltalk.addClass('CWMap', smalltalk.CWNode, [], 'Easnoth-BusinessObjects');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitMap_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWMap)})},
-messageSends: ["visitMap:"]}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canvasCoods",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@canvasCoods"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"canvasCoods",{},smalltalk.CWMap)})},
-messageSends: []}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canvasCoods:",
-fn: function (aPoint){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@canvasCoods"]=aPoint;
-return self}, function($ctx1) {$ctx1.fill(self,"canvasCoods:",{aPoint:aPoint},smalltalk.CWMap)})},
-messageSends: []}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canvasPadding",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=(40);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.CWMap)})},
-messageSends: []}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "childBasicClass",
-fn: function (){
-var self=this;
-function $CWRow(){return smalltalk.CWRow||(typeof CWRow=="undefined"?nil:CWRow)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=$CWRow();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CWMap)})},
-messageSends: []}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeFromJson:",
-fn: function (jsonMap){
-var self=this;
-var child,rows;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-rows=_st(jsonMap)._row();
-_st(self)._children_(_st($Array())._new_(_st(rows)._size()));
-_st(rows)._withIndexDo_((function(row,i){
-return smalltalk.withContext(function($ctx2) {
-child=_st(self)._newChild();
-child;
-_st(self)._childAt_put_(i,child);
-_st(child)._rowIndex_(i);
-return _st(child)._initializeFromJson_(row);
-}, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{jsonMap:jsonMap,child:child,rows:rows},smalltalk.CWMap)})},
-messageSends: ["row", "children:", "new:", "size", "withIndexDo:", "newChild", "childAt:put:", "rowIndex:", "initializeFromJson:"]}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "tileUnit",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=(50);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.CWMap)})},
-messageSends: []}),
-smalltalk.CWMap);
-
-
-smalltalk.CWMap.klass.iVarNames = ['default'];
-smalltalk.addMethod(
-smalltalk.method({
-selector: "default",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self["@default"];
-if(($receiver = $2) == nil || $receiver == undefined){
-self["@default"]=_st(self)._new();
-$1=self["@default"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMap.klass)})},
-messageSends: ["ifNil:", "new"]}),
-smalltalk.CWMap.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newWithMapIndex:",
-fn: function (aMapIndex){
-var self=this;
-var map;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-map=_st(self)._default();
-_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/maps/map").__comma(aMapIndex)).__comma(".json"),(function(data){
-return smalltalk.withContext(function($ctx2) {
-return _st(map)._initializeFromJson_(data);
-}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
-$1=map;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{aMapIndex:aMapIndex,map:map},smalltalk.CWMap.klass)})},
-messageSends: ["default", "getJSON:onSuccess:", ",", "initializeFromJson:"]}),
-smalltalk.CWMap.klass);
-
-
-smalltalk.addClass('CWRow', smalltalk.CWNode, ['rowIndex'], 'Easnoth-BusinessObjects');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitRow_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWRow)})},
-messageSends: ["visitRow:"]}),
-smalltalk.CWRow);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "childBasicClass",
-fn: function (){
-var self=this;
-function $CWCell(){return smalltalk.CWCell||(typeof CWCell=="undefined"?nil:CWCell)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=$CWCell();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"childBasicClass",{},smalltalk.CWRow)})},
-messageSends: []}),
-smalltalk.CWRow);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeFromJson:",
-fn: function (jsonRow){
-var self=this;
-var cells,child;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-cells=_st(jsonRow)._cells();
-_st(self)._children_(_st($Array())._new_(_st(cells)._size()));
-_st(cells)._withIndexDo_((function(cell,i){
-return smalltalk.withContext(function($ctx2) {
-child=_st(self)._newChild();
-child;
-_st(child)._mapCoods_(_st(_st(self)._rowIndex()).__at(i));
-_st(child)._initializeFromJson_(cell);
-return _st(self)._childAt_put_(i,child);
-}, function($ctx2) {$ctx2.fillBlock({cell:cell,i:i},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{jsonRow:jsonRow,cells:cells,child:child},smalltalk.CWRow)})},
-messageSends: ["cells", "children:", "new:", "size", "withIndexDo:", "newChild", "mapCoods:", "@", "rowIndex", "initializeFromJson:", "childAt:put:"]}),
-smalltalk.CWRow);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "rowIndex",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@rowIndex"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"rowIndex",{},smalltalk.CWRow)})},
-messageSends: []}),
-smalltalk.CWRow);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "rowIndex:",
-fn: function (aNumber){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@rowIndex"]=aNumber;
-return self}, function($ctx1) {$ctx1.fill(self,"rowIndex:",{aNumber:aNumber},smalltalk.CWRow)})},
-messageSends: []}),
-smalltalk.CWRow);
 
 
 

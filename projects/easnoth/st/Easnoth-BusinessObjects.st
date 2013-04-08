@@ -1,20 +1,20 @@
 Smalltalk current createPackage: 'Easnoth-BusinessObjects'!
-Object subclass: #CWNode
-	instanceVariableNames: 'parent children'
+Object subclass: #CWComponent
+	instanceVariableNames: 'parent'
 	package: 'Easnoth-BusinessObjects'!
-!CWNode commentStamp!
+!CWComponent commentStamp!
 I represent a business object of the game. The business objects are managed in a tree : you have a root object that has children (and children can also have children).
 
 Game logic is implemented in my subclasses. For Displaying, look at CWDrawer.!
 
-!CWNode methodsFor: 'accessing'!
+!CWComponent methodsFor: 'accessing'!
 
-children
-	^ children
+announcer
+	^ CWEasnothAnnouncer current
 !
 
-children: aCollection
-	children := aCollection
+children
+	self subclassResponsibility
 !
 
 parent
@@ -25,70 +25,89 @@ parent: object
 	parent := object
 ! !
 
-!CWNode methodsFor: 'factory'!
-
-newChild
-	^ self newChild: self childBasicClass
-!
-
-newChild: aClass
-	^ aClass new parent: self
-! !
-
-!CWNode methodsFor: 'nodes'!
-
-addChild: object
-	^ children add: object
-!
-
-addChildren: aCollection
-	^ children addAll: aCollection
-!
-
-childAt: index 
-	^ children at: index
-!
-
-childAt: index put: object
-	^ children at: index put: object
-!
-
-childBasicClass
-	self subclassResponsibility
-!
-
-removeChild: object
-	^ children remove: object
-! !
-
-!CWNode methodsFor: 'testing'!
-
-initialize
-	super initialize.
-	children := Array new
-!
+!CWComponent methodsFor: 'testing'!
 
 isLeaf
-	^ children isEmpty
+	^ false
 !
 
 isRoot
-	^ parent isNil
+	^ false
 ! !
 
-!CWNode methodsFor: 'visiting'!
+!CWComponent methodsFor: 'visiting'!
 
 accept: aVisitor
 	self subclassResponsibility
 ! !
 
-CWNode subclass: #CWCell
-	instanceVariableNames: 'mapCoods'
+CWComponent subclass: #CWComposite
+	instanceVariableNames: ''
+	package: 'Easnoth-BusinessObjects'!
+
+!CWComposite methodsFor: 'accessing'!
+
+children
+	self subclassResponsibility
+! !
+
+!CWComposite methodsFor: 'children management'!
+
+childAt: index 
+	^ self children at: index
+! !
+
+!CWComposite methodsFor: 'factory'!
+
+newChild: aClass
+	^ aClass new parent: self
+! !
+
+!CWComposite methodsFor: 'visiting'!
+
+accept: aVisitor
+	self subclassResponsibility
+! !
+
+CWComposite subclass: #CWCell
+	instanceVariableNames: 'neighboursCache background gameOverTile monster'
 	package: 'Easnoth-BusinessObjects'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
 
 !CWCell methodsFor: 'accessing'!
+
+background
+	^ background ifNil: [ self error: 'should be initialized' ]
+!
+
+backgroundAdd: aBackground
+	^ self background add: aBackground
+!
+
+backgroundAddAll: aCol
+	^ self background addAll: aCol
+!
+
+children
+	| children | 
+	children := Array new.
+	self monster ifNotNil: [ :var |
+		children add: var ].
+	self gameOverTile ifNotNil: [ :var2 |
+		children add: var2 ].
+	^ children
+		addAll: self background;
+		yourself
+!
+
+gameOverTile
+	^ gameOverTile
+!
+
+gameOverTile: aGOT
+	gameOverTile := aGOT
+!
 
 mapCoods
 	^ mapCoods
@@ -96,9 +115,29 @@ mapCoods
 
 mapCoods: aPoint
 	mapCoods := aPoint.
+!
+
+monster
+	^ monster
+!
+
+monster: aMonster
+	monster := aMonster
+!
+
+neighbours
+	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
 ! !
 
 !CWCell methodsFor: 'factory'!
+
+gameOverTileClass
+	^ CWGameOverTile
+!
+
+herosClass
+	^ CWHeros
+!
 
 newGameOverTile
 	 ^ self newChild: self gameOverTileClass
@@ -118,34 +157,6 @@ newTile
 
 newTroop
 	 ^ self newChild: self troopClass
-! !
-
-!CWCell methodsFor: 'initialize-release'!
-
-initializeFromJson: aJsonCell
-    | elements |
-    
-    elements := aJsonCell keys.
-    
-    elements first = 'tile'
-    	ifTrue: [ self addChild: (self newTile initializeFromJson: aJsonCell tile) ].
-    (elements includes: 'overtiles') 
-    	ifTrue: [ self addChildren: (aJsonCell overtiles collect: [:each | 
-			self newOverTile initializeFromJson: each overtile] ) ].
-    elements last = 'heros'
-    	ifTrue: [ self addChild: (self newHeros initializeFromJson: aJsonCell heros) ].
-    elements last = 'troop'
-    	ifTrue: [ self addChild: (self newTroop initializeFromJson: aJsonCell troop) ].
-! !
-
-!CWCell methodsFor: 'nodes'!
-
-gameOverTileClass
-	^ CWGameOverTile
-!
-
-herosClass
-	^ CWHeros
 !
 
 overTileClass
@@ -160,13 +171,205 @@ troopClass
 	^ CWTroop
 ! !
 
+!CWCell methodsFor: 'initialize-release'!
+
+initializeFromJson: aJsonCell
+    | elements |
+    
+    elements := aJsonCell keys.
+    background := Array new.
+	
+    elements first = 'tile'
+    	ifTrue: [ self backgroundAdd: (self newTile initializeFromJson: aJsonCell tile) ].
+    (elements includes: 'overtiles') 
+    	ifTrue: [ self backgroundAddAll: (aJsonCell overtiles collect: [:each | 
+			self newOverTile initializeFromJson: each overtile] ) ].
+    elements last = 'heros'
+    	ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].
+    elements last = 'troop'
+    	ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].
+! !
+
 !CWCell methodsFor: 'visiting'!
 
 accept: aVisitor
 	^ aVisitor visitCell: self
 ! !
 
-CWNode subclass: #CWImageLeaf
+CWComposite subclass: #CWOneChildClass
+	instanceVariableNames: ''
+	package: 'Easnoth-BusinessObjects'!
+!CWOneChildClass commentStamp!
+I am a standard composite except that all my children have the same class.!
+
+!CWOneChildClass methodsFor: 'children management'!
+
+addChild: object
+	^ self children add: object
+!
+
+childAt: index put: object
+	^ self children at: index put: object
+!
+
+removeChild: object
+	^ self children remove: object
+! !
+
+!CWOneChildClass methodsFor: 'factory'!
+
+childBasicClass
+	self subclassResponsibility
+!
+
+newChild
+	^ self newChild: self childBasicClass
+! !
+
+!CWOneChildClass methodsFor: 'visiting'!
+
+accept: aVisitor
+	self subclassResponsibility
+! !
+
+CWOneChildClass subclass: #CWMap
+	instanceVariableNames: 'rows'
+	package: 'Easnoth-BusinessObjects'!
+!CWMap commentStamp!
+I represent the whole map in the game.!
+
+!CWMap methodsFor: 'accessing'!
+
+children
+	^ self rows
+!
+
+rows
+	^ rows
+! !
+
+!CWMap methodsFor: 'factory'!
+
+childBasicClass
+	^ CWRow
+! !
+
+!CWMap methodsFor: 'initialize-release'!
+
+initializeFromJson: jsonMap
+	"initialize the rows of the map"
+	
+	| child rows1 |
+	
+	rows1 := jsonMap row.
+	rows := Array new: rows1 size.
+	
+	rows1 withIndexDo: [:row :i |
+		child := self newChild.
+		self childAt: i put: child.
+		child initializeFromJson: row ]
+! !
+
+!CWMap methodsFor: 'testing'!
+
+isRoot
+	^ true
+! !
+
+!CWMap methodsFor: 'visiting'!
+
+accept: aVisitor
+	^ aVisitor visitMap: self
+! !
+
+CWMap class instanceVariableNames: 'default'!
+
+!CWMap class methodsFor: 'instance creation'!
+
+default
+	^ default ifNil: [ default := self new ]
+!
+
+newWithMapIndex: aMapIndex
+	| map |
+	
+	map := self default.
+    jQuery 
+		getJSON: 'ressources/json/maps/map', aMapIndex, '.json' 
+		onSuccess: [:data | 
+			map initializeFromJson: data].
+
+	^ map
+! !
+
+CWOneChildClass subclass: #CWRow
+	instanceVariableNames: 'cells'
+	package: 'Easnoth-BusinessObjects'!
+!CWRow commentStamp!
+I represent a row of cells in the map.!
+
+!CWRow methodsFor: 'accessing'!
+
+cells
+	^ cells
+!
+
+children
+	^ self cells
+! !
+
+!CWRow methodsFor: 'factory'!
+
+childBasicClass
+	^ CWCell
+! !
+
+!CWRow methodsFor: 'initialize'!
+
+initializeFromJson: jsonRow
+	| cells1 child |
+
+	cells1 := jsonRow cells.
+	cells := Array new: cells1 size.
+	
+	cells1 withIndexDo: [:cell :i |
+		child :=  self newChild.
+		child initializeFromJson: cell. 
+		self childAt: i put: child ].
+! !
+
+!CWRow methodsFor: 'neighbours'!
+
+neighboursOf: aCell
+! !
+
+!CWRow methodsFor: 'visiting'!
+
+accept: aVisitor
+	^ aVisitor visitRow: self
+! !
+
+CWComponent subclass: #CWLeaf
+	instanceVariableNames: ''
+	package: 'Easnoth-BusinessObjects'!
+
+!CWLeaf methodsFor: 'testing'!
+
+children
+	^ #()
+!
+
+isLeaf
+	^ true
+! !
+
+!CWLeaf methodsFor: 'visiting'!
+
+accept: aVisitor
+	self subclassResponsibility
+! !
+
+CWLeaf subclass: #CWImageLeaf
 	instanceVariableNames: 'image'
 	package: 'Easnoth-BusinessObjects'!
 !CWImageLeaf commentStamp!
@@ -466,125 +669,5 @@ defaultHp
 
 accept: aVisitor
 	^ aVisitor visitTroop: self
-! !
-
-CWNode subclass: #CWMap
-	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
-!CWMap commentStamp!
-I represent the whole map in the game.!
-
-!CWMap methodsFor: 'accessing'!
-
-canvasCoods
-	^ canvasCoods
-!
-
-canvasCoods: aPoint
-	canvasCoods := aPoint
-! !
-
-!CWMap methodsFor: 'constant'!
-
-canvasPadding
-	"Answers the basic distance between the window border and my top left cell"
-
-	^ 40
-!
-
-tileUnit
-	"Answers the scale of cells. Change if you take bigger pictures"
-
-	^ 50
-! !
-
-!CWMap methodsFor: 'initialize-release'!
-
-initializeFromJson: jsonMap
-	"initialize the children of the map (the rows)"
-	
-	| child rows |
-	rows := jsonMap row.
-	self children: (Array new: rows size).
-	rows withIndexDo: [:row :i |
-		child := self newChild.
-		self childAt: i put: child.
-		child rowIndex: i.
-		child initializeFromJson: row ]
-! !
-
-!CWMap methodsFor: 'nodes'!
-
-childBasicClass
-	^ CWRow
-! !
-
-!CWMap methodsFor: 'visiting'!
-
-accept: aVisitor
-	^ aVisitor visitMap: self
-! !
-
-CWMap class instanceVariableNames: 'default'!
-
-!CWMap class methodsFor: 'instance creation'!
-
-default
-	^ default ifNil: [ default := self new ]
-!
-
-newWithMapIndex: aMapIndex
-	| map |
-	
-	map := self default.
-    jQuery 
-		getJSON: 'ressources/json/maps/map', aMapIndex, '.json' 
-		onSuccess: [:data | 
-			map initializeFromJson: data].
-
-	^ map
-! !
-
-CWNode subclass: #CWRow
-	instanceVariableNames: 'rowIndex'
-	package: 'Easnoth-BusinessObjects'!
-!CWRow commentStamp!
-I represent a row of cells in the map.!
-
-!CWRow methodsFor: 'accessing'!
-
-rowIndex
-	^ rowIndex
-!
-
-rowIndex: aNumber
-	rowIndex := aNumber
-! !
-
-!CWRow methodsFor: 'initialize'!
-
-initializeFromJson: jsonRow
-	| cells child |
-
-	cells := jsonRow cells.
-	self children: (Array new: cells size).
-	
-	cells withIndexDo: [:cell :i |
-		child :=  self newChild.
-		child mapCoods: self rowIndex @ i.
-		child initializeFromJson: cell. 
-		self childAt: i put: child ].
-! !
-
-!CWRow methodsFor: 'nodes'!
-
-childBasicClass
-	^ CWCell
-! !
-
-!CWRow methodsFor: 'visiting'!
-
-accept: aVisitor
-	^ aVisitor visitRow: self
 ! !
 
