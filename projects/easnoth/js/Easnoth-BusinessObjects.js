@@ -1142,7 +1142,7 @@ smalltalk.CWLeaf);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "children",
-category: 'testing',
+category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 

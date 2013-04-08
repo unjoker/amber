@@ -421,7 +421,7 @@ activateTwoMonsters
 	armyPlaying := self actionMenu map monstersFromSide: self sidePlaying.
 
 	(armyPlaying size = 0) ifTrue: [
-		window alert: 'Someone just won. Guess who ? winner : ' , self sidePlaying negated
+		"window alert: 'Someone just won. Guess who ? winner : ' , self sidePlaying negated"
 	] ifFalse: [
 		(armyPlaying size > 1) ifTrue: [
 			self pickMonster

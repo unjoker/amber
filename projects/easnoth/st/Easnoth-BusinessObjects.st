@@ -372,11 +372,13 @@ CWComponent subclass: #CWLeaf
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
-!CWLeaf methodsFor: 'testing'!
+!CWLeaf methodsFor: 'accessing'!
 
 children
 	^ #()
-!
+! !
+
+!CWLeaf methodsFor: 'testing'!
 
 isLeaf
 	^ true

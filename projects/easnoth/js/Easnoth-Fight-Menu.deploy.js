@@ -663,7 +663,6 @@ var $1,$2;
 armyPlaying=_st(_st(_st(self)._actionMenu())._map())._monstersFromSide_(_st(self)._sidePlaying());
 $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
-_st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(self)._sidePlaying())._negated()));
 } else {
 $2=_st(_st(armyPlaying)._size()).__gt((1));
 if(smalltalk.assert($2)){
@@ -679,7 +678,7 @@ _st(_st(_st(self)._actionMenu())._map())._update();
 };
 };
 return self}, function($ctx1) {$ctx1.fill(self,"activateTwoMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.TurnWatcher)})},
-messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "at:", "collect:", "changeState:", "new", "select", "update", ">", "size", "="]}),
+messageSends: ["monstersFromSide:", "sidePlaying", "map", "actionMenu", "ifTrue:ifFalse:", "pickMonster", "at:", "collect:", "changeState:", "new", "select", "update", ">", "size", "="]}),
 smalltalk.TurnWatcher);
 
 smalltalk.addMethod(

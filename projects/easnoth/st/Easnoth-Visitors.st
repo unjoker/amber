@@ -185,7 +185,7 @@ CWVisitor subclass: #CWLeafSelector
 	package: 'Easnoth-Visitors'!
 
 CWVisitor subclass: #CWMapDrawer
-	instanceVariableNames: 'backgroundCanvas monsterCanvas gameCanvas padding executionContext'
+	instanceVariableNames: 'layers padding executionContext'
 	package: 'Easnoth-Visitors'!
 !CWMapDrawer commentStamp!
 I am a drawer that can draw the business objects through a visit of its tree.
@@ -194,15 +194,15 @@ I am an implementation of the interpreter design pattern so I have a context of 
 !CWMapDrawer methodsFor: 'accessing'!
 
 backgroundCanvas
-	^ backgroundCanvas
-!
-
-backgroundCanvas: aCanvas
-	backgroundCanvas := aCanvas
+	^ layers at: 1
 !
 
 backgroundContext
-	^ self backgroundCanvas element getContext: '2d'
+	^ self contextForCanvas: self backgroundCanvas
+!
+
+contextForCanvas: canvas
+	^ canvas element getContext: '2d'
 !
 
 currentPoint
@@ -214,27 +214,19 @@ executionContext
 !
 
 gameCanvas
-	^ gameCanvas
-!
-
-gameCanvas: aCanvas
-	gameCanvas := aCanvas
+	^ layers at: 2
 !
 
 gameContext
-	^ self gameCanvas element getContext: '2d'
+	^ self contextForCanvas: self gameCanvas
 !
 
 monsterCanvas
-	^ monsterCanvas
-!
-
-monsterCanvas: aCanvas
-	monsterCanvas := aCanvas
+	^ layers at: 3
 !
 
 monsterContext
-	^ self monsterCanvas element getContext: '2d'
+	^ self contextForCanvas: self monsterCanvas
 !
 
 padding
@@ -279,6 +271,12 @@ tileUnit
 
 !CWMapDrawer methodsFor: 'factory'!
 
+canvasForId: id
+	"Answers amber canvas from a html id"
+
+	^ TagBrush fromJQuery: id asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)
+!
+
 newGOTDrawingContext
 	^ CWGOTDrawingContext default reset: self
 !
@@ -295,14 +293,20 @@ newMonsterAndGOTDrawingContext
 
 initialize
 	super initialize. 
-	self backgroundCanvas: (TagBrush fromJQuery: self backgroundCanvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
-	self gameCanvas: (TagBrush fromJQuery: self gameCanvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
-	self monsterCanvas: (TagBrush fromJQuery: self monsterCanvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
+	self initializeLayers.
 	self padding: (self canvasPadding @ self canvasPadding).
 !
 
 initializeForMap: aMap
 	self padding x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).
+!
+
+initializeLayers
+	layers := Array new
+		at: 1 put: (self canvasForId: self backgroundCanvasId);
+		at: 2 put: (self canvasForId: self gameCanvasId);
+		at: 3 put: (self canvasForId: self monsterCanvasId);
+		yourself
 ! !
 
 !CWMapDrawer methodsFor: 'public'!
@@ -450,5 +454,10 @@ visitTile: aTile
 
 visitTroop: aTroop
 	self executionContext visitTroop: aTroop
+! !
+
+!CWMapDrawer methodsFor: 'xxxDoIt'!
+
+xxxDoIt ^[self initializeLayers] value
 ! !
 
