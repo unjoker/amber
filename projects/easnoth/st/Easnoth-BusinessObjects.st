@@ -25,6 +25,24 @@ parent: object
 	parent := object
 ! !
 
+!CWComponent methodsFor: 'event'!
+
+announce: anEvent
+	self announcer announce: anEvent
+!
+
+updateGOTs
+	self announce: CWGOTDrawingEvent new.
+!
+
+updateMap
+	self announce: CWGlobalDrawingEvent new.
+!
+
+updateMonstersAndGOTs
+	self announce: CWMonsterAndGOTDrawingEvent new.
+! !
+
 !CWComponent methodsFor: 'testing'!
 
 isLeaf
@@ -233,7 +251,7 @@ accept: aVisitor
 ! !
 
 CWOneChildClass subclass: #CWMap
-	instanceVariableNames: 'rows drawer'
+	instanceVariableNames: 'rows'
 	package: 'Easnoth-BusinessObjects'!
 !CWMap commentStamp!
 I represent the whole map in the game.!
@@ -256,15 +274,13 @@ childBasicClass
 
 !CWMap methodsFor: 'initialize-release'!
 
-initialize
-	super initialize.
-	drawer := CWMapDrawer new.
-!
-
 initializeFromJson: jsonMap
-	"initialize the rows of the map"
+	"initialize the rows of the map, 
+	the announcement is in case everything was already cached (page refresh for example)"
 	
 	| child rows1 |
+	
+	self announce: CWWaitForObject new.
 	
 	rows1 := jsonMap row.
 	rows := Array new: rows1 size.
@@ -272,21 +288,9 @@ initializeFromJson: jsonMap
 	rows1 withIndexDo: [:row :i |
 		child := self newChild.
 		self childAt: i put: child.
-		child initializeFromJson: row ]
-! !
-
-!CWMap methodsFor: 'rendering'!
-
-update
-	drawer updateMap: self
-!
-
-updateGOTs
-	drawer updateGOTs: self
-!
-
-updateMonstersAndGOTs
-	drawer updateMonstersAndGOTs: self
+		child initializeFromJson: row ].
+		
+	self announce: CWObjectLoaded new.
 ! !
 
 !CWMap methodsFor: 'testing'!
@@ -423,6 +427,8 @@ newImageFrom: aJson
 	
 	image := NativeFunction constructor: 'Image'.
 	self class imageCache at: aJson put: image.
+	self announce: CWWaitForObject new.
+	image at: 'onload' put: [ self announce: CWObjectLoaded new ].
     image at: 'src' put:  'ressources/images/', self folderName, '/', aJson, '.png'.
 	
 	^ image

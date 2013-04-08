@@ -19,6 +19,22 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "announce:",
+category: 'event',
+fn: function (anEvent){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._announce_(anEvent);
+return self}, function($ctx1) {$ctx1.fill(self,"announce:",{anEvent:anEvent},smalltalk.CWComponent)})},
+args: ["anEvent"],
+source: "announce: anEvent\x0a\x09self announcer announce: anEvent",
+messageSends: ["announce:", "announcer"],
+referencedClasses: []
+}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "announcer",
 category: 'accessing',
 fn: function (){
@@ -28,7 +44,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=_st($CWEasnothAnnouncer())._current();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWNode)})},
+}, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWComponent)})},
 args: [],
 source: "announcer\x0a\x09^ CWEasnothAnnouncer current",
 messageSends: ["current"],
@@ -115,6 +131,57 @@ args: ["object"],
 source: "parent: object\x0a\x09parent := object",
 messageSends: [],
 referencedClasses: []
+}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateGOTs",
+category: 'event',
+fn: function (){
+var self=this;
+function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st($CWGOTDrawingEvent())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWComponent)})},
+args: [],
+source: "updateGOTs\x0a\x09self announce: CWGOTDrawingEvent new.",
+messageSends: ["announce:", "new"],
+referencedClasses: ["CWGOTDrawingEvent"]
+}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateMap",
+category: 'event',
+fn: function (){
+var self=this;
+function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st($CWGlobalDrawingEvent())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"updateMap",{},smalltalk.CWComponent)})},
+args: [],
+source: "updateMap\x0a\x09self announce: CWGlobalDrawingEvent new.",
+messageSends: ["announce:", "new"],
+referencedClasses: ["CWGlobalDrawingEvent"]
+}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateMonstersAndGOTs",
+category: 'event',
+fn: function (){
+var self=this;
+function $CWMonsterAndGOTDrawingEvent(){return smalltalk.CWMonsterAndGOTDrawingEvent||(typeof CWMonsterAndGOTDrawingEvent=="undefined"?nil:CWMonsterAndGOTDrawingEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st($CWMonsterAndGOTDrawingEvent())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWComponent)})},
+args: [],
+source: "updateMonstersAndGOTs\x0a\x09self announce: CWMonsterAndGOTDrawingEvent new.",
+messageSends: ["announce:", "new"],
+referencedClasses: ["CWMonsterAndGOTDrawingEvent"]
 }),
 smalltalk.CWComponent);
 
@@ -770,7 +837,7 @@ smalltalk.CWOneChildClass);
 
 
 
-smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows'], 'Easnoth-BusinessObjects');
 smalltalk.CWMap.comment="I represent the whole map in the game. "
 smalltalk.addMethod(
 smalltalk.method({
@@ -829,31 +896,16 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWOneChildClass.fn.prototype._initialize.apply(_st(self), []);
-self["@drawer"]=_st($CWMapDrawer())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMap)})},
-args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09drawer := CWMapDrawer new.",
-messageSends: ["initialize", "new"],
-referencedClasses: ["CWMapDrawer"]
-}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initializeFromJson:",
 category: 'initialize-release',
 fn: function (jsonMap){
 var self=this;
 var child,rows1;
+function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
 return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st($CWWaitForObject())._new());
 rows1=_st(jsonMap)._row();
 self["@rows"]=_st($Array())._new_(_st(rows1)._size());
 _st(rows1)._withIndexDo_((function(row,i){
@@ -863,11 +915,12 @@ child;
 _st(self)._childAt_put_(i,child);
 return _st(child)._initializeFromJson_(row);
 }, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
+_st(self)._announce_(_st($CWObjectLoaded())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{jsonMap:jsonMap,child:child,rows1:rows1},smalltalk.CWMap)})},
 args: ["jsonMap"],
-source: "initializeFromJson: jsonMap\x0a\x09\x22initialize the rows of the map\x22\x0a\x09\x0a\x09| child rows1 |\x0a\x09\x0a\x09rows1 := jsonMap row.\x0a\x09rows := Array new: rows1 size.\x0a\x09\x0a\x09rows1 withIndexDo: [:row :i |\x0a\x09\x09child := self newChild.\x0a\x09\x09self childAt: i put: child.\x0a\x09\x09child initializeFromJson: row ]",
-messageSends: ["row", "new:", "size", "withIndexDo:", "newChild", "childAt:put:", "initializeFromJson:"],
-referencedClasses: ["Array"]
+source: "initializeFromJson: jsonMap\x0a\x09\x22initialize the rows of the map, \x0a\x09the announcement is in case everything was already cached (page refresh for example)\x22\x0a\x09\x0a\x09| child rows1 |\x0a\x09\x0a\x09self announce: CWWaitForObject new.\x0a\x09\x0a\x09rows1 := jsonMap row.\x0a\x09rows := Array new: rows1 size.\x0a\x09\x0a\x09rows1 withIndexDo: [:row :i |\x0a\x09\x09child := self newChild.\x0a\x09\x09self childAt: i put: child.\x0a\x09\x09child initializeFromJson: row ].\x0a\x09\x09\x0a\x09self announce: CWObjectLoaded new.",
+messageSends: ["announce:", "new", "row", "new:", "size", "withIndexDo:", "newChild", "childAt:put:", "initializeFromJson:"],
+referencedClasses: ["CWWaitForObject", "Array", "CWObjectLoaded"]
 }),
 smalltalk.CWMap);
 
@@ -901,54 +954,6 @@ return $1;
 args: [],
 source: "rows\x0a\x09^ rows",
 messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "update",
-category: 'rendering',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._updateMap_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMap)})},
-args: [],
-source: "update\x0a\x09drawer updateMap: self",
-messageSends: ["updateMap:"],
-referencedClasses: []
-}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "updateGOTs",
-category: 'rendering',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._updateGOTs_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMap)})},
-args: [],
-source: "updateGOTs\x0a\x09drawer updateGOTs: self",
-messageSends: ["updateGOTs:"],
-referencedClasses: []
-}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "updateMonstersAndGOTs",
-category: 'rendering',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._updateMonstersAndGOTs_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMap)})},
-args: [],
-source: "updateMonstersAndGOTs\x0a\x09drawer updateMonstersAndGOTs: self",
-messageSends: ["updateMonstersAndGOTs:"],
 referencedClasses: []
 }),
 smalltalk.CWMap);
@@ -1287,18 +1292,25 @@ category: 'initialize-release',
 fn: function (aJson){
 var self=this;
 function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
+function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
+function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 self["@image"]=_st($NativeFunction())._constructor_("Image");
 _st(_st(_st(self)._class())._imageCache())._at_put_(aJson,self["@image"]);
+_st(self)._announce_(_st($CWWaitForObject())._new());
+_st(self["@image"])._at_put_("onload",(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._announce_(_st($CWObjectLoaded())._new());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st(self["@image"])._at_put_("src",_st(_st(_st(_st("ressources/images/").__comma(_st(self)._folderName())).__comma("/")).__comma(aJson)).__comma(".png"));
 $1=self["@image"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newImageFrom:",{aJson:aJson},smalltalk.CWImageLeaf)})},
 args: ["aJson"],
-source: "newImageFrom: aJson\x0a\x09\x22Create a new image and cache it\x22\x0a\x09\x0a\x09image := NativeFunction constructor: 'Image'.\x0a\x09self class imageCache at: aJson put: image.\x0a    image at: 'src' put:  'ressources/images/', self folderName, '/', aJson, '.png'.\x0a\x09\x0a\x09^ image",
-messageSends: ["constructor:", "at:put:", "imageCache", "class", ",", "folderName"],
-referencedClasses: ["NativeFunction"]
+source: "newImageFrom: aJson\x0a\x09\x22Create a new image and cache it\x22\x0a\x09\x0a\x09image := NativeFunction constructor: 'Image'.\x0a\x09self class imageCache at: aJson put: image.\x0a\x09self announce: CWWaitForObject new.\x0a\x09image at: 'onload' put: [ self announce: CWObjectLoaded new ].\x0a    image at: 'src' put:  'ressources/images/', self folderName, '/', aJson, '.png'.\x0a\x09\x0a\x09^ image",
+messageSends: ["constructor:", "at:put:", "imageCache", "class", "announce:", "new", ",", "folderName"],
+referencedClasses: ["NativeFunction", "CWWaitForObject", "CWObjectLoaded"]
 }),
 smalltalk.CWImageLeaf);
 
