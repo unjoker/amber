@@ -1,6 +1,12 @@
 Smalltalk current createPackage: 'Easnoth-Visitors'!
-Object subclass: #CWGlobalDrawingContext
-	instanceVariableNames: 'rowIndex cellIndex currentPointCache drawer'
+Object subclass: #CWMapVisitorContext
+	instanceVariableNames: 'rowIndex cellIndex'
+	package: 'Easnoth-Visitors'!
+!CWMapVisitorContext commentStamp!
+PUSH NEXT ROW NEXT CELL TO MY CLASS. I SHOULD BE ABLE TO RETURN AN ARRAY OF CELLS OR MONSTERS IN THE RIGHT ORDER!
+
+CWMapVisitorContext subclass: #CWGlobalDrawingContext
+	instanceVariableNames: 'currentPointCache drawer'
 	package: 'Easnoth-Visitors'!
 !CWGlobalDrawingContext commentStamp!
 I represent the execution context of the CWMapDrawer.
@@ -185,13 +191,17 @@ CWVisitor subclass: #CWLeafSelector
 	package: 'Easnoth-Visitors'!
 
 CWVisitor subclass: #CWMapDrawer
-	instanceVariableNames: 'layers padding executionContext'
+	instanceVariableNames: 'layers padding executionContext map'
 	package: 'Easnoth-Visitors'!
 !CWMapDrawer commentStamp!
 I am a drawer that can draw the business objects through a visit of its tree.
 I am an implementation of the interpreter design pattern so I have a context of execution as instance variable.!
 
 !CWMapDrawer methodsFor: 'accessing'!
+
+announcer
+	^ CWEasnothAnnouncer current
+!
 
 backgroundCanvas
 	^ layers at: 1
@@ -295,10 +305,24 @@ initialize
 	super initialize. 
 	self initializeLayers.
 	self padding: (self canvasPadding @ self canvasPadding).
+	self initializeEventHandling.
+!
+
+initializeEventHandling
+	self announcer
+		on: CWGlobalDrawingEvent
+		do: [ self updateMap ].
+	self announcer
+		on: CWGOTDrawingEvent
+		do: [ self updateGOTs ].
+	self announcer
+		on: CWMonsterAndGOTDrawingEvent
+		do: [ self updateMonstersAndGOTs ].
 !
 
 initializeForMap: aMap
-	self padding x: self canvasPadding + ((aMap children at:1) children size * self tileUnit * 1.17).
+	map := aMap.
+	self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).
 !
 
 initializeLayers
@@ -309,46 +333,42 @@ initializeLayers
 		yourself
 ! !
 
-!CWMapDrawer methodsFor: 'public'!
+!CWMapDrawer methodsFor: 'private'!
 
 cleanCanvas
-	self cleanCanvas: self backgroundCanvas.
-	self cleanCanvas: self gameCanvas.
-	self cleanCanvas: self monsterCanvas.
+	"should be delegated to context"
+	
+	layers do: [:each |
+		self cleanCanvas: each ]
 !
 
 cleanCanvas: aCanvas
+	"shoudl be called by context method"
+	
 	| elem |
 	elem := aCanvas element.
 	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
-!
+! !
 
-updateGOTs: aMap
+!CWMapDrawer methodsFor: 'public'!
+
+updateGOTs
 	self cleanCanvas: self gameCanvas.
-	"hacky"
-	self initializeForMap: aMap.
-	"end hacky"
 	executionContext := self newGOTDrawingContext.
-	self visitTree: aMap.
+	self visitTree: map.
 !
 
-updateMap: aMap
+updateMap
 	self cleanCanvas.
-	"hacky"
-	self initializeForMap: aMap.
-	"end hacky"
 	executionContext := self newGlobalDrawingContext.
-	self visitTree: aMap.
+	self visitTree: map.
 !
 
-updateMonstersAndGOTs: aMap
+updateMonstersAndGOTs
 	self cleanCanvas: self gameCanvas.
 	self cleanCanvas: self monsterCanvas.
-	"hacky"
-	self initializeForMap: aMap.
-	"end hacky"
 	executionContext := self newMonsterAndGOTDrawingContext.
-	self visitTree: aMap.
+	self visitTree: map.
 ! !
 
 !CWMapDrawer methodsFor: 'rendering'!
@@ -454,10 +474,5 @@ visitTile: aTile
 
 visitTroop: aTroop
 	self executionContext visitTroop: aTroop
-! !
-
-!CWMapDrawer methodsFor: 'xxxDoIt'!
-
-xxxDoIt ^[self initializeLayers] value
 ! !
 
