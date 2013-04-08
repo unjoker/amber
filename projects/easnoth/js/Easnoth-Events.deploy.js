@@ -80,22 +80,20 @@ smalltalk.CWEventManager);
 
 
 
-smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu', 'eventManager'], 'Easnoth-Events');
+smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'menu', 'eventManager'], 'Easnoth-Events');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
-function $CWDrawer(){return smalltalk.CWDrawer||(typeof CWDrawer=="undefined"?nil:CWDrawer)}
 function $FightMenu(){return smalltalk.FightMenu||(typeof FightMenu=="undefined"?nil:FightMenu)}
 function $CWEventManager(){return smalltalk.CWEventManager||(typeof CWEventManager=="undefined"?nil:CWEventManager)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@drawer"]=_st($CWDrawer())._new();
 self["@menu"]=_st($FightMenu())._newFor_(self);
 self["@eventManager"]=_st($CWEventManager())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameBoard)})},
-messageSends: ["initialize", "new", "newFor:"]}),
+messageSends: ["initialize", "newFor:", "new"]}),
 smalltalk.CWGameBoard);
 
 smalltalk.addMethod(
@@ -117,16 +115,15 @@ selector: "examples",
 fn: function (){
 var self=this;
 function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
-function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
 function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
 return smalltalk.withContext(function($ctx1) { 
 _st($CWMap())._newWithMapIndex_((5));
-_st(_st($CWMapDrawer())._new())._drawMap_(_st($CWMap())._default());
-_st(_st($CWMapDrawer())._new())._drawGOTs_(_st($CWMap())._default());
-_st(_st($CWMapDrawer())._new())._drawMonstersAndGOTs_(_st($CWMap())._default());
+_st(_st($CWMap())._default())._update();
+_st(_st($CWMap())._default())._updateGOTs();
+_st(_st($CWMap())._default())._updateMonstersAndGOTs();
 _st($CWEasnothAnnouncer())._current();
 return self}, function($ctx1) {$ctx1.fill(self,"examples",{},smalltalk.CWGameBoard.klass)})},
-messageSends: ["newWithMapIndex:", "drawMap:", "default", "new", "drawGOTs:", "drawMonstersAndGOTs:", "current"]}),
+messageSends: ["newWithMapIndex:", "update", "default", "updateGOTs", "updateMonstersAndGOTs", "current"]}),
 smalltalk.CWGameBoard.klass);
 
 smalltalk.addMethod(

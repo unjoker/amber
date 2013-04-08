@@ -105,26 +105,24 @@ smalltalk.CWEventManager);
 
 
 
-smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'drawer', 'menu', 'eventManager'], 'Easnoth-Events');
+smalltalk.addClass('CWGameBoard', smalltalk.Object, ['map', 'menu', 'eventManager'], 'Easnoth-Events');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-function $CWDrawer(){return smalltalk.CWDrawer||(typeof CWDrawer=="undefined"?nil:CWDrawer)}
 function $FightMenu(){return smalltalk.FightMenu||(typeof FightMenu=="undefined"?nil:FightMenu)}
 function $CWEventManager(){return smalltalk.CWEventManager||(typeof CWEventManager=="undefined"?nil:CWEventManager)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@drawer"]=_st($CWDrawer())._new();
 self["@menu"]=_st($FightMenu())._newFor_(self);
 self["@eventManager"]=_st($CWEventManager())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameBoard)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09drawer := CWDrawer new.\x0a\x09menu := FightMenu newFor: self.\x0a\x09eventManager := CWEventManager new",
-messageSends: ["initialize", "new", "newFor:"],
-referencedClasses: ["CWDrawer", "FightMenu", "CWEventManager"]
+source: "initialize\x0a\x09super initialize.\x0a\x09menu := FightMenu newFor: self.\x0a\x09eventManager := CWEventManager new",
+messageSends: ["initialize", "newFor:", "new"],
+referencedClasses: ["FightMenu", "CWEventManager"]
 }),
 smalltalk.CWGameBoard);
 
@@ -153,19 +151,18 @@ category: 'examples',
 fn: function (){
 var self=this;
 function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
-function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
 function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
 return smalltalk.withContext(function($ctx1) { 
 _st($CWMap())._newWithMapIndex_((5));
-_st(_st($CWMapDrawer())._new())._drawMap_(_st($CWMap())._default());
-_st(_st($CWMapDrawer())._new())._drawGOTs_(_st($CWMap())._default());
-_st(_st($CWMapDrawer())._new())._drawMonstersAndGOTs_(_st($CWMap())._default());
+_st(_st($CWMap())._default())._update();
+_st(_st($CWMap())._default())._updateGOTs();
+_st(_st($CWMap())._default())._updateMonstersAndGOTs();
 _st($CWEasnothAnnouncer())._current();
 return self}, function($ctx1) {$ctx1.fill(self,"examples",{},smalltalk.CWGameBoard.klass)})},
 args: [],
-source: "examples\x0a\x09\x22To remove when model ok\x22\x0a\x09CWMap newWithMapIndex: 5.\x0a\x09CWMapDrawer new drawMap: CWMap default.\x0a\x09CWMapDrawer new drawGOTs: CWMap default.\x0a\x09CWMapDrawer new drawMonstersAndGOTs: CWMap default.\x0a\x09CWEasnothAnnouncer current.",
-messageSends: ["newWithMapIndex:", "drawMap:", "default", "new", "drawGOTs:", "drawMonstersAndGOTs:", "current"],
-referencedClasses: ["CWMap", "CWMapDrawer", "CWEasnothAnnouncer"]
+source: "examples\x0a\x09\x22To remove when model ok\x22\x0a\x09CWMap newWithMapIndex: 5.\x0a\x09CWMap default update.\x0a\x09CWMap default updateGOTs.\x0a\x09CWMap default updateMonstersAndGOTs.\x0a\x09CWEasnothAnnouncer current.",
+messageSends: ["newWithMapIndex:", "update", "default", "updateGOTs", "updateMonstersAndGOTs", "current"],
+referencedClasses: ["CWMap", "CWEasnothAnnouncer"]
 }),
 smalltalk.CWGameBoard.klass);
 

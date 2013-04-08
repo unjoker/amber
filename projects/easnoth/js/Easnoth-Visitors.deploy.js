@@ -466,20 +466,6 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawGOTs:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._cleanCanvas();
-_st(self)._initializeForMap_(aMap);
-self["@executionContext"]=_st(self)._newGOTDrawingContext();
-_st(self)._visitTree_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"drawGOTs:",{aMap:aMap},smalltalk.CWMapDrawer)})},
-messageSends: ["cleanCanvas", "initializeForMap:", "newGOTDrawingContext", "visitTree:"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "drawHeros:",
 fn: function (heros){
 var self=this;
@@ -517,34 +503,6 @@ return _st(self)._display_inContext_(object,ctx);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
 return self}, function($ctx1) {$ctx1.fill(self,"drawIsometric:inContext:",{object:object,ctx:ctx},smalltalk.CWMapDrawer)})},
 messageSends: ["safeDraw:inContext:", "translate:y:", "+", "x", "currentPoint", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:inContext:"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "drawMap:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._cleanCanvas();
-_st(self)._initializeForMap_(aMap);
-self["@executionContext"]=_st(self)._newGlobalDrawingContext();
-_st(self)._visitTree_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"drawMap:",{aMap:aMap},smalltalk.CWMapDrawer)})},
-messageSends: ["cleanCanvas", "initializeForMap:", "newGlobalDrawingContext", "visitTree:"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "drawMonstersAndGOTs:",
-fn: function (aMap){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._cleanCanvas();
-_st(self)._initializeForMap_(aMap);
-self["@executionContext"]=_st(self)._newMonsterAndGOTDrawingContext();
-_st(self)._visitTree_(aMap);
-return self}, function($ctx1) {$ctx1.fill(self,"drawMonstersAndGOTs:",{aMap:aMap},smalltalk.CWMapDrawer)})},
-messageSends: ["cleanCanvas", "initializeForMap:", "newMonsterAndGOTDrawingContext", "visitTree:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -822,6 +780,49 @@ $1=(50);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.MapDrawer)})},
 messageSends: []}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateGOTs:",
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanCanvas_(_st(self)._gameCanvas());
+_st(self)._initializeForMap_(aMap);
+self["@executionContext"]=_st(self)._newGOTDrawingContext();
+_st(self)._visitTree_(aMap);
+return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs:",{aMap:aMap},smalltalk.CWMapDrawer)})},
+messageSends: ["cleanCanvas:", "gameCanvas", "initializeForMap:", "newGOTDrawingContext", "visitTree:"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateMap:",
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanCanvas();
+_st(self)._initializeForMap_(aMap);
+self["@executionContext"]=_st(self)._newGlobalDrawingContext();
+_st(self)._visitTree_(aMap);
+return self}, function($ctx1) {$ctx1.fill(self,"updateMap:",{aMap:aMap},smalltalk.CWMapDrawer)})},
+messageSends: ["cleanCanvas", "initializeForMap:", "newGlobalDrawingContext", "visitTree:"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateMonstersAndGOTs:",
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanCanvas_(_st(self)._gameCanvas());
+_st(self)._cleanCanvas_(_st(self)._monsterCanvas());
+_st(self)._initializeForMap_(aMap);
+self["@executionContext"]=_st(self)._newMonsterAndGOTDrawingContext();
+_st(self)._visitTree_(aMap);
+return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs:",{aMap:aMap},smalltalk.CWMapDrawer)})},
+messageSends: ["cleanCanvas:", "gameCanvas", "monsterCanvas", "initializeForMap:", "newMonsterAndGOTDrawingContext", "visitTree:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(

@@ -770,7 +770,7 @@ smalltalk.CWOneChildClass);
 
 
 
-smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer'], 'Easnoth-BusinessObjects');
 smalltalk.CWMap.comment="I represent the whole map in the game. "
 smalltalk.addMethod(
 smalltalk.method({
@@ -824,6 +824,24 @@ args: [],
 source: "children\x0a\x09^ self rows",
 messageSends: ["rows"],
 referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWOneChildClass.fn.prototype._initialize.apply(_st(self), []);
+self["@drawer"]=_st($CWMapDrawer())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMap)})},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09drawer := CWMapDrawer new.",
+messageSends: ["initialize", "new"],
+referencedClasses: ["CWMapDrawer"]
 }),
 smalltalk.CWMap);
 
@@ -883,6 +901,54 @@ return $1;
 args: [],
 source: "rows\x0a\x09^ rows",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "update",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._updateMap_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMap)})},
+args: [],
+source: "update\x0a\x09drawer updateMap: self",
+messageSends: ["updateMap:"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateGOTs",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._updateGOTs_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMap)})},
+args: [],
+source: "updateGOTs\x0a\x09drawer updateGOTs: self",
+messageSends: ["updateGOTs:"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateMonstersAndGOTs",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._updateMonstersAndGOTs_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMap)})},
+args: [],
+source: "updateMonstersAndGOTs\x0a\x09drawer updateMonstersAndGOTs: self",
+messageSends: ["updateMonstersAndGOTs:"],
 referencedClasses: []
 }),
 smalltalk.CWMap);

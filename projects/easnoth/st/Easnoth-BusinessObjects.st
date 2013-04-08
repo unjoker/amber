@@ -233,7 +233,7 @@ accept: aVisitor
 ! !
 
 CWOneChildClass subclass: #CWMap
-	instanceVariableNames: 'rows'
+	instanceVariableNames: 'rows drawer'
 	package: 'Easnoth-BusinessObjects'!
 !CWMap commentStamp!
 I represent the whole map in the game.!
@@ -256,6 +256,11 @@ childBasicClass
 
 !CWMap methodsFor: 'initialize-release'!
 
+initialize
+	super initialize.
+	drawer := CWMapDrawer new.
+!
+
 initializeFromJson: jsonMap
 	"initialize the rows of the map"
 	
@@ -268,6 +273,20 @@ initializeFromJson: jsonMap
 		child := self newChild.
 		self childAt: i put: child.
 		child initializeFromJson: row ]
+! !
+
+!CWMap methodsFor: 'rendering'!
+
+update
+	drawer updateMap: self
+!
+
+updateGOTs
+	drawer updateGOTs: self
+!
+
+updateMonstersAndGOTs
+	drawer updateMonstersAndGOTs: self
 ! !
 
 !CWMap methodsFor: 'testing'!

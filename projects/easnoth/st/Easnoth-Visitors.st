@@ -319,8 +319,8 @@ cleanCanvas: aCanvas
 	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
 !
 
-drawGOTs: aMap
-	self cleanCanvas.
+updateGOTs: aMap
+	self cleanCanvas: self gameCanvas.
 	"hacky"
 	self initializeForMap: aMap.
 	"end hacky"
@@ -328,7 +328,7 @@ drawGOTs: aMap
 	self visitTree: aMap.
 !
 
-drawMap: aMap
+updateMap: aMap
 	self cleanCanvas.
 	"hacky"
 	self initializeForMap: aMap.
@@ -337,8 +337,9 @@ drawMap: aMap
 	self visitTree: aMap.
 !
 
-drawMonstersAndGOTs: aMap
-	self cleanCanvas.
+updateMonstersAndGOTs: aMap
+	self cleanCanvas: self gameCanvas.
+	self cleanCanvas: self monsterCanvas.
 	"hacky"
 	self initializeForMap: aMap.
 	"end hacky"
