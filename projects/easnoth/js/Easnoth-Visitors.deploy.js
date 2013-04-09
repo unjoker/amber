@@ -1,5 +1,60 @@
 smalltalk.addPackage('Easnoth-Visitors');
 smalltalk.addClass('CWMapVisitorContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextCell",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@cellIndex"]=_st(self["@cellIndex"]).__plus((1));
+return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWMapVisitorContext)})},
+messageSends: ["+"]}),
+smalltalk.CWMapVisitorContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextRow",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@rowIndex"]=_st(self["@rowIndex"]).__plus((1));
+self["@cellIndex"]=(0);
+return self}, function($ctx1) {$ctx1.fill(self,"nextRow",{},smalltalk.CWMapVisitorContext)})},
+messageSends: ["+"]}),
+smalltalk.CWMapVisitorContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reset",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@rowIndex"]=(0);
+self["@cellIndex"]=(0);
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWMapVisitorContext)})},
+messageSends: []}),
+smalltalk.CWMapVisitorContext);
+
+
+smalltalk.CWMapVisitorContext.klass.iVarNames = ['default'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "default",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=self["@default"];
+if(($receiver = $2) == nil || $receiver == undefined){
+self["@default"]=_st(self)._new();
+$1=self["@default"];
+} else {
+$1=$2;
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMapVisitorContext.klass)})},
+messageSends: ["ifNil:", "new"]}),
+smalltalk.CWMapVisitorContext.klass);
 
 
 smalltalk.addClass('CWGlobalDrawingContext', smalltalk.CWMapVisitorContext, ['currentPointCache', 'drawer'], 'Easnoth-Visitors');
@@ -51,22 +106,10 @@ selector: "nextCell",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@cellIndex"]=_st(self["@cellIndex"]).__plus((1));
+smalltalk.CWMapVisitorContext.fn.prototype._nextCell.apply(_st(self), []);
 self["@currentPointCache"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWGlobalDrawingContext)})},
-messageSends: ["+"]}),
-smalltalk.CWGlobalDrawingContext);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "nextRow",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@rowIndex"]=_st(self["@rowIndex"]).__plus((1));
-self["@cellIndex"]=(0);
-return self}, function($ctx1) {$ctx1.fill(self,"nextRow",{},smalltalk.CWGlobalDrawingContext)})},
-messageSends: ["+"]}),
+messageSends: ["nextCell"]}),
 smalltalk.CWGlobalDrawingContext);
 
 smalltalk.addMethod(
@@ -75,12 +118,18 @@ selector: "reset:",
 fn: function (aDrawer){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@rowIndex"]=(0);
-self["@cellIndex"]=(0);
+var $1;
+smalltalk.CWMapVisitorContext.fn.prototype._reset.apply(_st(self), []);
 self["@currentPointCache"]=nil;
+$1=self["@drawer"];
+if(($receiver = $1) == nil || $receiver == undefined){
 self["@drawer"]=aDrawer;
+self["@drawer"];
+} else {
+$1;
+};
 return self}, function($ctx1) {$ctx1.fill(self,"reset:",{aDrawer:aDrawer},smalltalk.CWGlobalDrawingContext)})},
-messageSends: []}),
+messageSends: ["reset", "ifNil:"]}),
 smalltalk.CWGlobalDrawingContext);
 
 smalltalk.addMethod(
@@ -138,26 +187,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},sma
 messageSends: ["drawTroop:"]}),
 smalltalk.CWGlobalDrawingContext);
 
-
-smalltalk.CWGlobalDrawingContext.klass.iVarNames = ['default'];
-smalltalk.addMethod(
-smalltalk.method({
-selector: "default",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self["@default"];
-if(($receiver = $2) == nil || $receiver == undefined){
-self["@default"]=_st(self)._new();
-$1=self["@default"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWGlobalDrawingContext.klass)})},
-messageSends: ["ifNil:", "new"]}),
-smalltalk.CWGlobalDrawingContext.klass);
 
 
 smalltalk.addClass('CWMonsterAndGOTDrawingContext', smalltalk.CWGlobalDrawingContext, [], 'Easnoth-Visitors');

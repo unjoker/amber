@@ -26,6 +26,10 @@ drawedObjects
     ^drawedObjects
 !
 
+drawedObjects: value
+	drawedObjects := value.
+!
+
 gameOverTile
 	^gameOverTile
 !
@@ -90,12 +94,6 @@ tile
 tile: aTile
 	tile := aTile.
     aTile cell: self
-! !
-
-!Cell methodsFor: 'accessing-direct'!
-
-drawedObjects: value
-	drawedObjects := value.
 ! !
 
 !Cell methodsFor: 'displaying'!

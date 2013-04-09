@@ -88,7 +88,7 @@ accept: aVisitor
 ! !
 
 CWComposite subclass: #CWCell
-	instanceVariableNames: 'neighboursCache background gameOverTile monster'
+	instanceVariableNames: 'neighboursCache background gameOverTile monster state'
 	package: 'Easnoth-BusinessObjects'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
@@ -143,8 +143,16 @@ monster: aMonster
 	monster := aMonster
 !
 
-neighbours
-	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
+side
+	^ self monster side
+! !
+
+!CWCell methodsFor: 'eventHandling'!
+
+mouseClick: actionCell
+	self neighbours do: [:cell |
+		Transcript show: cell printString, ' addSelector'; cr.
+		cell addSelector ].
 ! !
 
 !CWCell methodsFor: 'factory'!
@@ -208,10 +216,115 @@ initializeFromJson: aJsonCell
     	ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].
 ! !
 
+!CWCell methodsFor: 'neighbourhood'!
+
+attackableNeighbours
+	|attackableCells|
+	attackableCells := self neighbours select: [ :each | 
+					each canAttack: self side ].
+	attackableCells do: [ :each |
+			each addSelector ].
+	^ attackableCells
+!
+
+attackableNeighboursCycle: cycleNumber
+	"no range attack for now"
+	^ self attackableNeighbours
+!
+
+movableNeighbours
+	|movableCells|
+	movableCells := self neighbours select: [ :each | 
+			each canMoveTo ].
+	movableCells do: [ :each |
+			each addSelector.
+			each prevCell: self ].
+	^ movableCells
+!
+
+movableNeighboursCycle: cycleNumber
+	| movableCells |
+
+	movableCells := self movableNeighbours.
+	1 to: (cycleNumber - 1) do: [
+		movableCells addAll: (movableCells collect: [ :each | each movableNeighbours ]).
+	].
+
+	^ movableCells
+!
+
+neighbours
+	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
+!
+
+selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2
+	| selectableCells |
+
+	"movable cells"
+	selectableCells := self movableNeighboursCycle: cycleNumber.
+
+	"all attackable cells from any movable cell"
+	selectableCells addAll: (selectableCells collect: [ :each | each attackableNeighbours ]).
+
+	"cells attackable from departure"
+	selectableCells addAll: (self attackableNeighbours).
+
+	^selectableCells
+! !
+
+!CWCell methodsFor: 'selection'!
+
+addSelectorColored: aColor
+	self gameOverTile: (self newGameOverTile initializeFromJson: aColor)
+! !
+
+!CWCell methodsFor: 'state delegation'!
+
+addSelector
+	self state addSelector: self
+! !
+
+!CWCell methodsFor: 'state machine'!
+
+changeState: stateClass
+	Transcript show: self printString, ':', state class printString, '->', stateClass.
+	Transcript cr.
+	self state: stateClass default
+!
+
+initializeState
+	CWCellState initializeStateFor: self
+!
+
+state
+	state ifNil: [self initializeState].
+	^state
+!
+
+state: aState
+	state := aState
+! !
+
+!CWCell methodsFor: 'testing'!
+
+free
+	^ self monster isNil
+! !
+
 !CWCell methodsFor: 'visiting'!
 
 accept: aVisitor
 	^ aVisitor visitCell: self
+!
+
+printString
+	"to debug only"
+
+	| rowNumber row cellIndex |
+	row := self parent.
+	cellIndex := row cells indexOf: self.
+	rowNumber := row parent rows indexOf: row.
+	^ 'a Cell(', rowNumber, '-', cellIndex, ')'
 ! !
 
 CWComposite subclass: #CWOneChildClass
@@ -293,6 +406,25 @@ initializeFromJson: jsonMap
 	self announce: CWObjectLoaded new.
 ! !
 
+!CWMap methodsFor: 'neighbours'!
+
+neighboursOf: row cellIndex: cellIndex
+	| rowIndex neighbours |
+	rowIndex :=  self rows indexOf: row.
+	neighbours := Array new.
+	rowIndex = 1 
+		ifFalse: [ neighbours addAll: ((self childAt: rowIndex - 1) cellsNextToI: rowIndex j: cellIndex) ].
+	rowIndex = self rows size 
+		ifFalse: [ neighbours addAll: ((self childAt: rowIndex + 1) cellsNextToI: rowIndex j: cellIndex) ].
+	^ neighbours
+! !
+
+!CWMap methodsFor: 'printing'!
+
+printString
+	^ 'a Map (', rows size, ' rows)'
+! !
+
 !CWMap methodsFor: 'testing'!
 
 isRoot
@@ -363,7 +495,36 @@ initializeFromJson: jsonRow
 
 !CWRow methodsFor: 'neighbours'!
 
+cellsNextToI: i j: j 
+	| neighbours |
+	neighbours := Array new.
+	neighbours add: (self childAt: j).
+	i \\ 2 = 0 ifFalse: [
+		j < self cells size ifTrue: [neighbours add: (self childAt: j + 1)].
+	] ifTrue: [
+		j > 1 ifTrue: [neighbours add: (self childAt: j - 1)].
+	].
+	^ neighbours
+!
+
 neighboursOf: aCell
+	"Here we give a Set to simply game logic later (no twice the cell in the set)"
+
+	| cellIndex neighbours |
+	neighbours := Set new.
+	cellIndex := self cells indexOf: aCell.
+	cellIndex = 1 
+		ifFalse: [ neighbours add: (self childAt: cellIndex - 1) ].
+	cellIndex = self cells size 
+		ifFalse: [ neighbours add: (self childAt: cellIndex + 1) ].
+	neighbours addAll: (self parent neighboursOf: self cellIndex: cellIndex).
+	^ neighbours
+! !
+
+!CWRow methodsFor: 'printing'!
+
+printString
+	^ 'a Row (', cells size, ' cells)'
 ! !
 
 !CWRow methodsFor: 'visiting'!
@@ -527,7 +688,7 @@ accept: aVisitor
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: 'side move attack dices hp'
+	instanceVariableNames: 'side move attack dices hp state'
 	package: 'Easnoth-BusinessObjects'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
