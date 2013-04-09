@@ -1135,8 +1135,11 @@ selector: "addStats:",
 fn: function (aKey){
 var self=this;
 var keySuccess;
+function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
+function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
 return smalltalk.withContext(function($ctx1) { 
 keySuccess=_st(aKey).__comma("success");
+_st(self)._announce_(_st($CWWaitForObject())._new());
 _st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(self)._class())._jsonStatCacheAt_put_(aKey,statsNew);
@@ -1144,10 +1147,11 @@ return _st(self)._stats_(statsNew);
 }, function($ctx2) {$ctx2.fillBlock({statsNew:statsNew},$ctx1)})}));
 _st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/monsters/").__comma(aKey)).__comma(".json"),(function(data){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(_st(self)._class())._jsonStatCacheAt_(keySuccess))._value_(data);
+_st(_st(_st(self)._class())._jsonStatCacheAt_(keySuccess))._value_(data);
+return _st(self)._announce_(_st($CWObjectLoaded())._new());
 }, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"addStats:",{aKey:aKey,keySuccess:keySuccess},smalltalk.CWMonster)})},
-messageSends: [",", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"]}),
+messageSends: [",", "announce:", "new", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

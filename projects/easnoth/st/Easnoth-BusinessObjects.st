@@ -585,6 +585,8 @@ addStats: aKey
 	
 	keySuccess := aKey,'success'.
 	
+	self announce: CWWaitForObject new.
+	
     self class 
 		jsonStatCacheAt: keySuccess 
 		put: [:statsNew | 
@@ -593,7 +595,9 @@ addStats: aKey
 
 	jQuery 
 		getJSON: 'ressources/json/monsters/', aKey, '.json' 
-		onSuccess: [:data | (self class jsonStatCacheAt: keySuccess) value: data]
+		onSuccess: [:data | 
+			(self class jsonStatCacheAt: keySuccess) value: data.
+			self announce: CWObjectLoaded new]
 !
 
 defaultHp
