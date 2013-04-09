@@ -157,8 +157,20 @@ _st(self)._addComponent_(_st($Dices())._new());
 _st(self)._addComponent_(_st($TileWatcher())._new());
 _st(self)._addComponent_(_st($MapControls())._new());
 _st(self)._addComponent_(_st($TurnWatcher())._new());
+_st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.FightMenu)})},
-messageSends: ["initialize", "addComponent:", "new"]}),
+messageSends: ["initialize", "addComponent:", "new", "appendToJQuery:", "asJQuery", "menuClass"]}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "menuClass",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return ".menuEditor";
+}, function($ctx1) {$ctx1.fill(self,"menuClass",{},smalltalk.FightMenu)})},
+messageSends: []}),
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
@@ -171,16 +183,6 @@ $1=_st(_st(self)._components())._at_((1));
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"monsterWatcher",{}, smalltalk.FightMenu)})},
 messageSends: ["at:", "components"]}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "renderOn:",
-fn: function (html){
-var self=this;
-return smalltalk.withContext(function($ctx1) { smalltalk.ActionMenu.fn.prototype._renderOn_.apply(_st(self), [html]);
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.FightMenu)})},
-messageSends: ["renderOn:"]}),
 smalltalk.FightMenu);
 
 smalltalk.addMethod(
