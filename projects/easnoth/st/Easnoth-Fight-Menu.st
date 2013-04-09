@@ -64,6 +64,10 @@ dices
 	^self components at: 2
 !
 
+menuClass
+	^ '.menuEditor'
+!
+
 monsterWatcher
 	^self components at: 1
 !
@@ -78,12 +82,6 @@ tileWatcher
 
 turnWatcher
 	^self components at: 5
-! !
-
-!FightMenu methodsFor: 'displaying'!
-
-renderOn: html
-	super renderOn: html.
 ! !
 
 !FightMenu methodsFor: 'eventHandling'!
@@ -105,6 +103,7 @@ initialize
 	self addComponent: TileWatcher new.
 	self addComponent: MapControls new.
 	self addComponent: TurnWatcher new.
+	self appendToJQuery: self menuClass asJQuery.
 ! !
 
 Widget subclass: #ActionMenuComponent

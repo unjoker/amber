@@ -13,8 +13,7 @@ announcer
 
 checkIfReady
 	objectToLoad = objectLoaded
-		ifTrue: [ Transcript show: objectToLoad. 
-			self announcer announce: CWGameStart new]
+		ifTrue: [ self announcer announce: CWGameStart new]
 ! !
 
 !CWBootstrapper methodsFor: 'initialize-release'!
@@ -199,6 +198,13 @@ announce: event
 !CWGameBoard methodsFor: 'game logic'!
 
 firstTurn
+!
+
+startGame
+	"add some game logic here ..."
+	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
+	CWMapDrawer new initializeForMap: map.
+	self announce: CWGlobalDrawingEvent new
 ! !
 
 !CWGameBoard methodsFor: 'initialize-release'!
@@ -212,13 +218,11 @@ initialize
 initializeEventHandling
 	self announcer
 		on: CWGameStart
-		do: [ "some game logic here ..."
-			self announce: CWGlobalDrawingEvent new ]
+		do: [ self startGame ]
 !
 
 initializeMapWithIndex: index
 	map := CWMap newWithMapIndex: index.
-	CWMapDrawer new initializeForMap: map.
 	self initializeEventHandling.
 ! !
 

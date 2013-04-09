@@ -42,20 +42,18 @@ selector: "checkIfReady",
 category: 'events',
 fn: function (){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@objectToLoad"]).__eq(self["@objectLoaded"]);
 if(smalltalk.assert($1)){
-_st($Transcript())._show_(self["@objectToLoad"]);
 _st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
 };
 return self}, function($ctx1) {$ctx1.fill(self,"checkIfReady",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ Transcript show: objectToLoad. \x0a\x09\x09\x09self announcer announce: CWGameStart new]",
-messageSends: ["ifTrue:", "show:", "announce:", "new", "announcer", "="],
-referencedClasses: ["Transcript", "CWGameStart"]
+source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ self announcer announce: CWGameStart new]",
+messageSends: ["ifTrue:", "announce:", "new", "announcer", "="],
+referencedClasses: ["CWGameStart"]
 }),
 smalltalk.CWBootstrapper);
 
@@ -481,17 +479,16 @@ category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
-function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(self)._announce_(_st($CWGlobalDrawingEvent())._new());
+return _st(self)._startGame();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGameBoard)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ \x22some game logic here ...\x22\x0a\x09\x09\x09self announce: CWGlobalDrawingEvent new ]",
-messageSends: ["on:do:", "announce:", "new", "announcer"],
-referencedClasses: ["CWGameStart", "CWGlobalDrawingEvent"]
+source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ]",
+messageSends: ["on:do:", "startGame", "announcer"],
+referencedClasses: ["CWGameStart"]
 }),
 smalltalk.CWGameBoard);
 
@@ -502,16 +499,34 @@ category: 'initialize-release',
 fn: function (index){
 var self=this;
 function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
-function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=_st($CWMap())._newWithMapIndex_(index);
-_st(_st($CWMapDrawer())._new())._initializeForMap_(self["@map"]);
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeMapWithIndex:",{index:index},smalltalk.CWGameBoard)})},
 args: ["index"],
-source: "initializeMapWithIndex: index\x0a\x09map := CWMap newWithMapIndex: index.\x0a\x09CWMapDrawer new initializeForMap: map.\x0a\x09self initializeEventHandling.\x0a\x09",
-messageSends: ["newWithMapIndex:", "initializeForMap:", "new", "initializeEventHandling"],
-referencedClasses: ["CWMap", "CWMapDrawer"]
+source: "initializeMapWithIndex: index\x0a\x09map := CWMap newWithMapIndex: index.\x0a\x09self initializeEventHandling.\x0a\x09",
+messageSends: ["newWithMapIndex:", "initializeEventHandling"],
+referencedClasses: ["CWMap"]
+}),
+smalltalk.CWGameBoard);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startGame",
+category: 'game logic',
+fn: function (){
+var self=this;
+function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
+function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(".loading")._asJQuery())._animate_duration_(smalltalk.HashedCollection._fromPairs_([_st("top").__minus_gt("-60%")]),(2500));
+_st(_st($CWMapDrawer())._new())._initializeForMap_(self["@map"]);
+_st(self)._announce_(_st($CWGlobalDrawingEvent())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWGameBoard)})},
+args: [],
+source: "startGame\x0a\x09\x22add some game logic here ...\x22\x0a\x09'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.\x0a\x09CWMapDrawer new initializeForMap: map.\x0a\x09self announce: CWGlobalDrawingEvent new",
+messageSends: ["animate:duration:", "->", "asJQuery", "initializeForMap:", "new", "announce:"],
+referencedClasses: ["CWMapDrawer", "CWGlobalDrawingEvent"]
 }),
 smalltalk.CWGameBoard);
 

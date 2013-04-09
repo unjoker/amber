@@ -213,11 +213,28 @@ _st(self)._addComponent_(_st($Dices())._new());
 _st(self)._addComponent_(_st($TileWatcher())._new());
 _st(self)._addComponent_(_st($MapControls())._new());
 _st(self)._addComponent_(_st($TurnWatcher())._new());
+_st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.FightMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: MonsterWatcher new.\x0a\x09self addComponent: Dices new.\x0a\x09self addComponent: TileWatcher new.\x0a\x09self addComponent: MapControls new.\x0a\x09self addComponent: TurnWatcher new.",
-messageSends: ["initialize", "addComponent:", "new"],
+source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: MonsterWatcher new.\x0a\x09self addComponent: Dices new.\x0a\x09self addComponent: TileWatcher new.\x0a\x09self addComponent: MapControls new.\x0a\x09self addComponent: TurnWatcher new.\x0a\x09self appendToJQuery: self menuClass asJQuery.",
+messageSends: ["initialize", "addComponent:", "new", "appendToJQuery:", "asJQuery", "menuClass"],
 referencedClasses: ["MonsterWatcher", "Dices", "TileWatcher", "MapControls", "TurnWatcher"]
+}),
+smalltalk.FightMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "menuClass",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return ".menuEditor";
+}, function($ctx1) {$ctx1.fill(self,"menuClass",{},smalltalk.FightMenu)})},
+args: [],
+source: "menuClass\x0a\x09^ '.menuEditor'",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.FightMenu);
 
@@ -234,21 +251,6 @@ return $1;
 args: [],
 source: "monsterWatcher\x0a\x09^self components at: 1",
 messageSends: ["at:", "components"],
-referencedClasses: []
-}),
-smalltalk.FightMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "renderOn:",
-category: 'displaying',
-fn: function (html){
-var self=this;
-return smalltalk.withContext(function($ctx1) { smalltalk.ActionMenu.fn.prototype._renderOn_.apply(_st(self), [html]);
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html}, smalltalk.FightMenu)})},
-args: ["html"],
-source: "renderOn: html\x0a\x09super renderOn: html.",
-messageSends: ["renderOn:"],
 referencedClasses: []
 }),
 smalltalk.FightMenu);
