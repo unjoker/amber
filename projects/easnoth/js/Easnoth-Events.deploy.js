@@ -44,6 +44,25 @@ smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "imagesToPreload",
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st($Array())._new();
+_st($2)._add_("red");
+_st($2)._add_("green");
+_st($2)._add_("white");
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"imagesToPreload",{},smalltalk.CWBootstrapper)})},
+messageSends: ["add:", "new", "yourself"]}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
@@ -52,8 +71,9 @@ smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@objectToLoad"]=(0);
 self["@objectLoaded"]=(0);
 _st(self)._initializeEventHandling();
+_st(self)._preloadImages();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWBootstrapper)})},
-messageSends: ["initialize", "initializeEventHandling"]}),
+messageSends: ["initialize", "initializeEventHandling", "preloadImages"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -77,6 +97,21 @@ return _st(self)._checkIfReady();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWBootstrapper)})},
 messageSends: ["on:do:", "+", "announcer", "checkIfReady"]}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "preloadImages",
+fn: function (){
+var self=this;
+function $CWGameOverTile(){return smalltalk.CWGameOverTile||(typeof CWGameOverTile=="undefined"?nil:CWGameOverTile)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._imagesToPreload())._do_((function(key){
+return smalltalk.withContext(function($ctx2) {
+return _st($CWGameOverTile())._newImageFrom_(key);
+}, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"preloadImages",{},smalltalk.CWBootstrapper)})},
+messageSends: ["do:", "newImageFrom:", "imagesToPreload"]}),
 smalltalk.CWBootstrapper);
 
 
@@ -178,10 +213,15 @@ smalltalk.method({
 selector: "announce:",
 fn: function (anAnnouncement){
 var self=this;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=$Transcript();
+_st($1)._show_(_st(anAnnouncement)._class());
+$2=_st($1)._cr();
 _st(anAnnouncement)._accept_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"announce:",{anAnnouncement:anAnnouncement},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["accept:"]}),
+messageSends: ["show:", "class", "cr", "accept:"]}),
 smalltalk.CWEasnothAnnouncer);
 
 smalltalk.addMethod(
@@ -344,13 +384,23 @@ fn: function (event){
 var self=this;
 var cc;
 function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$3;
 $1=$Transcript();
 _st($1)._show_("mouseClick");
 $2=_st($1)._cr();
+cc=_st(self)._currentCell_(event);
+$3=cc;
+if(($receiver = $3) == nil || $receiver == undefined){
+$3;
+} else {
+_st(cc)._mouseClick_(self["@actionCell"]);
+};
+self["@actionCell"]=cc;
+_st(_st(self)._announcer())._announce_(_st($CWGOTDrawingEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"dispatchMouseClick:",{event:event,cc:cc},smalltalk.CWEventDispatcher)})},
-messageSends: ["show:", "cr"]}),
+messageSends: ["show:", "cr", "currentCell:", "ifNotNil:", "mouseClick:", "announce:", "new", "announcer"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(

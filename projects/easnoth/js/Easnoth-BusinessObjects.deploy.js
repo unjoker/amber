@@ -213,9 +213,9 @@ selector: "addSelectorColored:",
 fn: function (aColor){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(_st(_st(self)._newGameOverTile())._initializeFromJson_(aColor));
+_st(self)._gameOverTile_(_st(_st(self)._newGameOverTile())._initializeFromKey_(aColor));
 return self}, function($ctx1) {$ctx1.fill(self,"addSelectorColored:",{aColor:aColor},smalltalk.CWCell)})},
-messageSends: ["gameOverTile:", "initializeFromJson:", "newGameOverTile"]}),
+messageSends: ["gameOverTile:", "initializeFromKey:", "newGameOverTile"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -302,13 +302,10 @@ smalltalk.method({
 selector: "changeState:",
 fn: function (stateClass){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
-_st($Transcript())._show_(_st(_st(_st(_st(_st(self)._printString()).__comma(":")).__comma(_st(_st(self["@state"])._class())._printString())).__comma("->")).__comma(stateClass));
-_st($Transcript())._cr();
 _st(self)._state_(_st(stateClass)._default());
 return self}, function($ctx1) {$ctx1.fill(self,"changeState:",{stateClass:stateClass},smalltalk.CWCell)})},
-messageSends: ["show:", ",", "printString", "class", "cr", "state:", "default"]}),
+messageSends: ["state:", "default"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -424,13 +421,13 @@ elements=_st(aJsonCell)._keys();
 self["@background"]=_st($Array())._new();
 $1=_st(_st(elements)._first()).__eq("tile");
 if(smalltalk.assert($1)){
-_st(self)._backgroundAdd_(_st(_st(self)._newTile())._initializeFromJson_(_st(aJsonCell)._tile()));
+_st(self)._backgroundAdd_(_st(_st(self)._newTile())._initializeFromKey_(_st(aJsonCell)._tile()));
 };
 $2=_st(elements)._includes_("overtiles");
 if(smalltalk.assert($2)){
 _st(self)._backgroundAddAll_(_st(_st(aJsonCell)._overtiles())._collect_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(self)._newOverTile())._initializeFromJson_(_st(each)._overtile());
+return _st(_st(self)._newOverTile())._initializeFromKey_(_st(each)._overtile());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})));
 };
 $3=_st(_st(elements)._last()).__eq("heros");
@@ -442,7 +439,7 @@ if(smalltalk.assert($4)){
 _st(self)._monster_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements},smalltalk.CWCell)})},
-messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromJson:", "tile", "newTile", "=", "first", "backgroundAddAll:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "monster:", "heros", "newHeros", "last", "troop", "newTroop"]}),
+messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "=", "first", "backgroundAddAll:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "monster:", "initializeFromJson:", "heros", "newHeros", "last", "troop", "newTroop"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1221,17 +1218,6 @@ smalltalk.CWImageLeaf);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "folderName",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWImageLeaf)})},
-messageSends: ["subclassResponsibility"]}),
-smalltalk.CWImageLeaf);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "image",
 fn: function (){
 var self=this;
@@ -1245,16 +1231,13 @@ smalltalk.CWImageLeaf);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeFromJson:",
-fn: function (aJson){
+selector: "initializeFromKey:",
+fn: function (aKey){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@image"]=_st(_st(self)._class())._imageCacheAt_ifAbsent_(aJson,(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._newImageFrom_(aJson);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJson:aJson},smalltalk.CWImageLeaf)})},
-messageSends: ["imageCacheAt:ifAbsent:", "newImageFrom:", "class"]}),
+self["@image"]=_st(_st(self)._class())._imageCacheAt_(aKey);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromKey:",{aKey:aKey},smalltalk.CWImageLeaf)})},
+messageSends: ["imageCacheAt:", "class"]}),
 smalltalk.CWImageLeaf);
 
 smalltalk.addMethod(
@@ -1268,45 +1251,19 @@ return true;
 messageSends: []}),
 smalltalk.CWImageLeaf);
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "keyFor:",
-fn: function (aJson){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=aJson;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"keyFor:",{aJson:aJson},smalltalk.CWImageLeaf)})},
-messageSends: []}),
-smalltalk.CWImageLeaf);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newImageFrom:",
-fn: function (aJson){
-var self=this;
-function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
-function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
-function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-self["@image"]=_st($NativeFunction())._constructor_("Image");
-_st(_st(_st(self)._class())._imageCache())._at_put_(aJson,self["@image"]);
-_st(self)._announce_(_st($CWWaitForObject())._new());
-_st(self["@image"])._at_put_("onload",(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._announce_(_st($CWObjectLoaded())._new());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(self["@image"])._at_put_("src",_st(_st(_st(_st("ressources/images/").__comma(_st(self)._folderName())).__comma("/")).__comma(aJson)).__comma(".png"));
-$1=self["@image"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newImageFrom:",{aJson:aJson},smalltalk.CWImageLeaf)})},
-messageSends: ["constructor:", "at:put:", "imageCache", "class", "announce:", "new", ",", "folderName"]}),
-smalltalk.CWImageLeaf);
-
 
 smalltalk.CWImageLeaf.klass.iVarNames = ['imageCache'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "folderName",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWImageLeaf.klass)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWImageLeaf.klass);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "imageCache",
@@ -1329,28 +1286,45 @@ smalltalk.CWImageLeaf.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "imageCacheAt:ifAbsent:",
-fn: function (aKey,aBlock){
+selector: "imageCacheAt:",
+fn: function (aKey){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._imageCache())._at_ifAbsent_(aKey,aBlock);
+$1=_st(_st(self)._imageCache())._at_ifAbsentPut_(aKey,(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._newImageFrom_(aKey);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"imageCacheAt:ifAbsent:",{aKey:aKey,aBlock:aBlock},smalltalk.CWImageLeaf.klass)})},
-messageSends: ["at:ifAbsent:", "imageCache"]}),
+}, function($ctx1) {$ctx1.fill(self,"imageCacheAt:",{aKey:aKey},smalltalk.CWImageLeaf.klass)})},
+messageSends: ["at:ifAbsentPut:", "newImageFrom:", "imageCache"]}),
 smalltalk.CWImageLeaf.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "imageCacheAt:put:",
-fn: function (aKey,anImage){
+selector: "newImageFrom:",
+fn: function (aKey){
 var self=this;
+var announcer,image;
+function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
+function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
+function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
+function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._imageCache())._at_put_(aKey,anImage);
+announcer=_st($CWEasnothAnnouncer())._current();
+image=_st($NativeFunction())._constructor_("Image");
+_st(_st(self)._imageCache())._at_put_(aKey,image);
+_st(announcer)._announce_(_st($CWWaitForObject())._new());
+_st(image)._at_put_("onload",(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(announcer)._announce_(_st($CWObjectLoaded())._new());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(image)._at_put_("src",_st(_st(_st(_st("ressources/images/").__comma(_st(self)._folderName())).__comma("/")).__comma(aKey)).__comma(".png"));
+$1=image;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"imageCacheAt:put:",{aKey:aKey,anImage:anImage},smalltalk.CWImageLeaf.klass)})},
-messageSends: ["at:put:", "imageCache"]}),
+}, function($ctx1) {$ctx1.fill(self,"newImageFrom:",{aKey:aKey,announcer:announcer,image:image},smalltalk.CWImageLeaf.klass)})},
+messageSends: ["current", "constructor:", "at:put:", "imageCache", "announce:", "new", ",", "folderName"]}),
 smalltalk.CWImageLeaf.klass);
 
 
@@ -1382,6 +1356,7 @@ return $1;
 messageSends: ["visitOverTile:"]}),
 smalltalk.CWOverTile);
 
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "folderName",
@@ -1389,10 +1364,9 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "overtiles";
-}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWOverTile)})},
+}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWOverTile.klass)})},
 messageSends: []}),
-smalltalk.CWOverTile);
-
+smalltalk.CWOverTile.klass);
 
 
 smalltalk.addClass('CWGameOverTile', smalltalk.CWOverTile, [], 'Easnoth-BusinessObjects');
@@ -1425,6 +1399,7 @@ return $1;
 messageSends: ["visitTile:"]}),
 smalltalk.CWTile);
 
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "folderName",
@@ -1432,10 +1407,9 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "tiles";
-}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWTile)})},
+}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWTile.klass)})},
 messageSends: []}),
-smalltalk.CWTile);
-
+smalltalk.CWTile.klass);
 
 
 smalltalk.addClass('CWWall', smalltalk.CWTile, [], 'Easnoth-BusinessObjects');
@@ -1552,17 +1526,6 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "folderName",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return "monsters";
-}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWMonster)})},
-messageSends: []}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "hp",
 fn: function (){
 var self=this;
@@ -1591,24 +1554,11 @@ selector: "initializeFromJson:",
 fn: function (aJson){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWImageLeaf.fn.prototype._initializeFromJson_.apply(_st(self), [_st(aJson)._name()]);
+smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(aJson)._name()]);
 _st(self)._side_(_st(aJson)._side());
 _st(self)._loadStats_(_st(aJson)._name());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJson:aJson},smalltalk.CWMonster)})},
-messageSends: ["initializeFromJson:", "name", "side:", "side", "loadStats:"]}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "keyFor:",
-fn: function (aJson){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aJson)._name();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"keyFor:",{aJson:aJson},smalltalk.CWMonster)})},
-messageSends: ["name"]}),
+messageSends: ["initializeFromKey:", "name", "side:", "side", "loadStats:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -1715,6 +1665,17 @@ smalltalk.CWMonster);
 
 
 smalltalk.CWMonster.klass.iVarNames = ['jsonStatCache'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "folderName",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "monsters";
+}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWMonster.klass)})},
+messageSends: []}),
+smalltalk.CWMonster.klass);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "jsonStatCache",

@@ -68,7 +68,7 @@ The cell cannot be a wall.!
 !CWFreeSelected methodsFor: 'cell state API'!
 
 addSelector: aCell
-	"self error: 'should not happen'."
+	self error: 'should not happen'.
 ! !
 
 CWCellState subclass: #CWHasMonster
@@ -94,7 +94,7 @@ The monster has to be on the opposite side of the current playing monster.!
 !CWHasMonsterSelected methodsFor: 'cell state API'!
 
 addSelector: aCell
-	"self error: 'should not happen'."
+	self error: 'should not happen'.
 ! !
 
 CWState subclass: #CWMonsterState
