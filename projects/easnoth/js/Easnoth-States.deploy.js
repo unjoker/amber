@@ -122,8 +122,9 @@ selector: "addSelector:",
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWFreeSelected)})},
-messageSends: []}),
+messageSends: ["error:"]}),
 smalltalk.CWFreeSelected);
 
 
@@ -151,8 +152,9 @@ selector: "addSelector:",
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWHasMonsterSelected)})},
-messageSends: []}),
+messageSends: ["error:"]}),
 smalltalk.CWHasMonsterSelected);
 
 

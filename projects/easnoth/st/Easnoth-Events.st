@@ -7,6 +7,14 @@ Object subclass: #CWBootstrapper
 
 announcer
 	^ CWEasnothAnnouncer current
+!
+
+imagesToPreload
+	^ Array new
+		add: 'red';
+		add: 'green';
+		add: 'white';
+		yourself
 ! !
 
 !CWBootstrapper methodsFor: 'events'!
@@ -27,6 +35,7 @@ initialize
 	objectToLoad := 0.
 	objectLoaded := 0.
 	self initializeEventHandling.
+	self preloadImages
 !
 
 initializeEventHandling
@@ -37,6 +46,11 @@ initializeEventHandling
 		on: CWObjectLoaded 
 			do: [ objectLoaded := objectLoaded + 1.
 				self checkIfReady].
+!
+
+preloadImages
+	self imagesToPreload do: [ :key |
+		CWGameOverTile newImageFrom: key ]
 ! !
 
 !CWBootstrapper class methodsFor: 'instance creation'!
@@ -114,6 +128,7 @@ SystemAnnouncer subclass: #CWEasnothAnnouncer
 !CWEasnothAnnouncer methodsFor: 'events'!
 
 announce: anAnnouncement
+	Transcript show: anAnnouncement class; cr.
 	anAnnouncement accept: self
 !
 
@@ -263,14 +278,14 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 dispatchMouseClick: event
 	| cc |
 	Transcript show: 'mouseClick';cr.
-	"cc := self currentCell: event.
+	cc := self currentCell: event.
 	cc ifNotNil: [ 
 		cc mouseClick: actionCell ].
 	
-	actionCell := cc."
+	actionCell := cc.
 	
 	"hack for now"
-	"self announcer announce: CWGOTDrawingEvent new."
+	self announcer announce: CWGOTDrawingEvent new.
 ! !
 
 !CWEventDispatcher methodsFor: 'initialize-release'!

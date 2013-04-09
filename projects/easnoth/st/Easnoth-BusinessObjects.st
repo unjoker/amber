@@ -206,10 +206,10 @@ initializeFromJson: aJsonCell
     background := Array new.
 	
     elements first = 'tile'
-    	ifTrue: [ self backgroundAdd: (self newTile initializeFromJson: aJsonCell tile) ].
+    	ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].
     (elements includes: 'overtiles') 
     	ifTrue: [ self backgroundAddAll: (aJsonCell overtiles collect: [:each | 
-			self newOverTile initializeFromJson: each overtile] ) ].
+			self newOverTile initializeFromKey: each overtile] ) ].
     elements last = 'heros'
     	ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].
     elements last = 'troop'
@@ -275,7 +275,7 @@ selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2
 !CWCell methodsFor: 'selection'!
 
 addSelectorColored: aColor
-	self gameOverTile: (self newGameOverTile initializeFromJson: aColor)
+	self gameOverTile: (self newGameOverTile initializeFromKey: aColor)
 ! !
 
 !CWCell methodsFor: 'state delegation'!
@@ -287,8 +287,6 @@ addSelector
 !CWCell methodsFor: 'state machine'!
 
 changeState: stateClass
-	Transcript show: self printString, ':', state class printString, '->', stateClass.
-	Transcript cr.
 	self state: stateClass default
 !
 
@@ -565,34 +563,12 @@ I represent a leaf of the business objects tree that has an image. Usually only 
 
 image
 	^ image
-!
-
-keyFor: aJson
-	^ aJson
 ! !
 
 !CWImageLeaf methodsFor: 'initialize-release'!
 
-folderName
-	self subclassResponsibility
-!
-
-initializeFromJson: aJson
-	image := self class 
-		imageCacheAt: aJson
-		ifAbsent: [ self newImageFrom: aJson ]
-!
-
-newImageFrom: aJson
-	"Create a new image and cache it"
-	
-	image := NativeFunction constructor: 'Image'.
-	self class imageCache at: aJson put: image.
-	self announce: CWWaitForObject new.
-	image at: 'onload' put: [ self announce: CWObjectLoaded new ].
-    image at: 'src' put:  'ressources/images/', self folderName, '/', aJson, '.png'.
-	
-	^ image
+initializeFromKey: aKey
+	image := self class imageCacheAt: aKey
 ! !
 
 !CWImageLeaf methodsFor: 'testing'!
@@ -609,18 +585,35 @@ accept: aVisitor
 
 CWImageLeaf class instanceVariableNames: 'imageCache'!
 
+!CWImageLeaf class methodsFor: 'accessing'!
+
+folderName
+	self subclassResponsibility
+! !
+
 !CWImageLeaf class methodsFor: 'caching'!
 
 imageCache
 	^ imageCache ifNil: [ imageCache := Dictionary new ]
 !
 
-imageCacheAt: aKey ifAbsent: aBlock
-	^ self imageCache at: aKey ifAbsent: aBlock
+imageCacheAt: aKey
+	^ self imageCache at: aKey ifAbsentPut: [ self newImageFrom: aKey ]
 !
 
-imageCacheAt: aKey put: anImage
-	^ self imageCache at: aKey put: anImage
+newImageFrom: aKey
+	"Create a new image and cache it. Announce start and end of asynchronous task"
+	
+	| announcer image |
+	
+	announcer := CWEasnothAnnouncer current.
+	image := NativeFunction constructor: 'Image'.
+	self imageCache at: aKey put: image.
+	announcer announce: CWWaitForObject new.
+	image at: 'onload' put: [ announcer announce: CWObjectLoaded new ].
+    image at: 'src' put:  'ressources/images/', self folderName, '/', aKey, '.png'.
+	
+	^ image
 ! !
 
 CWImageLeaf subclass: #CWBackground
@@ -639,16 +632,16 @@ CWBackground subclass: #CWOverTile
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
-!CWOverTile methodsFor: 'initialize-release'!
-
-folderName
-	^ 'overtiles'
-! !
-
 !CWOverTile methodsFor: 'visiting'!
 
 accept: aVisitor
 	^ aVisitor visitOverTile: self
+! !
+
+!CWOverTile class methodsFor: 'accessing'!
+
+folderName
+	^ 'overtiles'
 ! !
 
 CWOverTile subclass: #CWGameOverTile
@@ -665,16 +658,16 @@ CWBackground subclass: #CWTile
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
-!CWTile methodsFor: 'initalize-release'!
-
-folderName
-	^ 'tiles'
-! !
-
 !CWTile methodsFor: 'visiting'!
 
 accept: aVisitor
 	^ aVisitor visitTile: self
+! !
+
+!CWTile class methodsFor: 'accessing'!
+
+folderName
+	^ 'tiles'
 ! !
 
 CWTile subclass: #CWWall
@@ -719,10 +712,6 @@ hp: int
 	hp := int
 !
 
-keyFor: aJson
-	^ aJson name
-!
-
 move
 	^ move
 !
@@ -765,12 +754,8 @@ defaultHp
 	self subclassResponsibility
 !
 
-folderName
-	^ 'monsters'
-!
-
 initializeFromJson: aJson
-	super initializeFromJson: aJson name.
+	super initializeFromKey: aJson name.
 	self side: aJson side.
 	self loadStats: aJson name.
 !
@@ -812,6 +797,12 @@ accept: aVisitor
 ! !
 
 CWMonster class instanceVariableNames: 'jsonStatCache'!
+
+!CWMonster class methodsFor: 'accessing'!
+
+folderName
+	^ 'monsters'
+! !
 
 !CWMonster class methodsFor: 'caching'!
 

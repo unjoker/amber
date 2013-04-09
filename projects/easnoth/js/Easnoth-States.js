@@ -165,10 +165,11 @@ category: 'cell state API',
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWFreeSelected)})},
 args: ["aCell"],
-source: "addSelector: aCell\x0a\x09\x22self error: 'should not happen'.\x22",
-messageSends: [],
+source: "addSelector: aCell\x0a\x09self error: 'should not happen'.",
+messageSends: ["error:"],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
@@ -206,10 +207,11 @@ category: 'cell state API',
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWHasMonsterSelected)})},
 args: ["aCell"],
-source: "addSelector: aCell\x0a\x09\x22self error: 'should not happen'.\x22",
-messageSends: [],
+source: "addSelector: aCell\x0a\x09self error: 'should not happen'.",
+messageSends: ["error:"],
 referencedClasses: []
 }),
 smalltalk.CWHasMonsterSelected);
