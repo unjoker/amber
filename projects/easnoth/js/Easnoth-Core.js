@@ -323,7 +323,7 @@ smalltalk.Cell);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "drawedObjects:",
-category: 'accessing-direct',
+category: 'accessing',
 fn: function (value){
 var self=this;
 return smalltalk.withContext(function($ctx1) { self["@drawedObjects"]=value;

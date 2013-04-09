@@ -2,8 +2,32 @@ Smalltalk current createPackage: 'Easnoth-Visitors'!
 Object subclass: #CWMapVisitorContext
 	instanceVariableNames: 'rowIndex cellIndex'
 	package: 'Easnoth-Visitors'!
-!CWMapVisitorContext commentStamp!
-PUSH NEXT ROW NEXT CELL TO MY CLASS. I SHOULD BE ABLE TO RETURN AN ARRAY OF CELLS OR MONSTERS IN THE RIGHT ORDER!
+
+!CWMapVisitorContext methodsFor: 'context alteration'!
+
+nextCell
+	cellIndex := cellIndex + 1.
+!
+
+nextRow
+	rowIndex := rowIndex + 1.
+	cellIndex := 0
+! !
+
+!CWMapVisitorContext methodsFor: 'initialize-release'!
+
+reset
+	rowIndex := 0.
+	cellIndex := 0
+! !
+
+CWMapVisitorContext class instanceVariableNames: 'default'!
+
+!CWMapVisitorContext class methodsFor: 'instance creation'!
+
+default
+	^ default ifNil: [ default := self new ]
+! !
 
 CWMapVisitorContext subclass: #CWGlobalDrawingContext
 	instanceVariableNames: 'currentPointCache drawer'
@@ -43,24 +67,16 @@ calculCanvasCoods
 !CWGlobalDrawingContext methodsFor: 'context alteration'!
 
 nextCell
-	cellIndex := cellIndex + 1.
+	super nextCell.
 	currentPointCache := nil.
-!
-
-nextRow
-	rowIndex := rowIndex + 1.
-	cellIndex := 0
 ! !
 
 !CWGlobalDrawingContext methodsFor: 'initialize-release'!
 
 reset: aDrawer
-	rowIndex := 0.
-	cellIndex := 0.
+	super reset.
 	currentPointCache := nil.
-	drawer := aDrawer
-	"put back next thing when current system ok"
-	"drawer ifNil: [ drawer := aDrawer ]"
+	drawer ifNil: [ drawer := aDrawer ]
 ! !
 
 !CWGlobalDrawingContext methodsFor: 'visiting'!
@@ -83,14 +99,6 @@ visitTile: aTile
 
 visitTroop: aTroop
 	drawer drawTroop: aTroop
-! !
-
-CWGlobalDrawingContext class instanceVariableNames: 'default'!
-
-!CWGlobalDrawingContext class methodsFor: 'instance creation'!
-
-default
-	^ default ifNil: [ default := self new ]
 ! !
 
 CWGlobalDrawingContext subclass: #CWMonsterAndGOTDrawingContext
