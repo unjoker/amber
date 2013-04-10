@@ -21,6 +21,17 @@ return $1;
 messageSends: ["ifNil:", "new"]}),
 smalltalk.CWState.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeStateFor:",
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsbility();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeStateFor:",{aCell:aCell},smalltalk.CWState.klass)})},
+messageSends: ["subclassResponsbility"]}),
+smalltalk.CWState.klass);
+
 
 smalltalk.addClass('CWCellState', smalltalk.CWState, [], 'Easnoth-States');
 smalltalk.addMethod(
@@ -215,9 +226,9 @@ selector: "mouseClick:context:",
 fn: function (aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(aCell)._monster())._select();
+_st(_st(aCell)._monster())._select_(gameContext);
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWHasMonster)})},
-messageSends: ["select", "monster"]}),
+messageSends: ["select:", "monster"]}),
 smalltalk.CWHasMonster);
 
 smalltalk.addMethod(
@@ -226,9 +237,9 @@ selector: "showActiveMonster:",
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(aCell)._addSelectorColored_("white");
+_st(_st(aCell)._monster())._showActiveMonster();
 return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aCell:aCell},smalltalk.CWHasMonster)})},
-messageSends: ["addSelectorColored:"]}),
+messageSends: ["showActiveMonster", "monster"]}),
 smalltalk.CWHasMonster);
 
 
@@ -283,6 +294,40 @@ smalltalk.CWHasMonsterSelected);
 
 
 smalltalk.addClass('CWMonsterState', smalltalk.CWState, [], 'Easnoth-States');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "select:inContext:",
+fn: function (aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWMonsterState)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWMonsterState);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aMonster)._parent())._addSelectorColored_("white");
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aMonster:aMonster},smalltalk.CWMonsterState)})},
+messageSends: ["addSelectorColored:", "parent"]}),
+smalltalk.CWMonsterState);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeStateFor:",
+fn: function (aMonster){
+var self=this;
+function $CWInactive(){return smalltalk.CWInactive||(typeof CWInactive=="undefined"?nil:CWInactive)}
+return smalltalk.withContext(function($ctx1) { 
+_st(aMonster)._changeState_($CWInactive());
+return self}, function($ctx1) {$ctx1.fill(self,"initializeStateFor:",{aMonster:aMonster},smalltalk.CWMonsterState.klass)})},
+messageSends: ["changeState:"]}),
+smalltalk.CWMonsterState.klass);
 
 
 smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-States');
@@ -292,8 +337,48 @@ smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-State
 
 
 smalltalk.addClass('CWInactive', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "select:inContext:",
+fn: function (aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aMonster)._root())._showActiveMonsters();
+_st(gameContext)._currentMonster_(aMonster);
+return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
+messageSends: ["showActiveMonsters", "root", "currentMonster:"]}),
+smalltalk.CWInactive);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aMonster:aMonster},smalltalk.CWInactive)})},
+messageSends: []}),
+smalltalk.CWInactive);
+
 
 
 smalltalk.addClass('CWToPick', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "select:inContext:",
+fn: function (aMonster,gameContext){
+var self=this;
+function $CWInactive(){return smalltalk.CWInactive||(typeof CWInactive=="undefined"?nil:CWInactive)}
+function $CWActive(){return smalltalk.CWActive||(typeof CWActive=="undefined"?nil:CWActive)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(_st(aMonster)._root())._monstersFromSide_(_st(aMonster)._side()))._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._changeState_($CWInactive());
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(aMonster)._changeState_($CWActive());
+_st(aMonster)._select_(gameContext);
+return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWToPick)})},
+messageSends: ["do:", "changeState:", "monstersFromSide:", "side", "root", "select:"]}),
+smalltalk.CWToPick);
+
 
 

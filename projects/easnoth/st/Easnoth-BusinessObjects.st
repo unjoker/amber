@@ -48,6 +48,26 @@ updateMonstersAndGOTs
 	self announce: CWMonsterAndGOTDrawingEvent new.
 ! !
 
+!CWComponent methodsFor: 'selection'!
+
+monstersFromSide: aSide
+	| col |
+	col := Array new.
+	self children collect: [ :child |
+		col addAll: (child monstersFromSide: aSide) ].
+	^ col
+!
+
+removeSelection
+	self children do: [ :child |
+		child removeSelection ]
+!
+
+showActiveMonsters
+	self children do: [ :child |
+		child showActiveMonsters ]
+! !
+
 !CWComponent methodsFor: 'testing'!
 
 isLeaf
@@ -84,18 +104,6 @@ childAt: index
 
 newChild: aClass
 	^ aClass new parent: self
-! !
-
-!CWComposite methodsFor: 'selection'!
-
-removeSelection
-	self children do: [ :child |
-		child removeSelection ]
-!
-
-showActiveMonsters
-	self children do: [ :child |
-		child showActiveMonsters ]
 ! !
 
 !CWComposite methodsFor: 'visiting'!
@@ -824,6 +832,24 @@ updateStats: aKey
 	"Case where the json file finished loading during the execution of this method but before the new call back was set up"
 	(self class jsonStatCache includesKey: aKey) 
 		ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].
+! !
+
+!CWMonster methodsFor: 'selection'!
+
+monstersFromSide: aSide
+	^ self side = aSide 
+		ifTrue: [ { self } ]
+		ifFalse: [ #() ]
+! !
+
+!CWMonster methodsFor: 'state delegation'!
+
+select: gameContext
+	self state select: self inContext: gameContext
+!
+
+showActiveMonster
+	self state showActiveMonster: self
 ! !
 
 !CWMonster methodsFor: 'state machine'!

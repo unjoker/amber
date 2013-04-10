@@ -236,13 +236,34 @@ announce: event
 
 !CWGame methodsFor: 'game logic'!
 
+activateMonsters
+	| armyPlaying monster1 |
+
+	armyPlaying := map monstersFromSide: self gameContext currentPlayer.
+
+	(armyPlaying size = 0) 
+		ifTrue: [ window alert: 'Someone just won. Guess who ? winner : ' , self gameContext currentPlayer negated ] 
+		ifFalse: [ self pickMonster: armyPlaying ]
+!
+
+firstTurn
+	self activateMonsters.
+!
+
+pickMonster: armyPlaying
+	armyPlaying do: [ :monster | 
+		monster changeState: CWToPick ].
+	map showActiveMonsters.
+	self announce: CWGOTDrawingEvent new.
+!
+
 startGame
 	| drawer |
-	"add some game logic here ..."
-	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
+	self removeLoadingBar.
 	drawer := CWMapDrawer new initializeForMap: map.
 	CWEventDispatcher new initializeForMap: map drawer: drawer game: self.
-	self announce: CWGlobalDrawingEvent new
+	self announce: CWGlobalDrawingEvent new.
+	self firstTurn.
 ! !
 
 !CWGame methodsFor: 'initialize-release'!
@@ -262,6 +283,10 @@ initializeEventHandling
 initializeMapWithIndex: index
 	map := CWMap newWithMapIndex: index.
 	self initializeEventHandling.
+!
+
+removeLoadingBar
+	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
 ! !
 
 !CWGame class methodsFor: 'examples'!

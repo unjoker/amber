@@ -9,6 +9,10 @@ CWState class instanceVariableNames: 'default'!
 
 default
 	^ default ifNil: [ default := self new ]
+!
+
+initializeStateFor: aCell
+	self subclassResponsbility
 ! !
 
 CWState subclass: #CWCellState
@@ -108,11 +112,11 @@ addSelector: aCell
 !
 
 mouseClick: aCell context: gameContext
-	aCell monster select
+	aCell monster select: gameContext
 !
 
 showActiveMonster: aCell
-	aCell addSelectorColored: 'white'.
+	aCell monster showActiveMonster.
 ! !
 
 CWCellState subclass: #CWHasMonsterSelected
@@ -145,6 +149,22 @@ CWState subclass: #CWMonsterState
 	instanceVariableNames: ''
 	package: 'Easnoth-States'!
 
+!CWMonsterState methodsFor: 'monster state API'!
+
+select: aMonster inContext: gameContext
+	self subclassResponsibility
+!
+
+showActiveMonster: aMonster
+	aMonster parent addSelectorColored: 'white'
+! !
+
+!CWMonsterState class methodsFor: 'instance creation'!
+
+initializeStateFor: aMonster
+	aMonster changeState: CWInactive
+! !
+
 CWMonsterState subclass: #CWActive
 	instanceVariableNames: ''
 	package: 'Easnoth-States'!
@@ -163,9 +183,29 @@ CWMonsterState subclass: #CWInactive
 !CWInactive commentStamp!
 Monster cannot do anything :)!
 
+!CWInactive methodsFor: 'monster state API'!
+
+select: aMonster inContext: gameContext
+	aMonster root showActiveMonsters.
+	gameContext currentMonster: aMonster.
+!
+
+showActiveMonster: aMonster
+	"Just do nothing, this monster is not actve"
+! !
+
 CWMonsterState subclass: #CWToPick
 	instanceVariableNames: ''
 	package: 'Easnoth-States'!
 !CWToPick commentStamp!
 The player has to choice one of the toPick monster to activate them!
+
+!CWToPick methodsFor: 'not yet classified'!
+
+select: aMonster inContext: gameContext
+	(aMonster root monstersFromSide: aMonster side) do: [ :each |
+		each changeState: CWInactive ].
+	aMonster changeState: CWActive.
+	aMonster select: gameContext
+! !
 
