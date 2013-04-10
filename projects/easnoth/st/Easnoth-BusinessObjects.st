@@ -262,7 +262,7 @@ movableNeighbours
 			each canMoveTo ].
 	movableCells do: [ :each |
 			each addSelector.
-			each prevCell: self ].
+			"each prevCell: self" ].
 	^ movableCells
 !
 
@@ -310,6 +310,10 @@ removeGameOverTile
 
 addSelector
 	self state addSelector: self
+!
+
+canMoveTo
+	^ self state canMoveTo: self
 !
 
 removeSelection
@@ -702,6 +706,12 @@ CWBackground subclass: #CWTile
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
+!CWTile methodsFor: 'testing'!
+
+isWall
+	^ false
+! !
+
 !CWTile methodsFor: 'visiting'!
 
 accept: aVisitor
@@ -718,6 +728,12 @@ CWTile subclass: #CWWall
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
 
+!CWWall methodsFor: 'testing'!
+
+isWall
+	^ true
+! !
+
 !CWWall methodsFor: 'visiting'!
 
 accept: aVisitor
@@ -725,7 +741,7 @@ accept: aVisitor
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: 'side move attack dices hp state'
+	instanceVariableNames: 'side move attack dices hp range state'
 	package: 'Easnoth-BusinessObjects'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
@@ -762,6 +778,14 @@ move
 
 move: int
 	move := int
+!
+
+range
+	^ range
+!
+
+range: int
+	range := int
 !
 
 side
@@ -812,7 +836,7 @@ loadStats: aJson
 
 stats: jsonStats
 	self move: jsonStats move.
-	"self range: jsonStats range."
+	self range: jsonStats range.
 	self attack: jsonStats attack.
 	"self knockback: jsonStats knockback."
 	self dices: jsonStats dices.

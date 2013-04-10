@@ -188,7 +188,7 @@ dispatchMouseClick: event
 		cc mouseClick: game gameContext ].
 	
 	"hack for now"
-	self announcer announce: CWGOTDrawingEvent new.
+	self announcer announce: CWMonsterAndGOTDrawingEvent new.
 ! !
 
 !CWEventDispatcher methodsFor: 'initialize-release'!

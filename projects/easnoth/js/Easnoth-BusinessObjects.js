@@ -502,6 +502,24 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "canMoveTo",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._canMoveTo_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canMoveTo",{},smalltalk.CWCell)})},
+args: [],
+source: "canMoveTo\x0a\x09^ self state canMoveTo: self",
+messageSends: ["canMoveTo:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "changeState:",
 category: 'state machine',
 fn: function (stateClass){
@@ -802,15 +820,14 @@ return _st(each)._canMoveTo();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-_st(each)._addSelector();
-return _st(each)._prevCell_(self);
+return _st(each)._addSelector();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighbours",{movableCells:movableCells},smalltalk.CWCell)})},
 args: [],
-source: "movableNeighbours\x0a\x09|movableCells|\x0a\x09movableCells := self neighbours select: [ :each | \x0a\x09\x09\x09each canMoveTo ].\x0a\x09movableCells do: [ :each |\x0a\x09\x09\x09each addSelector.\x0a\x09\x09\x09each prevCell: self ].\x0a\x09^ movableCells",
-messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector", "prevCell:"],
+source: "movableNeighbours\x0a\x09|movableCells|\x0a\x09movableCells := self neighbours select: [ :each | \x0a\x09\x09\x09each canMoveTo ].\x0a\x09movableCells do: [ :each |\x0a\x09\x09\x09each addSelector.\x0a\x09\x09\x09\x22each prevCell: self\x22 ].\x0a\x09^ movableCells",
+messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -2029,6 +2046,22 @@ referencedClasses: []
 }),
 smalltalk.CWTile);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isWall",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWTile)})},
+args: [],
+source: "isWall\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWTile);
+
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -2066,9 +2099,25 @@ referencedClasses: []
 }),
 smalltalk.CWWall);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isWall",
+category: 'testing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWWall)})},
+args: [],
+source: "isWall\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWWall);
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'move', 'attack', 'dices', 'hp', 'state'], 'Easnoth-BusinessObjects');
+
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'move', 'attack', 'dices', 'hp', 'range', 'state'], 'Easnoth-BusinessObjects');
 smalltalk.CWMonster.comment="I represent people on the map. My instances variables are the stats of the guy I represent."
 smalltalk.addMethod(
 smalltalk.method({
@@ -2366,6 +2415,40 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "range",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@range"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"range",{},smalltalk.CWMonster)})},
+args: [],
+source: "range\x0a\x09^ range",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "range:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@range"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"range:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "range: int\x0a\x09range := int",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "select:",
 category: 'state delegation',
 fn: function (gameContext){
@@ -2478,13 +2561,14 @@ fn: function (jsonStats){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._move_(_st(jsonStats)._move());
+_st(self)._range_(_st(jsonStats)._range());
 _st(self)._attack_(_st(jsonStats)._attack());
 _st(self)._dices_(_st(jsonStats)._dices());
 _st(self)._hp_(_st(self)._defaultHp());
 return self}, function($ctx1) {$ctx1.fill(self,"stats:",{jsonStats:jsonStats},smalltalk.CWMonster)})},
 args: ["jsonStats"],
-source: "stats: jsonStats\x0a\x09self move: jsonStats move.\x0a\x09\x22self range: jsonStats range.\x22\x0a\x09self attack: jsonStats attack.\x0a\x09\x22self knockback: jsonStats knockback.\x22\x0a\x09self dices: jsonStats dices.\x0a\x09\x22self special: jsonStats special.\x22\x0a\x09self hp: self defaultHp.",
-messageSends: ["move:", "move", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"],
+source: "stats: jsonStats\x0a\x09self move: jsonStats move.\x0a\x09self range: jsonStats range.\x0a\x09self attack: jsonStats attack.\x0a\x09\x22self knockback: jsonStats knockback.\x22\x0a\x09self dices: jsonStats dices.\x0a\x09\x22self special: jsonStats special.\x22\x0a\x09self hp: self defaultHp.",
+messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);

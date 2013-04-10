@@ -67,11 +67,11 @@ category: 'cell state API',
 fn: function (cell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"canMoveTo:",{cell:cell},smalltalk.CWCellState)})},
+return false;
+}, function($ctx1) {$ctx1.fill(self,"canMoveTo:",{cell:cell},smalltalk.CWCellState)})},
 args: ["cell"],
-source: "canMoveTo: cell\x0a\x09self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "canMoveTo: cell\x0a\x09^ false",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWCellState);
@@ -182,6 +182,22 @@ args: ["aCell"],
 source: "addSelector: aCell\x0a\x09aCell addSelectorColored: 'green'.\x0a\x09aCell changeState: CWFreeSelected",
 messageSends: ["addSelectorColored:", "changeState:"],
 referencedClasses: ["CWFreeSelected"]
+}),
+smalltalk.CWFree);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canMoveTo:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"canMoveTo:",{aCell:aCell},smalltalk.CWFree)})},
+args: ["aCell"],
+source: "canMoveTo: aCell\x0a\x09\x22should dispatch but as it is not used...\x22\x0a\x09\x22^ aCell tile isWall not\x22\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.CWFree);
 
@@ -466,6 +482,29 @@ smalltalk.CWMonsterState.klass);
 
 smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-States');
 smalltalk.CWActive.comment="Monster can move and attack"
+smalltalk.addMethod(
+smalltalk.method({
+selector: "select:inContext:",
+category: 'not yet classified',
+fn: function (aMonster,gameContext){
+var self=this;
+var cells;
+return smalltalk.withContext(function($ctx1) { 
+cells=_st(_st(aMonster)._parent())._selectableNeighboursMoveCycle_attackCycle_(_st(aMonster)._move(),_st(aMonster)._range());
+_st((1))._halt();
+_st(cells)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._addSelector();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(gameContext)._currentMonster_(aMonster);
+return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext,cells:cells},smalltalk.CWActive)})},
+args: ["aMonster", "gameContext"],
+source: "select: aMonster inContext: gameContext\x0a\x09| cells |\x0a\x09cells := aMonster parent selectableNeighboursMoveCycle: aMonster move attackCycle: aMonster range.\x0a\x091halt.\x0a\x09cells do: [:each |\x0a\x09\x09each addSelector ].\x0a\x09gameContext currentMonster: aMonster",
+messageSends: ["selectableNeighboursMoveCycle:attackCycle:", "move", "range", "parent", "halt", "do:", "addSelector", "currentMonster:"],
+referencedClasses: []
+}),
+smalltalk.CWActive);
+
 
 
 smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-States');

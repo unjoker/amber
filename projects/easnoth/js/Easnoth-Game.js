@@ -283,7 +283,7 @@ category: 'events',
 fn: function (event){
 var self=this;
 var cc;
-function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
+function $CWMonsterAndGOTDrawingEvent(){return smalltalk.CWMonsterAndGOTDrawingEvent||(typeof CWMonsterAndGOTDrawingEvent=="undefined"?nil:CWMonsterAndGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 cc=_st(self)._currentCell_(event);
@@ -293,12 +293,12 @@ $1;
 } else {
 _st(cc)._mouseClick_(_st(self["@game"])._gameContext());
 };
-_st(_st(self)._announcer())._announce_(_st($CWGOTDrawingEvent())._new());
+_st(_st(self)._announcer())._announce_(_st($CWMonsterAndGOTDrawingEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"dispatchMouseClick:",{event:event,cc:cc},smalltalk.CWEventDispatcher)})},
 args: ["event"],
-source: "dispatchMouseClick: event\x0a\x09| cc |\x0a\x09cc := self currentCell: event.\x0a\x09cc ifNotNil: [ \x0a\x09\x09cc mouseClick: game gameContext ].\x0a\x09\x0a\x09\x22hack for now\x22\x0a\x09self announcer announce: CWGOTDrawingEvent new.",
+source: "dispatchMouseClick: event\x0a\x09| cc |\x0a\x09cc := self currentCell: event.\x0a\x09cc ifNotNil: [ \x0a\x09\x09cc mouseClick: game gameContext ].\x0a\x09\x0a\x09\x22hack for now\x22\x0a\x09self announcer announce: CWMonsterAndGOTDrawingEvent new.",
 messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "gameContext", "announce:", "new", "announcer"],
-referencedClasses: ["CWGOTDrawingEvent"]
+referencedClasses: ["CWMonsterAndGOTDrawingEvent"]
 }),
 smalltalk.CWEventDispatcher);
 

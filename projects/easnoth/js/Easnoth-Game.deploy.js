@@ -216,7 +216,7 @@ selector: "dispatchMouseClick:",
 fn: function (event){
 var self=this;
 var cc;
-function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
+function $CWMonsterAndGOTDrawingEvent(){return smalltalk.CWMonsterAndGOTDrawingEvent||(typeof CWMonsterAndGOTDrawingEvent=="undefined"?nil:CWMonsterAndGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 cc=_st(self)._currentCell_(event);
@@ -226,7 +226,7 @@ $1;
 } else {
 _st(cc)._mouseClick_(_st(self["@game"])._gameContext());
 };
-_st(_st(self)._announcer())._announce_(_st($CWGOTDrawingEvent())._new());
+_st(_st(self)._announcer())._announce_(_st($CWMonsterAndGOTDrawingEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"dispatchMouseClick:",{event:event,cc:cc},smalltalk.CWEventDispatcher)})},
 messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "gameContext", "announce:", "new", "announcer"]}),
 smalltalk.CWEventDispatcher);
