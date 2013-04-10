@@ -2,6 +2,8 @@ Smalltalk current createPackage: 'Easnoth-Visitors'!
 Object subclass: #CWMapVisitorContext
 	instanceVariableNames: 'rowIndex cellIndex'
 	package: 'Easnoth-Visitors'!
+!CWMapVisitorContext commentStamp!
+general context just to know the coods in the map of cells!
 
 !CWMapVisitorContext methodsFor: 'context alteration'!
 

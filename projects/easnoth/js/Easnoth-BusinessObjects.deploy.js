@@ -71,6 +71,26 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "monstersFromSide:",
+fn: function (aSide){
+var self=this;
+var col;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+col=_st($Array())._new();
+_st(_st(self)._children())._collect_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(col)._addAll_(_st(child)._monstersFromSide_(aSide));
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+$1=col;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monstersFromSide:",{aSide:aSide,col:col},smalltalk.CWComponent)})},
+messageSends: ["new", "collect:", "addAll:", "monstersFromSide:", "children"]}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "parent",
 fn: function (){
 var self=this;
@@ -95,6 +115,20 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "removeSelection",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._removeSelection();
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWComponent)})},
+messageSends: ["do:", "removeSelection", "children"]}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "root",
 fn: function (){
 var self=this;
@@ -109,6 +143,20 @@ $3=_st(_st(self)._parent())._root();
 return $3;
 }, function($ctx1) {$ctx1.fill(self,"root",{},smalltalk.CWComponent)})},
 messageSends: ["ifTrue:", "isRoot", "root", "parent"]}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonsters",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._showActiveMonsters();
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonsters",{},smalltalk.CWComponent)})},
+messageSends: ["do:", "showActiveMonsters", "children"]}),
 smalltalk.CWComponent);
 
 smalltalk.addMethod(
@@ -196,34 +244,6 @@ $1=_st(_st(aClass)._new())._parent_(self);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newChild:",{aClass:aClass},smalltalk.CWComposite)})},
 messageSends: ["parent:", "new"]}),
-smalltalk.CWComposite);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "removeSelection",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._children())._do_((function(child){
-return smalltalk.withContext(function($ctx2) {
-return _st(child)._removeSelection();
-}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWComposite)})},
-messageSends: ["do:", "removeSelection", "children"]}),
-smalltalk.CWComposite);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "showActiveMonsters",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._children())._do_((function(child){
-return smalltalk.withContext(function($ctx2) {
-return _st(child)._showActiveMonsters();
-}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonsters",{},smalltalk.CWComposite)})},
-messageSends: ["do:", "showActiveMonsters", "children"]}),
 smalltalk.CWComposite);
 
 
@@ -1696,6 +1716,24 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "monstersFromSide:",
+fn: function (aSide){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=_st(_st(self)._side()).__eq(aSide);
+if(smalltalk.assert($2)){
+$1=[self];
+} else {
+$1=[];
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monstersFromSide:",{aSide:aSide},smalltalk.CWMonster)})},
+messageSends: ["ifTrue:ifFalse:", "=", "side"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "move",
 fn: function (){
 var self=this;
@@ -1716,6 +1754,28 @@ return smalltalk.withContext(function($ctx1) {
 self["@move"]=int;
 return self}, function($ctx1) {$ctx1.fill(self,"move:",{int:int},smalltalk.CWMonster)})},
 messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "select:",
+fn: function (gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._select_inContext_(self,gameContext);
+return self}, function($ctx1) {$ctx1.fill(self,"select:",{gameContext:gameContext},smalltalk.CWMonster)})},
+messageSends: ["select:inContext:", "state"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._showActiveMonster_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster",{},smalltalk.CWMonster)})},
+messageSends: ["showActiveMonster:", "state"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

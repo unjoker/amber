@@ -380,6 +380,25 @@ smalltalk.CWEventDispatcher);
 smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context'], 'Easnoth-Game');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "activateMonsters",
+fn: function (){
+var self=this;
+var armyPlaying,monster1;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+armyPlaying=_st(self["@map"])._monstersFromSide_(_st(_st(self)._gameContext())._currentPlayer());
+$1=_st(_st(armyPlaying)._size()).__eq((0));
+if(smalltalk.assert($1)){
+_st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(_st(self)._gameContext())._currentPlayer())._negated()));
+} else {
+_st(self)._pickMonster_(armyPlaying);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"activateMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.CWGame)})},
+messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster:", "=", "size"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "announce:",
 fn: function (event){
 var self=this;
@@ -412,6 +431,17 @@ return smalltalk.withContext(function($ctx1) {
 return "#eventManager";
 }, function($ctx1) {$ctx1.fill(self,"eventManagerLayerId",{},smalltalk.CWGame)})},
 messageSends: []}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "firstTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._activateMonsters();
+return self}, function($ctx1) {$ctx1.fill(self,"firstTurn",{},smalltalk.CWGame)})},
+messageSends: ["activateMonsters"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -472,6 +502,35 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "pickMonster:",
+fn: function (armyPlaying){
+var self=this;
+function $CWToPick(){return smalltalk.CWToPick||(typeof CWToPick=="undefined"?nil:CWToPick)}
+function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(armyPlaying)._do_((function(monster){
+return smalltalk.withContext(function($ctx2) {
+return _st(monster)._changeState_($CWToPick());
+}, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
+_st(self["@map"])._showActiveMonsters();
+_st(self)._announce_(_st($CWGOTDrawingEvent())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"pickMonster:",{armyPlaying:armyPlaying},smalltalk.CWGame)})},
+messageSends: ["do:", "changeState:", "showActiveMonsters", "announce:", "new"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeLoadingBar",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(".loading")._asJQuery())._animate_duration_(smalltalk.HashedCollection._fromPairs_([_st("top").__minus_gt("-60%")]),(2500));
+return self}, function($ctx1) {$ctx1.fill(self,"removeLoadingBar",{},smalltalk.CWGame)})},
+messageSends: ["animate:duration:", "->", "asJQuery"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "startGame",
 fn: function (){
 var self=this;
@@ -480,12 +539,13 @@ function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="unde
 function $CWEventDispatcher(){return smalltalk.CWEventDispatcher||(typeof CWEventDispatcher=="undefined"?nil:CWEventDispatcher)}
 function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(".loading")._asJQuery())._animate_duration_(smalltalk.HashedCollection._fromPairs_([_st("top").__minus_gt("-60%")]),(2500));
+_st(self)._removeLoadingBar();
 drawer=_st(_st($CWMapDrawer())._new())._initializeForMap_(self["@map"]);
 _st(_st($CWEventDispatcher())._new())._initializeForMap_drawer_game_(self["@map"],drawer,self);
 _st(self)._announce_(_st($CWGlobalDrawingEvent())._new());
+_st(self)._firstTurn();
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{drawer:drawer},smalltalk.CWGame)})},
-messageSends: ["animate:duration:", "->", "asJQuery", "initializeForMap:", "new", "initializeForMap:drawer:game:", "announce:"]}),
+messageSends: ["removeLoadingBar", "initializeForMap:", "new", "initializeForMap:drawer:game:", "announce:", "firstTurn"]}),
 smalltalk.CWGame);
 
 

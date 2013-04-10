@@ -1,5 +1,6 @@
 smalltalk.addPackage('Easnoth-Visitors');
 smalltalk.addClass('CWMapVisitorContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
+smalltalk.CWMapVisitorContext.comment="general context just to know the coods in the map of cells"
 smalltalk.addMethod(
 smalltalk.method({
 selector: "nextCell",
