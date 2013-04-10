@@ -80,6 +80,7 @@ canvas {
     text-align:center;
 	margin:0 auto;
 	border: 1px solid #ccc; 
+    margin-left: 100px;
 }
 
 .layer {

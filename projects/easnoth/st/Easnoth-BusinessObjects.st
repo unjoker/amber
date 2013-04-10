@@ -149,9 +149,9 @@ side
 
 !CWCell methodsFor: 'eventHandling'!
 
-mouseClick: actionCell
+mouseClick: gameContext
+	self announce: CWRemoveGOTEvent new.
 	self neighbours do: [:cell |
-		Transcript show: cell printString, ' addSelector'; cr.
 		cell addSelector ].
 ! !
 
@@ -276,12 +276,20 @@ selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2
 
 addSelectorColored: aColor
 	self gameOverTile: (self newGameOverTile initializeFromKey: aColor)
+!
+
+removeGameOverTile
+	self gameOverTile: nil
 ! !
 
 !CWCell methodsFor: 'state delegation'!
 
 addSelector
 	self state addSelector: self
+!
+
+removeSelector
+	self state removeSelector: self
 ! !
 
 !CWCell methodsFor: 'state machine'!
@@ -383,7 +391,25 @@ childBasicClass
 	^ CWRow
 ! !
 
+!CWMap methodsFor: 'game logic'!
+
+removeSelection
+	self rows do: [ :row |
+		row removeSelection ]
+! !
+
 !CWMap methodsFor: 'initialize-release'!
+
+initialize
+	super initialize.
+	self initializeEventHandling.
+!
+
+initializeEventHandling
+	"self announcer 
+		on: CWRemoveGOTEvent
+		do: [ self removeSelection ]"
+!
 
 initializeFromJson: jsonMap
 	"initialize the rows of the map, 
@@ -475,6 +501,13 @@ children
 
 childBasicClass
 	^ CWCell
+! !
+
+!CWRow methodsFor: 'game logic'!
+
+removeSelection
+	self cells do: [ :cell |
+		cell removeSelector ]
 ! !
 
 !CWRow methodsFor: 'initialize'!

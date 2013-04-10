@@ -1,4 +1,4 @@
-Smalltalk current createPackage: 'Easnoth-Events'!
+Smalltalk current createPackage: 'Easnoth-Game'!
 Object subclass: #CWBootstrapper
 	instanceVariableNames: 'objectToLoad objectLoaded'
 	package: 'Easnoth-Game'!
@@ -60,110 +60,8 @@ bootstrap: mapIndex
 		bootstrap: mapIndex
 ! !
 
-SystemAnnouncement subclass: #CWEasnothAnnouncement
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-!CWEasnothAnnouncement methodsFor: 'concurrency'!
-
-accept: aVisitor
-	aVisitor announceSafely: self
-!
-
-requiresSuspension
-	^ false
-! !
-
-CWEasnothAnnouncement subclass: #CWBootstrapEvent
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWBootstrapEvent subclass: #CWGameStart
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWBootstrapEvent subclass: #CWObjectLoaded
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWBootstrapEvent subclass: #CWWaitForObject
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWEasnothAnnouncement subclass: #CWDrawingEvent
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWDrawingEvent subclass: #CWGOTDrawingEvent
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWDrawingEvent subclass: #CWGlobalDrawingEvent
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWDrawingEvent subclass: #CWMonsterAndGOTDrawingEvent
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-CWEasnothAnnouncement subclass: #CWUserAnnouncement
-	instanceVariableNames: ''
-	package: 'Easnoth-Events'!
-
-!CWUserAnnouncement methodsFor: 'concurrency'!
-
-accept: aVisitor
-	aVisitor isSuspended ifFalse: [
-		aVisitor announceSafely: self ]
-!
-
-requiresSuspension
-	^ true
-! !
-
-SystemAnnouncer subclass: #CWEasnothAnnouncer
-	instanceVariableNames: 'suspended'
-	package: 'Easnoth-Events'!
-
-!CWEasnothAnnouncer methodsFor: 'events'!
-
-announce: anAnnouncement
-	Transcript 
-		show: '[';
-		show: Date now minutes; 
-		show: 'min '; 
-		show: Date now seconds; 
-		show: 'sec] '.
-	Transcript 
-		show: anAnnouncement class; 
-		cr.
-	anAnnouncement accept: self
-!
-
-announceSafely: anAnnouncement
-	suspended := anAnnouncement requiresSuspension.
-	super announce: anAnnouncement
-!
-
-reactivate
-	suspended := false.
-! !
-
-!CWEasnothAnnouncer methodsFor: 'initialize-release'!
-
-initialize
-	super initialize.
-	suspended := false.
-! !
-
-!CWEasnothAnnouncer methodsFor: 'testing'!
-
-isSuspended
-	^ suspended
-! !
-
 Object subclass: #CWEventDispatcher
-	instanceVariableNames: 'canvas map padding actionCell'
+	instanceVariableNames: 'canvas map padding game'
 	package: 'Easnoth-Game'!
 !CWEventDispatcher commentStamp!
 I dispatch event from eventManager canvas to cells.!
@@ -174,6 +72,10 @@ announcer
 	^ CWEasnothAnnouncer current
 !
 
+canvas
+	^ canvas
+!
+
 cellAt: i y: j
 	^ (self rowAt: i) childAt: j
 !
@@ -181,6 +83,10 @@ cellAt: i y: j
 cellAt: i y: j ifAbsent: aBlock
 	"need to change the implementation"
 	^ [(self rowAt: i) childAt: j] on: Error do: [ aBlock value ]
+!
+
+eventManagerLayerId
+	^ '#eventManager'
 !
 
 rowAt: index
@@ -279,9 +185,7 @@ dispatchMouseClick: event
 	| cc |
 	cc := self currentCell: event.
 	cc ifNotNil: [ 
-		cc mouseClick: actionCell ].
-	
-	actionCell := cc.
+		cc mouseClick: game gameContext ].
 	
 	"hack for now"
 	self announcer announce: CWGOTDrawingEvent new.
@@ -291,7 +195,7 @@ dispatchMouseClick: event
 
 initialize
 	super initialize. 
-	self canvas: (TagBrush fromJQuery: self canvasId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
+	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
 !
 
 initializeEventHandling
@@ -299,14 +203,15 @@ initializeEventHandling
 		self dispatchMouseClick: e].
 !
 
-initializeForMap: aMap drawer: drawer
+initializeForMap: aMap drawer: drawer game: aGame
+	game := aGame.
 	map := aMap.
 	padding := drawer padding.
 	self initializeEventHandling.
 ! !
 
 Object subclass: #CWGame
-	instanceVariableNames: 'mapModel eventManagementUILayer'
+	instanceVariableNames: 'map context'
 	package: 'Easnoth-Game'!
 
 !CWGame methodsFor: 'accessing'!
@@ -317,6 +222,10 @@ announcer
 
 eventManagerLayerId
 	^ '#eventManager'
+!
+
+gameContext
+	^ context
 ! !
 
 !CWGame methodsFor: 'event'!
@@ -327,15 +236,12 @@ announce: event
 
 !CWGame methodsFor: 'game logic'!
 
-firstTurn
-!
-
 startGame
 	| drawer |
 	"add some game logic here ..."
 	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
 	drawer := CWMapDrawer new initializeForMap: map.
-	CWEventDispatcher new initializeForMap: map drawer: drawer.
+	CWEventDispatcher new initializeForMap: map drawer: drawer game: self.
 	self announce: CWGlobalDrawingEvent new
 ! !
 
@@ -344,13 +250,13 @@ startGame
 initialize
 	super initialize.
 	FightMenu newFor: self.
-	eventManagementUILayer := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
+	context := CWGameContext new.
 !
 
 initializeEventHandling
 	self announcer
 		on: CWGameStart
-		do: [ self startGame ]
+		do: [ self startGame ].
 !
 
 initializeMapWithIndex: index
@@ -373,5 +279,43 @@ examples
 
 newWithMapIndex: index
 	^ self new initializeMapWithIndex: index
+! !
+
+Object subclass: #CWGameContext
+	instanceVariableNames: 'currentPlayer currentCell'
+	package: 'Easnoth-Game'!
+
+!CWGameContext methodsFor: 'accessing'!
+
+currentCell
+	^ currentCell
+!
+
+currentCell: aCurrentCell 
+	currentCell := aCurrentCell
+!
+
+currentMonster
+	^ currentCell currentMonster
+!
+
+currentMonster: aMonster
+	currentCell := aMonster parent
+!
+
+currentPlayer
+	^ currentPlayer
+!
+
+nextTurn
+	currentPlayer := currentPlayer negated.
+	currentCell := nil.
+! !
+
+!CWGameContext methodsFor: 'initialize-release'!
+
+initialize
+	super initialize.
+	currentPlayer := 2 atRandom - 1.5 * 2
 ! !
 

@@ -113,6 +113,17 @@ return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smal
 messageSends: ["addSelectorColored:", "changeState:"]}),
 smalltalk.CWFree);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelector:",
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWFree)})},
+messageSends: ["error:"]}),
+smalltalk.CWFree);
+
 
 
 smalltalk.addClass('CWFreeSelected', smalltalk.CWCellState, [], 'Easnoth-States');
@@ -125,6 +136,19 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._error_("should not happen");
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWFreeSelected)})},
 messageSends: ["error:"]}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelector:",
+fn: function (aCell){
+var self=this;
+function $CWFree(){return smalltalk.CWFree||(typeof CWFree=="undefined"?nil:CWFree)}
+return smalltalk.withContext(function($ctx1) { 
+_st(aCell)._removeGameOverTile();
+_st(aCell)._changeState_($CWFree());
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWFreeSelected)})},
+messageSends: ["removeGameOverTile", "changeState:"]}),
 smalltalk.CWFreeSelected);
 
 
@@ -143,6 +167,17 @@ return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smal
 messageSends: ["addSelectorColored:", "changeState:"]}),
 smalltalk.CWHasMonster);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelector:",
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWHasMonster)})},
+messageSends: ["error:"]}),
+smalltalk.CWHasMonster);
+
 
 
 smalltalk.addClass('CWHasMonsterSelected', smalltalk.CWCellState, [], 'Easnoth-States');
@@ -155,6 +190,19 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._error_("should not happen");
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWHasMonsterSelected)})},
 messageSends: ["error:"]}),
+smalltalk.CWHasMonsterSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelector:",
+fn: function (aCell){
+var self=this;
+function $CWHasMonster(){return smalltalk.CWHasMonster||(typeof CWHasMonster=="undefined"?nil:CWHasMonster)}
+return smalltalk.withContext(function($ctx1) { 
+_st(aCell)._removeGameOverTile();
+_st(aCell)._changeState_($CWHasMonster());
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWHasMonsterSelected)})},
+messageSends: ["removeGameOverTile", "changeState:"]}),
 smalltalk.CWHasMonsterSelected);
 
 
