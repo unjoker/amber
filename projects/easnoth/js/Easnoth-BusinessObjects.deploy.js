@@ -365,6 +365,19 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "canMoveTo",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._canMoveTo_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canMoveTo",{},smalltalk.CWCell)})},
+messageSends: ["canMoveTo:", "state"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "changeState:",
 fn: function (stateClass){
 var self=this;
@@ -594,13 +607,12 @@ return _st(each)._canMoveTo();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-_st(each)._addSelector();
-return _st(each)._prevCell_(self);
+return _st(each)._addSelector();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighbours",{movableCells:movableCells},smalltalk.CWCell)})},
-messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector", "prevCell:"]}),
+messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1512,6 +1524,17 @@ return $1;
 messageSends: ["visitTile:"]}),
 smalltalk.CWTile);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isWall",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWTile)})},
+messageSends: []}),
+smalltalk.CWTile);
+
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -1539,9 +1562,20 @@ return $1;
 messageSends: ["visitWall:"]}),
 smalltalk.CWWall);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isWall",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWWall)})},
+messageSends: []}),
+smalltalk.CWWall);
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'move', 'attack', 'dices', 'hp', 'state'], 'Easnoth-BusinessObjects');
+
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'move', 'attack', 'dices', 'hp', 'range', 'state'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -1758,6 +1792,30 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "range",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@range"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"range",{},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "range:",
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@range"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"range:",{int:int},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "select:",
 fn: function (gameContext){
 var self=this;
@@ -1839,11 +1897,12 @@ fn: function (jsonStats){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._move_(_st(jsonStats)._move());
+_st(self)._range_(_st(jsonStats)._range());
 _st(self)._attack_(_st(jsonStats)._attack());
 _st(self)._dices_(_st(jsonStats)._dices());
 _st(self)._hp_(_st(self)._defaultHp());
 return self}, function($ctx1) {$ctx1.fill(self,"stats:",{jsonStats:jsonStats},smalltalk.CWMonster)})},
-messageSends: ["move:", "move", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"]}),
+messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

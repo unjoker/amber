@@ -51,9 +51,9 @@ selector: "canMoveTo:",
 fn: function (cell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"canMoveTo:",{cell:cell},smalltalk.CWCellState)})},
-messageSends: ["subclassResponsibility"]}),
+return false;
+}, function($ctx1) {$ctx1.fill(self,"canMoveTo:",{cell:cell},smalltalk.CWCellState)})},
+messageSends: []}),
 smalltalk.CWCellState);
 
 smalltalk.addMethod(
@@ -132,6 +132,17 @@ _st(aCell)._addSelectorColored_("green");
 _st(aCell)._changeState_($CWFreeSelected());
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWFree)})},
 messageSends: ["addSelectorColored:", "changeState:"]}),
+smalltalk.CWFree);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canMoveTo:",
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"canMoveTo:",{aCell:aCell},smalltalk.CWFree)})},
+messageSends: []}),
 smalltalk.CWFree);
 
 smalltalk.addMethod(
@@ -331,6 +342,24 @@ smalltalk.CWMonsterState.klass);
 
 
 smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "select:inContext:",
+fn: function (aMonster,gameContext){
+var self=this;
+var cells;
+return smalltalk.withContext(function($ctx1) { 
+cells=_st(_st(aMonster)._parent())._selectableNeighboursMoveCycle_attackCycle_(_st(aMonster)._move(),_st(aMonster)._range());
+_st((1))._halt();
+_st(cells)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._addSelector();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(gameContext)._currentMonster_(aMonster);
+return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext,cells:cells},smalltalk.CWActive)})},
+messageSends: ["selectableNeighboursMoveCycle:attackCycle:", "move", "range", "parent", "halt", "do:", "addSelector", "currentMonster:"]}),
+smalltalk.CWActive);
+
 
 
 smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-States');

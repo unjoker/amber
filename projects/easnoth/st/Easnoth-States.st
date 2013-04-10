@@ -26,7 +26,7 @@ addSelector: aCell
 !
 
 canMoveTo: cell
-	self subclassResponsibility
+	^ false
 !
 
 cell: aCell canBeAttackedBy: side
@@ -63,6 +63,12 @@ I am the state of a cell that has no monsters on it and that has no game selecto
 addSelector: aCell
 	aCell addSelectorColored: 'green'.
 	aCell changeState: CWFreeSelected
+!
+
+canMoveTo: aCell
+	"should dispatch but as it is not used..."
+	"^ aCell tile isWall not"
+	^ true
 !
 
 mouseClick: aCell context: gameContext
@@ -170,6 +176,17 @@ CWMonsterState subclass: #CWActive
 	package: 'Easnoth-States'!
 !CWActive commentStamp!
 Monster can move and attack!
+
+!CWActive methodsFor: 'not yet classified'!
+
+select: aMonster inContext: gameContext
+	| cells |
+	cells := aMonster parent selectableNeighboursMoveCycle: aMonster move attackCycle: aMonster range.
+	1halt.
+	cells do: [:each |
+		each addSelector ].
+	gameContext currentMonster: aMonster
+! !
 
 CWMonsterState subclass: #CWHasAttacked
 	instanceVariableNames: ''
