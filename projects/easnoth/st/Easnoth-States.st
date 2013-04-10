@@ -29,11 +29,14 @@ cell: aCell canBeAttackedBy: side
 	self subclassResponsibility
 !
 
-mouseClick: actionCell
+mouseClick: aCell context: gameContext
 	self subClassResponsbility
 !
 
 removeSelector: aCell
+!
+
+showActiveMonster: aCell
 	self subclassResponsibility
 ! !
 
@@ -58,8 +61,11 @@ addSelector: aCell
 	aCell changeState: CWFreeSelected
 !
 
-removeSelector: aCell
-	self error: 'should not happen'.
+mouseClick: aCell context: gameContext
+	aCell root showActiveMonsters
+!
+
+showActiveMonster: aCell
 ! !
 
 CWCellState subclass: #CWFreeSelected
@@ -75,9 +81,17 @@ addSelector: aCell
 	self error: 'should not happen'.
 !
 
+mouseClick: aCell context: gameContext
+	gameContext currentMonster moveTo: aCell
+!
+
 removeSelector: aCell
 	aCell removeGameOverTile.
 	aCell changeState: CWFree
+!
+
+showActiveMonster: aCell
+	self error: 'should not happen'.
 ! !
 
 CWCellState subclass: #CWHasMonster
@@ -93,8 +107,12 @@ addSelector: aCell
 	aCell changeState: CWHasMonsterSelected
 !
 
-removeSelector: aCell
-	self error: 'should not happen'.
+mouseClick: aCell context: gameContext
+	aCell monster select
+!
+
+showActiveMonster: aCell
+	aCell addSelectorColored: 'white'.
 ! !
 
 CWCellState subclass: #CWHasMonsterSelected
@@ -110,9 +128,17 @@ addSelector: aCell
 	self error: 'should not happen'.
 !
 
+mouseClick: aCell context: gameContext
+	gameContext currentMonster attackTo: aCell.
+!
+
 removeSelector: aCell
 	aCell removeGameOverTile.
 	aCell changeState: CWHasMonster
+!
+
+showActiveMonster: aCell
+	self error: 'should not happen'.
 ! !
 
 CWState subclass: #CWMonsterState
