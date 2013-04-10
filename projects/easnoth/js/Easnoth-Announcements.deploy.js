@@ -48,6 +48,9 @@ smalltalk.addClass('CWGlobalDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnot
 smalltalk.addClass('CWMonsterAndGOTDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Announcements');
 
 
+smalltalk.addClass('CWSelectionEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
+
+
 smalltalk.addClass('CWUserAnnouncement', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
 smalltalk.addMethod(
 smalltalk.method({

@@ -23,6 +23,11 @@ parent
 
 parent: object
 	parent := object
+!
+
+root
+	self isRoot ifTrue: [ ^ self ].
+	^ self parent root
 ! !
 
 !CWComponent methodsFor: 'event'!
@@ -79,6 +84,18 @@ childAt: index
 
 newChild: aClass
 	^ aClass new parent: self
+! !
+
+!CWComposite methodsFor: 'selection'!
+
+removeSelection
+	self children do: [ :child |
+		child removeSelection ]
+!
+
+showActiveMonsters
+	self children do: [ :child |
+		child showActiveMonsters ]
 ! !
 
 !CWComposite methodsFor: 'visiting'!
@@ -150,9 +167,8 @@ side
 !CWCell methodsFor: 'eventHandling'!
 
 mouseClick: gameContext
-	self announce: CWRemoveGOTEvent new.
-	self neighbours do: [:cell |
-		cell addSelector ].
+	self root removeSelection.
+	self state mouseClick: self context: gameContext.
 ! !
 
 !CWCell methodsFor: 'factory'!
@@ -288,8 +304,12 @@ addSelector
 	self state addSelector: self
 !
 
-removeSelector
+removeSelection
 	self state removeSelector: self
+!
+
+showActiveMonsters
+	self state showActiveMonster: self.
 ! !
 
 !CWCell methodsFor: 'state machine'!
@@ -391,13 +411,6 @@ childBasicClass
 	^ CWRow
 ! !
 
-!CWMap methodsFor: 'game logic'!
-
-removeSelection
-	self rows do: [ :row |
-		row removeSelection ]
-! !
-
 !CWMap methodsFor: 'initialize-release'!
 
 initialize
@@ -406,9 +419,6 @@ initialize
 !
 
 initializeEventHandling
-	"self announcer 
-		on: CWRemoveGOTEvent
-		do: [ self removeSelection ]"
 !
 
 initializeFromJson: jsonMap
@@ -501,13 +511,6 @@ children
 
 childBasicClass
 	^ CWCell
-! !
-
-!CWRow methodsFor: 'game logic'!
-
-removeSelection
-	self cells do: [ :cell |
-		cell removeSelector ]
 ! !
 
 !CWRow methodsFor: 'initialize'!
@@ -821,6 +824,25 @@ updateStats: aKey
 	"Case where the json file finished loading during the execution of this method but before the new call back was set up"
 	(self class jsonStatCache includesKey: aKey) 
 		ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].
+! !
+
+!CWMonster methodsFor: 'state machine'!
+
+changeState: stateClass
+	self state: stateClass default
+!
+
+initializeState
+	CWMonsterState initializeStateFor: self
+!
+
+state
+	state ifNil: [self initializeState].
+	^state
+!
+
+state: aState
+	state := aState
 ! !
 
 !CWMonster methodsFor: 'visiting'!

@@ -78,15 +78,15 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "mouseClick:",
+selector: "mouseClick:context:",
 category: 'cell state API',
-fn: function (actionCell){
+fn: function (aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subClassResponsbility();
-return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:",{actionCell:actionCell},smalltalk.CWCellState)})},
-args: ["actionCell"],
-source: "mouseClick: actionCell\x0a\x09self subClassResponsbility",
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWCellState)})},
+args: ["aCell", "gameContext"],
+source: "mouseClick: aCell context: gameContext\x0a\x09self subClassResponsbility",
 messageSends: ["subClassResponsbility"],
 referencedClasses: []
 }),
@@ -99,10 +99,25 @@ category: 'cell state API',
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWCellState)})},
 args: ["aCell"],
-source: "removeSelector: aCell\x0a\x09self subclassResponsibility",
+source: "removeSelector: aCell",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aCell:aCell},smalltalk.CWCellState)})},
+args: ["aCell"],
+source: "showActiveMonster: aCell\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
@@ -156,16 +171,31 @@ smalltalk.CWFree);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "removeSelector:",
+selector: "mouseClick:context:",
+category: 'cell state API',
+fn: function (aCell,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aCell)._root())._showActiveMonsters();
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
+args: ["aCell", "gameContext"],
+source: "mouseClick: aCell context: gameContext\x0a\x09aCell root showActiveMonsters",
+messageSends: ["showActiveMonsters", "root"],
+referencedClasses: []
+}),
+smalltalk.CWFree);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
 category: 'cell state API',
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._error_("should not happen");
-return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWFree)})},
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aCell:aCell},smalltalk.CWFree)})},
 args: ["aCell"],
-source: "removeSelector: aCell\x0a\x09self error: 'should not happen'.",
-messageSends: ["error:"],
+source: "showActiveMonster: aCell",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWFree);
@@ -192,6 +222,22 @@ smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "mouseClick:context:",
+category: 'cell state API',
+fn: function (aCell,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(gameContext)._currentMonster())._moveTo_(aCell);
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFreeSelected)})},
+args: ["aCell", "gameContext"],
+source: "mouseClick: aCell context: gameContext\x0a\x09gameContext currentMonster moveTo: aCell",
+messageSends: ["moveTo:", "currentMonster"],
+referencedClasses: []
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeSelector:",
 category: 'cell state API',
 fn: function (aCell){
@@ -205,6 +251,22 @@ args: ["aCell"],
 source: "removeSelector: aCell\x0a\x09aCell removeGameOverTile.\x0a\x09aCell changeState: CWFree",
 messageSends: ["removeGameOverTile", "changeState:"],
 referencedClasses: ["CWFree"]
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aCell:aCell},smalltalk.CWFreeSelected)})},
+args: ["aCell"],
+source: "showActiveMonster: aCell\x0a\x09self error: 'should not happen'.",
+messageSends: ["error:"],
+referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
 
@@ -232,16 +294,32 @@ smalltalk.CWHasMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "removeSelector:",
+selector: "mouseClick:context:",
+category: 'cell state API',
+fn: function (aCell,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aCell)._monster())._select();
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWHasMonster)})},
+args: ["aCell", "gameContext"],
+source: "mouseClick: aCell context: gameContext\x0a\x09aCell monster select",
+messageSends: ["select", "monster"],
+referencedClasses: []
+}),
+smalltalk.CWHasMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
 category: 'cell state API',
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._error_("should not happen");
-return self}, function($ctx1) {$ctx1.fill(self,"removeSelector:",{aCell:aCell},smalltalk.CWHasMonster)})},
+_st(aCell)._addSelectorColored_("white");
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aCell:aCell},smalltalk.CWHasMonster)})},
 args: ["aCell"],
-source: "removeSelector: aCell\x0a\x09self error: 'should not happen'.",
-messageSends: ["error:"],
+source: "showActiveMonster: aCell\x0a\x09aCell addSelectorColored: 'white'.",
+messageSends: ["addSelectorColored:"],
 referencedClasses: []
 }),
 smalltalk.CWHasMonster);
@@ -268,6 +346,22 @@ smalltalk.CWHasMonsterSelected);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "mouseClick:context:",
+category: 'cell state API',
+fn: function (aCell,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(gameContext)._currentMonster())._attackTo_(aCell);
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWHasMonsterSelected)})},
+args: ["aCell", "gameContext"],
+source: "mouseClick: aCell context: gameContext\x0a\x09gameContext currentMonster attackTo: aCell.",
+messageSends: ["attackTo:", "currentMonster"],
+referencedClasses: []
+}),
+smalltalk.CWHasMonsterSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeSelector:",
 category: 'cell state API',
 fn: function (aCell){
@@ -281,6 +375,22 @@ args: ["aCell"],
 source: "removeSelector: aCell\x0a\x09aCell removeGameOverTile.\x0a\x09aCell changeState: CWHasMonster",
 messageSends: ["removeGameOverTile", "changeState:"],
 referencedClasses: ["CWHasMonster"]
+}),
+smalltalk.CWHasMonsterSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showActiveMonster:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._error_("should not happen");
+return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aCell:aCell},smalltalk.CWHasMonsterSelected)})},
+args: ["aCell"],
+source: "showActiveMonster: aCell\x0a\x09self error: 'should not happen'.",
+messageSends: ["error:"],
+referencedClasses: []
 }),
 smalltalk.CWHasMonsterSelected);
 
