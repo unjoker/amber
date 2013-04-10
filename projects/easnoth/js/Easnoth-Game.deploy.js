@@ -1,4 +1,4 @@
-smalltalk.addPackage('Easnoth-Events');
+smalltalk.addPackage('Easnoth-Game');
 smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded'], 'Easnoth-Game');
 smalltalk.addMethod(
 smalltalk.method({
@@ -129,159 +129,7 @@ messageSends: ["bootstrap:", "new"]}),
 smalltalk.CWBootstrapper.klass);
 
 
-smalltalk.addClass('CWEasnothAnnouncement', smalltalk.SystemAnnouncement, [], 'Easnoth-Events');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(aVisitor)._announceSafely_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWEasnothAnnouncement)})},
-messageSends: ["announceSafely:"]}),
-smalltalk.CWEasnothAnnouncement);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "requiresSuspension",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return false;
-}, function($ctx1) {$ctx1.fill(self,"requiresSuspension",{},smalltalk.CWEasnothAnnouncement)})},
-messageSends: []}),
-smalltalk.CWEasnothAnnouncement);
-
-
-
-smalltalk.addClass('CWBootstrapEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWGameStart', smalltalk.CWBootstrapEvent, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWObjectLoaded', smalltalk.CWBootstrapEvent, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWWaitForObject', smalltalk.CWBootstrapEvent, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWDrawingEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWGOTDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWGlobalDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWMonsterAndGOTDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Events');
-
-
-smalltalk.addClass('CWUserAnnouncement', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Events');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._isSuspended();
-if(! smalltalk.assert($1)){
-_st(aVisitor)._announceSafely_(self);
-};
-return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWUserAnnouncement)})},
-messageSends: ["ifFalse:", "announceSafely:", "isSuspended"]}),
-smalltalk.CWUserAnnouncement);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "requiresSuspension",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return true;
-}, function($ctx1) {$ctx1.fill(self,"requiresSuspension",{},smalltalk.CWUserAnnouncement)})},
-messageSends: []}),
-smalltalk.CWUserAnnouncement);
-
-
-
-smalltalk.addClass('CWEasnothAnnouncer', smalltalk.SystemAnnouncer, ['suspended'], 'Easnoth-Events');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "announce:",
-fn: function (anAnnouncement){
-var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
-function $Date(){return smalltalk.Date||(typeof Date=="undefined"?nil:Date)}
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
-$1=$Transcript();
-_st($1)._show_("[");
-_st($1)._show_(_st(_st($Date())._now())._minutes());
-_st($1)._show_("min ");
-_st($1)._show_(_st(_st($Date())._now())._seconds());
-$2=_st($1)._show_("sec] ");
-$3=$Transcript();
-_st($3)._show_(_st(anAnnouncement)._class());
-$4=_st($3)._cr();
-_st(anAnnouncement)._accept_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"announce:",{anAnnouncement:anAnnouncement},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["show:", "minutes", "now", "seconds", "class", "cr", "accept:"]}),
-smalltalk.CWEasnothAnnouncer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "announceSafely:",
-fn: function (anAnnouncement){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@suspended"]=_st(anAnnouncement)._requiresSuspension();
-smalltalk.SystemAnnouncer.fn.prototype._announce_.apply(_st(self), [anAnnouncement]);
-return self}, function($ctx1) {$ctx1.fill(self,"announceSafely:",{anAnnouncement:anAnnouncement},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["requiresSuspension", "announce:"]}),
-smalltalk.CWEasnothAnnouncer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.SystemAnnouncer.fn.prototype._initialize.apply(_st(self), []);
-self["@suspended"]=false;
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["initialize"]}),
-smalltalk.CWEasnothAnnouncer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isSuspended",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@suspended"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"isSuspended",{},smalltalk.CWEasnothAnnouncer)})},
-messageSends: []}),
-smalltalk.CWEasnothAnnouncer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "reactivate",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@suspended"]=false;
-return self}, function($ctx1) {$ctx1.fill(self,"reactivate",{},smalltalk.CWEasnothAnnouncer)})},
-messageSends: []}),
-smalltalk.CWEasnothAnnouncer);
-
-
-
-smalltalk.addClass('CWEventDispatcher', smalltalk.Object, ['canvas', 'map', 'padding', 'actionCell'], 'Easnoth-Game');
+smalltalk.addClass('CWEventDispatcher', smalltalk.Object, ['canvas', 'map', 'padding', 'game'], 'Easnoth-Game');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announcer",
@@ -294,6 +142,19 @@ $1=_st($CWEasnothAnnouncer())._current();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWEventManager)})},
 messageSends: ["current"]}),
+smalltalk.CWEventDispatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canvas",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@canvas"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canvas",{},smalltalk.CWEventDispatcher)})},
+messageSends: []}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -363,12 +224,22 @@ $1=cc;
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
 } else {
-_st(cc)._mouseClick_(self["@actionCell"]);
+_st(cc)._mouseClick_(_st(self["@game"])._gameContext());
 };
-self["@actionCell"]=cc;
 _st(_st(self)._announcer())._announce_(_st($CWGOTDrawingEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"dispatchMouseClick:",{event:event,cc:cc},smalltalk.CWEventDispatcher)})},
-messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "announce:", "new", "announcer"]}),
+messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "gameContext", "announce:", "new", "announcer"]}),
+smalltalk.CWEventDispatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "eventManagerLayerId",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "#eventManager";
+}, function($ctx1) {$ctx1.fill(self,"eventManagerLayerId",{},smalltalk.CWEventDispatcher)})},
+messageSends: []}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -380,9 +251,9 @@ function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefin
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-_st(self)._canvas_(_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._canvasId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery())));
+self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEventDispatcher)})},
-messageSends: ["initialize", "canvas:", "fromJQuery:canvas:", "asJQuery", "canvasId", "onJQuery:"]}),
+messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -401,14 +272,15 @@ smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeForMap:drawer:",
-fn: function (aMap,drawer){
+selector: "initializeForMap:drawer:game:",
+fn: function (aMap,drawer,aGame){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+self["@game"]=aGame;
 self["@map"]=aMap;
 self["@padding"]=_st(drawer)._padding();
 _st(self)._initializeEventHandling();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:drawer:",{aMap:aMap,drawer:drawer},smalltalk.CWEventDispatcher)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:drawer:game:",{aMap:aMap,drawer:drawer,aGame:aGame},smalltalk.CWEventDispatcher)})},
 messageSends: ["padding", "initializeEventHandling"]}),
 smalltalk.CWEventDispatcher);
 
@@ -505,7 +377,7 @@ smalltalk.CWEventDispatcher);
 
 
 
-smalltalk.addClass('CWGame', smalltalk.Object, ['mapModel', 'eventManagementUILayer'], 'Easnoth-Game');
+smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context'], 'Easnoth-Game');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announce:",
@@ -544,11 +416,14 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "firstTurn",
+selector: "gameContext",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"firstTurn",{},smalltalk.CWGameBoard)})},
+var $1;
+$1=self["@context"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"gameContext",{},smalltalk.CWGame)})},
 messageSends: []}),
 smalltalk.CWGame);
 
@@ -558,14 +433,13 @@ selector: "initialize",
 fn: function (){
 var self=this;
 function $FightMenu(){return smalltalk.FightMenu||(typeof FightMenu=="undefined"?nil:FightMenu)}
-function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
-function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
+function $CWGameContext(){return smalltalk.CWGameContext||(typeof CWGameContext=="undefined"?nil:CWGameContext)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 _st($FightMenu())._newFor_(self);
-self["@eventManagementUILayer"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
+self["@context"]=_st($CWGameContext())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGame)})},
-messageSends: ["initialize", "newFor:", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"]}),
+messageSends: ["initialize", "newFor:", "new"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -579,7 +453,7 @@ _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._startGame();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGameBoard)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
 messageSends: ["on:do:", "startGame", "announcer"]}),
 smalltalk.CWGame);
 
@@ -608,10 +482,10 @@ function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof 
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(".loading")._asJQuery())._animate_duration_(smalltalk.HashedCollection._fromPairs_([_st("top").__minus_gt("-60%")]),(2500));
 drawer=_st(_st($CWMapDrawer())._new())._initializeForMap_(self["@map"]);
-_st(_st($CWEventDispatcher())._new())._initializeForMap_drawer_(self["@map"],drawer);
+_st(_st($CWEventDispatcher())._new())._initializeForMap_drawer_game_(self["@map"],drawer,self);
 _st(self)._announce_(_st($CWGlobalDrawingEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{drawer:drawer},smalltalk.CWGame)})},
-messageSends: ["animate:duration:", "->", "asJQuery", "initializeForMap:", "new", "initializeForMap:drawer:", "announce:"]}),
+messageSends: ["animate:duration:", "->", "asJQuery", "initializeForMap:", "new", "initializeForMap:drawer:game:", "announce:"]}),
 smalltalk.CWGame);
 
 
@@ -644,5 +518,93 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGameBoard.klass)})},
 messageSends: ["initializeMapWithIndex:", "new"]}),
 smalltalk.CWGame.klass);
+
+
+smalltalk.addClass('CWGameContext', smalltalk.Object, ['currentPlayer', 'currentCell'], 'Easnoth-Game');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentCell",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@currentCell"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentCell",{},smalltalk.CWGameContext)})},
+messageSends: []}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentCell:",
+fn: function (aCurrentCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@currentCell"]=aCurrentCell;
+return self}, function($ctx1) {$ctx1.fill(self,"currentCell:",{aCurrentCell:aCurrentCell},smalltalk.CWGameContext)})},
+messageSends: []}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentMonster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@currentCell"])._currentMonster();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentMonster",{},smalltalk.CWGameContext)})},
+messageSends: ["currentMonster"]}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentMonster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@currentCell"]=_st(aMonster)._parent();
+return self}, function($ctx1) {$ctx1.fill(self,"currentMonster:",{aMonster:aMonster},smalltalk.CWGameContext)})},
+messageSends: ["parent"]}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentPlayer",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@currentPlayer"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentPlayer",{},smalltalk.CWGameContext)})},
+messageSends: []}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+self["@currentPlayer"]=_st(_st(_st((2))._atRandom()).__minus((1.5))).__star((2));
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameContext)})},
+messageSends: ["initialize", "*", "-", "atRandom"]}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@currentPlayer"]=_st(self["@currentPlayer"])._negated();
+self["@currentCell"]=nil;
+return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGameContext)})},
+messageSends: ["negated"]}),
+smalltalk.CWGameContext);
+
 
 

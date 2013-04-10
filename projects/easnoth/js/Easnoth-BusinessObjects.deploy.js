@@ -505,21 +505,17 @@ smalltalk.CWCell);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "mouseClick:",
-fn: function (actionCell){
+fn: function (gameContext){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+function $CWRemoveGOTEvent(){return smalltalk.CWRemoveGOTEvent||(typeof CWRemoveGOTEvent=="undefined"?nil:CWRemoveGOTEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+_st(self)._announce_(_st($CWRemoveGOTEvent())._new());
 _st(_st(self)._neighbours())._do_((function(cell){
 return smalltalk.withContext(function($ctx2) {
-$1=$Transcript();
-_st($1)._show_(_st(_st(cell)._printString()).__comma(" addSelector"));
-$2=_st($1)._cr();
-$2;
 return _st(cell)._addSelector();
 }, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:",{actionCell:actionCell},smalltalk.CWCell)})},
-messageSends: ["do:", "show:", ",", "printString", "cr", "addSelector", "neighbours"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:",{gameContext:gameContext},smalltalk.CWCell)})},
+messageSends: ["announce:", "new", "do:", "addSelector", "neighbours"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -680,6 +676,28 @@ $1=_st(_st(_st(_st("a Cell(").__comma(rowNumber)).__comma("-")).__comma(cellInde
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"printString",{rowNumber:rowNumber,row:row,cellIndex:cellIndex},smalltalk.CWCell)})},
 messageSends: ["parent", "indexOf:", "cells", "rows", ","]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeGameOverTile",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._gameOverTile_(nil);
+return self}, function($ctx1) {$ctx1.fill(self,"removeGameOverTile",{},smalltalk.CWCell)})},
+messageSends: ["gameOverTile:"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelector",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._removeSelector_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelector",{},smalltalk.CWCell)})},
+messageSends: ["removeSelector:", "state"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -895,6 +913,28 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWOneChildClass.fn.prototype._initialize.apply(_st(self), []);
+_st(self)._initializeEventHandling();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMap)})},
+messageSends: ["initialize", "initializeEventHandling"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeEventHandling",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWMap)})},
+messageSends: []}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeFromJson:",
 fn: function (jsonMap){
 var self=this;
@@ -965,6 +1005,20 @@ $1=_st(_st("a Map (").__comma(_st(self["@rows"])._size())).__comma(" rows)");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"printString",{},smalltalk.CWMap)})},
 messageSends: [",", "size"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelection",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._rows())._do_((function(row){
+return smalltalk.withContext(function($ctx2) {
+return _st(row)._removeSelection();
+}, function($ctx2) {$ctx2.fillBlock({row:row},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWMap)})},
+messageSends: ["do:", "removeSelection", "rows"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -1162,6 +1216,20 @@ $1=_st(_st("a Row (").__comma(_st(self["@cells"])._size())).__comma(" cells)");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"printString",{},smalltalk.CWRow)})},
 messageSends: [",", "size"]}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelection",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._cells())._do_((function(cell){
+return smalltalk.withContext(function($ctx2) {
+return _st(cell)._removeSelector();
+}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWRow)})},
+messageSends: ["do:", "removeSelector", "cells"]}),
 smalltalk.CWRow);
 
 

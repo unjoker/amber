@@ -56,6 +56,10 @@ I am the state of a cell that has no monsters on it and that has no game selecto
 addSelector: aCell
 	aCell addSelectorColored: 'green'.
 	aCell changeState: CWFreeSelected
+!
+
+removeSelector: aCell
+	self error: 'should not happen'.
 ! !
 
 CWCellState subclass: #CWFreeSelected
@@ -69,6 +73,11 @@ The cell cannot be a wall.!
 
 addSelector: aCell
 	self error: 'should not happen'.
+!
+
+removeSelector: aCell
+	aCell removeGameOverTile.
+	aCell changeState: CWFree
 ! !
 
 CWCellState subclass: #CWHasMonster
@@ -82,6 +91,10 @@ I am the state of a cell that has some monsters on it and that has no game selec
 addSelector: aCell
 	aCell addSelectorColored: 'red'.
 	aCell changeState: CWHasMonsterSelected
+!
+
+removeSelector: aCell
+	self error: 'should not happen'.
 ! !
 
 CWCellState subclass: #CWHasMonsterSelected
@@ -95,6 +108,11 @@ The monster has to be on the opposite side of the current playing monster.!
 
 addSelector: aCell
 	self error: 'should not happen'.
+!
+
+removeSelector: aCell
+	aCell removeGameOverTile.
+	aCell changeState: CWHasMonster
 ! !
 
 CWState subclass: #CWMonsterState

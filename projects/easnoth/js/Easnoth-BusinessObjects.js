@@ -688,24 +688,20 @@ smalltalk.addMethod(
 smalltalk.method({
 selector: "mouseClick:",
 category: 'eventHandling',
-fn: function (actionCell){
+fn: function (gameContext){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+function $CWRemoveGOTEvent(){return smalltalk.CWRemoveGOTEvent||(typeof CWRemoveGOTEvent=="undefined"?nil:CWRemoveGOTEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+_st(self)._announce_(_st($CWRemoveGOTEvent())._new());
 _st(_st(self)._neighbours())._do_((function(cell){
 return smalltalk.withContext(function($ctx2) {
-$1=$Transcript();
-_st($1)._show_(_st(_st(cell)._printString()).__comma(" addSelector"));
-$2=_st($1)._cr();
-$2;
 return _st(cell)._addSelector();
 }, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:",{actionCell:actionCell},smalltalk.CWCell)})},
-args: ["actionCell"],
-source: "mouseClick: actionCell\x0a\x09self neighbours do: [:cell |\x0a\x09\x09Transcript show: cell printString, ' addSelector'; cr.\x0a\x09\x09cell addSelector ].",
-messageSends: ["do:", "show:", ",", "printString", "cr", "addSelector", "neighbours"],
-referencedClasses: ["Transcript"]
+return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:",{gameContext:gameContext},smalltalk.CWCell)})},
+args: ["gameContext"],
+source: "mouseClick: gameContext\x0a\x09self announce: CWRemoveGOTEvent new.\x0a\x09self neighbours do: [:cell |\x0a\x09\x09cell addSelector ].",
+messageSends: ["announce:", "new", "do:", "addSelector", "neighbours"],
+referencedClasses: ["CWRemoveGOTEvent"]
 }),
 smalltalk.CWCell);
 
@@ -915,6 +911,38 @@ return $1;
 args: [],
 source: "printString\x0a\x09\x22to debug only\x22\x0a\x0a\x09| rowNumber row cellIndex |\x0a\x09row := self parent.\x0a\x09cellIndex := row cells indexOf: self.\x0a\x09rowNumber := row parent rows indexOf: row.\x0a\x09^ 'a Cell(', rowNumber, '-', cellIndex, ')'",
 messageSends: ["parent", "indexOf:", "cells", "rows", ","],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeGameOverTile",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._gameOverTile_(nil);
+return self}, function($ctx1) {$ctx1.fill(self,"removeGameOverTile",{},smalltalk.CWCell)})},
+args: [],
+source: "removeGameOverTile\x0a\x09self gameOverTile: nil",
+messageSends: ["gameOverTile:"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelector",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._removeSelector_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelector",{},smalltalk.CWCell)})},
+args: [],
+source: "removeSelector\x0a\x09self state removeSelector: self",
+messageSends: ["removeSelector:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -1209,6 +1237,38 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initialize",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWOneChildClass.fn.prototype._initialize.apply(_st(self), []);
+_st(self)._initializeEventHandling();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMap)})},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09self initializeEventHandling.",
+messageSends: ["initialize", "initializeEventHandling"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeEventHandling",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWMap)})},
+args: [],
+source: "initializeEventHandling\x0a\x09\x22self announcer \x0a\x09\x09on: CWRemoveGOTEvent\x0a\x09\x09do: [ self removeSelection ]\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeFromJson:",
 category: 'initialize-release',
 fn: function (jsonMap){
@@ -1297,6 +1357,25 @@ return $1;
 args: [],
 source: "printString\x0a\x09^ 'a Map (', rows size, ' rows)'",
 messageSends: [",", "size"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelection",
+category: 'game logic',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._rows())._do_((function(row){
+return smalltalk.withContext(function($ctx2) {
+return _st(row)._removeSelection();
+}, function($ctx2) {$ctx2.fillBlock({row:row},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWMap)})},
+args: [],
+source: "removeSelection\x0a\x09self rows do: [ :row |\x0a\x09\x09row removeSelection ]",
+messageSends: ["do:", "removeSelection", "rows"],
 referencedClasses: []
 }),
 smalltalk.CWMap);
@@ -1550,6 +1629,25 @@ return $1;
 args: [],
 source: "printString\x0a\x09^ 'a Row (', cells size, ' cells)'",
 messageSends: [",", "size"],
+referencedClasses: []
+}),
+smalltalk.CWRow);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelection",
+category: 'game logic',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._cells())._do_((function(cell){
+return smalltalk.withContext(function($ctx2) {
+return _st(cell)._removeSelector();
+}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWRow)})},
+args: [],
+source: "removeSelection\x0a\x09self cells do: [ :cell |\x0a\x09\x09cell removeSelector ]",
+messageSends: ["do:", "removeSelector", "cells"],
 referencedClasses: []
 }),
 smalltalk.CWRow);
