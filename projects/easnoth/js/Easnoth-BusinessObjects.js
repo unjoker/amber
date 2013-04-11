@@ -344,7 +344,7 @@ smalltalk.CWComposite);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell'], 'Easnoth-BusinessObjects');
 smalltalk.CWCell.comment="I represent an hexagon cell in the map."
 smalltalk.addMethod(
 smalltalk.method({
@@ -398,16 +398,35 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "attackableNeighbours",
+selector: "attackableNeighboursCycle:fromSide:",
 category: 'neighbourhood',
-fn: function (){
+fn: function (cycleNumber,side){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+_st(_st(self)._root())._removeSelection();
+$1=_st(self)._attackableNeighboursFrom_(side);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursCycle:fromSide:",{cycleNumber:cycleNumber,side:side},smalltalk.CWCell)})},
+args: ["cycleNumber", "side"],
+source: "attackableNeighboursCycle: cycleNumber fromSide: side\x0a\x09\x22no range attack for now\x22\x0a\x09\x0a\x09self root removeSelection.\x0a\x09\x0a\x09^ self attackableNeighboursFrom: side",
+messageSends: ["removeSelection", "root", "attackableNeighboursFrom:"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "attackableNeighboursFrom:",
+category: 'neighbourhood',
+fn: function (side){
 var self=this;
 var attackableCells;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 attackableCells=_st(_st(self)._neighbours())._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._canAttack_(_st(self)._side());
+return _st(each)._canBeAttackedBy_(side);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(attackableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
@@ -415,28 +434,10 @@ return _st(each)._addSelector();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $1=attackableCells;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"attackableNeighbours",{attackableCells:attackableCells},smalltalk.CWCell)})},
-args: [],
-source: "attackableNeighbours\x0a\x09|attackableCells|\x0a\x09attackableCells := self neighbours select: [ :each | \x0a\x09\x09\x09\x09\x09each canAttack: self side ].\x0a\x09attackableCells do: [ :each |\x0a\x09\x09\x09each addSelector ].\x0a\x09^ attackableCells",
-messageSends: ["select:", "canAttack:", "side", "neighbours", "do:", "addSelector"],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "attackableNeighboursCycle:",
-category: 'neighbourhood',
-fn: function (cycleNumber){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self)._attackableNeighbours();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursCycle:",{cycleNumber:cycleNumber},smalltalk.CWCell)})},
-args: ["cycleNumber"],
-source: "attackableNeighboursCycle: cycleNumber\x0a\x09\x22no range attack for now\x22\x0a\x09^ self attackableNeighbours",
-messageSends: ["attackableNeighbours"],
+}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursFrom:",{side:side,attackableCells:attackableCells},smalltalk.CWCell)})},
+args: ["side"],
+source: "attackableNeighboursFrom: side\x0a\x09|attackableCells|\x0a\x09attackableCells := self neighbours select: [ :each | \x0a\x09\x09\x09\x09\x09each canBeAttackedBy: side ].\x0a\x09attackableCells do: [ :each |\x0a\x09\x09\x09each addSelector ].\x0a\x09^ attackableCells",
+messageSends: ["select:", "canBeAttackedBy:", "neighbours", "do:", "addSelector"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -496,6 +497,24 @@ return $1;
 args: ["aCol"],
 source: "backgroundAddAll: aCol\x0a\x09^ self background addAll: aCol",
 messageSends: ["addAll:", "background"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canBeAttackedBy:",
+category: 'state delegation',
+fn: function (side){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._cell_canBeAttackedBy_(self,side);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canBeAttackedBy:",{side:side},smalltalk.CWCell)})},
+args: ["side"],
+source: "canBeAttackedBy: side\x0a\x09^ self state cell: self canBeAttackedBy: side",
+messageSends: ["cell:canBeAttackedBy:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -791,16 +810,15 @@ smalltalk.CWCell);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "mouseClick:",
-category: 'eventHandling',
+category: 'state delegation',
 fn: function (gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._root())._removeSelection();
 _st(_st(self)._state())._mouseClick_context_(self,gameContext);
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:",{gameContext:gameContext},smalltalk.CWCell)})},
 args: ["gameContext"],
-source: "mouseClick: gameContext\x0a\x09self root removeSelection.\x0a\x09self state mouseClick: self context: gameContext.",
-messageSends: ["removeSelection", "root", "mouseClick:context:", "state"],
+source: "mouseClick: gameContext\x0a\x09self state mouseClick: self context: gameContext.",
+messageSends: ["mouseClick:context:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -820,14 +838,15 @@ return _st(each)._canMoveTo();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._addSelector();
+_st(each)._addSelector();
+return _st(each)._prevCell_(self);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighbours",{movableCells:movableCells},smalltalk.CWCell)})},
 args: [],
-source: "movableNeighbours\x0a\x09|movableCells|\x0a\x09movableCells := self neighbours select: [ :each | \x0a\x09\x09\x09each canMoveTo ].\x0a\x09movableCells do: [ :each |\x0a\x09\x09\x09each addSelector.\x0a\x09\x09\x09\x22each prevCell: self\x22 ].\x0a\x09^ movableCells",
-messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector"],
+source: "movableNeighbours\x0a\x09|movableCells|\x0a\x09movableCells := self neighbours select: [ :each | \x0a\x09\x09\x09each canMoveTo ].\x0a\x09movableCells do: [ :each |\x0a\x09\x09\x09each addSelector.\x0a\x09\x09\x09each prevCell: self ].\x0a\x09\x09\x09\x0a\x09^ movableCells",
+messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector", "prevCell:"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -838,24 +857,29 @@ selector: "movableNeighboursCycle:",
 category: 'neighbourhood',
 fn: function (cycleNumber){
 var self=this;
-var movableCells;
+var movableCells,tempSet;
+function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st(_st(self)._root())._removeSelection();
 movableCells=_st(self)._movableNeighbours();
-_st((1))._to_do_(_st(cycleNumber).__minus((1)),(function(){
+_st((1))._to_do_(_st(cycleNumber).__minus((1)),(function(i){
 return smalltalk.withContext(function($ctx2) {
-return _st(movableCells)._addAll_(_st(movableCells)._collect_((function(each){
+tempSet=_st($Set())._new();
+tempSet;
+_st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx3) {
-return _st(each)._movableNeighbours();
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})})));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return _st(tempSet)._addAll_(_st(each)._movableNeighbours());
+}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
+return _st(movableCells)._addAll_(tempSet);
+}, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
 $1=movableCells;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"movableNeighboursCycle:",{cycleNumber:cycleNumber,movableCells:movableCells},smalltalk.CWCell)})},
+}, function($ctx1) {$ctx1.fill(self,"movableNeighboursCycle:",{cycleNumber:cycleNumber,movableCells:movableCells,tempSet:tempSet},smalltalk.CWCell)})},
 args: ["cycleNumber"],
-source: "movableNeighboursCycle: cycleNumber\x0a\x09| movableCells |\x0a\x0a\x09movableCells := self movableNeighbours.\x0a\x091 to: (cycleNumber - 1) do: [\x0a\x09\x09movableCells addAll: (movableCells collect: [ :each | each movableNeighbours ]).\x0a\x09].\x0a\x0a\x09^ movableCells",
-messageSends: ["movableNeighbours", "to:do:", "-", "addAll:", "collect:"],
-referencedClasses: []
+source: "movableNeighboursCycle: cycleNumber\x0a\x09| movableCells tempSet |\x0a\x09\x0a\x09self root removeSelection.\x0a\x09\x0a\x09movableCells := self movableNeighbours.\x0a\x091 to: (cycleNumber - 1) do: [ :i |\x0a\x09\x09tempSet := Set new.\x0a\x09\x09movableCells do: [ :each | tempSet addAll: each movableNeighbours ].\x0a\x09\x09movableCells addAll: tempSet].\x0a\x09\x0a\x09^ movableCells",
+messageSends: ["removeSelection", "root", "movableNeighbours", "to:do:", "-", "new", "do:", "addAll:"],
+referencedClasses: ["Set"]
 }),
 smalltalk.CWCell);
 
@@ -994,22 +1018,54 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "printString",
-category: 'visiting',
+selector: "prevCell",
+category: 'accessing',
 fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@prevCell"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"prevCell",{},smalltalk.CWCell)})},
+args: [],
+source: "prevCell\x0a\x09^ prevCell",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "prevCell:",
+category: 'accessing',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@prevCell"]=aCell;
+return self}, function($ctx1) {$ctx1.fill(self,"prevCell:",{aCell:aCell},smalltalk.CWCell)})},
+args: ["aCell"],
+source: "prevCell: aCell\x0a\x09prevCell := aCell",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+category: 'printing',
+fn: function (aStream){
 var self=this;
 var rowNumber,row,cellIndex;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
 row=_st(self)._parent();
 cellIndex=_st(_st(row)._cells())._indexOf_(self);
 rowNumber=_st(_st(_st(row)._parent())._rows())._indexOf_(row);
-$1=_st(_st(_st(_st("a Cell(").__comma(rowNumber)).__comma("-")).__comma(cellIndex)).__comma(")");
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"printString",{rowNumber:rowNumber,row:row,cellIndex:cellIndex},smalltalk.CWCell)})},
-args: [],
-source: "printString\x0a\x09\x22to debug only\x22\x0a\x0a\x09| rowNumber row cellIndex |\x0a\x09row := self parent.\x0a\x09cellIndex := row cells indexOf: self.\x0a\x09rowNumber := row parent rows indexOf: row.\x0a\x09^ 'a Cell(', rowNumber, '-', cellIndex, ')'",
-messageSends: ["parent", "indexOf:", "cells", "rows", ","],
+_st(_st(_st(_st(_st(aStream).__lt_lt("a Cell(")).__lt_lt(_st(rowNumber)._printString())).__lt_lt("-")).__lt_lt(_st(cellIndex)._printString())).__lt_lt(")");
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream,rowNumber:rowNumber,row:row,cellIndex:cellIndex},smalltalk.CWCell)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x09\x22to debug only\x22\x0a\x0a\x09| rowNumber row cellIndex |\x0a\x09row := self parent.\x0a\x09cellIndex := row cells indexOf: self.\x0a\x09rowNumber := row parent rows indexOf: row.\x0a\x09aStream << 'a Cell(' << rowNumber printString << '-' << cellIndex printString << ')'",
+messageSends: ["parent", "indexOf:", "cells", "rows", "<<", "printString"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -1032,6 +1088,22 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "removeMonster",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._monster_(nil);
+return self}, function($ctx1) {$ctx1.fill(self,"removeMonster",{},smalltalk.CWCell)})},
+args: [],
+source: "removeMonster\x0a\x09self monster: nil",
+messageSends: ["monster:"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeSelection",
 category: 'state delegation',
 fn: function (){
@@ -1048,25 +1120,25 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "selectableNeighboursMoveCycle:attackCycle:",
+selector: "selectableNeighboursMoveCycle:attackCycle:fromSide:",
 category: 'neighbourhood',
-fn: function (cycleNumber,cycleNumber2){
+fn: function (cycleNumber,cycleNumber2,side){
 var self=this;
 var selectableCells;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 selectableCells=_st(self)._movableNeighboursCycle_(cycleNumber);
-_st(selectableCells)._addAll_(_st(selectableCells)._collect_((function(each){
+_st(selectableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._attackableNeighbours();
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})));
-_st(selectableCells)._addAll_(_st(self)._attackableNeighbours());
+return _st(selectableCells)._addAll_(_st(each)._attackableNeighboursFrom_(side));
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(selectableCells)._addAll_(_st(self)._attackableNeighboursFrom_(side));
 $1=selectableCells;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"selectableNeighboursMoveCycle:attackCycle:",{cycleNumber:cycleNumber,cycleNumber2:cycleNumber2,selectableCells:selectableCells},smalltalk.CWCell)})},
-args: ["cycleNumber", "cycleNumber2"],
-source: "selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2\x0a\x09| selectableCells |\x0a\x0a\x09\x22movable cells\x22\x0a\x09selectableCells := self movableNeighboursCycle: cycleNumber.\x0a\x0a\x09\x22all attackable cells from any movable cell\x22\x0a\x09selectableCells addAll: (selectableCells collect: [ :each | each attackableNeighbours ]).\x0a\x0a\x09\x22cells attackable from departure\x22\x0a\x09selectableCells addAll: (self attackableNeighbours).\x0a\x0a\x09^selectableCells",
-messageSends: ["movableNeighboursCycle:", "addAll:", "collect:", "attackableNeighbours"],
+}, function($ctx1) {$ctx1.fill(self,"selectableNeighboursMoveCycle:attackCycle:fromSide:",{cycleNumber:cycleNumber,cycleNumber2:cycleNumber2,side:side,selectableCells:selectableCells},smalltalk.CWCell)})},
+args: ["cycleNumber", "cycleNumber2", "side"],
+source: "selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: side\x0a\x09| selectableCells |\x0a\x0a\x09\x22movable cells\x22\x0a\x09selectableCells := self movableNeighboursCycle: cycleNumber.\x0a\x0a\x09\x22all attackable cells from any movable cell\x22\x0a\x09 selectableCells do: [ :each | selectableCells addAll: (each attackableNeighboursFrom: side) ].\x0a\x0a\x09\x22cells attackable from departure\x22\x0a\x09selectableCells addAll: (self attackableNeighboursFrom: side ).\x0a\x0a\x09^selectableCells",
+messageSends: ["movableNeighboursCycle:", "do:", "addAll:", "attackableNeighboursFrom:"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -2117,7 +2189,7 @@ smalltalk.CWWall);
 
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'move', 'attack', 'dices', 'hp', 'range', 'state'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state'], 'Easnoth-BusinessObjects');
 smalltalk.CWMonster.comment="I represent people on the map. My instances variables are the stats of the guy I represent."
 smalltalk.addMethod(
 smalltalk.method({
@@ -2211,6 +2283,62 @@ return self}, function($ctx1) {$ctx1.fill(self,"changeState:",{stateClass:stateC
 args: ["stateClass"],
 source: "changeState: stateClass\x0a\x09self state: stateClass default",
 messageSends: ["state:", "default"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "checkForNextTurn",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(_st(self)._currentMove()).__gt((0));
+if(smalltalk.assert($1)){
+$2=self;
+return $2;
+};
+_st(_st(self)._state())._checkForNextTurn();
+return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.CWMonster)})},
+args: [],
+source: "checkForNextTurn\x0a\x09self currentMove > 0 ifTrue: [ ^ self ].\x0a\x09self state checkForNextTurn",
+messageSends: ["ifTrue:", ">", "currentMove", "checkForNextTurn", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentMove",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@currentMove"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentMove",{},smalltalk.CWMonster)})},
+args: [],
+source: "currentMove\x0a\x09^ currentMove",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentMove:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@currentMove"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"currentMove:",{int:int},smalltalk.CWMonster)})},
+args: ["int"],
+source: "currentMove: int\x0a\x09currentMove := int",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2409,6 +2537,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"move:",{int:int},smalltalk.CWMon
 args: ["int"],
 source: "move: int\x0a\x09move := int",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "moveTo:inContext:",
+category: 'state delegation',
+fn: function (aCell,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._monster_moveTo_inContext_(self,aCell,gameContext);
+return self}, function($ctx1) {$ctx1.fill(self,"moveTo:inContext:",{aCell:aCell,gameContext:gameContext},smalltalk.CWMonster)})},
+args: ["aCell", "gameContext"],
+source: "moveTo: aCell inContext: gameContext\x0a\x09self state monster: self moveTo: aCell inContext: gameContext",
+messageSends: ["monster:moveTo:inContext:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
