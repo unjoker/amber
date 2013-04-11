@@ -250,6 +250,11 @@ firstTurn
 	self activateMonsters.
 !
 
+nextTurn
+	self activateMonsters.
+	self gameContext nextTurn.
+!
+
 pickMonster: armyPlaying
 	armyPlaying do: [ :monster | 
 		monster changeState: CWToPick ].
@@ -278,6 +283,9 @@ initializeEventHandling
 	self announcer
 		on: CWGameStart
 		do: [ self startGame ].
+	self announcer
+		on: CWNextTurnEvent
+		do: [ self nextTurn ]
 !
 
 initializeMapWithIndex: index
@@ -330,7 +338,9 @@ currentMonster: aMonster
 
 currentPlayer
 	^ currentPlayer
-!
+! !
+
+!CWGameContext methodsFor: 'game logic'!
 
 nextTurn
 	currentPlayer := currentPlayer negated.

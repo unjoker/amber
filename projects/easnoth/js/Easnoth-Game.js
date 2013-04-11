@@ -620,16 +620,21 @@ category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
+function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._startGame();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWNextTurnEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._nextTurn();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].",
-messageSends: ["on:do:", "startGame", "announcer"],
-referencedClasses: ["CWGameStart"]
+source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ]",
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn"],
+referencedClasses: ["CWGameStart", "CWNextTurnEvent"]
 }),
 smalltalk.CWGame);
 
@@ -648,6 +653,23 @@ args: ["index"],
 source: "initializeMapWithIndex: index\x0a\x09map := CWMap newWithMapIndex: index.\x0a\x09self initializeEventHandling.\x0a\x09",
 messageSends: ["newWithMapIndex:", "initializeEventHandling"],
 referencedClasses: ["CWMap"]
+}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextTurn",
+category: 'game logic',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._activateMonsters();
+_st(_st(self)._gameContext())._nextTurn();
+return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
+args: [],
+source: "nextTurn\x0a\x09self activateMonsters.\x0a\x09self gameContext nextTurn.",
+messageSends: ["activateMonsters", "nextTurn", "gameContext"],
+referencedClasses: []
 }),
 smalltalk.CWGame);
 
@@ -863,7 +885,7 @@ smalltalk.CWGameContext);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "nextTurn",
-category: 'accessing',
+category: 'game logic',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 

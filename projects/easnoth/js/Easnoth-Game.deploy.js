@@ -478,13 +478,18 @@ selector: "initializeEventHandling",
 fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
+function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._startGame();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWNextTurnEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._nextTurn();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
-messageSends: ["on:do:", "startGame", "announcer"]}),
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -498,6 +503,18 @@ self["@map"]=_st($CWMap())._newWithMapIndex_(index);
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeMapWithIndex:",{index:index},smalltalk.CWGameBoard)})},
 messageSends: ["newWithMapIndex:", "initializeEventHandling"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._activateMonsters();
+_st(_st(self)._gameContext())._nextTurn();
+return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
+messageSends: ["activateMonsters", "nextTurn", "gameContext"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(

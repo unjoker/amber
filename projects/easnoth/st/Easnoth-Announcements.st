@@ -45,7 +45,7 @@ CWDrawingEvent subclass: #CWMonsterAndGOTDrawingEvent
 	instanceVariableNames: ''
 	package: 'Easnoth-Announcements'!
 
-CWEasnothAnnouncement subclass: #CWSelectionEvent
+CWEasnothAnnouncement subclass: #CWNextTurnEvent
 	instanceVariableNames: ''
 	package: 'Easnoth-Announcements'!
 
