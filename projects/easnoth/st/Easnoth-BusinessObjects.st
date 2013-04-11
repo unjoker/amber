@@ -113,7 +113,7 @@ accept: aVisitor
 ! !
 
 CWComposite subclass: #CWCell
-	instanceVariableNames: 'neighboursCache background gameOverTile monster state'
+	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell'
 	package: 'Easnoth-BusinessObjects'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
@@ -168,15 +168,20 @@ monster: aMonster
 	monster := aMonster
 !
 
+prevCell
+	^ prevCell
+!
+
+prevCell: aCell
+	prevCell := aCell
+!
+
+removeMonster
+	self monster: nil
+!
+
 side
 	^ self monster side
-! !
-
-!CWCell methodsFor: 'eventHandling'!
-
-mouseClick: gameContext
-	self root removeSelection.
-	self state mouseClick: self context: gameContext.
 ! !
 
 !CWCell methodsFor: 'factory'!
@@ -242,18 +247,21 @@ initializeFromJson: aJsonCell
 
 !CWCell methodsFor: 'neighbourhood'!
 
-attackableNeighbours
+attackableNeighboursCycle: cycleNumber fromSide: side
+	"no range attack for now"
+	
+	self root removeSelection.
+	
+	^ self attackableNeighboursFrom: side
+!
+
+attackableNeighboursFrom: side
 	|attackableCells|
 	attackableCells := self neighbours select: [ :each | 
-					each canAttack: self side ].
+					each canBeAttackedBy: side ].
 	attackableCells do: [ :each |
 			each addSelector ].
 	^ attackableCells
-!
-
-attackableNeighboursCycle: cycleNumber
-	"no range attack for now"
-	^ self attackableNeighbours
 !
 
 movableNeighbours
@@ -262,18 +270,22 @@ movableNeighbours
 			each canMoveTo ].
 	movableCells do: [ :each |
 			each addSelector.
-			"each prevCell: self" ].
+			each prevCell: self ].
+			
 	^ movableCells
 !
 
 movableNeighboursCycle: cycleNumber
-	| movableCells |
-
+	| movableCells tempSet |
+	
+	self root removeSelection.
+	
 	movableCells := self movableNeighbours.
-	1 to: (cycleNumber - 1) do: [
-		movableCells addAll: (movableCells collect: [ :each | each movableNeighbours ]).
-	].
-
+	1 to: (cycleNumber - 1) do: [ :i |
+		tempSet := Set new.
+		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
+		movableCells addAll: tempSet].
+	
 	^ movableCells
 !
 
@@ -281,19 +293,31 @@ neighbours
 	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
 !
 
-selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2
+selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: side
 	| selectableCells |
 
 	"movable cells"
 	selectableCells := self movableNeighboursCycle: cycleNumber.
 
 	"all attackable cells from any movable cell"
-	selectableCells addAll: (selectableCells collect: [ :each | each attackableNeighbours ]).
+	 selectableCells do: [ :each | selectableCells addAll: (each attackableNeighboursFrom: side) ].
 
 	"cells attackable from departure"
-	selectableCells addAll: (self attackableNeighbours).
+	selectableCells addAll: (self attackableNeighboursFrom: side ).
 
 	^selectableCells
+! !
+
+!CWCell methodsFor: 'printing'!
+
+printOn: aStream
+	"to debug only"
+
+	| rowNumber row cellIndex |
+	row := self parent.
+	cellIndex := row cells indexOf: self.
+	rowNumber := row parent rows indexOf: row.
+	aStream << 'a Cell(' << rowNumber printString << '-' << cellIndex printString << ')'
 ! !
 
 !CWCell methodsFor: 'selection'!
@@ -312,8 +336,16 @@ addSelector
 	self state addSelector: self
 !
 
+canBeAttackedBy: side
+	^ self state cell: self canBeAttackedBy: side
+!
+
 canMoveTo
 	^ self state canMoveTo: self
+!
+
+mouseClick: gameContext
+	self state mouseClick: self context: gameContext.
 !
 
 removeSelection
@@ -353,16 +385,6 @@ free
 
 accept: aVisitor
 	^ aVisitor visitCell: self
-!
-
-printString
-	"to debug only"
-
-	| rowNumber row cellIndex |
-	row := self parent.
-	cellIndex := row cells indexOf: self.
-	rowNumber := row parent rows indexOf: row.
-	^ 'a Cell(', rowNumber, '-', cellIndex, ')'
 ! !
 
 CWComposite subclass: #CWOneChildClass
@@ -741,7 +763,7 @@ accept: aVisitor
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: 'side move attack dices hp range state'
+	instanceVariableNames: 'side currentMove move attack dices hp range state'
 	package: 'Easnoth-BusinessObjects'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
@@ -754,6 +776,14 @@ attack
 
 attack: int
 	attack := int
+!
+
+currentMove
+	^ currentMove
+!
+
+currentMove: int
+	currentMove := int
 !
 
 dices
@@ -867,6 +897,15 @@ monstersFromSide: aSide
 ! !
 
 !CWMonster methodsFor: 'state delegation'!
+
+checkForNextTurn
+	self currentMove > 0 ifTrue: [ ^ self ].
+	self state checkForNextTurn
+!
+
+moveTo: aCell inContext: gameContext
+	self state monster: self moveTo: aCell inContext: gameContext
+!
 
 select: gameContext
 	self state select: self inContext: gameContext

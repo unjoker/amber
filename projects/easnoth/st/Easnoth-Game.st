@@ -321,7 +321,7 @@ currentCell: aCurrentCell
 !
 
 currentMonster
-	^ currentCell currentMonster
+	^ currentCell monster
 !
 
 currentMonster: aMonster

@@ -612,10 +612,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self["@currentCell"])._currentMonster();
+$1=_st(self["@currentCell"])._monster();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"currentMonster",{},smalltalk.CWGameContext)})},
-messageSends: ["currentMonster"]}),
+messageSends: ["monster"]}),
 smalltalk.CWGameContext);
 
 smalltalk.addMethod(
