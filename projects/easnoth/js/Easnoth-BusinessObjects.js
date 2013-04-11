@@ -358,7 +358,7 @@ $1=_st(aVisitor)._visitCell_(self);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWCell)})},
 args: ["aVisitor"],
-source: "accept: aVisitor\x0a\x09^ aVisitor visitCell: self",
+source: "accept: aVisitor\x0a\x09^ aVisitor visitCell: self ",
 messageSends: ["visitCell:"],
 referencedClasses: []
 }),
