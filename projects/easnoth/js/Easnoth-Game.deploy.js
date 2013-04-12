@@ -462,11 +462,11 @@ smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
-function $FightMenu(){return smalltalk.FightMenu||(typeof FightMenu=="undefined"?nil:FightMenu)}
+function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="undefined"?nil:CWFightMenu)}
 function $CWGameContext(){return smalltalk.CWGameContext||(typeof CWGameContext=="undefined"?nil:CWGameContext)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-_st($FightMenu())._newFor_(self);
+_st($CWFightMenu())._newFor_(self);
 self["@context"]=_st($CWGameContext())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGame)})},
 messageSends: ["initialize", "newFor:", "new"]}),
@@ -511,10 +511,13 @@ selector: "nextTurn",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._activateMonsters();
+_st(self["@map"])._desactivateMonsters();
+_st(self["@map"])._removeSelection();
 _st(_st(self)._gameContext())._nextTurn();
+_st(self)._activateMonsters();
+_st(self["@map"])._updateMonstersAndGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
-messageSends: ["activateMonsters", "nextTurn", "gameContext"]}),
+messageSends: ["desactivateMonsters", "removeSelection", "nextTurn", "gameContext", "activateMonsters", "updateMonstersAndGOTs"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -568,23 +571,6 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "examples",
-fn: function (){
-var self=this;
-function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
-function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
-return smalltalk.withContext(function($ctx1) { 
-_st($CWMap())._newWithMapIndex_((5));
-_st(_st($CWMap())._default())._update();
-_st(_st($CWMap())._default())._updateGOTs();
-_st(_st($CWMap())._default())._updateMonstersAndGOTs();
-_st($CWEasnothAnnouncer())._current();
-return self}, function($ctx1) {$ctx1.fill(self,"examples",{},smalltalk.CWGameBoard.klass)})},
-messageSends: ["newWithMapIndex:", "update", "default", "updateGOTs", "updateMonstersAndGOTs", "current"]}),
-smalltalk.CWGame.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "newWithMapIndex:",
 fn: function (index){
 var self=this;
@@ -592,7 +578,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=_st(_st(self)._new())._initializeMapWithIndex_(index);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGameBoard.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGame.klass)})},
 messageSends: ["initializeMapWithIndex:", "new"]}),
 smalltalk.CWGame.klass);
 

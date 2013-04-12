@@ -49,6 +49,20 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "desactivateMonsters",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._desactivateMonsters();
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltalk.CWComponent)})},
+messageSends: ["do:", "desactivateMonsters", "children"]}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isLeaf",
 fn: function (){
 var self=this;
@@ -591,8 +605,9 @@ fn: function (aMonster){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@monster"]=aMonster;
+_st(aMonster)._parent_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"monster:",{aMonster:aMonster},smalltalk.CWCell)})},
-messageSends: []}),
+messageSends: ["parent:"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -639,8 +654,8 @@ function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 _st(_st(self)._root())._removeSelection();
-movableCells=_st(self)._movableNeighbours();
-_st((1))._to_do_(_st(cycleNumber).__minus((1)),(function(i){
+movableCells=[self];
+_st((1))._to_do_(cycleNumber,(function(i){
 return smalltalk.withContext(function($ctx2) {
 tempSet=_st($Set())._new();
 tempSet;
@@ -653,7 +668,7 @@ return _st(movableCells)._addAll_(tempSet);
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighboursCycle:",{cycleNumber:cycleNumber,movableCells:movableCells,tempSet:tempSet},smalltalk.CWCell)})},
-messageSends: ["removeSelection", "root", "movableNeighbours", "to:do:", "-", "new", "do:", "addAll:"]}),
+messageSends: ["removeSelection", "root", "to:do:", "new", "do:", "addAll:", "movableNeighbours"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -810,9 +825,9 @@ selector: "removeMonster",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._monster_(nil);
+self["@monster"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"removeMonster",{},smalltalk.CWCell)})},
-messageSends: ["monster:"]}),
+messageSends: []}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -839,7 +854,6 @@ _st(selectableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(selectableCells)._addAll_(_st(each)._attackableNeighboursFrom_(side));
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-_st(selectableCells)._addAll_(_st(self)._attackableNeighboursFrom_(side));
 $1=selectableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selectableNeighboursMoveCycle:attackCycle:fromSide:",{cycleNumber:cycleNumber,cycleNumber2:cycleNumber2,side:side,selectableCells:selectableCells},smalltalk.CWCell)})},
@@ -1749,6 +1763,18 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._subclassResponsibility();
 return self}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWMonster)})},
 messageSends: ["subclassResponsibility"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "desactivateMonsters",
+fn: function (){
+var self=this;
+function $CWInactive(){return smalltalk.CWInactive||(typeof CWInactive=="undefined"?nil:CWInactive)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._changeState_($CWInactive());
+return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltalk.CWMonster)})},
+messageSends: ["changeState:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

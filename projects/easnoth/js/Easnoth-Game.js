@@ -599,17 +599,17 @@ selector: "initialize",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-function $FightMenu(){return smalltalk.FightMenu||(typeof FightMenu=="undefined"?nil:FightMenu)}
+function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="undefined"?nil:CWFightMenu)}
 function $CWGameContext(){return smalltalk.CWGameContext||(typeof CWGameContext=="undefined"?nil:CWGameContext)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-_st($FightMenu())._newFor_(self);
+_st($CWFightMenu())._newFor_(self);
 self["@context"]=_st($CWGameContext())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGame)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09FightMenu newFor: self.\x0a\x09context := CWGameContext new.",
+source: "initialize\x0a\x09super initialize.\x0a\x09CWFightMenu newFor: self.\x0a\x09context := CWGameContext new.",
 messageSends: ["initialize", "newFor:", "new"],
-referencedClasses: ["FightMenu", "CWGameContext"]
+referencedClasses: ["CWFightMenu", "CWGameContext"]
 }),
 smalltalk.CWGame);
 
@@ -663,12 +663,15 @@ category: 'game logic',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._activateMonsters();
+_st(self["@map"])._desactivateMonsters();
+_st(self["@map"])._removeSelection();
 _st(_st(self)._gameContext())._nextTurn();
+_st(self)._activateMonsters();
+_st(self["@map"])._updateMonstersAndGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
 args: [],
-source: "nextTurn\x0a\x09self activateMonsters.\x0a\x09self gameContext nextTurn.",
-messageSends: ["activateMonsters", "nextTurn", "gameContext"],
+source: "nextTurn\x0a\x09map desactivateMonsters.\x0a\x09map removeSelection.\x0a\x09self gameContext nextTurn.\x0a\x09self activateMonsters.\x0a\x09map updateMonstersAndGOTs.",
+messageSends: ["desactivateMonsters", "removeSelection", "nextTurn", "gameContext", "activateMonsters", "updateMonstersAndGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWGame);
@@ -739,28 +742,6 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "examples",
-category: 'examples',
-fn: function (){
-var self=this;
-function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
-function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
-return smalltalk.withContext(function($ctx1) { 
-_st($CWMap())._newWithMapIndex_((5));
-_st(_st($CWMap())._default())._update();
-_st(_st($CWMap())._default())._updateGOTs();
-_st(_st($CWMap())._default())._updateMonstersAndGOTs();
-_st($CWEasnothAnnouncer())._current();
-return self}, function($ctx1) {$ctx1.fill(self,"examples",{},smalltalk.CWGameBoard.klass)})},
-args: [],
-source: "examples\x0a\x09\x22To remove when model ok\x22\x0a\x09CWMap newWithMapIndex: 5.\x0a\x09CWMap default update.\x0a\x09CWMap default updateGOTs.\x0a\x09CWMap default updateMonstersAndGOTs.\x0a\x09CWEasnothAnnouncer current.",
-messageSends: ["newWithMapIndex:", "update", "default", "updateGOTs", "updateMonstersAndGOTs", "current"],
-referencedClasses: ["CWMap", "CWEasnothAnnouncer"]
-}),
-smalltalk.CWGame.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "newWithMapIndex:",
 category: 'instance creation',
 fn: function (index){
@@ -769,9 +750,9 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=_st(_st(self)._new())._initializeMapWithIndex_(index);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGameBoard.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGame.klass)})},
 args: ["index"],
-source: "newWithMapIndex: index\x0a\x09^ self new initializeMapWithIndex: index",
+source: "newWithMapIndex: index\x0a\x09^ self new initializeMapWithIndex: index ",
 messageSends: ["initializeMapWithIndex:", "new"],
 referencedClasses: []
 }),

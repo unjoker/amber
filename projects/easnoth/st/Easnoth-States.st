@@ -179,18 +179,20 @@ showActiveMonster: aMonster
 !CWMonsterState methodsFor: 'private'!
 
 monster: aMonster animationMoveFrom: cell1 to: cellLast callback: callback
-	| path |
+	| path moveNumber |
 	
-	path := self pathFrom: cell1 to: cellLast .
+	path := self pathFrom: cell1 to: cellLast.
+	moveNumber := path size - 1.
 
 	cell1 root removeSelection.
 
-	1 to: path size - 1 do: [ :j |
+	1 to: moveNumber do: [ :j |
 		[ (path at: path size - j) monster: aMonster.
         (path at: path size + 1 - j) removeMonster.
         cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].
 
-	callback valueWithTimeout: 300 * (path size - 1)
+	aMonster currentMove: aMonster currentMove - moveNumber.
+	callback valueWithTimeout: 300 * moveNumber
 !
 
 monster: aMonster moveTo: aCell inContext: gameContext callback: callback
