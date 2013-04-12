@@ -473,11 +473,12 @@ selector: "monster:animationMoveFrom:to:callback:",
 category: 'private',
 fn: function (aMonster,cell1,cellLast,callback){
 var self=this;
-var path;
+var path,moveNumber;
 return smalltalk.withContext(function($ctx1) { 
 path=_st(self)._pathFrom_to_(cell1,cellLast);
+moveNumber=_st(_st(path)._size()).__minus((1));
 _st(_st(cell1)._root())._removeSelection();
-_st((1))._to_do_(_st(_st(path)._size()).__minus((1)),(function(j){
+_st((1))._to_do_(moveNumber,(function(j){
 return smalltalk.withContext(function($ctx2) {
 return _st((function(){
 return smalltalk.withContext(function($ctx3) {
@@ -486,11 +487,12 @@ _st(_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j)))._removeM
 return _st(_st(cell1)._root())._updateMonstersAndGOTs();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
 }, function($ctx2) {$ctx2.fillBlock({j:j},$ctx1)})}));
-_st(callback)._valueWithTimeout_(_st((300)).__star(_st(_st(path)._size()).__minus((1))));
-return self}, function($ctx1) {$ctx1.fill(self,"monster:animationMoveFrom:to:callback:",{aMonster:aMonster,cell1:cell1,cellLast:cellLast,callback:callback,path:path},smalltalk.CWMonsterState)})},
+_st(aMonster)._currentMove_(_st(_st(aMonster)._currentMove()).__minus(moveNumber));
+_st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
+return self}, function($ctx1) {$ctx1.fill(self,"monster:animationMoveFrom:to:callback:",{aMonster:aMonster,cell1:cell1,cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonsterState)})},
 args: ["aMonster", "cell1", "cellLast", "callback"],
-source: "monster: aMonster animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09| path |\x0a\x09\x0a\x09path := self pathFrom: cell1 to: cellLast .\x0a\x0a\x09cell1 root removeSelection.\x0a\x0a\x091 to: path size - 1 do: [ :j |\x0a\x09\x09[ (path at: path size - j) monster: aMonster.\x0a        (path at: path size + 1 - j) removeMonster.\x0a        cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].\x0a\x0a\x09callback valueWithTimeout: 300 * (path size - 1)",
-messageSends: ["pathFrom:to:", "removeSelection", "root", "to:do:", "-", "size", "valueWithTimeout:", "*", "monster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs"],
+source: "monster: aMonster animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := self pathFrom: cell1 to: cellLast.\x0a\x09moveNumber := path size - 1.\x0a\x0a\x09cell1 root removeSelection.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) monster: aMonster.\x0a        (path at: path size + 1 - j) removeMonster.\x0a        cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].\x0a\x0a\x09aMonster currentMove: aMonster currentMove - moveNumber.\x0a\x09callback valueWithTimeout: 300 * moveNumber",
+messageSends: ["pathFrom:to:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "monster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove"],
 referencedClasses: []
 }),
 smalltalk.CWMonsterState);

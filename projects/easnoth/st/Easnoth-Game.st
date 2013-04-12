@@ -251,8 +251,11 @@ firstTurn
 !
 
 nextTurn
-	self activateMonsters.
+	map desactivateMonsters.
+	map removeSelection.
 	self gameContext nextTurn.
+	self activateMonsters.
+	map updateMonstersAndGOTs.
 !
 
 pickMonster: armyPlaying
@@ -275,7 +278,7 @@ startGame
 
 initialize
 	super initialize.
-	FightMenu newFor: self.
+	CWFightMenu newFor: self.
 	context := CWGameContext new.
 !
 
@@ -295,17 +298,6 @@ initializeMapWithIndex: index
 
 removeLoadingBar
 	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
-! !
-
-!CWGame class methodsFor: 'examples'!
-
-examples
-	"To remove when model ok"
-	CWMap newWithMapIndex: 5.
-	CWMap default update.
-	CWMap default updateGOTs.
-	CWMap default updateMonstersAndGOTs.
-	CWEasnothAnnouncer current.
 ! !
 
 !CWGame class methodsFor: 'instance creation'!

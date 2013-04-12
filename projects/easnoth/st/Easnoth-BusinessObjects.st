@@ -50,6 +50,11 @@ updateMonstersAndGOTs
 
 !CWComponent methodsFor: 'selection'!
 
+desactivateMonsters
+	self children do: [ :child |
+		child desactivateMonsters ]
+!
+
 monstersFromSide: aSide
 	| col |
 	col := Array new.
@@ -165,7 +170,8 @@ monster
 !
 
 monster: aMonster
-	monster := aMonster
+	monster := aMonster.
+	aMonster parent: self.
 !
 
 prevCell
@@ -177,7 +183,7 @@ prevCell: aCell
 !
 
 removeMonster
-	self monster: nil
+	monster := nil
 !
 
 side
@@ -280,8 +286,8 @@ movableNeighboursCycle: cycleNumber
 	
 	self root removeSelection.
 	
-	movableCells := self movableNeighbours.
-	1 to: (cycleNumber - 1) do: [ :i |
+	movableCells := { self }.
+	1 to: cycleNumber do: [ :i |
 		tempSet := Set new.
 		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
 		movableCells addAll: tempSet].
@@ -303,7 +309,7 @@ selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: s
 	 selectableCells do: [ :each | selectableCells addAll: (each attackableNeighboursFrom: side) ].
 
 	"cells attackable from departure"
-	selectableCells addAll: (self attackableNeighboursFrom: side ).
+	" TO TEST I THINK USELESS NOW selectableCells addAll: (self attackableNeighboursFrom: side )."
 
 	^selectableCells
 ! !
@@ -824,6 +830,12 @@ side
 
 side: int
 	side := int
+! !
+
+!CWMonster methodsFor: 'game logic'!
+
+desactivateMonsters
+	self changeState: CWInactive
 ! !
 
 !CWMonster methodsFor: 'initialize-release'!
