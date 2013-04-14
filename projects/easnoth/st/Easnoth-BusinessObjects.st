@@ -300,18 +300,17 @@ neighbours
 !
 
 selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: side
-	| selectableCells |
+	| selectableCells tempSet |
 
 	"movable cells"
 	selectableCells := self movableNeighboursCycle: cycleNumber.
 
-	"all attackable cells from any movable cell"
-	 selectableCells do: [ :each | selectableCells addAll: (each attackableNeighboursFrom: side) ].
+	 "all attackable cells from any movable cell"
+	 tempSet := Set new.
+	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursFrom: side) ].
+	 selectableCells addAll: tempSet.
 
-	"cells attackable from departure"
-	" TO TEST I THINK USELESS NOW selectableCells addAll: (self attackableNeighboursFrom: side )."
-
-	^selectableCells
+	^ selectableCells
 ! !
 
 !CWCell methodsFor: 'printing'!
@@ -639,6 +638,10 @@ I represent a leaf of the business objects tree that has an image. Usually only 
 
 image
 	^ image
+!
+
+image: anImage
+	image := anImage
 ! !
 
 !CWImageLeaf methodsFor: 'initialize-release'!
@@ -832,10 +835,29 @@ side: int
 	side := int
 ! !
 
-!CWMonster methodsFor: 'game logic'!
+!CWMonster methodsFor: 'fighting'!
 
-desactivateMonsters
-	self changeState: CWInactive
+removeHP: anInt
+        self hp: self hp - anInt.
+        (self hp < 1) ifTrue: [
+                self parent removeMonster.
+                self parent changeState: CWFree
+        ].
+!
+
+rollDicesCallBack: aBlock
+	"roll the dices to attack an ennemy"
+	
+	| kill dicesRolledEvent |
+	"PUT INJECT INTO HERE"
+	kill := 0.
+	1 to: self dices do: [ 100 atRandom < self attack ifTrue: [kill := kill + 1] ].
+	dicesRolledEvent := CWDicesRolledEvent new
+		kills: kill;
+		dices: self dices;
+		callback: aBlock;
+		yourself.
+	self announce: dicesRolledEvent
 ! !
 
 !CWMonster methodsFor: 'initialize-release'!
@@ -902,6 +924,10 @@ updateStats: aKey
 
 !CWMonster methodsFor: 'selection'!
 
+desactivateMonsters
+	self changeState: CWInactive
+!
+
 monstersFromSide: aSide
 	^ self side = aSide 
 		ifTrue: [ { self } ]
@@ -910,9 +936,13 @@ monstersFromSide: aSide
 
 !CWMonster methodsFor: 'state delegation'!
 
+attackTo: aCell inContext: gameContext
+	self state monster: self attackTo: aCell inContext: gameContext
+!
+
 checkForNextTurn
 	self currentMove > 0 ifTrue: [ ^ self ].
-	self state checkForNextTurn
+	self state checkForNextTurn: self
 !
 
 moveTo: aCell inContext: gameContext
@@ -920,7 +950,8 @@ moveTo: aCell inContext: gameContext
 !
 
 select: gameContext
-	self state select: self inContext: gameContext
+	self announce: (CWMonsterUpdateEvent new monster: self).
+	self state select: self inContext: gameContext.
 !
 
 showActiveMonster
@@ -1008,5 +1039,24 @@ defaultHp
 
 accept: aVisitor
 	^ aVisitor visitTroop: self
+! !
+
+!JSObjectProxy methodsFor: '*Easnoth-BusinessObjects'!
+
+keys
+	| col |
+    col := Array new.
+	self keysDo: [:key |
+    	col add: key ].
+       ^ col
+!
+
+keysDo: aBlock
+	<
+    	var o = self['@jsObject'];
+    	for(var i in o) {
+			aBlock(i);
+		}
+    >
 ! !
 

@@ -466,10 +466,10 @@ function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="unde
 function $CWGameContext(){return smalltalk.CWGameContext||(typeof CWGameContext=="undefined"?nil:CWGameContext)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-_st($CWFightMenu())._newFor_(self);
+_st($CWFightMenu())._new();
 self["@context"]=_st($CWGameContext())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGame)})},
-messageSends: ["initialize", "newFor:", "new"]}),
+messageSends: ["initialize", "new"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(

@@ -1824,42 +1824,6 @@ smalltalk.Monster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "rollDices",
-category: 'fighting',
-fn: function (){
-var self=this;
-var kill,knockBack,tmp;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-kill=(0);
-knockBack=(0);
-_st((1))._to_do_(_st(self)._dices(),(function(){
-return smalltalk.withContext(function($ctx2) {
-tmp=_st((100))._atRandom();
-tmp;
-$1=_st(tmp).__lt(_st(self)._attack());
-if(smalltalk.assert($1)){
-kill=_st(kill).__plus((1));
-kill;
-};
-$2=_st(_st(tmp).__gt(_st(self)._attack())).__and(_st(tmp).__lt(_st(_st(self)._attack()).__plus(_st(self)._knockback())));
-if(smalltalk.assert($2)){
-knockBack=_st(knockBack).__plus((1));
-return knockBack;
-};
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$3=_st(kill).__at(knockBack);
-return $3;
-}, function($ctx1) {$ctx1.fill(self,"rollDices",{kill:kill,knockBack:knockBack,tmp:tmp},smalltalk.Monster)})},
-args: [],
-source: "rollDices\x0a\x09|kill knockBack tmp|\x0a\x09\x0a\x09kill := 0.\x0a\x09knockBack := 0.\x0a\x0a\x091 to: self dices do: [\x0a\x09\x09tmp := 100 atRandom.\x0a\x09\x09(tmp < self attack) ifTrue: [kill := kill + 1].\x0a\x09\x09(tmp > self attack & (tmp < (self attack + self knockback))) ifTrue: [knockBack := knockBack + 1].\x0a\x09].\x0a\x0a\x09^kill @ knockBack",
-messageSends: ["to:do:", "dices", "atRandom", "ifTrue:", "+", "<", "attack", "&", "knockback", ">", "@"],
-referencedClasses: []
-}),
-smalltalk.Monster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "rollDicesCallBack:",
 category: 'fighting',
 fn: function (callback){
@@ -3289,50 +3253,4 @@ messageSends: ["ifNotNil:", "add:"],
 referencedClasses: []
 }),
 smalltalk.Array);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "keys",
-category: '*Easnoth-Core',
-fn: function (){
-var self=this;
-var col;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-col=_st($Array())._new();
-_st(self)._keysDo_((function(key){
-return smalltalk.withContext(function($ctx2) {
-return _st(col)._add_(key);
-}, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
-$1=col;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"keys",{col:col},smalltalk.JSObjectProxy)})},
-args: [],
-source: "keys\x0a\x09| col |\x0a    col := Array new.\x0a\x09self keysDo: [:key |\x0a    \x09col add: key ].\x0a       ^ col",
-messageSends: ["new", "keysDo:", "add:"],
-referencedClasses: ["Array"]
-}),
-smalltalk.JSObjectProxy);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "keysDo:",
-category: '*Easnoth-Core',
-fn: function (aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-
-    	var o = self['@jsObject'];
-    	for(var i in o) {
-			aBlock(i);
-		}
-    ;
-return self}, function($ctx1) {$ctx1.fill(self,"keysDo:",{aBlock:aBlock},smalltalk.JSObjectProxy)})},
-args: ["aBlock"],
-source: "keysDo: aBlock\x0a\x09<\x0a    \x09var o = self['@jsObject'];\x0a    \x09for(var i in o) {\x0a\x09\x09\x09aBlock(i);\x0a\x09\x09}\x0a    >",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.JSObjectProxy);
 

@@ -278,7 +278,7 @@ startGame
 
 initialize
 	super initialize.
-	CWFightMenu newFor: self.
+	CWFightMenu new.
 	context := CWGameContext new.
 !
 

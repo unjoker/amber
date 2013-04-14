@@ -1,31 +1,13 @@
 Smalltalk current createPackage: 'Easnoth-Menu'!
-Widget subclass: #CWDicesResult
-	instanceVariableNames: 'dices kills'
-	package: 'Easnoth-Menu'!
-
-!CWDicesResult methodsFor: 'accessing'!
-
-dices
-	^ dices
-!
-
-dices: int
-	dices := int
-!
-
-kills
-	^ kills
-!
-
-kills: int
-	kills := int
-! !
-
 Widget subclass: #CWWidget
 	instanceVariableNames: 'parent'
 	package: 'Easnoth-Menu'!
 
 !CWWidget methodsFor: 'accessing'!
+
+announcer
+	^ CWEasnothAnnouncer current
+!
 
 children
 	self subclassResponsibility
@@ -42,6 +24,12 @@ parent: object
 root
 	self isRoot ifTrue: [ ^ self ].
 	^ self parent root
+! !
+
+!CWWidget methodsFor: 'events'!
+
+announce: anEvent
+	self announcer announce: anEvent
 ! !
 
 !CWWidget methodsFor: 'testing'!
@@ -98,14 +86,6 @@ isRoot
 	^ true
 ! !
 
-!CWActionMenu class methodsFor: 'instance creation'!
-
-newFor: aGame
-	^ self new
-			initializeWithGame: aGame
-			yourself
-! !
-
 CWActionMenu subclass: #CWFightMenu
 	instanceVariableNames: ''
 	package: 'Easnoth-Menu'!
@@ -125,11 +105,6 @@ initialize
 	self addComponent: CWTileWatcher.
 	self addComponent: CWMapControls.
 	self addComponent: CWTurnWatcher.
-	self appendToJQuery: self menuClass asJQuery.
-!
-
-initializeWithGame: aGame
-	self components last initializeWithGame: aGame.
 	self appendToJQuery: self menuClass asJQuery.
 ! !
 
@@ -156,6 +131,13 @@ firstLoad
 	html h4 with: 'Fight result'.
            CWDiceDeath new renderOn: html.
            CWDiceMiss new renderOn: html ].
+!
+
+initialize
+	super initialize.
+	self announcer 
+		on: CWDicesRolledEvent
+		do: [ :event | self showDices: event ]
 !
 
 renderOn: html
@@ -192,13 +174,10 @@ updateDices: dicesNb kills: kills callBack: cb
 
 !CWDices methodsFor: 'public'!
 
-showDices: aResDices callback: cb
-	|kill knockBack|
-
-	kill := aResDices x.
-	knockBack := aResDices y.
-
-	self updateDices: aResDices dices kills: aResDices kill callBack: cb.
+showDices: aResDices
+	| cb |
+	cb := [ aResDices callback value: aResDices ].
+	self updateDices: aResDices dices kills: aResDices kills callBack: cb.
 ! !
 
 CWActionMenuComponent subclass: #CWMapControls
@@ -240,25 +219,90 @@ CWActionMenuComponent subclass: #CWMonsterWatcher
 	instanceVariableNames: 'monster box'
 	package: 'Easnoth-Menu'!
 
+!CWMonsterWatcher methodsFor: 'accessing'!
+
+emptyMonster
+	| imageVide |
+	imageVide := NativeFunction constructor: 'Image'.
+	imageVide at: 'src' put:'ressources/images/interro.png'.
+	^CWMonster new
+		image: imageVide;
+		hp: 0;
+		move: 0;
+		range: 0;
+		dices: 0;
+		attack: 0";
+		knockback: 0;
+		special:'none'."
+!
+
+monster
+	^ monster ifNil: [self emptyMonster]
+! !
+
+!CWMonsterWatcher methodsFor: 'initialize-release'!
+
+initialize
+	super initialize.
+	self announcer 
+		on: CWMonsterUpdateEvent
+		do: [ :event | 
+			monster := event monster.
+			self update ]
+! !
+
+!CWMonsterWatcher methodsFor: 'rendering'!
+
+renderOn: html
+	box := (html div 
+		class: 'monsterWatcher';
+		yourself).
+	self update
+!
+
+update
+	"I hide some stuff for release"
+
+        box contents: [:html | 
+		html h4 with: 'selected monster'.
+                html img: (self monster image at: 'src').
+                html table
+			class: 'tableStats';
+			with: [
+			html tr with: [
+				html td with: [
+                        		html tr with: 'hp : ', self monster hp.
+                        		html tr with: 'move : ', self monster move.
+                        		"html tr with: 'range : ', self monster range."
+				].
+				html td with: [
+                       			html tr with: 'dices : ', self monster dices.
+                        		html tr with: 'attack : ', self monster attack,' %'.
+                       			"html tr with: 'knockBack : ', self monster knockback,' %'."
+				]
+			].
+			"html tr with: 'special : ', self monster special."
+		].
+		"html h5 with: 'debug'.
+                html span with: 'state : ', self monster state class."
+        ].
+! !
+
 CWActionMenuComponent subclass: #CWTileWatcher
 	instanceVariableNames: 'tile box'
 	package: 'Easnoth-Menu'!
 
 CWActionMenuComponent subclass: #CWTurnWatcher
-	instanceVariableNames: 'box nextTurn'
+	instanceVariableNames: 'box'
 	package: 'Easnoth-Menu'!
 
 !CWTurnWatcher methodsFor: 'rendering'!
-
-initializeWithGame: aGame
-	nextTurn := [ aGame nextTurn ].
-!
 
 renderOn: html
 	html div class: 'stuff'; with: [
 		box := html h5.
                 html button with: 'next turn';
-                        onClick: [nextTurn value].
+                        onClick: [self announce: CWNextTurnEvent new].
 		"'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]]."
                 html button with: 'class browser';
                         onClick: [Browser open].
@@ -328,6 +372,10 @@ animate: dice callBack: animationFinished random: random url: url
 		})
 	}
 	roll();>
+!
+
+renderOn: html
+	self renderOn: html callback: [ ]
 !
 
 renderOn: html callback: cb
