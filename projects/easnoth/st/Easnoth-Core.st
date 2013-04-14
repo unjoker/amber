@@ -576,21 +576,6 @@ removeHP: anInt
         ].
 !
 
-rollDices
-	|kill knockBack tmp|
-	
-	kill := 0.
-	knockBack := 0.
-
-	1 to: self dices do: [
-		tmp := 100 atRandom.
-		(tmp < self attack) ifTrue: [kill := kill + 1].
-		(tmp > self attack & (tmp < (self attack + self knockback))) ifTrue: [knockBack := knockBack + 1].
-	].
-
-	^kill @ knockBack
-!
-
 rollDicesCallBack: callback
 	|kill knockBack tmp|
 	
@@ -1250,24 +1235,5 @@ newWithMapIndex: aMapIndex
 
 addIfNotNil: anObject
 	anObject ifNotNil: [ self add: anObject ]
-! !
-
-!JSObjectProxy methodsFor: '*Easnoth-Core'!
-
-keys
-	| col |
-    col := Array new.
-	self keysDo: [:key |
-    	col add: key ].
-       ^ col
-!
-
-keysDo: aBlock
-	<
-    	var o = self['@jsObject'];
-    	for(var i in o) {
-			aBlock(i);
-		}
-    >
 ! !
 

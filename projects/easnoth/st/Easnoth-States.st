@@ -146,7 +146,7 @@ addSelector: aCell
 !
 
 mouseClick: aCell context: gameContext
-	gameContext currentMonster attackTo: aCell.
+	gameContext currentMonster attackTo: aCell inContext: gameContext
 !
 
 removeSelector: aCell
@@ -164,8 +164,16 @@ CWState subclass: #CWMonsterState
 
 !CWMonsterState methodsFor: 'monster state API'!
 
-checkForNextTurn
+checkForNextTurn: aMonster
 	self subclassResponsibility
+!
+
+monster: aMonster attackTo: aCell inContext: gameContext
+	self subclassResponsibility
+!
+
+monster: aMonster moveTo: aCell inContext: gameContext
+	self monster: aMonster moveTo: aCell inContext: gameContext callback: []
 !
 
 select: aMonster inContext: gameContext
@@ -178,7 +186,13 @@ showActiveMonster: aMonster
 
 !CWMonsterState methodsFor: 'private'!
 
+changeStateAfterMoving: aMonster
+	self subclassResponsibility
+!
+
 monster: aMonster animationMoveFrom: cell1 to: cellLast callback: callback
+	"To refactor"
+	
 	| path moveNumber |
 	
 	path := self pathFrom: cell1 to: cellLast.
@@ -188,11 +202,25 @@ monster: aMonster animationMoveFrom: cell1 to: cellLast callback: callback
 
 	1 to: moveNumber do: [ :j |
 		[ (path at: path size - j) monster: aMonster.
+        (path at: path size - j) changeState: CWHasMonster.
         (path at: path size + 1 - j) removeMonster.
+		 (path at: path size + 1 - j) changeState: CWFree.
         cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].
 
 	aMonster currentMove: aMonster currentMove - moveNumber.
 	callback valueWithTimeout: 300 * moveNumber
+!
+
+monster: aMonster attackNeighbour: anotherMonster inContext: gameContext
+	
+	self changeStateAfterAttacking: aMonster.
+    aMonster root removeSelection.
+
+	aMonster rollDicesCallBack: [ :diceRes |
+		anotherMonster removeHP: diceRes kills.
+        aMonster select: gameContext.
+		aMonster checkForNextTurn.
+		aMonster updateMonstersAndGOTs ]
 !
 
 monster: aMonster moveTo: aCell inContext: gameContext callback: callback
@@ -202,8 +230,8 @@ monster: aMonster moveTo: aCell inContext: gameContext callback: callback
 
 	"animation"
 	self monster: aMonster animationMoveFrom: gameContext currentCell to: aCell callback:[	
-        gameContext currentCell changeState: CWFree.
-        aCell changeState: CWHasMonster.
+		self changeStateAfterMoving: aMonster.
+		aMonster select: gameContext.
 		aCell root updateMonstersAndGOTs.
 		aMonster checkForNextTurn.
 		callback value.
@@ -232,17 +260,35 @@ Monster can move and attack!
 
 !CWActive methodsFor: 'monster state API'!
 
-checkForNextTurn
-	"do nothing"
+checkForNextTurn: aMonster
+	"do nothing for now"
 !
 
-monster: aMonster moveTo: aCell inContext: gameContext
-	self monster: aMonster moveTo: aCell inContext: gameContext callback: []
+monster: aMonster attackTo: aCell inContext: gameContext
+	| toMoveCell |
+	(aCell neighbours includes: aMonster parent) 
+		ifFalse: [ 
+			toMoveCell := (aCell neighbours select: [:each | each state = CWFreeSelected default ]) asArray atRandom.
+			self monster: aMonster moveTo: toMoveCell inContext: gameContext callback: [
+			aMonster attackTo: aCell inContext: gameContext.
+			aMonster updateMonstersAndGOTs ] ] 
+		ifTrue: [ self monster: aMonster attackNeighbour: aCell monster inContext: gameContext ]
 !
 
 select: aMonster inContext: gameContext
 	aMonster parent selectableNeighboursMoveCycle: aMonster currentMove attackCycle: aMonster range fromSide: aMonster side.
 	gameContext currentMonster: aMonster
+! !
+
+!CWActive methodsFor: 'private'!
+
+changeStateAfterAttacking: aMonster
+	aMonster changeState: CWHasAttacked
+!
+
+changeStateAfterMoving: aMonster
+	aMonster currentMove = 0 
+		ifTrue: [ aMonster changeState: CWHasMoved ]
 ! !
 
 CWMonsterState subclass: #CWHasAttacked
@@ -253,13 +299,61 @@ Monster can only move!
 
 !CWHasAttacked methodsFor: 'monster state API'!
 
-checkForNextTurn
-	"do nothing"
+checkForNextTurn: aMonster
+	"do nothing for now"
 !
 
 select: aMonster inContext: gameContext
 	aMonster parent movableNeighboursCycle: aMonster currentMove.
 	gameContext currentMonster: aMonster
+! !
+
+!CWHasAttacked methodsFor: 'private'!
+
+changeStateAfterAttacking: aMonster
+	self error: 'should not happen'
+!
+
+changeStateAfterMoving: aMonster
+	aMonster currentMove = 0 
+		ifTrue: [ aMonster changeState: CWInactive ]
+! !
+
+CWMonsterState subclass: #CWHasMoved
+	instanceVariableNames: ''
+	package: 'Easnoth-States'!
+!CWHasMoved commentStamp!
+The monster has moved its full moved there. (currentMove = 0)!
+
+!CWHasMoved methodsFor: 'monster state public API'!
+
+checkForNextTurn: aMonster
+	| col |
+	col := 	aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.
+	col ifEmpty: [ aMonster announce: CWNextTurnEvent new ]
+!
+
+monster: aMonster attackTo: aCell inContext: gameContext
+	self monster: aMonster attackNeighbour: aCell monster inContext: gameContext
+!
+
+monster: aMonster moveTo: aCell inContext: gameContext
+	self error: 'should not happen'.
+!
+
+select: aMonster inContext: gameContext
+	aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.
+	gameContext currentMonster: aMonster
+! !
+
+!CWHasMoved methodsFor: 'private'!
+
+changeStateAfterAttacking: aMonster
+	aMonster changeState: CWInactive
+!
+
+changeStateAfterMoving: aMonster
+	self error: 'should not happen'
 ! !
 
 CWMonsterState subclass: #CWInactive
@@ -270,8 +364,12 @@ Monster cannot do anything :)!
 
 !CWInactive methodsFor: 'monster state API'!
 
-checkForNextTurn
-	"CALL THE NEXT TURN TO IMPLEMENT"
+checkForNextTurn: aMonster
+	aMonster announce: CWNextTurnEvent new
+!
+
+monster: aMonster moveTo: aCell inContext: gameContext
+	self error: 'should not happen'.
 !
 
 select: aMonster inContext: gameContext
@@ -285,15 +383,29 @@ showActiveMonster: aMonster
 	"Just do nothing, this monster is not actve"
 ! !
 
+!CWInactive methodsFor: 'private'!
+
+changeStateAfterAttacking: aMonster
+	self error: 'should not happen'.
+!
+
+changeStateAfterMoving: aMonster
+	self error: 'shouldNotHappen'.
+! !
+
 CWMonsterState subclass: #CWToPick
 	instanceVariableNames: ''
 	package: 'Easnoth-States'!
 !CWToPick commentStamp!
 The player has to choice one of the toPick monster to activate them!
 
-!CWToPick methodsFor: 'not yet classified'!
+!CWToPick methodsFor: 'monster state public API'!
 
-checkForNextTurn
+checkForNextTurn: aMonster
+	self error: 'should not happen'
+!
+
+monster: aMonster moveTo: aCell inContext: gameContext
 	self error: 'should not happen'
 !
 
@@ -304,5 +416,15 @@ select: aMonster inContext: gameContext
 	aMonster changeState: CWActive.
 	aMonster currentMove: aMonster move.
 	aMonster select: gameContext
+! !
+
+!CWToPick methodsFor: 'private'!
+
+changeStateAfterAttacking: aMonster
+	self error: 'should not happen'.
+!
+
+changeStateAfterMoving: aMonster
+	self error: 'should not happen'
 ! !
 

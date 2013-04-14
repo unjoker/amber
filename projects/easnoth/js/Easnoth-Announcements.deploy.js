@@ -48,6 +48,111 @@ smalltalk.addClass('CWGlobalDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnot
 smalltalk.addClass('CWMonsterAndGOTDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Announcements');
 
 
+smalltalk.addClass('CWMenuUpdateEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
+
+
+smalltalk.addClass('CWDicesRolledEvent', smalltalk.CWMenuUpdateEvent, ['dices', 'kills', 'callback'], 'Easnoth-Announcements');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "callback",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@callback"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"callback",{},smalltalk.CWDicesRolledEvent)})},
+messageSends: []}),
+smalltalk.CWDicesRolledEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "callback:",
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@callback"]=aBlock;
+return self}, function($ctx1) {$ctx1.fill(self,"callback:",{aBlock:aBlock},smalltalk.CWDicesRolledEvent)})},
+messageSends: []}),
+smalltalk.CWDicesRolledEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "dices",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@dices"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"dices",{},smalltalk.CWDicesRolledEvent)})},
+messageSends: []}),
+smalltalk.CWDicesRolledEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "dices:",
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@dices"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"dices:",{int:int},smalltalk.CWDicesRolledEvent)})},
+messageSends: []}),
+smalltalk.CWDicesRolledEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "kills",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@kills"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"kills",{},smalltalk.CWDicesRolledEvent)})},
+messageSends: []}),
+smalltalk.CWDicesRolledEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "kills:",
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@kills"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"kills:",{int:int},smalltalk.CWDicesRolledEvent)})},
+messageSends: []}),
+smalltalk.CWDicesRolledEvent);
+
+
+
+smalltalk.addClass('CWMonsterUpdateEvent', smalltalk.CWMenuUpdateEvent, ['monster'], 'Easnoth-Announcements');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@monster"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster",{},smalltalk.CWMonsterUpdateEvent)})},
+messageSends: []}),
+smalltalk.CWMonsterUpdateEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@monster"]=aMonster;
+return self}, function($ctx1) {$ctx1.fill(self,"monster:",{aMonster:aMonster},smalltalk.CWMonsterUpdateEvent)})},
+messageSends: []}),
+smalltalk.CWMonsterUpdateEvent);
+
+
+
 smalltalk.addClass('CWNextTurnEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
 
 
@@ -86,22 +191,10 @@ smalltalk.method({
 selector: "announce:",
 fn: function (anAnnouncement){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
-function $Date(){return smalltalk.Date||(typeof Date=="undefined"?nil:Date)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
-$1=$Transcript();
-_st($1)._show_("[");
-_st($1)._show_(_st(_st($Date())._now())._minutes());
-_st($1)._show_("min ");
-_st($1)._show_(_st(_st($Date())._now())._seconds());
-$2=_st($1)._show_("sec] ");
-$3=$Transcript();
-_st($3)._show_(_st(anAnnouncement)._class());
-$4=_st($3)._cr();
 _st(anAnnouncement)._accept_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"announce:",{anAnnouncement:anAnnouncement},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["show:", "minutes", "now", "seconds", "class", "cr", "accept:"]}),
+messageSends: ["accept:"]}),
 smalltalk.CWEasnothAnnouncer);
 
 smalltalk.addMethod(

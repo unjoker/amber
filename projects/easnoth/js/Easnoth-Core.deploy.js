@@ -1330,37 +1330,6 @@ smalltalk.Monster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "rollDices",
-fn: function (){
-var self=this;
-var kill,knockBack,tmp;
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-kill=(0);
-knockBack=(0);
-_st((1))._to_do_(_st(self)._dices(),(function(){
-return smalltalk.withContext(function($ctx2) {
-tmp=_st((100))._atRandom();
-tmp;
-$1=_st(tmp).__lt(_st(self)._attack());
-if(smalltalk.assert($1)){
-kill=_st(kill).__plus((1));
-kill;
-};
-$2=_st(_st(tmp).__gt(_st(self)._attack())).__and(_st(tmp).__lt(_st(_st(self)._attack()).__plus(_st(self)._knockback())));
-if(smalltalk.assert($2)){
-knockBack=_st(knockBack).__plus((1));
-return knockBack;
-};
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$3=_st(kill).__at(knockBack);
-return $3;
-}, function($ctx1) {$ctx1.fill(self,"rollDices",{kill:kill,knockBack:knockBack,tmp:tmp},smalltalk.Monster)})},
-messageSends: ["to:do:", "dices", "atRandom", "ifTrue:", "+", "<", "attack", "&", "knockback", ">", "@"]}),
-smalltalk.Monster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "rollDicesCallBack:",
 fn: function (callback){
 var self=this;
@@ -2474,40 +2443,4 @@ _st(self)._add_(anObject);
 return self}, function($ctx1) {$ctx1.fill(self,"addIfNotNil:",{anObject:anObject},smalltalk.Array)})},
 messageSends: ["ifNotNil:", "add:"]}),
 smalltalk.Array);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "keys",
-fn: function (){
-var self=this;
-var col;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-col=_st($Array())._new();
-_st(self)._keysDo_((function(key){
-return smalltalk.withContext(function($ctx2) {
-return _st(col)._add_(key);
-}, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
-$1=col;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"keys",{col:col},smalltalk.JSObjectProxy)})},
-messageSends: ["new", "keysDo:", "add:"]}),
-smalltalk.JSObjectProxy);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "keysDo:",
-fn: function (aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-
-    	var o = self['@jsObject'];
-    	for(var i in o) {
-			aBlock(i);
-		}
-    ;
-return self}, function($ctx1) {$ctx1.fill(self,"keysDo:",{aBlock:aBlock},smalltalk.JSObjectProxy)})},
-messageSends: []}),
-smalltalk.JSObjectProxy);
 

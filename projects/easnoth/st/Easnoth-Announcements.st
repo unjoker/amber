@@ -45,6 +45,54 @@ CWDrawingEvent subclass: #CWMonsterAndGOTDrawingEvent
 	instanceVariableNames: ''
 	package: 'Easnoth-Announcements'!
 
+CWEasnothAnnouncement subclass: #CWMenuUpdateEvent
+	instanceVariableNames: ''
+	package: 'Easnoth-Announcements'!
+
+CWMenuUpdateEvent subclass: #CWDicesRolledEvent
+	instanceVariableNames: 'dices kills callback'
+	package: 'Easnoth-Announcements'!
+
+!CWDicesRolledEvent methodsFor: 'accessing'!
+
+callback
+	^ callback
+!
+
+callback: aBlock
+	callback := aBlock
+!
+
+dices
+	^ dices
+!
+
+dices: int
+	dices := int
+!
+
+kills
+	^ kills
+!
+
+kills: int
+	kills := int
+! !
+
+CWMenuUpdateEvent subclass: #CWMonsterUpdateEvent
+	instanceVariableNames: 'monster'
+	package: 'Easnoth-Announcements'!
+
+!CWMonsterUpdateEvent methodsFor: 'accessing'!
+
+monster
+	^ monster
+!
+
+monster: aMonster
+	monster := aMonster
+! !
+
 CWEasnothAnnouncement subclass: #CWNextTurnEvent
 	instanceVariableNames: ''
 	package: 'Easnoth-Announcements'!
@@ -71,7 +119,7 @@ SystemAnnouncer subclass: #CWEasnothAnnouncer
 !CWEasnothAnnouncer methodsFor: 'events'!
 
 announce: anAnnouncement
-	Transcript 
+	"Transcript 
 		show: '[';
 		show: Date now minutes; 
 		show: 'min '; 
@@ -79,7 +127,7 @@ announce: anAnnouncement
 		show: 'sec] '.
 	Transcript 
 		show: anAnnouncement class; 
-		cr.
+		cr."
 	anAnnouncement accept: self
 !
 

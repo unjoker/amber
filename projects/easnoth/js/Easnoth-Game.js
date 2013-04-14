@@ -603,12 +603,12 @@ function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="unde
 function $CWGameContext(){return smalltalk.CWGameContext||(typeof CWGameContext=="undefined"?nil:CWGameContext)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-_st($CWFightMenu())._newFor_(self);
+_st($CWFightMenu())._new();
 self["@context"]=_st($CWGameContext())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGame)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09CWFightMenu newFor: self.\x0a\x09context := CWGameContext new.",
-messageSends: ["initialize", "newFor:", "new"],
+source: "initialize\x0a\x09super initialize.\x0a\x09CWFightMenu new.\x0a\x09context := CWGameContext new.",
+messageSends: ["initialize", "new"],
 referencedClasses: ["CWFightMenu", "CWGameContext"]
 }),
 smalltalk.CWGame);

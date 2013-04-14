@@ -80,7 +80,7 @@ canvas {
     text-align:center;
 	margin:0 auto;
 	border: 1px solid #ccc; 
-    margin-left: 100px;
+    /*margin-left: 100px;*/
 }
 
 .layer {
@@ -171,6 +171,7 @@ canvas {
 	right:0;
 	margin:0;
 	padding:0;
+    width:20%;
 	/*background-image:url(../ressources/images/toolBox.jpg);*/
 	background-color:#ccc;
 	background-size:100% auto;
