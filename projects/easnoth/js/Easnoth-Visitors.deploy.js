@@ -652,34 +652,8 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.CWMapInterpreter.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeLayers();
 _st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
-_st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMapDrawer)})},
-messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding", "initializeEventHandling"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeEventHandling",
-fn: function (){
-var self=this;
-function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
-function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
-function $CWMonsterAndGOTDrawingEvent(){return smalltalk.CWMonsterAndGOTDrawingEvent||(typeof CWMonsterAndGOTDrawingEvent=="undefined"?nil:CWMonsterAndGOTDrawingEvent)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._announcer())._on_do_($CWGlobalDrawingEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateMap();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWGOTDrawingEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateGOTs();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWMonsterAndGOTDrawingEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateMonstersAndGOTs();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWMapDrawer)})},
-messageSends: ["on:do:", "updateMap", "announcer", "updateGOTs", "updateMonstersAndGOTs"]}),
+messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(

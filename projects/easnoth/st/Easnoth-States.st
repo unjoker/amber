@@ -85,7 +85,8 @@ cell: aCell addMonster: aMonster
 mouseClick: aCell context: gameContext
 	aCell root 
 		removeSelection;
-		showActiveMonsters
+		showActiveMonsters;
+		updateGOTs
 !
 
 removeMonster: aCell
@@ -243,18 +244,6 @@ changeStateAfterAttacking: aMonster
 
 changeStateAfterMoving: aMonster
 	self subclassResponsibility
-!
-
-monster: aMonster attackNeighbour: anotherMonster inContext: gameContext
-	
-	self changeStateAfterAttacking: aMonster.
-    aMonster root removeSelection.
-
-	aMonster rollDicesCallBack: [ :diceRes |
-		anotherMonster removeHP: diceRes kills.
-        aMonster select: gameContext.
-		aMonster checkForNextTurn.
-		aMonster updateMonstersAndGOTs ]
 ! !
 
 CWMonsterState subclass: #CWActive
@@ -294,13 +283,14 @@ monster: aMonster attackTo: aCell inContext: gameContext
 			toMoveCell := self cell: aMonster parent ToMoveBeforeAttack: aCell.
 			aMonster moveTo: toMoveCell inContext: gameContext callback: [
 				aMonster attackTo: aCell inContext: gameContext.
-				aMonster updateMonstersAndGOTs ] ] 
+				aMonster updateGOTs ] ] 
 		ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]
 !
 
 select: aMonster inContext: gameContext
 	aMonster parent selectableNeighboursMoveCycle: aMonster currentMove attackCycle: aMonster range fromSide: aMonster side.
-	gameContext currentMonster: aMonster
+	gameContext currentMonster: aMonster.
+	aMonster updateGOTs.
 ! !
 
 !CWActive methodsFor: 'private'!
@@ -332,6 +322,7 @@ monster: aMonster attackTo: aCell inContext: gameContext
 
 select: aMonster inContext: gameContext
 	aMonster parent movableNeighboursCycle: aMonster currentMove.
+	aMonster updateGOTs.
 	gameContext currentMonster: aMonster
 ! !
 
@@ -370,6 +361,7 @@ monster: aMonster moveTo: aCell inContext: gameContext
 
 select: aMonster inContext: gameContext
 	aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.
+	aMonster updateGOTs.
 	gameContext currentMonster: aMonster
 ! !
 
@@ -419,7 +411,8 @@ readyToPick: aMonster
 select: aMonster inContext: gameContext
 	aMonster root 
 		removeSelection;
-		showActiveMonsters.
+		showActiveMonsters;
+		updateGOTs.
 	gameContext currentMonster: aMonster.
 !
 

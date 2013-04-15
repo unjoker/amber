@@ -216,7 +216,6 @@ selector: "dispatchMouseClick:",
 fn: function (event){
 var self=this;
 var cc;
-function $CWMonsterAndGOTDrawingEvent(){return smalltalk.CWMonsterAndGOTDrawingEvent||(typeof CWMonsterAndGOTDrawingEvent=="undefined"?nil:CWMonsterAndGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 cc=_st(self)._currentCell_(event);
@@ -226,9 +225,8 @@ $1;
 } else {
 _st(cc)._mouseClick_(_st(self["@game"])._gameContext());
 };
-_st(_st(self)._announcer())._announce_(_st($CWMonsterAndGOTDrawingEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"dispatchMouseClick:",{event:event,cc:cc},smalltalk.CWEventDispatcher)})},
-messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "gameContext", "announce:", "new", "announcer"]}),
+messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "gameContext"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -272,16 +270,16 @@ smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeForMap:drawer:game:",
-fn: function (aMap,drawer,aGame){
+selector: "initializeForMap:game:",
+fn: function (aMap,aGame){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@game"]=aGame;
 self["@map"]=aMap;
-self["@padding"]=_st(drawer)._padding();
+self["@padding"]=_st(_st(aMap)._drawer())._padding();
 _st(self)._initializeEventHandling();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:drawer:game:",{aMap:aMap,drawer:drawer,aGame:aGame},smalltalk.CWEventDispatcher)})},
-messageSends: ["padding", "initializeEventHandling"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:game:",{aMap:aMap,aGame:aGame},smalltalk.CWEventDispatcher)})},
+messageSends: ["padding", "drawer", "initializeEventHandling"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -515,9 +513,8 @@ _st(self["@map"])._desactivateMonsters();
 _st(self["@map"])._removeSelection();
 _st(_st(self)._gameContext())._nextTurn();
 _st(self)._activateMonsters();
-_st(self["@map"])._updateMonstersAndGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
-messageSends: ["desactivateMonsters", "removeSelection", "nextTurn", "gameContext", "activateMonsters", "updateMonstersAndGOTs"]}),
+messageSends: ["desactivateMonsters", "removeSelection", "nextTurn", "gameContext", "activateMonsters"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -525,13 +522,12 @@ smalltalk.method({
 selector: "pickMonster",
 fn: function (){
 var self=this;
-function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayer());
 _st(self["@map"])._showActiveMonsters();
-_st(self)._announce_(_st($CWGOTDrawingEvent())._new());
+_st(self["@map"])._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"pickMonster",{},smalltalk.CWGame)})},
-messageSends: ["readyToPickMonsters:", "currentPlayer", "gameContext", "showActiveMonsters", "announce:", "new"]}),
+messageSends: ["readyToPickMonsters:", "currentPlayer", "gameContext", "showActiveMonsters", "updateGOTs"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -550,18 +546,15 @@ smalltalk.method({
 selector: "startGame",
 fn: function (){
 var self=this;
-var drawer;
-function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
 function $CWEventDispatcher(){return smalltalk.CWEventDispatcher||(typeof CWEventDispatcher=="undefined"?nil:CWEventDispatcher)}
-function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._removeLoadingBar();
-drawer=_st(_st($CWMapDrawer())._new())._initializeForMap_(self["@map"]);
-_st(_st($CWEventDispatcher())._new())._initializeForMap_drawer_game_(self["@map"],drawer,self);
-_st(self)._announce_(_st($CWGlobalDrawingEvent())._new());
+_st(self["@map"])._initializeDrawer();
+_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
+_st(self["@map"])._updateMap();
 _st(self)._firstTurn();
-return self}, function($ctx1) {$ctx1.fill(self,"startGame",{drawer:drawer},smalltalk.CWGame)})},
-messageSends: ["removeLoadingBar", "initializeForMap:", "new", "initializeForMap:drawer:game:", "announce:", "firstTurn"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWGame)})},
+messageSends: ["removeLoadingBar", "initializeDrawer", "initializeForMap:game:", "new", "updateMap", "firstTurn"]}),
 smalltalk.CWGame);
 
 
@@ -665,5 +658,20 @@ return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGameCon
 messageSends: ["negated"]}),
 smalltalk.CWGameContext);
 
+
+
+smalltalk.addClass('CWPlayer', smalltalk.Object, ['side'], 'Easnoth-Game');
+
+
+smalltalk.addClass('CWAI', smalltalk.CWPlayer, [], 'Easnoth-Game');
+
+
+smalltalk.addClass('CWAggressWeakestAI', smalltalk.CWAI, [], 'Easnoth-Game');
+
+
+smalltalk.addClass('CWBasicAggressiveAI', smalltalk.CWAI, [], 'Easnoth-Game');
+
+
+smalltalk.addClass('CWHuman', smalltalk.CWPlayer, [], 'Easnoth-Game');
 
 

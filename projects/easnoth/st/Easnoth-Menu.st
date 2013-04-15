@@ -266,7 +266,7 @@ update
 			html tr with: [
 				html td with: [
                         		html tr with: 'hp : ', self monster hp.
-                        		html tr with: 'move : ', self monster move.
+                        		html tr with: 'move : ', self monster currentMove, '/', self monster move.
                         		"html tr with: 'range : ', self monster range."
 				].
 				html td with: [

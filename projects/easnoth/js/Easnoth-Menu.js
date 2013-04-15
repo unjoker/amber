@@ -603,7 +603,7 @@ return smalltalk.withContext(function($ctx4) {
 _st(_st(html)._td())._with_((function(){
 return smalltalk.withContext(function($ctx5) {
 _st(_st(html)._tr())._with_(_st("hp : ").__comma(_st(_st(self)._monster())._hp()));
-return _st(_st(html)._tr())._with_(_st("move : ").__comma(_st(_st(self)._monster())._move()));
+return _st(_st(html)._tr())._with_(_st(_st(_st("move : ").__comma(_st(_st(self)._monster())._currentMove())).__comma("/")).__comma(_st(_st(self)._monster())._move()));
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 return _st(_st(html)._td())._with_((function(){
 return smalltalk.withContext(function($ctx5) {
@@ -618,8 +618,8 @@ return _st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
 args: [],
-source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster move.\x0a                        \x09\x09\x22html tr with: 'range : ', self monster range.\x22\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09\x22html tr with: 'knockBack : ', self monster knockback,' %'.\x22\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09\x09\x22html tr with: 'special : ', self monster special.\x22\x0a\x09\x09].\x0a\x09\x09html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a        ].",
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "td", "dices", "attack", "h5", "class", "state", "span"],
+source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster currentMove, '/', self monster move.\x0a                        \x09\x09\x22html tr with: 'range : ', self monster range.\x22\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09\x22html tr with: 'knockBack : ', self monster knockback,' %'.\x22\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09\x09\x22html tr with: 'special : ', self monster special.\x22\x0a\x09\x09].\x0a\x09\x09html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a        ].",
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "td", "dices", "attack", "h5", "class", "state", "span"],
 referencedClasses: []
 }),
 smalltalk.CWMonsterWatcher);

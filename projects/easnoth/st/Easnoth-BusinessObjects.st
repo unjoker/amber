@@ -34,18 +34,20 @@ root
 
 announce: anEvent
 	self announcer announce: anEvent
-!
+! !
+
+!CWComponent methodsFor: 'rendering'!
 
 updateGOTs
-	self announce: CWGOTDrawingEvent new.
+	self root updateGOTs
 !
 
 updateMap
-	self announce: CWGlobalDrawingEvent new.
+	self root updateMap
 !
 
 updateMonstersAndGOTs
-	self announce: CWMonsterAndGOTDrawingEvent new.
+	self root updateMonstersAndGOTs
 ! !
 
 !CWComponent methodsFor: 'selection'!
@@ -447,7 +449,7 @@ accept: aVisitor
 ! !
 
 CWOneChildClass subclass: #CWMap
-	instanceVariableNames: 'rows'
+	instanceVariableNames: 'rows drawer'
 	package: 'Easnoth-BusinessObjects'!
 !CWMap commentStamp!
 I represent the whole map in the game.!
@@ -456,6 +458,10 @@ I represent the whole map in the game.!
 
 children
 	^ self rows
+!
+
+drawer
+	^ drawer
 !
 
 rows
@@ -470,12 +476,8 @@ childBasicClass
 
 !CWMap methodsFor: 'initialize-release'!
 
-initialize
-	super initialize.
-	self initializeEventHandling.
-!
-
-initializeEventHandling
+initializeDrawer
+	drawer := CWMapDrawer new initializeForMap: self
 !
 
 initializeFromJson: jsonMap
@@ -514,6 +516,20 @@ neighboursOf: row cellIndex: cellIndex
 
 printString
 	^ 'a Map (', rows size, ' rows)'
+! !
+
+!CWMap methodsFor: 'rendering'!
+
+updateGOTs
+	drawer updateGOTs
+!
+
+updateMap
+	drawer updateMap
+!
+
+updateMonstersAndGOTs
+	drawer updateMonstersAndGOTs
 ! !
 
 !CWMap methodsFor: 'testing'!
@@ -868,14 +884,20 @@ animationMoveFrom: cell1 to: cellLast callback: callback
 	moveNumber := path size - 1.
  
 	cell1 root removeSelection.
+	cell1 updateGOTs.
 
 	1 to: moveNumber do: [ :j |
 		[ (path at: path size - j) addMonster: self.
         (path at: path size + 1 - j) removeMonster.
-        cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].
-
-	self currentMove: self currentMove - moveNumber.
+		cell1 root updateMonstersAndGOTs .
+		self currentMove: self currentMove - 1.
+		self announceUpdate ] valueWithTimeout: 300 * j ].
+	
 	callback valueWithTimeout: 300 * moveNumber
+!
+
+announceUpdate
+	self announce: (CWMonsterUpdateEvent new monster: self)
 !
 
 moveTo: aCell inContext: gameContext callback: callback
@@ -884,7 +906,6 @@ moveTo: aCell inContext: gameContext callback: callback
 	self animationMoveFrom: gameContext currentCell to: aCell callback: [	
 		self state changeStateAfterMoving: self.
 		self select: gameContext.
-		aCell root updateMonstersAndGOTs.
 		self checkForNextTurn.
 		callback value.
 	].
@@ -896,6 +917,7 @@ attackNeighbour: anotherMonster inContext: gameContext
 	
 	self state changeStateAfterAttacking: self.
     self root removeSelection.
+	self updateGOTs.
 
 	self rollDicesCallBack: [ :diceRes |
 		anotherMonster removeHP: diceRes kills.
@@ -954,6 +976,7 @@ defaultHp
 
 initialize
 	super initialize.
+	self currentMove: 0.
 	self initializeState
 !
 
@@ -1034,8 +1057,8 @@ readyToBePicked
 !
 
 select: gameContext
-	self announce: (CWMonsterUpdateEvent new monster: self).
 	self state select: self inContext: gameContext.
+	self announceUpdate
 !
 
 showActiveMonster

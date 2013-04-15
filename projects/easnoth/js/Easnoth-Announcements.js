@@ -3,33 +3,27 @@ smalltalk.addClass('CWEasnothAnnouncement', smalltalk.SystemAnnouncement, [], 'E
 
 
 smalltalk.addClass('CWBootstrapEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
+smalltalk.CWBootstrapEvent.comment="All announcements that are related to the bootstrap of the game"
 
 
 smalltalk.addClass('CWGameStart', smalltalk.CWBootstrapEvent, [], 'Easnoth-Announcements');
+smalltalk.CWGameStart.comment="Triggered when all the objects (JSON, images) needed for the game are loaded to start the game."
 
 
 smalltalk.addClass('CWObjectLoaded', smalltalk.CWBootstrapEvent, [], 'Easnoth-Announcements');
+smalltalk.CWObjectLoaded.comment="Trggered when an object requested (JSON, image) is loaded."
 
 
 smalltalk.addClass('CWWaitForObject', smalltalk.CWBootstrapEvent, [], 'Easnoth-Announcements');
-
-
-smalltalk.addClass('CWDrawingEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
-
-
-smalltalk.addClass('CWGOTDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Announcements');
-
-
-smalltalk.addClass('CWGlobalDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Announcements');
-
-
-smalltalk.addClass('CWMonsterAndGOTDrawingEvent', smalltalk.CWDrawingEvent, [], 'Easnoth-Announcements');
+smalltalk.CWWaitForObject.comment="Triggered when an asynchronous request is sent to get a JSON or an image"
 
 
 smalltalk.addClass('CWMenuUpdateEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
+smalltalk.CWMenuUpdateEvent.comment="All announcements that are related to the menu that need to be updated."
 
 
 smalltalk.addClass('CWDicesRolledEvent', smalltalk.CWMenuUpdateEvent, ['dices', 'kills', 'callback'], 'Easnoth-Announcements');
+smalltalk.CWDicesRolledEvent.comment="Triggered when the dices are rolled during an attack to display them on the right menu"
 smalltalk.addMethod(
 smalltalk.method({
 selector: "callback",
@@ -135,6 +129,7 @@ smalltalk.CWDicesRolledEvent);
 
 
 smalltalk.addClass('CWMonsterUpdateEvent', smalltalk.CWMenuUpdateEvent, ['monster'], 'Easnoth-Announcements');
+smalltalk.CWMonsterUpdateEvent.comment="Triggered when a monster is selected to update the right menu"
 smalltalk.addMethod(
 smalltalk.method({
 selector: "monster",
@@ -172,8 +167,9 @@ smalltalk.CWMonsterUpdateEvent);
 
 
 smalltalk.addClass('CWNextTurnEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
+smalltalk.CWNextTurnEvent.comment="Triggered to request the game to let the other player play."
 
 
-smalltalk.addClass('CWEasnothAnnouncer', smalltalk.SystemAnnouncer, ['suspended'], 'Easnoth-Announcements');
+smalltalk.addClass('CWEasnothAnnouncer', smalltalk.SystemAnnouncer, [], 'Easnoth-Announcements');
 
 

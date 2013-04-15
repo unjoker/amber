@@ -247,11 +247,12 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(aCell)._root();
 _st($1)._removeSelection();
-$2=_st($1)._showActiveMonsters();
+_st($1)._showActiveMonsters();
+$2=_st($1)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
 args: ["aCell", "gameContext"],
-source: "mouseClick: aCell context: gameContext\x0a\x09aCell root \x0a\x09\x09removeSelection;\x0a\x09\x09showActiveMonsters",
-messageSends: ["removeSelection", "root", "showActiveMonsters"],
+source: "mouseClick: aCell context: gameContext\x0a\x09aCell root \x0a\x09\x09removeSelection;\x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs",
+messageSends: ["removeSelection", "root", "showActiveMonsters", "updateGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWFree);
@@ -683,30 +684,6 @@ smalltalk.CWMonsterState);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "monster:attackNeighbour:inContext:",
-category: 'private',
-fn: function (aMonster,anotherMonster,gameContext){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._changeStateAfterAttacking_(aMonster);
-_st(_st(aMonster)._root())._removeSelection();
-_st(aMonster)._rollDicesCallBack_((function(diceRes){
-return smalltalk.withContext(function($ctx2) {
-_st(anotherMonster)._removeHP_(_st(diceRes)._kills());
-_st(aMonster)._select_(gameContext);
-_st(aMonster)._checkForNextTurn();
-return _st(aMonster)._updateMonstersAndGOTs();
-}, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"monster:attackNeighbour:inContext:",{aMonster:aMonster,anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWMonsterState)})},
-args: ["aMonster", "anotherMonster", "gameContext"],
-source: "monster: aMonster attackNeighbour: anotherMonster inContext: gameContext\x0a\x09\x0a\x09self changeStateAfterAttacking: aMonster.\x0a    aMonster root removeSelection.\x0a\x0a\x09aMonster rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        aMonster select: gameContext.\x0a\x09\x09aMonster checkForNextTurn.\x0a\x09\x09aMonster updateMonstersAndGOTs ]",
-messageSends: ["changeStateAfterAttacking:", "removeSelection", "root", "rollDicesCallBack:", "removeHP:", "kills", "select:", "checkForNextTurn", "updateMonstersAndGOTs"],
-referencedClasses: []
-}),
-smalltalk.CWMonsterState);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "monster:attackTo:inContext:",
 category: 'monster state API',
 fn: function (aMonster,aCell,gameContext){
@@ -900,13 +877,13 @@ toMoveCell;
 _st(aMonster)._moveTo_inContext_callback_(toMoveCell,gameContext,(function(){
 return smalltalk.withContext(function($ctx2) {
 _st(aMonster)._attackTo_inContext_(aCell,gameContext);
-return _st(aMonster)._updateMonstersAndGOTs();
+return _st(aMonster)._updateGOTs();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
 args: ["aMonster", "aCell", "gameContext"],
-source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09(aCell neighbours includes: aMonster parent) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := self cell: aMonster parent ToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext.\x0a\x09\x09\x09\x09aMonster updateMonstersAndGOTs ] ] \x0a\x09\x09ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]",
-messageSends: ["ifFalse:ifTrue:", "cell:ToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "updateMonstersAndGOTs", "attackNeighbour:inContext:", "monster", "includes:", "neighbours"],
+source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09(aCell neighbours includes: aMonster parent) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := self cell: aMonster parent ToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext.\x0a\x09\x09\x09\x09aMonster updateGOTs ] ] \x0a\x09\x09ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]",
+messageSends: ["ifFalse:ifTrue:", "cell:ToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "updateGOTs", "attackNeighbour:inContext:", "monster", "includes:", "neighbours"],
 referencedClasses: []
 }),
 smalltalk.CWActive);
@@ -920,10 +897,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(aMonster)._parent())._selectableNeighboursMoveCycle_attackCycle_fromSide_(_st(aMonster)._currentMove(),_st(aMonster)._range(),_st(aMonster)._side());
 _st(gameContext)._currentMonster_(aMonster);
+_st(aMonster)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWActive)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster parent selectableNeighboursMoveCycle: aMonster currentMove attackCycle: aMonster range fromSide: aMonster side.\x0a\x09gameContext currentMonster: aMonster",
-messageSends: ["selectableNeighboursMoveCycle:attackCycle:fromSide:", "currentMove", "range", "side", "parent", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster parent selectableNeighboursMoveCycle: aMonster currentMove attackCycle: aMonster range fromSide: aMonster side.\x0a\x09gameContext currentMonster: aMonster.\x0a\x09aMonster updateGOTs.",
+messageSends: ["selectableNeighboursMoveCycle:attackCycle:fromSide:", "currentMove", "range", "side", "parent", "currentMonster:", "updateGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWActive);
@@ -1008,11 +986,12 @@ fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(aMonster)._parent())._movableNeighboursCycle_(_st(aMonster)._currentMove());
+_st(aMonster)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWHasAttacked)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster parent movableNeighboursCycle: aMonster currentMove.\x0a\x09gameContext currentMonster: aMonster",
-messageSends: ["movableNeighboursCycle:", "currentMove", "parent", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster parent movableNeighboursCycle: aMonster currentMove.\x0a\x09aMonster updateGOTs.\x0a\x09gameContext currentMonster: aMonster",
+messageSends: ["movableNeighboursCycle:", "currentMove", "parent", "updateGOTs", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWHasAttacked);
@@ -1116,11 +1095,12 @@ fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(aMonster)._parent())._attackableNeighboursCycle_fromSide_(_st(aMonster)._range(),_st(aMonster)._side());
+_st(aMonster)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWHasMoved)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.\x0a\x09gameContext currentMonster: aMonster",
-messageSends: ["attackableNeighboursCycle:fromSide:", "range", "side", "parent", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.\x0a\x09aMonster updateGOTs.\x0a\x09gameContext currentMonster: aMonster",
+messageSends: ["attackableNeighboursCycle:fromSide:", "range", "side", "parent", "updateGOTs", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWHasMoved);
@@ -1270,12 +1250,13 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(aMonster)._root();
 _st($1)._removeSelection();
-$2=_st($1)._showActiveMonsters();
+_st($1)._showActiveMonsters();
+$2=_st($1)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster root \x0a\x09\x09removeSelection;\x0a\x09\x09showActiveMonsters.\x0a\x09gameContext currentMonster: aMonster.",
-messageSends: ["removeSelection", "root", "showActiveMonsters", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster root \x0a\x09\x09removeSelection;\x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs.\x0a\x09gameContext currentMonster: aMonster.",
+messageSends: ["removeSelection", "root", "showActiveMonsters", "updateGOTs", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWInactive);

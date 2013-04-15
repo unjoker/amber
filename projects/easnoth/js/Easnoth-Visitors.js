@@ -895,42 +895,11 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.CWMapInterpreter.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeLayers();
 _st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
-_st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09self initializeLayers.\x0a\x09self padding: (self canvasPadding @ self canvasPadding).\x0a\x09self initializeEventHandling.\x0a\x09",
-messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding", "initializeEventHandling"],
+source: "initialize\x0a\x09super initialize. \x0a\x09self initializeLayers.\x0a\x09self padding: (self canvasPadding @ self canvasPadding)",
+messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding"],
 referencedClasses: []
-}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeEventHandling",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-function $CWGlobalDrawingEvent(){return smalltalk.CWGlobalDrawingEvent||(typeof CWGlobalDrawingEvent=="undefined"?nil:CWGlobalDrawingEvent)}
-function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
-function $CWMonsterAndGOTDrawingEvent(){return smalltalk.CWMonsterAndGOTDrawingEvent||(typeof CWMonsterAndGOTDrawingEvent=="undefined"?nil:CWMonsterAndGOTDrawingEvent)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._announcer())._on_do_($CWGlobalDrawingEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateMap();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWGOTDrawingEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateGOTs();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWMonsterAndGOTDrawingEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateMonstersAndGOTs();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWMapDrawer)})},
-args: [],
-source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGlobalDrawingEvent\x0a\x09\x09do: [ self updateMap ].\x0a\x09self announcer\x0a\x09\x09on: CWGOTDrawingEvent\x0a\x09\x09do: [ self updateGOTs ].\x0a\x09self announcer\x0a\x09\x09on: CWMonsterAndGOTDrawingEvent\x0a\x09\x09do: [ self updateMonstersAndGOTs ].\x0a\x09",
-messageSends: ["on:do:", "updateMap", "announcer", "updateGOTs", "updateMonstersAndGOTs"],
-referencedClasses: ["CWGlobalDrawingEvent", "CWGOTDrawingEvent", "CWMonsterAndGOTDrawingEvent"]
 }),
 smalltalk.CWMapDrawer);
 
