@@ -318,20 +318,7 @@ newMonsterAndGOTDrawingContext
 initialize
 	super initialize. 
 	self initializeLayers.
-	self padding: (self canvasPadding @ self canvasPadding).
-	self initializeEventHandling.
-!
-
-initializeEventHandling
-	self announcer
-		on: CWGlobalDrawingEvent
-		do: [ self updateMap ].
-	self announcer
-		on: CWGOTDrawingEvent
-		do: [ self updateGOTs ].
-	self announcer
-		on: CWMonsterAndGOTDrawingEvent
-		do: [ self updateMonstersAndGOTs ].
+	self padding: (self canvasPadding @ self canvasPadding)
 !
 
 initializeForMap: aMap

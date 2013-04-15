@@ -2,6 +2,8 @@ Smalltalk current createPackage: 'Easnoth-Game'!
 Object subclass: #CWBootstrapper
 	instanceVariableNames: 'objectToLoad objectLoaded'
 	package: 'Easnoth-Game'!
+!CWBootstrapper commentStamp!
+Bootstrap the system. Currently work only for games, not for the map editor!
 
 !CWBootstrapper methodsFor: 'accessing'!
 
@@ -186,9 +188,6 @@ dispatchMouseClick: event
 	cc := self currentCell: event.
 	cc ifNotNil: [ 
 		cc mouseClick: game gameContext ].
-	
-	"hack for now"
-	self announcer announce: CWMonsterAndGOTDrawingEvent new.
 ! !
 
 !CWEventDispatcher methodsFor: 'initialize-release'!
@@ -203,16 +202,18 @@ initializeEventHandling
 		self dispatchMouseClick: e].
 !
 
-initializeForMap: aMap drawer: drawer game: aGame
+initializeForMap: aMap game: aGame
 	game := aGame.
 	map := aMap.
-	padding := drawer padding.
+	padding := aMap drawer padding.
 	self initializeEventHandling.
 ! !
 
 Object subclass: #CWGame
 	instanceVariableNames: 'map context'
 	package: 'Easnoth-Game'!
+!CWGame commentStamp!
+Represent the game. Includes the god game logic (turn system)!
 
 !CWGame methodsFor: 'accessing'!
 
@@ -255,21 +256,19 @@ nextTurn
 	map removeSelection.
 	self gameContext nextTurn.
 	self activateMonsters.
-	map updateMonstersAndGOTs.
 !
 
 pickMonster
 	map readyToPickMonsters: self gameContext currentPlayer.
 	map showActiveMonsters.
-	self announce: CWGOTDrawingEvent new.
+	map updateGOTs.
 !
 
 startGame
-	| drawer |
 	self removeLoadingBar.
-	drawer := CWMapDrawer new initializeForMap: map.
-	CWEventDispatcher new initializeForMap: map drawer: drawer game: self.
-	self announce: CWGlobalDrawingEvent new.
+	map initializeDrawer.
+	CWEventDispatcher new initializeForMap: map game: self.
+	map updateMap.
 	self firstTurn.
 ! !
 
@@ -308,6 +307,8 @@ newWithMapIndex: index
 Object subclass: #CWGameContext
 	instanceVariableNames: 'currentPlayer currentCell'
 	package: 'Easnoth-Game'!
+!CWGameContext commentStamp!
+Represents the current context of the game, typcally, which player is playing and what monster is currently about to attack / move!
 
 !CWGameContext methodsFor: 'accessing'!
 
@@ -344,4 +345,26 @@ initialize
 	super initialize.
 	currentPlayer := 2 atRandom - 1.5 * 2
 ! !
+
+Object subclass: #CWPlayer
+	instanceVariableNames: 'side'
+	package: 'Easnoth-Game'!
+!CWPlayer commentStamp!
+I represent a player playing Easnoth.!
+
+CWPlayer subclass: #CWAI
+	instanceVariableNames: ''
+	package: 'Easnoth-Game'!
+
+CWAI subclass: #CWAggressWeakestAI
+	instanceVariableNames: ''
+	package: 'Easnoth-Game'!
+
+CWAI subclass: #CWBasicAggressiveAI
+	instanceVariableNames: ''
+	package: 'Easnoth-Game'!
+
+CWPlayer subclass: #CWHuman
+	instanceVariableNames: ''
+	package: 'Easnoth-Game'!
 
