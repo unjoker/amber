@@ -498,12 +498,12 @@ $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
 _st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(_st(self)._gameContext())._currentPlayer())._negated()));
 } else {
-_st(self)._pickMonster_(armyPlaying);
+_st(self)._pickMonster();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"activateMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.CWGame)})},
 args: [],
-source: "activateMonsters\x0a\x09| armyPlaying monster1 |\x0a\x0a\x09armyPlaying := map monstersFromSide: self gameContext currentPlayer.\x0a\x0a\x09(armyPlaying size = 0) \x0a\x09\x09ifTrue: [ window alert: 'Someone just won. Guess who ? winner : ' , self gameContext currentPlayer negated ] \x0a\x09\x09ifFalse: [ self pickMonster: armyPlaying ]",
-messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster:", "=", "size"],
+source: "activateMonsters\x0a\x09| armyPlaying monster1 |\x0a\x0a\x09armyPlaying := map monstersFromSide: self gameContext currentPlayer.\x0a\x0a\x09(armyPlaying size = 0) \x0a\x09\x09ifTrue: [ window alert: 'Someone just won. Guess who ? winner : ' , self gameContext currentPlayer negated ] \x0a\x09\x09ifFalse: [ self pickMonster ]",
+messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "=", "size"],
 referencedClasses: []
 }),
 smalltalk.CWGame);
@@ -678,24 +678,20 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "pickMonster:",
+selector: "pickMonster",
 category: 'game logic',
-fn: function (armyPlaying){
+fn: function (){
 var self=this;
-function $CWToPick(){return smalltalk.CWToPick||(typeof CWToPick=="undefined"?nil:CWToPick)}
 function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st(armyPlaying)._do_((function(monster){
-return smalltalk.withContext(function($ctx2) {
-return _st(monster)._changeState_($CWToPick());
-}, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
+_st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayer());
 _st(self["@map"])._showActiveMonsters();
 _st(self)._announce_(_st($CWGOTDrawingEvent())._new());
-return self}, function($ctx1) {$ctx1.fill(self,"pickMonster:",{armyPlaying:armyPlaying},smalltalk.CWGame)})},
-args: ["armyPlaying"],
-source: "pickMonster: armyPlaying\x0a\x09armyPlaying do: [ :monster | \x0a\x09\x09monster changeState: CWToPick ].\x0a\x09map showActiveMonsters.\x0a\x09self announce: CWGOTDrawingEvent new.",
-messageSends: ["do:", "changeState:", "showActiveMonsters", "announce:", "new"],
-referencedClasses: ["CWToPick", "CWGOTDrawingEvent"]
+return self}, function($ctx1) {$ctx1.fill(self,"pickMonster",{},smalltalk.CWGame)})},
+args: [],
+source: "pickMonster\x0a\x09map readyToPickMonsters: self gameContext currentPlayer.\x0a\x09map showActiveMonsters.\x0a\x09self announce: CWGOTDrawingEvent new.",
+messageSends: ["readyToPickMonsters:", "currentPlayer", "gameContext", "showActiveMonsters", "announce:", "new"],
+referencedClasses: ["CWGOTDrawingEvent"]
 }),
 smalltalk.CWGame);
 

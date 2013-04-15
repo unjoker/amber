@@ -1,6 +1,6 @@
 smalltalk.addPackage('Easnoth-Visitors');
-smalltalk.addClass('CWMapVisitorContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
-smalltalk.CWMapVisitorContext.comment="general context just to know the coods in the map of cells"
+smalltalk.addClass('CWMapInterpreterContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
+smalltalk.CWMapInterpreterContext.comment="general context just to know the coods in the map of cells"
 smalltalk.addMethod(
 smalltalk.method({
 selector: "nextCell",
@@ -15,7 +15,7 @@ source: "nextCell\x0a\x09cellIndex := cellIndex + 1.",
 messageSends: ["+"],
 referencedClasses: []
 }),
-smalltalk.CWMapVisitorContext);
+smalltalk.CWMapInterpreterContext);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -32,7 +32,7 @@ source: "nextRow\x0a\x09rowIndex := rowIndex + 1.\x0a\x09cellIndex := 0",
 messageSends: ["+"],
 referencedClasses: []
 }),
-smalltalk.CWMapVisitorContext);
+smalltalk.CWMapInterpreterContext);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -49,10 +49,10 @@ source: "reset\x0a\x09rowIndex := 0.\x0a\x09cellIndex := 0",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.CWMapVisitorContext);
+smalltalk.CWMapInterpreterContext);
 
 
-smalltalk.CWMapVisitorContext.klass.iVarNames = ['default'];
+smalltalk.CWMapInterpreterContext.klass.iVarNames = ['default'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "default",
@@ -75,10 +75,10 @@ source: "default\x0a\x09^ default ifNil: [ default := self new ]",
 messageSends: ["ifNil:", "new"],
 referencedClasses: []
 }),
-smalltalk.CWMapVisitorContext.klass);
+smalltalk.CWMapInterpreterContext.klass);
 
 
-smalltalk.addClass('CWGlobalDrawingContext', smalltalk.CWMapVisitorContext, ['currentPointCache', 'drawer'], 'Easnoth-Visitors');
+smalltalk.addClass('CWGlobalDrawingContext', smalltalk.CWMapInterpreterContext, ['currentPointCache', 'drawer'], 'Easnoth-Visitors');
 smalltalk.CWGlobalDrawingContext.comment="I represent the execution context of the CWMapDrawer.\x0aWith this context, the CWMap drawer will redraw the whole map."
 smalltalk.addMethod(
 smalltalk.method({
@@ -139,7 +139,7 @@ category: 'context alteration',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWMapVisitorContext.fn.prototype._nextCell.apply(_st(self), []);
+smalltalk.CWMapInterpreterContext.fn.prototype._nextCell.apply(_st(self), []);
 self["@currentPointCache"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWGlobalDrawingContext)})},
 args: [],
@@ -157,7 +157,7 @@ fn: function (aDrawer){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-smalltalk.CWMapVisitorContext.fn.prototype._reset.apply(_st(self), []);
+smalltalk.CWMapInterpreterContext.fn.prototype._reset.apply(_st(self), []);
 self["@currentPointCache"]=nil;
 $1=self["@drawer"];
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -515,10 +515,29 @@ smalltalk.CWVisitor.klass.iVarNames = ['singleton'];
 smalltalk.addClass('CWJsonWriter', smalltalk.CWVisitor, [], 'Easnoth-Visitors');
 
 
-smalltalk.addClass('CWLeafSelector', smalltalk.CWVisitor, [], 'Easnoth-Visitors');
+smalltalk.addClass('CWMapInterpreter', smalltalk.CWVisitor, ['executionContext'], 'Easnoth-Visitors');
+smalltalk.CWMapInterpreter.comment="While visiting the map, I modify my execution context which is kind of CWMapInterpreterContext. This way my context knows the coordinates of the leaf I am visiting."
+smalltalk.addMethod(
+smalltalk.method({
+selector: "executionContext",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@executionContext"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"executionContext",{},smalltalk.CWMapInterpreter)})},
+args: [],
+source: "executionContext\x0a\x09^ executionContext",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMapInterpreter);
 
 
-smalltalk.addClass('CWMapDrawer', smalltalk.CWVisitor, ['layers', 'padding', 'executionContext', 'map'], 'Easnoth-Visitors');
+
+smalltalk.addClass('CWMapDrawer', smalltalk.CWMapInterpreter, ['layers', 'padding', 'map'], 'Easnoth-Visitors');
 smalltalk.CWMapDrawer.comment="I am a drawer that can draw the business objects through a visit of its tree.\x0aI am an implementation of the interpreter design pattern so I have a context of execution as instance variable."
 smalltalk.addMethod(
 smalltalk.method({
@@ -565,7 +584,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "#background";
-}, function($ctx1) {$ctx1.fill(self,"backgroundCanvasId",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"backgroundCanvasId",{},smalltalk.CWMapDrawer)})},
 args: [],
 source: "backgroundCanvasId\x0a\x09\x22id of the background canvas for the css\x22\x0a\x0a\x09^ '#background'",
 messageSends: [],
@@ -621,7 +640,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=(40);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.MapDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.CWMapDrawer)})},
 args: [],
 source: "canvasPadding\x0a\x09\x22padding between the border of the web page and the map (left and top)\x22\x0a\x0a\x09^ 40",
 messageSends: [],
@@ -710,7 +729,7 @@ fn: function (object,ctx){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._display_inContext_X_y_(object,ctx,(0),(0));
-return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:",{object:object,ctx:ctx},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:",{object:object,ctx:ctx},smalltalk.CWMapDrawer)})},
 args: ["object", "ctx"],
 source: "display: object inContext: ctx\x0a\x09self display: object inContext: ctx X: 0 y: 0",
 messageSends: ["display:inContext:X:y:"],
@@ -726,7 +745,7 @@ fn: function (object,ctx,x,y){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(ctx)._drawImage_x_y_(_st(object)._image(),x,y);
-return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:X:y:",{object:object,ctx:ctx,x:x,y:y},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:X:y:",{object:object,ctx:ctx,x:x,y:y},smalltalk.CWMapDrawer)})},
 args: ["object", "ctx", "x", "y"],
 source: "display: object inContext: ctx X: x y: y\x0a\x09ctx\x0a\x09\x09drawImage: object image\x0a\x09\x09x: x\x0a\x09\x09y: y.",
 messageSends: ["drawImage:x:y:", "image"],
@@ -816,24 +835,6 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "executionContext",
-category: 'accessing',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@executionContext"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"executionContext",{},smalltalk.CWDrawer)})},
-args: [],
-source: "executionContext\x0a\x09^ executionContext",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "gameCanvas",
 category: 'accessing',
 fn: function (){
@@ -858,7 +859,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "#game";
-}, function($ctx1) {$ctx1.fill(self,"gameCanvasId",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"gameCanvasId",{},smalltalk.CWMapDrawer)})},
 args: [],
 source: "gameCanvasId\x0a\x09\x22id of the game canvas for the css\x22\x0a\x0a\x09^ '#game'",
 messageSends: [],
@@ -891,7 +892,7 @@ category: 'initialize-release',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
+smalltalk.CWMapInterpreter.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeLayers();
 _st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
 _st(self)._initializeEventHandling();
@@ -999,7 +1000,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "#monster";
-}, function($ctx1) {$ctx1.fill(self,"monsterCanvasId",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"monsterCanvasId",{},smalltalk.CWMapDrawer)})},
 args: [],
 source: "monsterCanvasId\x0a\x09\x22id of the monster canvas for the css\x22\x0a\x0a\x09^ '#monster'",
 messageSends: [],
@@ -1092,7 +1093,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=self["@padding"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"padding",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"padding",{},smalltalk.CWMapDrawer)})},
 args: [],
 source: "padding\x0a\x09^ padding",
 messageSends: [],
@@ -1108,7 +1109,7 @@ fn: function (aPoint){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@padding"]=aPoint;
-return self}, function($ctx1) {$ctx1.fill(self,"padding:",{aPoint:aPoint},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"padding:",{aPoint:aPoint},smalltalk.CWMapDrawer)})},
 args: ["aPoint"],
 source: "padding: aPoint\x0a\x09padding := aPoint",
 messageSends: [],
@@ -1155,7 +1156,7 @@ return _st(aBlock)._value();
 return smalltalk.withContext(function($ctx2) {
 return _st(ctx)._restore();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"safeDraw:inContext:",{aBlock:aBlock,ctx:ctx},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"safeDraw:inContext:",{aBlock:aBlock,ctx:ctx},smalltalk.CWMapDrawer)})},
 args: ["aBlock", "ctx"],
 source: "safeDraw: aBlock inContext: ctx\x0a\x09\x22ensure that the drawing context will be restored\x22\x0a\x0a\x09[ ctx save.\x0a\x09aBlock value ]\x0a\x09\x09ensure: [ ctx restore ]",
 messageSends: ["ensure:", "restore", "save", "value"],
@@ -1173,7 +1174,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=(50);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.MapDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.CWMapDrawer)})},
 args: [],
 source: "tileUnit\x0a\x09\x22scale of the images\x22\x0a\x0a\x09^ 50",
 messageSends: [],

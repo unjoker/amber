@@ -222,18 +222,7 @@ CWActionMenuComponent subclass: #CWMonsterWatcher
 !CWMonsterWatcher methodsFor: 'accessing'!
 
 emptyMonster
-	| imageVide |
-	imageVide := NativeFunction constructor: 'Image'.
-	imageVide at: 'src' put:'ressources/images/interro.png'.
-	^CWMonster new
-		image: imageVide;
-		hp: 0;
-		move: 0;
-		range: 0;
-		dices: 0;
-		attack: 0";
-		knockback: 0;
-		special:'none'."
+	^ CWMonster emptyMonster
 !
 
 monster
@@ -246,8 +235,13 @@ initialize
 	super initialize.
 	self announcer 
 		on: CWMonsterUpdateEvent
-		do: [ :event | 
-			monster := event monster.
+		do: [ :event | self watchMonster: event monster ]
+!
+
+watchMonster: aMonster
+	monster = aMonster
+		ifFalse: [ 
+			monster := aMonster.
 			self update ]
 ! !
 
@@ -283,8 +277,8 @@ update
 			].
 			"html tr with: 'special : ', self monster special."
 		].
-		"html h5 with: 'debug'.
-                html span with: 'state : ', self monster state class."
+		html h5 with: 'debug'.
+                html span with: 'state : ', self monster state class.
         ].
 ! !
 

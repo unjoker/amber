@@ -391,10 +391,10 @@ $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
 _st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(_st(self)._gameContext())._currentPlayer())._negated()));
 } else {
-_st(self)._pickMonster_(armyPlaying);
+_st(self)._pickMonster();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"activateMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.CWGame)})},
-messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster:", "=", "size"]}),
+messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "=", "size"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -522,20 +522,16 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "pickMonster:",
-fn: function (armyPlaying){
+selector: "pickMonster",
+fn: function (){
 var self=this;
-function $CWToPick(){return smalltalk.CWToPick||(typeof CWToPick=="undefined"?nil:CWToPick)}
 function $CWGOTDrawingEvent(){return smalltalk.CWGOTDrawingEvent||(typeof CWGOTDrawingEvent=="undefined"?nil:CWGOTDrawingEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st(armyPlaying)._do_((function(monster){
-return smalltalk.withContext(function($ctx2) {
-return _st(monster)._changeState_($CWToPick());
-}, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
+_st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayer());
 _st(self["@map"])._showActiveMonsters();
 _st(self)._announce_(_st($CWGOTDrawingEvent())._new());
-return self}, function($ctx1) {$ctx1.fill(self,"pickMonster:",{armyPlaying:armyPlaying},smalltalk.CWGame)})},
-messageSends: ["do:", "changeState:", "showActiveMonsters", "announce:", "new"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"pickMonster",{},smalltalk.CWGame)})},
+messageSends: ["readyToPickMonsters:", "currentPlayer", "gameContext", "showActiveMonsters", "announce:", "new"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(

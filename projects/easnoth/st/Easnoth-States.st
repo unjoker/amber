@@ -9,10 +9,6 @@ CWState class instanceVariableNames: 'default'!
 
 default
 	^ default ifNil: [ default := self new ]
-!
-
-initializeStateFor: aCell
-	self subclassResponsbility
 ! !
 
 CWState subclass: #CWCellState
@@ -29,12 +25,20 @@ canMoveTo: cell
 	^ false
 !
 
+cell: aCell addMonster: aMonster
+	self subclassResponsibility
+!
+
 cell: aCell canBeAttackedBy: side
 	^ false
 !
 
 mouseClick: aCell context: gameContext
 	self subClassResponsbility
+!
+
+removeMonster: aCell
+	self subclassResponsibility
 !
 
 removeSelector: aCell
@@ -72,10 +76,20 @@ canMoveTo: aCell
 	^ true
 !
 
+cell: aCell addMonster: aMonster
+	aMonster parent: aCell.
+	aCell monster: aMonster.
+	aCell changeState: CWHasMonster
+!
+
 mouseClick: aCell context: gameContext
 	aCell root 
 		removeSelection;
 		showActiveMonsters
+!
+
+removeMonster: aCell
+	self error: 'cannot remove a monster from a cell that has no monster on it'
 !
 
 showActiveMonster: aCell
@@ -91,11 +105,19 @@ The cell cannot be a wall.!
 !CWFreeSelected methodsFor: 'cell state API'!
 
 addSelector: aCell
-	self error: 'should not happen'.
+	self error: 'cannot add a selector to a cell that has already a *green* selector'.
+!
+
+cell: aCell addMonster: aMonster
+	self error: 'cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)'.
 !
 
 mouseClick: aCell context: gameContext
 	gameContext currentMonster moveTo: aCell inContext: gameContext
+!
+
+removeMonster: aCell
+		self error: 'cannot remove a monster from a cell that has no monster on it'
 !
 
 removeSelector: aCell
@@ -104,7 +126,7 @@ removeSelector: aCell
 !
 
 showActiveMonster: aCell
-	self error: 'should not happen'.
+	self error: 'try to show the monster whereas this cell has already a *green* selector and has no monster on it. (not specified in the state machine)'.
 ! !
 
 CWCellState subclass: #CWHasMonster
@@ -120,12 +142,21 @@ addSelector: aCell
 	aCell changeState: CWHasMonsterSelected
 !
 
+cell: aCell addMonster: aMonster
+	self error: 'cannot add a monster on a cell that has already one'.
+!
+
 cell: aCell canBeAttackedBy: side
 	^ (aCell side = side) not
 !
 
 mouseClick: aCell context: gameContext
 	aCell monster select: gameContext
+!
+
+removeMonster: aCell
+	aCell monster: nil.
+	aCell changeState: CWFree
 !
 
 showActiveMonster: aCell
@@ -142,11 +173,19 @@ The monster has to be on the opposite side of the current playing monster.!
 !CWHasMonsterSelected methodsFor: 'cell state API'!
 
 addSelector: aCell
-	self error: 'should not happen'.
+	self error: 'cannot add a selector to a cell that has already a *red* selector'.
+!
+
+cell: aCell addMonster: aMonster
+	self error: 'cannot add a monster to a cell that has already a monster and a *red* selector'.
 !
 
 mouseClick: aCell context: gameContext
 	gameContext currentMonster attackTo: aCell inContext: gameContext
+!
+
+removeMonster: aCell
+	self error: 'cannot remove a monster from a cell that has already a *red* selector. (case not specified in state machine)'
 !
 
 removeSelector: aCell
@@ -155,7 +194,7 @@ removeSelector: aCell
 !
 
 showActiveMonster: aCell
-	self error: 'should not happen'.
+	self error: 'try to show the monster whereas this cell has already a *red* selector and a monster from the other player. (not specified in the state machine)'.
 ! !
 
 CWState subclass: #CWMonsterState
@@ -164,8 +203,16 @@ CWState subclass: #CWMonsterState
 
 !CWMonsterState methodsFor: 'monster state API'!
 
+activate: aMonster
+	self error: 'cannot activate a non inactive monster'.
+!
+
 checkForNextTurn: aMonster
 	self subclassResponsibility
+!
+
+desactivate: aMonster
+	aMonster changeState: CWInactive
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -173,7 +220,11 @@ monster: aMonster attackTo: aCell inContext: gameContext
 !
 
 monster: aMonster moveTo: aCell inContext: gameContext
-	self monster: aMonster moveTo: aCell inContext: gameContext callback: []
+	aMonster moveTo: aCell inContext: gameContext callback: []
+!
+
+readyToPick: aMonster
+	self error: 'cannot prepare a monster for picking if he is not Inactive'.
 !
 
 select: aMonster inContext: gameContext
@@ -186,29 +237,12 @@ showActiveMonster: aMonster
 
 !CWMonsterState methodsFor: 'private'!
 
-changeStateAfterMoving: aMonster
+changeStateAfterAttacking: aMonster
 	self subclassResponsibility
 !
 
-monster: aMonster animationMoveFrom: cell1 to: cellLast callback: callback
-	"To refactor"
-	
-	| path moveNumber |
-	
-	path := self pathFrom: cell1 to: cellLast.
-	moveNumber := path size - 1.
-
-	cell1 root removeSelection.
-
-	1 to: moveNumber do: [ :j |
-		[ (path at: path size - j) monster: aMonster.
-        (path at: path size - j) changeState: CWHasMonster.
-        (path at: path size + 1 - j) removeMonster.
-		 (path at: path size + 1 - j) changeState: CWFree.
-        cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].
-
-	aMonster currentMove: aMonster currentMove - moveNumber.
-	callback valueWithTimeout: 300 * moveNumber
+changeStateAfterMoving: aMonster
+	self subclassResponsibility
 !
 
 monster: aMonster attackNeighbour: anotherMonster inContext: gameContext
@@ -221,35 +255,6 @@ monster: aMonster attackNeighbour: anotherMonster inContext: gameContext
         aMonster select: gameContext.
 		aMonster checkForNextTurn.
 		aMonster updateMonstersAndGOTs ]
-!
-
-monster: aMonster moveTo: aCell inContext: gameContext callback: callback
-	"triggers the animation for the monster move"
-	
-	"should stop the events here"
-
-	"animation"
-	self monster: aMonster animationMoveFrom: gameContext currentCell to: aCell callback:[	
-		self changeStateAfterMoving: aMonster.
-		aMonster select: gameContext.
-		aCell root updateMonstersAndGOTs.
-		aMonster checkForNextTurn.
-		callback value.
-		"should restart the events here"
-	].
-!
-
-pathFrom: cell1 to: cellLast
-	| path |
-	path := Array with: cellLast.
-	[cell1 = path last] whileFalse: [path add: path last prevCell].
-	^ path
-! !
-
-!CWMonsterState class methodsFor: 'instance creation'!
-
-initializeStateFor: aMonster
-	aMonster changeState: CWInactive
 ! !
 
 CWMonsterState subclass: #CWActive
@@ -260,6 +265,24 @@ Monster can move and attack!
 
 !CWActive methodsFor: 'monster state API'!
 
+cell: cell1 ToMoveBeforeAttack: cellLast
+	"Assumes that the monster is at cell1 and want to attack cellLast, which is not a neighbour.
+	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
+
+	| possibleCells closestCell shortestPath |
+	possibleCells := cellLast neighbours select: [:each |
+		each state = CWFreeSelected default ].
+	shortestPath := 9999.
+	possibleCells do: [ :each | 
+		| pathSize |
+		pathSize := (cell1 pathTo: each) size.
+		pathSize < shortestPath 
+			ifTrue: [ 
+				shortestPath := pathSize.
+				closestCell := each ] ].
+	^ closestCell
+!
+
 checkForNextTurn: aMonster
 	"do nothing for now"
 !
@@ -268,11 +291,11 @@ monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
 	(aCell neighbours includes: aMonster parent) 
 		ifFalse: [ 
-			toMoveCell := (aCell neighbours select: [:each | each state = CWFreeSelected default ]) asArray atRandom.
-			self monster: aMonster moveTo: toMoveCell inContext: gameContext callback: [
-			aMonster attackTo: aCell inContext: gameContext.
-			aMonster updateMonstersAndGOTs ] ] 
-		ifTrue: [ self monster: aMonster attackNeighbour: aCell monster inContext: gameContext ]
+			toMoveCell := self cell: aMonster parent ToMoveBeforeAttack: aCell.
+			aMonster moveTo: toMoveCell inContext: gameContext callback: [
+				aMonster attackTo: aCell inContext: gameContext.
+				aMonster updateMonstersAndGOTs ] ] 
+		ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]
 !
 
 select: aMonster inContext: gameContext
@@ -303,6 +326,10 @@ checkForNextTurn: aMonster
 	"do nothing for now"
 !
 
+monster: aMonster attackTo: aCell inContext: gameContext
+	self error: 'seemingly the monster is trying to attack whereas he has already attacked previously in this turn. cannot happen'.
+!
+
 select: aMonster inContext: gameContext
 	aMonster parent movableNeighboursCycle: aMonster currentMove.
 	gameContext currentMonster: aMonster
@@ -311,7 +338,7 @@ select: aMonster inContext: gameContext
 !CWHasAttacked methodsFor: 'private'!
 
 changeStateAfterAttacking: aMonster
-	self error: 'should not happen'
+	self error: 'seemingly the monster attacked whereas he had already attacked previously in his turn. cannot happen'
 !
 
 changeStateAfterMoving: aMonster
@@ -334,11 +361,11 @@ checkForNextTurn: aMonster
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
-	self monster: aMonster attackNeighbour: aCell monster inContext: gameContext
+	aMonster attackNeighbour: aCell monster inContext: gameContext
 !
 
 monster: aMonster moveTo: aCell inContext: gameContext
-	self error: 'should not happen'.
+	self error: 'seemingly the monster is trying to move whereas he has already moved his full move stat. cannot happen'.
 !
 
 select: aMonster inContext: gameContext
@@ -353,7 +380,7 @@ changeStateAfterAttacking: aMonster
 !
 
 changeStateAfterMoving: aMonster
-	self error: 'should not happen'
+	self error: 'seemingly the monster moved whereas he had already moved its full move previously in his turn. cannot happen'
 ! !
 
 CWMonsterState subclass: #CWInactive
@@ -364,12 +391,29 @@ Monster cannot do anything :)!
 
 !CWInactive methodsFor: 'monster state API'!
 
+activate: aMonster
+	aMonster changeState: CWActive.
+	aMonster currentMove: aMonster move
+!
+
 checkForNextTurn: aMonster
 	aMonster announce: CWNextTurnEvent new
 !
 
+desactivate: aMonster
+	"Do nothing already inactive"
+!
+
+monster: aMonster attackTo: aCell inContext: gameContext
+	self error: 'seemingly the monster is trying to attack whereas he is inactive. cannot happen'.
+!
+
 monster: aMonster moveTo: aCell inContext: gameContext
-	self error: 'should not happen'.
+	self error: 'seemingly the monster is trying to move whereas he is inactive. cannot happen'.
+!
+
+readyToPick: aMonster
+	aMonster changeState: CWToPick
 !
 
 select: aMonster inContext: gameContext
@@ -386,11 +430,11 @@ showActiveMonster: aMonster
 !CWInactive methodsFor: 'private'!
 
 changeStateAfterAttacking: aMonster
-	self error: 'should not happen'.
+	self error: 'seemingly the monster has attacked whereas he is Inactive. cannot happen'.
 !
 
 changeStateAfterMoving: aMonster
-	self error: 'shouldNotHappen'.
+	self error: 'seemingly the monster has moved whereas he is Inactive. cannot happen'.
 ! !
 
 CWMonsterState subclass: #CWToPick
@@ -402,29 +446,31 @@ The player has to choice one of the toPick monster to activate them!
 !CWToPick methodsFor: 'monster state public API'!
 
 checkForNextTurn: aMonster
-	self error: 'should not happen'
+	self error: 'seemingly the game is checking if the player has finished to play whereas the game is in a picking phase. cannot happen'.
+!
+
+monster: aMonster attackTo: aCell inContext: gameContext
+	self error: 'seemingly the monster is trying to attack whereas the game is in a picking phase. cannot happen'.
 !
 
 monster: aMonster moveTo: aCell inContext: gameContext
-	self error: 'should not happen'
+	self error: 'seemingly the monster is trying to move whereas the game is in a picking phase. cannot happen'.
 !
 
 select: aMonster inContext: gameContext
 	aMonster root removeSelection.
-	(aMonster root monstersFromSide: aMonster side) do: [ :each |
-		each changeState: CWInactive ].
-	aMonster changeState: CWActive.
-	aMonster currentMove: aMonster move.
+	aMonster root desactivateMonsters.
+	aMonster activate.
 	aMonster select: gameContext
 ! !
 
 !CWToPick methodsFor: 'private'!
 
 changeStateAfterAttacking: aMonster
-	self error: 'should not happen'.
+	self error: 'seemingly the monster has attacked whereas the game is in a picking phase. cannot happen'.
 !
 
 changeStateAfterMoving: aMonster
-	self error: 'should not happen'
+	self error: 'seemingly the monster has moved whereas the game is in a picking phase. cannot happen'.
 ! !
 

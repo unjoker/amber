@@ -63,6 +63,11 @@ monstersFromSide: aSide
 	^ col
 !
 
+readyToPickMonsters: playerSide
+	self children do: [ :child |
+		child readyToPickMonsters: playerSide ]
+!
+
 removeSelection
 	self children do: [ :child |
 		child removeSelection ]
@@ -170,8 +175,7 @@ monster
 !
 
 monster: aMonster
-	monster := aMonster.
-	aMonster parent: self.
+	monster := aMonster
 !
 
 prevCell
@@ -180,10 +184,6 @@ prevCell
 
 prevCell: aCell
 	prevCell := aCell
-!
-
-removeMonster
-	monster := nil
 !
 
 side
@@ -299,6 +299,16 @@ neighbours
 	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
 !
 
+pathTo: cellLast
+	"Assumes that some cells are selected and that the player clicked on a selected cell.
+	Answers the shortest path from the current cell to the cell clicked"
+
+	| path |
+	path := Array with: cellLast.
+	[ self = path last ] whileFalse: [ path add: path last prevCell ].
+	^ path
+!
+
 selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: side
 	| selectableCells tempSet |
 
@@ -337,6 +347,10 @@ removeGameOverTile
 
 !CWCell methodsFor: 'state delegation'!
 
+addMonster: aMonster
+	self state cell: self addMonster: aMonster
+!
+
 addSelector
 	self state addSelector: self
 !
@@ -351,6 +365,10 @@ canMoveTo
 
 mouseClick: gameContext
 	self state mouseClick: self context: gameContext.
+!
+
+removeMonster
+	self state removeMonster: self
 !
 
 removeSelection
@@ -795,6 +813,11 @@ currentMove: int
 	currentMove := int
 !
 
+defaultState
+	"When map is initialized the monster will get this state by default"
+	^ CWInactive
+!
+
 dices
 	^ dices
 !
@@ -835,23 +858,66 @@ side: int
 	side := int
 ! !
 
+!CWMonster methodsFor: 'animation'!
+
+animationMoveFrom: cell1 to: cellLast callback: callback
+	
+	| path moveNumber |
+	
+	path := cell1 pathTo: cellLast.
+	moveNumber := path size - 1.
+ 
+	cell1 root removeSelection.
+
+	1 to: moveNumber do: [ :j |
+		[ (path at: path size - j) addMonster: self.
+        (path at: path size + 1 - j) removeMonster.
+        cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].
+
+	self currentMove: self currentMove - moveNumber.
+	callback valueWithTimeout: 300 * moveNumber
+!
+
+moveTo: aCell inContext: gameContext callback: callback
+	"triggers the animation for the monster move"
+	
+	self animationMoveFrom: gameContext currentCell to: aCell callback: [	
+		self state changeStateAfterMoving: self.
+		self select: gameContext.
+		aCell root updateMonstersAndGOTs.
+		self checkForNextTurn.
+		callback value.
+	].
+! !
+
 !CWMonster methodsFor: 'fighting'!
 
+attackNeighbour: anotherMonster inContext: gameContext
+	
+	self state changeStateAfterAttacking: self.
+    self root removeSelection.
+
+	self rollDicesCallBack: [ :diceRes |
+		anotherMonster removeHP: diceRes kills.
+        self select: gameContext.
+		self checkForNextTurn.
+		self updateMonstersAndGOTs ]
+!
+
 removeHP: anInt
-        self hp: self hp - anInt.
-        (self hp < 1) ifTrue: [
-                self parent removeMonster.
-                self parent changeState: CWFree
-        ].
+     self hp: self hp - anInt.
+     self hp < 1 ifTrue: [
+           self parent removeMonster ].
 !
 
 rollDicesCallBack: aBlock
 	"roll the dices to attack an ennemy"
 	
 	| kill dicesRolledEvent |
-	"PUT INJECT INTO HERE"
-	kill := 0.
-	1 to: self dices do: [ 100 atRandom < self attack ifTrue: [kill := kill + 1] ].
+	kill := (1 to: self dices) inject: 0 into: [ :acc :index | 
+		100 atRandom < self attack 
+			ifTrue: [ acc + 1 ] 
+			ifFalse: [ acc ] ]. 
 	dicesRolledEvent := CWDicesRolledEvent new
 		kills: kill;
 		dices: self dices;
@@ -884,6 +950,11 @@ addStats: aKey
 
 defaultHp
 	self subclassResponsibility
+!
+
+initialize
+	super initialize.
+	self initializeState
 !
 
 initializeFromJson: aJson
@@ -924,17 +995,22 @@ updateStats: aKey
 
 !CWMonster methodsFor: 'selection'!
 
-desactivateMonsters
-	self changeState: CWInactive
-!
-
 monstersFromSide: aSide
 	^ self side = aSide 
 		ifTrue: [ { self } ]
 		ifFalse: [ #() ]
+!
+
+readyToPickMonsters: playerSide
+	self side = playerSide 
+		ifTrue: [ self readyToBePicked ]
 ! !
 
 !CWMonster methodsFor: 'state delegation'!
+
+activate
+	self state activate: self
+!
 
 attackTo: aCell inContext: gameContext
 	self state monster: self attackTo: aCell inContext: gameContext
@@ -945,8 +1021,16 @@ checkForNextTurn
 	self state checkForNextTurn: self
 !
 
+desactivateMonsters
+	self state desactivate: self
+!
+
 moveTo: aCell inContext: gameContext
 	self state monster: self moveTo: aCell inContext: gameContext
+!
+
+readyToBePicked
+	self state readyToPick: self
 !
 
 select: gameContext
@@ -965,12 +1049,11 @@ changeState: stateClass
 !
 
 initializeState
-	CWMonsterState initializeStateFor: self
+	self changeState: self defaultState
 !
 
 state
-	state ifNil: [self initializeState].
-	^state
+	^ state
 !
 
 state: aState
@@ -1007,6 +1090,26 @@ jsonStatCacheAt: aKey ifAbsent: aBlock
 
 jsonStatCacheAt: aKey put: aJson
 	^ self jsonStatCache at: aKey put: aJson
+! !
+
+!CWMonster class methodsFor: 'instance creation'!
+
+emptyMonster
+	"Answers a fake instance of a monster with empty stats.
+	Displayed by the menu when no monster is selected"
+	
+	| fakeImage |
+	fakeImage := NativeFunction constructor: 'Image'.
+	fakeImage at: 'src' put:'ressources/images/interro.png'.
+	^ self new
+		image: fakeImage;
+		hp: 0;
+		move: 0;
+		range: 0;
+		dices: 0;
+		attack: 0";
+		knockback: 0;
+		special:'none'."
 ! !
 
 CWMonster subclass: #CWHeros

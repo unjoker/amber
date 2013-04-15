@@ -504,27 +504,16 @@ selector: "emptyMonster",
 category: 'accessing',
 fn: function (){
 var self=this;
-var imageVide;
-function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
 function $CWMonster(){return smalltalk.CWMonster||(typeof CWMonster=="undefined"?nil:CWMonster)}
 return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$1;
-imageVide=_st($NativeFunction())._constructor_("Image");
-_st(imageVide)._at_put_("src","ressources/images/interro.png");
-$2=_st($CWMonster())._new();
-_st($2)._image_(imageVide);
-_st($2)._hp_((0));
-_st($2)._move_((0));
-_st($2)._range_((0));
-_st($2)._dices_((0));
-$3=_st($2)._attack_((0));
-$1=$3;
+var $1;
+$1=_st($CWMonster())._emptyMonster();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{imageVide:imageVide},smalltalk.CWMonsterWatcher)})},
+}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{},smalltalk.CWMonsterWatcher)})},
 args: [],
-source: "emptyMonster\x0a\x09| imageVide |\x0a\x09imageVide := NativeFunction constructor: 'Image'.\x0a\x09imageVide at: 'src' put:'ressources/images/interro.png'.\x0a\x09^CWMonster new\x0a\x09\x09image: imageVide;\x0a\x09\x09hp: 0;\x0a\x09\x09move: 0;\x0a\x09\x09range: 0;\x0a\x09\x09dices: 0;\x0a\x09\x09attack: 0\x22;\x0a\x09\x09knockback: 0;\x0a\x09\x09special:'none'.\x22",
-messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:"],
-referencedClasses: ["NativeFunction", "CWMonster"]
+source: "emptyMonster\x0a\x09^ CWMonster emptyMonster",
+messageSends: ["emptyMonster"],
+referencedClasses: ["CWMonster"]
 }),
 smalltalk.CWMonsterWatcher);
 
@@ -539,14 +528,12 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.CWActionMenuComponent.fn.prototype._initialize.apply(_st(self), []);
 _st(_st(self)._announcer())._on_do_($CWMonsterUpdateEvent(),(function(event){
 return smalltalk.withContext(function($ctx2) {
-self["@monster"]=_st(event)._monster();
-self["@monster"];
-return _st(self)._update();
+return _st(self)._watchMonster_(_st(event)._monster());
 }, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMonsterWatcher)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self announcer \x0a\x09\x09on: CWMonsterUpdateEvent\x0a\x09\x09do: [ :event | \x0a\x09\x09\x09monster := event monster.\x0a\x09\x09\x09self update ]",
-messageSends: ["initialize", "on:do:", "monster", "update", "announcer"],
+source: "initialize\x0a\x09super initialize.\x0a\x09self announcer \x0a\x09\x09on: CWMonsterUpdateEvent\x0a\x09\x09do: [ :event | self watchMonster: event monster ]",
+messageSends: ["initialize", "on:do:", "watchMonster:", "monster", "announcer"],
 referencedClasses: ["CWMonsterUpdateEvent"]
 }),
 smalltalk.CWMonsterWatcher);
@@ -625,12 +612,36 @@ return _st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._m
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $2;
+$2;
+_st(_st(html)._h5())._with_("debug");
+return _st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._monster())._state())._class()));
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
 args: [],
-source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster move.\x0a                        \x09\x09\x22html tr with: 'range : ', self monster range.\x22\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09\x22html tr with: 'knockBack : ', self monster knockback,' %'.\x22\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09\x09\x22html tr with: 'special : ', self monster special.\x22\x0a\x09\x09].\x0a\x09\x09\x22html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x22\x0a        ].",
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "td", "dices", "attack"],
+source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster move.\x0a                        \x09\x09\x22html tr with: 'range : ', self monster range.\x22\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09\x22html tr with: 'knockBack : ', self monster knockback,' %'.\x22\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09\x09\x22html tr with: 'special : ', self monster special.\x22\x0a\x09\x09].\x0a\x09\x09html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a        ].",
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "td", "dices", "attack", "h5", "class", "state", "span"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterWatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "watchMonster:",
+category: 'initialize-release',
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@monster"]).__eq(aMonster);
+if(! smalltalk.assert($1)){
+self["@monster"]=aMonster;
+self["@monster"];
+_st(self)._update();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"watchMonster:",{aMonster:aMonster},smalltalk.CWMonsterWatcher)})},
+args: ["aMonster"],
+source: "watchMonster: aMonster\x0a\x09monster = aMonster\x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09monster := aMonster.\x0a\x09\x09\x09self update ] ",
+messageSends: ["ifFalse:", "update", "="],
 referencedClasses: []
 }),
 smalltalk.CWMonsterWatcher);
