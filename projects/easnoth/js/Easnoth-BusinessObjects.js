@@ -180,6 +180,25 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "readyToPickMonsters:",
+category: 'selection',
+fn: function (playerSide){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._readyToPickMonsters_(playerSide);
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"readyToPickMonsters:",{playerSide:playerSide},smalltalk.CWComponent)})},
+args: ["playerSide"],
+source: "readyToPickMonsters: playerSide\x0a\x09self children do: [ :child |\x0a\x09\x09child readyToPickMonsters: playerSide ]",
+messageSends: ["do:", "readyToPickMonsters:", "children"],
+referencedClasses: []
+}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeSelection",
 category: 'selection',
 fn: function (){
@@ -379,6 +398,22 @@ return $1;
 args: ["aVisitor"],
 source: "accept: aVisitor\x0a\x09^ aVisitor visitCell: self ",
 messageSends: ["visitCell:"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "addMonster:",
+category: 'state delegation',
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._cell_addMonster_(self,aMonster);
+return self}, function($ctx1) {$ctx1.fill(self,"addMonster:",{aMonster:aMonster},smalltalk.CWCell)})},
+args: ["aMonster"],
+source: "addMonster: aMonster\x0a\x09self state cell: self addMonster: aMonster",
+messageSends: ["cell:addMonster:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -818,11 +853,10 @@ fn: function (aMonster){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@monster"]=aMonster;
-_st(aMonster)._parent_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"monster:",{aMonster:aMonster},smalltalk.CWCell)})},
 args: ["aMonster"],
-source: "monster: aMonster\x0a\x09monster := aMonster.\x0a\x09aMonster parent: self.",
-messageSends: ["parent:"],
+source: "monster: aMonster\x0a\x09monster := aMonster",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -1038,6 +1072,34 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "pathTo:",
+category: 'neighbourhood',
+fn: function (cellLast){
+var self=this;
+var path;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+path=_st($Array())._with_(cellLast);
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self).__eq(_st(path)._last());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(path)._add_(_st(_st(path)._last())._prevCell());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$1=path;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"pathTo:",{cellLast:cellLast,path:path},smalltalk.CWCell)})},
+args: ["cellLast"],
+source: "pathTo: cellLast\x0a\x09\x22Assumes that some cells are selected and that the player clicked on a selected cell.\x0a\x09Answers the shortest path from the current cell to the cell clicked\x22\x0a\x0a\x09| path |\x0a\x09path := Array with: cellLast.\x0a\x09[ self = path last ] whileFalse: [ path add: path last prevCell ].\x0a\x09^ path",
+messageSends: ["with:", "whileFalse:", "add:", "prevCell", "last", "="],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "prevCell",
 category: 'accessing',
 fn: function (){
@@ -1109,15 +1171,15 @@ smalltalk.CWCell);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "removeMonster",
-category: 'accessing',
+category: 'state delegation',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@monster"]=nil;
+_st(_st(self)._state())._removeMonster_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"removeMonster",{},smalltalk.CWCell)})},
 args: [],
-source: "removeMonster\x0a\x09monster := nil",
-messageSends: [],
+source: "removeMonster\x0a\x09self state removeMonster: self",
+messageSends: ["removeMonster:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -2247,6 +2309,22 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "activate",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._activate_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"activate",{},smalltalk.CWMonster)})},
+args: [],
+source: "activate\x0a\x09self state activate: self",
+messageSends: ["activate:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "addStats:",
 category: 'initialize-release',
 fn: function (aKey){
@@ -2272,6 +2350,36 @@ args: ["aKey"],
 source: "addStats: aKey\x0a\x09| keySuccess |\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09\x0a\x09self announce: CWWaitForObject new.\x0a\x09\x0a    self class \x0a\x09\x09jsonStatCacheAt: keySuccess \x0a\x09\x09put: [:statsNew | \x0a\x09\x09\x09self class jsonStatCacheAt: aKey put: statsNew.\x0a       \x09\x09self stats: statsNew ].\x0a\x0a\x09jQuery \x0a\x09\x09getJSON: 'ressources/json/monsters/', aKey, '.json' \x0a\x09\x09onSuccess: [:data | \x0a\x09\x09\x09(self class jsonStatCacheAt: keySuccess) value: data.\x0a\x09\x09\x09self announce: CWObjectLoaded new]",
 messageSends: [",", "announce:", "new", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"],
 referencedClasses: ["CWWaitForObject", "CWObjectLoaded"]
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "animationMoveFrom:to:callback:",
+category: 'animation',
+fn: function (cell1,cellLast,callback){
+var self=this;
+var path,moveNumber;
+return smalltalk.withContext(function($ctx1) { 
+path=_st(cell1)._pathTo_(cellLast);
+moveNumber=_st(_st(path)._size()).__minus((1));
+_st(_st(cell1)._root())._removeSelection();
+_st((1))._to_do_(moveNumber,(function(j){
+return smalltalk.withContext(function($ctx2) {
+return _st((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(_st(path)._at_(_st(_st(path)._size()).__minus(j)))._addMonster_(self);
+_st(_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j)))._removeMonster();
+return _st(_st(cell1)._root())._updateMonstersAndGOTs();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
+}, function($ctx2) {$ctx2.fillBlock({j:j},$ctx1)})}));
+_st(self)._currentMove_(_st(_st(self)._currentMove()).__minus(moveNumber));
+_st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
+return self}, function($ctx1) {$ctx1.fill(self,"animationMoveFrom:to:callback:",{cell1:cell1,cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonster)})},
+args: ["cell1", "cellLast", "callback"],
+source: "animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := cell1 pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a \x0a\x09cell1 root removeSelection.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) addMonster: self.\x0a        (path at: path size + 1 - j) removeMonster.\x0a        cell1 root updateMonstersAndGOTs ] valueWithTimeout: 300 * j ].\x0a\x0a\x09self currentMove: self currentMove - moveNumber.\x0a\x09callback valueWithTimeout: 300 * moveNumber",
+messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "addMonster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -2305,6 +2413,30 @@ return self}, function($ctx1) {$ctx1.fill(self,"attack:",{int:int},smalltalk.CWM
 args: ["int"],
 source: "attack: int\x0a\x09attack := int",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "attackNeighbour:inContext:",
+category: 'fighting',
+fn: function (anotherMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._changeStateAfterAttacking_(self);
+_st(_st(self)._root())._removeSelection();
+_st(self)._rollDicesCallBack_((function(diceRes){
+return smalltalk.withContext(function($ctx2) {
+_st(anotherMonster)._removeHP_(_st(diceRes)._kills());
+_st(self)._select_(gameContext);
+_st(self)._checkForNextTurn();
+return _st(self)._updateMonstersAndGOTs();
+}, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"attackNeighbour:inContext:",{anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWMonster)})},
+args: ["anotherMonster", "gameContext"],
+source: "attackNeighbour: anotherMonster inContext: gameContext\x0a\x09\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self select: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09self updateMonstersAndGOTs ]",
+messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "rollDicesCallBack:", "removeHP:", "kills", "select:", "checkForNextTurn", "updateMonstersAndGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2415,18 +2547,36 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "desactivateMonsters",
-category: 'selection',
+selector: "defaultState",
+category: 'accessing',
 fn: function (){
 var self=this;
 function $CWInactive(){return smalltalk.CWInactive||(typeof CWInactive=="undefined"?nil:CWInactive)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._changeState_($CWInactive());
+var $1;
+$1=$CWInactive();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultState",{},smalltalk.CWMonster)})},
+args: [],
+source: "defaultState\x0a\x09\x22When map is initialized the monster will get this state by default\x22\x0a\x09^ CWInactive",
+messageSends: [],
+referencedClasses: ["CWInactive"]
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "desactivateMonsters",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._desactivate_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltalk.CWMonster)})},
 args: [],
-source: "desactivateMonsters\x0a\x09self changeState: CWInactive",
-messageSends: ["changeState:"],
-referencedClasses: ["CWInactive"]
+source: "desactivateMonsters\x0a\x09self state desactivate: self",
+messageSends: ["desactivate:", "state"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -2500,6 +2650,23 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initialize",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWImageLeaf.fn.prototype._initialize.apply(_st(self), []);
+_st(self)._initializeState();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMonster)})},
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09self initializeState",
+messageSends: ["initialize", "initializeState"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeFromJson:",
 category: 'initialize-release',
 fn: function (aJson){
@@ -2522,14 +2689,13 @@ selector: "initializeState",
 category: 'state machine',
 fn: function (){
 var self=this;
-function $CWMonsterState(){return smalltalk.CWMonsterState||(typeof CWMonsterState=="undefined"?nil:CWMonsterState)}
 return smalltalk.withContext(function($ctx1) { 
-_st($CWMonsterState())._initializeStateFor_(self);
+_st(self)._changeState_(_st(self)._defaultState());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeState",{},smalltalk.CWMonster)})},
 args: [],
-source: "initializeState\x0a\x09CWMonsterState initializeStateFor: self",
-messageSends: ["initializeStateFor:"],
-referencedClasses: ["CWMonsterState"]
+source: "initializeState\x0a\x09self changeState: self defaultState",
+messageSends: ["changeState:", "defaultState"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -2630,6 +2796,29 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "moveTo:inContext:callback:",
+category: 'animation',
+fn: function (aCell,gameContext,callback){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._animationMoveFrom_to_callback_(_st(gameContext)._currentCell(),aCell,(function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(self)._state())._changeStateAfterMoving_(self);
+_st(self)._select_(gameContext);
+_st(_st(aCell)._root())._updateMonstersAndGOTs();
+_st(self)._checkForNextTurn();
+return _st(callback)._value();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"moveTo:inContext:callback:",{aCell:aCell,gameContext:gameContext,callback:callback},smalltalk.CWMonster)})},
+args: ["aCell", "gameContext", "callback"],
+source: "moveTo: aCell inContext: gameContext callback: callback\x0a\x09\x22triggers the animation for the monster move\x22\x0a\x09\x0a\x09self animationMoveFrom: gameContext currentCell to: aCell callback: [\x09\x0a\x09\x09self state changeStateAfterMoving: self.\x0a\x09\x09self select: gameContext.\x0a\x09\x09aCell root updateMonstersAndGOTs.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09callback value.\x0a\x09].",
+messageSends: ["animationMoveFrom:to:callback:", "currentCell", "changeStateAfterMoving:", "state", "select:", "updateMonstersAndGOTs", "root", "checkForNextTurn", "value"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "range",
 category: 'accessing',
 fn: function (){
@@ -2664,24 +2853,58 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "readyToBePicked",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._state())._readyToPick_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"readyToBePicked",{},smalltalk.CWMonster)})},
+args: [],
+source: "readyToBePicked\x0a\x09self state readyToPick: self",
+messageSends: ["readyToPick:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "readyToPickMonsters:",
+category: 'selection',
+fn: function (playerSide){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._side()).__eq(playerSide);
+if(smalltalk.assert($1)){
+_st(self)._readyToBePicked();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"readyToPickMonsters:",{playerSide:playerSide},smalltalk.CWMonster)})},
+args: ["playerSide"],
+source: "readyToPickMonsters: playerSide\x0a\x09self side = playerSide \x0a\x09\x09ifTrue: [ self readyToBePicked ]",
+messageSends: ["ifTrue:", "readyToBePicked", "=", "side"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeHP:",
 category: 'fighting',
 fn: function (anInt){
 var self=this;
-function $CWFree(){return smalltalk.CWFree||(typeof CWFree=="undefined"?nil:CWFree)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 _st(self)._hp_(_st(_st(self)._hp()).__minus(anInt));
 $1=_st(_st(self)._hp()).__lt((1));
 if(smalltalk.assert($1)){
 _st(_st(self)._parent())._removeMonster();
-_st(_st(self)._parent())._changeState_($CWFree());
 };
 return self}, function($ctx1) {$ctx1.fill(self,"removeHP:",{anInt:anInt},smalltalk.CWMonster)})},
 args: ["anInt"],
-source: "removeHP: anInt\x0a        self hp: self hp - anInt.\x0a        (self hp < 1) ifTrue: [\x0a                self parent removeMonster.\x0a                self parent changeState: CWFree\x0a        ].",
-messageSends: ["hp:", "-", "hp", "ifTrue:", "removeMonster", "parent", "changeState:", "<"],
-referencedClasses: ["CWFree"]
+source: "removeHP: anInt\x0a     self hp: self hp - anInt.\x0a     self hp < 1 ifTrue: [\x0a           self parent removeMonster ].",
+messageSends: ["hp:", "-", "hp", "ifTrue:", "removeMonster", "parent", "<"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -2695,15 +2918,15 @@ var kill,dicesRolledEvent;
 function $CWDicesRolledEvent(){return smalltalk.CWDicesRolledEvent||(typeof CWDicesRolledEvent=="undefined"?nil:CWDicesRolledEvent)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3;
-kill=(0);
-_st((1))._to_do_(_st(self)._dices(),(function(){
+kill=_st(_st((1))._to_(_st(self)._dices()))._inject_into_((0),(function(acc,index){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(_st((100))._atRandom()).__lt(_st(self)._attack());
 if(smalltalk.assert($1)){
-kill=_st(kill).__plus((1));
-return kill;
+return _st(acc).__plus((1));
+} else {
+return acc;
 };
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({acc:acc,index:index},$ctx1)})}));
 $2=_st($CWDicesRolledEvent())._new();
 _st($2)._kills_(kill);
 _st($2)._dices_(_st(self)._dices());
@@ -2713,8 +2936,8 @@ dicesRolledEvent=$3;
 _st(self)._announce_(dicesRolledEvent);
 return self}, function($ctx1) {$ctx1.fill(self,"rollDicesCallBack:",{aBlock:aBlock,kill:kill,dicesRolledEvent:dicesRolledEvent},smalltalk.CWMonster)})},
 args: ["aBlock"],
-source: "rollDicesCallBack: aBlock\x0a\x09\x22roll the dices to attack an ennemy\x22\x0a\x09\x0a\x09| kill dicesRolledEvent |\x0a\x09\x22PUT INJECT INTO HERE\x22\x0a\x09kill := 0.\x0a\x091 to: self dices do: [ 100 atRandom < self attack ifTrue: [kill := kill + 1] ].\x0a\x09dicesRolledEvent := CWDicesRolledEvent new\x0a\x09\x09kills: kill;\x0a\x09\x09dices: self dices;\x0a\x09\x09callback: aBlock;\x0a\x09\x09yourself.\x0a\x09self announce: dicesRolledEvent",
-messageSends: ["to:do:", "dices", "ifTrue:", "+", "<", "attack", "atRandom", "kills:", "new", "dices:", "callback:", "yourself", "announce:"],
+source: "rollDicesCallBack: aBlock\x0a\x09\x22roll the dices to attack an ennemy\x22\x0a\x09\x0a\x09| kill dicesRolledEvent |\x0a\x09kill := (1 to: self dices) inject: 0 into: [ :acc :index | \x0a\x09\x09100 atRandom < self attack \x0a\x09\x09\x09ifTrue: [ acc + 1 ] \x0a\x09\x09\x09ifFalse: [ acc ] ]. \x0a\x09dicesRolledEvent := CWDicesRolledEvent new\x0a\x09\x09kills: kill;\x0a\x09\x09dices: self dices;\x0a\x09\x09callback: aBlock;\x0a\x09\x09yourself.\x0a\x09self announce: dicesRolledEvent",
+messageSends: ["inject:into:", "ifTrue:ifFalse:", "+", "<", "attack", "atRandom", "to:", "dices", "kills:", "new", "dices:", "callback:", "yourself", "announce:"],
 referencedClasses: ["CWDicesRolledEvent"]
 }),
 smalltalk.CWMonster);
@@ -2794,19 +3017,13 @@ category: 'state machine',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1;
 $1=self["@state"];
-if(($receiver = $1) == nil || $receiver == undefined){
-_st(self)._initializeState();
-} else {
-$1;
-};
-$2=self["@state"];
-return $2;
+return $1;
 }, function($ctx1) {$ctx1.fill(self,"state",{},smalltalk.CWMonster)})},
 args: [],
-source: "state\x0a\x09state ifNil: [self initializeState].\x0a\x09^state",
-messageSends: ["ifNil:", "initializeState"],
+source: "state\x0a\x09^ state",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2877,6 +3094,35 @@ smalltalk.CWMonster);
 
 
 smalltalk.CWMonster.klass.iVarNames = ['jsonStatCache'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "emptyMonster",
+category: 'instance creation',
+fn: function (){
+var self=this;
+var fakeImage;
+function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+fakeImage=_st($NativeFunction())._constructor_("Image");
+_st(fakeImage)._at_put_("src","ressources/images/interro.png");
+$2=_st(self)._new();
+_st($2)._image_(fakeImage);
+_st($2)._hp_((0));
+_st($2)._move_((0));
+_st($2)._range_((0));
+_st($2)._dices_((0));
+$3=_st($2)._attack_((0));
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{fakeImage:fakeImage},smalltalk.CWMonster.klass)})},
+args: [],
+source: "emptyMonster\x0a\x09\x22Answers a fake instance of a monster with empty stats.\x0a\x09Displayed by the menu when no monster is selected\x22\x0a\x09\x0a\x09| fakeImage |\x0a\x09fakeImage := NativeFunction constructor: 'Image'.\x0a\x09fakeImage at: 'src' put:'ressources/images/interro.png'.\x0a\x09^ self new\x0a\x09\x09image: fakeImage;\x0a\x09\x09hp: 0;\x0a\x09\x09move: 0;\x0a\x09\x09range: 0;\x0a\x09\x09dices: 0;\x0a\x09\x09attack: 0\x22;\x0a\x09\x09knockback: 0;\x0a\x09\x09special:'none'.\x22",
+messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:"],
+referencedClasses: ["NativeFunction"]
+}),
+smalltalk.CWMonster.klass);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "folderName",

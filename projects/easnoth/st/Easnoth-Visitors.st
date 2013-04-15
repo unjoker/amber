@@ -1,11 +1,11 @@
 Smalltalk current createPackage: 'Easnoth-Visitors'!
-Object subclass: #CWMapVisitorContext
+Object subclass: #CWMapInterpreterContext
 	instanceVariableNames: 'rowIndex cellIndex'
 	package: 'Easnoth-Visitors'!
-!CWMapVisitorContext commentStamp!
+!CWMapInterpreterContext commentStamp!
 general context just to know the coods in the map of cells!
 
-!CWMapVisitorContext methodsFor: 'context alteration'!
+!CWMapInterpreterContext methodsFor: 'context alteration'!
 
 nextCell
 	cellIndex := cellIndex + 1.
@@ -16,22 +16,22 @@ nextRow
 	cellIndex := 0
 ! !
 
-!CWMapVisitorContext methodsFor: 'initialize-release'!
+!CWMapInterpreterContext methodsFor: 'initialize-release'!
 
 reset
 	rowIndex := 0.
 	cellIndex := 0
 ! !
 
-CWMapVisitorContext class instanceVariableNames: 'default'!
+CWMapInterpreterContext class instanceVariableNames: 'default'!
 
-!CWMapVisitorContext class methodsFor: 'instance creation'!
+!CWMapInterpreterContext class methodsFor: 'instance creation'!
 
 default
 	^ default ifNil: [ default := self new ]
 ! !
 
-CWMapVisitorContext subclass: #CWGlobalDrawingContext
+CWMapInterpreterContext subclass: #CWGlobalDrawingContext
 	instanceVariableNames: 'currentPointCache drawer'
 	package: 'Easnoth-Visitors'!
 !CWGlobalDrawingContext commentStamp!
@@ -196,12 +196,20 @@ CWVisitor subclass: #CWJsonWriter
 	instanceVariableNames: ''
 	package: 'Easnoth-Visitors'!
 
-CWVisitor subclass: #CWLeafSelector
-	instanceVariableNames: ''
+CWVisitor subclass: #CWMapInterpreter
+	instanceVariableNames: 'executionContext'
 	package: 'Easnoth-Visitors'!
+!CWMapInterpreter commentStamp!
+While visiting the map, I modify my execution context which is kind of CWMapInterpreterContext. This way my context knows the coordinates of the leaf I am visiting.!
 
-CWVisitor subclass: #CWMapDrawer
-	instanceVariableNames: 'layers padding executionContext map'
+!CWMapInterpreter methodsFor: 'accessing'!
+
+executionContext
+	^ executionContext
+! !
+
+CWMapInterpreter subclass: #CWMapDrawer
+	instanceVariableNames: 'layers padding map'
 	package: 'Easnoth-Visitors'!
 !CWMapDrawer commentStamp!
 I am a drawer that can draw the business objects through a visit of its tree.
@@ -227,10 +235,6 @@ contextForCanvas: canvas
 
 currentPoint
 	^ self executionContext currentPoint
-!
-
-executionContext
-	^ executionContext
 !
 
 gameCanvas

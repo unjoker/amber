@@ -243,7 +243,7 @@ activateMonsters
 
 	(armyPlaying size = 0) 
 		ifTrue: [ window alert: 'Someone just won. Guess who ? winner : ' , self gameContext currentPlayer negated ] 
-		ifFalse: [ self pickMonster: armyPlaying ]
+		ifFalse: [ self pickMonster ]
 !
 
 firstTurn
@@ -258,9 +258,8 @@ nextTurn
 	map updateMonstersAndGOTs.
 !
 
-pickMonster: armyPlaying
-	armyPlaying do: [ :monster | 
-		monster changeState: CWToPick ].
+pickMonster
+	map readyToPickMonsters: self gameContext currentPlayer.
 	map showActiveMonsters.
 	self announce: CWGOTDrawingEvent new.
 !

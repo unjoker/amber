@@ -382,24 +382,13 @@ smalltalk.method({
 selector: "emptyMonster",
 fn: function (){
 var self=this;
-var imageVide;
-function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
 function $CWMonster(){return smalltalk.CWMonster||(typeof CWMonster=="undefined"?nil:CWMonster)}
 return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$1;
-imageVide=_st($NativeFunction())._constructor_("Image");
-_st(imageVide)._at_put_("src","ressources/images/interro.png");
-$2=_st($CWMonster())._new();
-_st($2)._image_(imageVide);
-_st($2)._hp_((0));
-_st($2)._move_((0));
-_st($2)._range_((0));
-_st($2)._dices_((0));
-$3=_st($2)._attack_((0));
-$1=$3;
+var $1;
+$1=_st($CWMonster())._emptyMonster();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{imageVide:imageVide},smalltalk.CWMonsterWatcher)})},
-messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:"]}),
+}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{},smalltalk.CWMonsterWatcher)})},
+messageSends: ["emptyMonster"]}),
 smalltalk.CWMonsterWatcher);
 
 smalltalk.addMethod(
@@ -412,12 +401,10 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.CWActionMenuComponent.fn.prototype._initialize.apply(_st(self), []);
 _st(_st(self)._announcer())._on_do_($CWMonsterUpdateEvent(),(function(event){
 return smalltalk.withContext(function($ctx2) {
-self["@monster"]=_st(event)._monster();
-self["@monster"];
-return _st(self)._update();
+return _st(self)._watchMonster_(_st(event)._monster());
 }, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMonsterWatcher)})},
-messageSends: ["initialize", "on:do:", "monster", "update", "announcer"]}),
+messageSends: ["initialize", "on:do:", "watchMonster:", "monster", "announcer"]}),
 smalltalk.CWMonsterWatcher);
 
 smalltalk.addMethod(
@@ -483,10 +470,29 @@ return _st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._m
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $2;
+$2;
+_st(_st(html)._h5())._with_("debug");
+return _st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._monster())._state())._class()));
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "td", "dices", "attack"]}),
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "td", "dices", "attack", "h5", "class", "state", "span"]}),
+smalltalk.CWMonsterWatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "watchMonster:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@monster"]).__eq(aMonster);
+if(! smalltalk.assert($1)){
+self["@monster"]=aMonster;
+self["@monster"];
+_st(self)._update();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"watchMonster:",{aMonster:aMonster},smalltalk.CWMonsterWatcher)})},
+messageSends: ["ifFalse:", "update", "="]}),
 smalltalk.CWMonsterWatcher);
 
 

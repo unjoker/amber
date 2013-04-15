@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Visitors');
-smalltalk.addClass('CWMapVisitorContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
+smalltalk.addClass('CWMapInterpreterContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "nextCell",
@@ -9,7 +9,7 @@ return smalltalk.withContext(function($ctx1) {
 self["@cellIndex"]=_st(self["@cellIndex"]).__plus((1));
 return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWMapVisitorContext)})},
 messageSends: ["+"]}),
-smalltalk.CWMapVisitorContext);
+smalltalk.CWMapInterpreterContext);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -21,7 +21,7 @@ self["@rowIndex"]=_st(self["@rowIndex"]).__plus((1));
 self["@cellIndex"]=(0);
 return self}, function($ctx1) {$ctx1.fill(self,"nextRow",{},smalltalk.CWMapVisitorContext)})},
 messageSends: ["+"]}),
-smalltalk.CWMapVisitorContext);
+smalltalk.CWMapInterpreterContext);
 
 smalltalk.addMethod(
 smalltalk.method({
@@ -33,10 +33,10 @@ self["@rowIndex"]=(0);
 self["@cellIndex"]=(0);
 return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWMapVisitorContext)})},
 messageSends: []}),
-smalltalk.CWMapVisitorContext);
+smalltalk.CWMapInterpreterContext);
 
 
-smalltalk.CWMapVisitorContext.klass.iVarNames = ['default'];
+smalltalk.CWMapInterpreterContext.klass.iVarNames = ['default'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "default",
@@ -54,10 +54,10 @@ $1=$2;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMapVisitorContext.klass)})},
 messageSends: ["ifNil:", "new"]}),
-smalltalk.CWMapVisitorContext.klass);
+smalltalk.CWMapInterpreterContext.klass);
 
 
-smalltalk.addClass('CWGlobalDrawingContext', smalltalk.CWMapVisitorContext, ['currentPointCache', 'drawer'], 'Easnoth-Visitors');
+smalltalk.addClass('CWGlobalDrawingContext', smalltalk.CWMapInterpreterContext, ['currentPointCache', 'drawer'], 'Easnoth-Visitors');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "calculCanvasCoods",
@@ -106,7 +106,7 @@ selector: "nextCell",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWMapVisitorContext.fn.prototype._nextCell.apply(_st(self), []);
+smalltalk.CWMapInterpreterContext.fn.prototype._nextCell.apply(_st(self), []);
 self["@currentPointCache"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWGlobalDrawingContext)})},
 messageSends: ["nextCell"]}),
@@ -119,7 +119,7 @@ fn: function (aDrawer){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-smalltalk.CWMapVisitorContext.fn.prototype._reset.apply(_st(self), []);
+smalltalk.CWMapInterpreterContext.fn.prototype._reset.apply(_st(self), []);
 self["@currentPointCache"]=nil;
 $1=self["@drawer"];
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -370,10 +370,23 @@ smalltalk.CWVisitor.klass.iVarNames = ['singleton'];
 smalltalk.addClass('CWJsonWriter', smalltalk.CWVisitor, [], 'Easnoth-Visitors');
 
 
-smalltalk.addClass('CWLeafSelector', smalltalk.CWVisitor, [], 'Easnoth-Visitors');
+smalltalk.addClass('CWMapInterpreter', smalltalk.CWVisitor, ['executionContext'], 'Easnoth-Visitors');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "executionContext",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@executionContext"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"executionContext",{},smalltalk.CWMapInterpreter)})},
+messageSends: []}),
+smalltalk.CWMapInterpreter);
 
 
-smalltalk.addClass('CWMapDrawer', smalltalk.CWVisitor, ['layers', 'padding', 'executionContext', 'map'], 'Easnoth-Visitors');
+
+smalltalk.addClass('CWMapDrawer', smalltalk.CWMapInterpreter, ['layers', 'padding', 'map'], 'Easnoth-Visitors');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announcer",
@@ -408,7 +421,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "#background";
-}, function($ctx1) {$ctx1.fill(self,"backgroundCanvasId",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"backgroundCanvasId",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
@@ -449,7 +462,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=(40);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.MapDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
@@ -513,7 +526,7 @@ fn: function (object,ctx){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._display_inContext_X_y_(object,ctx,(0),(0));
-return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:",{object:object,ctx:ctx},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:",{object:object,ctx:ctx},smalltalk.CWMapDrawer)})},
 messageSends: ["display:inContext:X:y:"]}),
 smalltalk.CWMapDrawer);
 
@@ -524,7 +537,7 @@ fn: function (object,ctx,x,y){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(ctx)._drawImage_x_y_(_st(object)._image(),x,y);
-return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:X:y:",{object:object,ctx:ctx,x:x,y:y},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"display:inContext:X:y:",{object:object,ctx:ctx,x:x,y:y},smalltalk.CWMapDrawer)})},
 messageSends: ["drawImage:x:y:", "image"]}),
 smalltalk.CWMapDrawer);
 
@@ -595,19 +608,6 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "executionContext",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@executionContext"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"executionContext",{},smalltalk.CWDrawer)})},
-messageSends: []}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "gameCanvas",
 fn: function (){
 var self=this;
@@ -626,7 +626,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "#game";
-}, function($ctx1) {$ctx1.fill(self,"gameCanvasId",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"gameCanvasId",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
@@ -649,7 +649,7 @@ selector: "initialize",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
+smalltalk.CWMapInterpreter.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeLayers();
 _st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
 _st(self)._initializeEventHandling();
@@ -732,7 +732,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return "#monster";
-}, function($ctx1) {$ctx1.fill(self,"monsterCanvasId",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"monsterCanvasId",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
@@ -800,7 +800,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=self["@padding"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"padding",{},smalltalk.CWDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"padding",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
@@ -811,7 +811,7 @@ fn: function (aPoint){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@padding"]=aPoint;
-return self}, function($ctx1) {$ctx1.fill(self,"padding:",{aPoint:aPoint},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"padding:",{aPoint:aPoint},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
@@ -848,7 +848,7 @@ return _st(aBlock)._value();
 return smalltalk.withContext(function($ctx2) {
 return _st(ctx)._restore();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"safeDraw:inContext:",{aBlock:aBlock,ctx:ctx},smalltalk.CWDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"safeDraw:inContext:",{aBlock:aBlock,ctx:ctx},smalltalk.CWMapDrawer)})},
 messageSends: ["ensure:", "restore", "save", "value"]}),
 smalltalk.CWMapDrawer);
 
@@ -861,7 +861,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=(50);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.MapDrawer)})},
+}, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
 
