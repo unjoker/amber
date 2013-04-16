@@ -367,11 +367,12 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
+_st($1)._width_((500));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
-messageSends: ["class:", "div", "with:"]}),
+messageSends: ["class:", "div", "width:", "with:"]}),
 smalltalk.CWMapControls);
 
 

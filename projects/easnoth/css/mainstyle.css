@@ -26,15 +26,18 @@ button {
 /*intro.html*/
 
 .intro {
-	height:100%;
-	width:100%;
+    position: absolute;
+	top:10%;
+	left:10%;
+	height:80%;
+    width:80%;
 	padding:0;
 	margin:0;
 	background-color:#000;
 	background-image:url(../ressources/images/intro.jpg);
 	background-repeat:no-repeat;
-	background-attachment:fixed;
-	background-position:50% 100%; 
+	background-attachment:inherit;
+	background-position:center bottom;
 	background-size:100% auto;
 }
 

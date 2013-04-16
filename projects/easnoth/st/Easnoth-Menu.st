@@ -189,6 +189,7 @@ CWActionMenuComponent subclass: #CWMapControls
 renderOn: html
 	html div 
 		class: 'mapWatcher';
+		width: 500;
 		with: [
                 "html h4
                         with: 'map controls'.

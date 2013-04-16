@@ -2587,13 +2587,15 @@ selector: "currentMove:",
 category: 'accessing',
 fn: function (int){
 var self=this;
+function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
 return smalltalk.withContext(function($ctx1) { 
 self["@currentMove"]=int;
+_st(self)._announce_(_st($CWMonsterUpdateEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"currentMove:",{int:int},smalltalk.CWMonster)})},
 args: ["int"],
-source: "currentMove: int\x0a\x09currentMove := int",
-messageSends: [],
-referencedClasses: []
+source: "currentMove: int\x0a\x09currentMove := int.\x0a\x09self announce: CWMonsterUpdateEvent new",
+messageSends: ["announce:", "new"],
+referencedClasses: ["CWMonsterUpdateEvent"]
 }),
 smalltalk.CWMonster);
 

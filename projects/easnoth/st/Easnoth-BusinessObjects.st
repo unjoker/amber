@@ -826,7 +826,8 @@ currentMove
 !
 
 currentMove: int
-	currentMove := int
+	currentMove := int.
+	self announce: CWMonsterUpdateEvent new
 !
 
 defaultState
