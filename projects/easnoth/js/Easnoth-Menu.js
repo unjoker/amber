@@ -484,13 +484,14 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
+_st($1)._width_((500));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09with: [\x0a                \x22html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self actionMenu map goLeft].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self actionMenu map goRight].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self actionMenu map goDown].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self actionMenu map goUp].\x22\x0a\x09\x09\x22html span \x0a\x09\x09\x09with: '-'.\x0a                html button\x0a                        with: 'mh';\x0a                        onClick: [self actionMenu map mirrorHorizontal].\x0a                html button\x0a                        with: 'vh';\x0a                        onClick: [self actionMenu map mirrorVertical].\x22\x0a\x09].",
-messageSends: ["class:", "div", "with:"],
+source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                \x22html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self actionMenu map goLeft].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self actionMenu map goRight].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self actionMenu map goDown].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self actionMenu map goUp].\x22\x0a\x09\x09\x22html span \x0a\x09\x09\x09with: '-'.\x0a                html button\x0a                        with: 'mh';\x0a                        onClick: [self actionMenu map mirrorHorizontal].\x0a                html button\x0a                        with: 'vh';\x0a                        onClick: [self actionMenu map mirrorVertical].\x22\x0a\x09].",
+messageSends: ["class:", "div", "width:", "with:"],
 referencedClasses: []
 }),
 smalltalk.CWMapControls);

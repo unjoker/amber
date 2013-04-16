@@ -1923,10 +1923,12 @@ smalltalk.method({
 selector: "currentMove:",
 fn: function (int){
 var self=this;
+function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
 return smalltalk.withContext(function($ctx1) { 
 self["@currentMove"]=int;
+_st(self)._announce_(_st($CWMonsterUpdateEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"currentMove:",{int:int},smalltalk.CWMonster)})},
-messageSends: []}),
+messageSends: ["announce:", "new"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

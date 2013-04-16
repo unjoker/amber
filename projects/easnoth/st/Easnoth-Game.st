@@ -210,7 +210,7 @@ initializeForMap: aMap game: aGame
 ! !
 
 Object subclass: #CWGame
-	instanceVariableNames: 'map context'
+	instanceVariableNames: 'map context playerPool'
 	package: 'Easnoth-Game'!
 !CWGame commentStamp!
 Represent the game. Includes the god game logic (turn system)!
@@ -302,6 +302,10 @@ removeLoadingBar
 
 newWithMapIndex: index
 	^ self new initializeMapWithIndex: index
+!
+
+newWithMapIndex: index ai: aBool
+	^ self new initializeMapWithIndex: index
 ! !
 
 Object subclass: #CWGameContext
@@ -330,6 +334,10 @@ currentMonster: aMonster
 
 currentPlayer
 	^ currentPlayer
+!
+
+currentPlayerSide
+	^ currentPlayer side
 ! !
 
 !CWGameContext methodsFor: 'game logic'!

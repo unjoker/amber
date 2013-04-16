@@ -482,7 +482,7 @@ smalltalk.CWEventDispatcher);
 
 
 
-smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context'], 'Easnoth-Game');
+smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context', 'playerPool'], 'Easnoth-Game');
 smalltalk.CWGame.comment="Represent the game. Includes the god game logic (turn system)"
 smalltalk.addMethod(
 smalltalk.method({
@@ -749,6 +749,24 @@ referencedClasses: []
 }),
 smalltalk.CWGame.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newWithMapIndex:ai:",
+category: 'instance creation',
+fn: function (index,aBool){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._new())._initializeMapWithIndex_(index);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:ai:",{index:index,aBool:aBool},smalltalk.CWGame.klass)})},
+args: ["index", "aBool"],
+source: "newWithMapIndex: index ai: aBool\x0a\x09^ self new initializeMapWithIndex: index ",
+messageSends: ["initializeMapWithIndex:", "new"],
+referencedClasses: []
+}),
+smalltalk.CWGame.klass);
+
 
 smalltalk.addClass('CWGameContext', smalltalk.Object, ['currentPlayer', 'currentCell'], 'Easnoth-Game');
 smalltalk.CWGameContext.comment="Represents the current context of the game, typcally, which player is playing and what monster is currently about to attack / move"
@@ -834,6 +852,24 @@ return $1;
 args: [],
 source: "currentPlayer\x0a\x09^ currentPlayer",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentPlayerSide",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@currentPlayer"])._side();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentPlayerSide",{},smalltalk.CWGameContext)})},
+args: [],
+source: "currentPlayerSide\x0a\x09^ currentPlayer side",
+messageSends: ["side"],
 referencedClasses: []
 }),
 smalltalk.CWGameContext);

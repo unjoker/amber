@@ -375,7 +375,7 @@ smalltalk.CWEventDispatcher);
 
 
 
-smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context'], 'Easnoth-Game');
+smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context', 'playerPool'], 'Easnoth-Game');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "activateMonsters",
@@ -571,6 +571,19 @@ return $1;
 messageSends: ["initializeMapWithIndex:", "new"]}),
 smalltalk.CWGame.klass);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newWithMapIndex:ai:",
+fn: function (index,aBool){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._new())._initializeMapWithIndex_(index);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:ai:",{index:index,aBool:aBool},smalltalk.CWGame.klass)})},
+messageSends: ["initializeMapWithIndex:", "new"]}),
+smalltalk.CWGame.klass);
+
 
 smalltalk.addClass('CWGameContext', smalltalk.Object, ['currentPlayer', 'currentCell'], 'Easnoth-Game');
 smalltalk.addMethod(
@@ -632,6 +645,19 @@ $1=self["@currentPlayer"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"currentPlayer",{},smalltalk.CWGameContext)})},
 messageSends: []}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentPlayerSide",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@currentPlayer"])._side();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentPlayerSide",{},smalltalk.CWGameContext)})},
+messageSends: ["side"]}),
 smalltalk.CWGameContext);
 
 smalltalk.addMethod(
