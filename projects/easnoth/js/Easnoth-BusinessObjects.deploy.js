@@ -542,33 +542,34 @@ smalltalk.method({
 selector: "initializeFromJson:",
 fn: function (aJsonCell){
 var self=this;
-var elements;
+var elements,ots;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2,$3;
 elements=_st(aJsonCell)._keys();
 self["@background"]=_st($Array())._new();
-$1=_st(_st(elements)._first()).__eq("tile");
+$1=_st(elements)._includes_("tile");
 if(smalltalk.assert($1)){
 _st(self)._backgroundAdd_(_st(_st(self)._newTile())._initializeFromKey_(_st(aJsonCell)._tile()));
 };
-$2=_st(elements)._includes_("overtiles");
-if(smalltalk.assert($2)){
-_st(self)._backgroundAddAll_(_st(_st(aJsonCell)._overtiles())._collect_((function(each){
+ots=_st(_st(aJsonCell)._keys())._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(self)._newOverTile())._initializeFromKey_(_st(each)._overtile());
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})));
-};
-$3=_st(_st(elements)._last()).__eq("heros");
-if(smalltalk.assert($3)){
+return _st(each)._match_("overtile");
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(ots)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._backgroundAdd_(_st(_st(self)._newOverTile())._initializeFromKey_(_st(aJsonCell)._at_(each)));
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+$2=_st(elements)._includes_("heros");
+if(smalltalk.assert($2)){
 _st(self)._monster_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._heros()));
 };
-$4=_st(_st(elements)._last()).__eq("troop");
-if(smalltalk.assert($4)){
+$3=_st(elements)._includes_("troop");
+if(smalltalk.assert($3)){
 _st(self)._monster_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
 };
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements},smalltalk.CWCell)})},
-messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "=", "first", "backgroundAddAll:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "monster:", "initializeFromJson:", "heros", "newHeros", "last", "troop", "newTroop"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements,ots:ots},smalltalk.CWCell)})},
+messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "includes:", "select:", "match:", "do:", "at:", "newOverTile", "monster:", "initializeFromJson:", "heros", "newHeros", "troop", "newTroop"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(

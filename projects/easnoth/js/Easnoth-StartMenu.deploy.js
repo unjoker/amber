@@ -55,7 +55,7 @@ var self=this;
 function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@box"])._hidden();
-_st($CWBootstrapper())._bootstrap_((5));
+_st($CWBootstrapper())._bootstrap_((7));
 return self}, function($ctx1) {$ctx1.fill(self,"startBeta",{},smalltalk.CWStartMenu)})},
 messageSends: ["hidden", "bootstrap:"]}),
 smalltalk.CWStartMenu);

@@ -701,3 +701,14 @@ smalltalk.addClass('CWBasicAggressiveAI', smalltalk.CWAI, [], 'Easnoth-Game');
 smalltalk.addClass('CWHuman', smalltalk.CWPlayer, [], 'Easnoth-Game');
 
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "subStrings:",
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self.split(aString);
+return self}, function($ctx1) {$ctx1.fill(self,"subStrings:",{aString:aString},smalltalk.String)})},
+messageSends: []}),
+smalltalk.String);
+
