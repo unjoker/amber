@@ -147,16 +147,6 @@ visitCell: aCell
 	self subclassResponsibility
 !
 
-visitChildTrees: aBusinessObject
-	aBusinessObject children do: [ :each |
-		self visitTree: each ]
-!
-
-visitChildren: aBusinessObject
-	aBusinessObject children do: [ :each |
-		each accept: self ]
-!
-
 visitGameOverTile: aGameOverTile
 	self subclassResponsibility
 !
@@ -181,20 +171,225 @@ visitTile: aTile
 	self subclassResponsibility
 !
 
+visitTroop: aTroop
+	self subclassResponsibility
+! !
+
+!CWVisitor methodsFor: 'visiting - public'!
+
+visitChildTrees: aBusinessObject
+	aBusinessObject children do: [ :each |
+		self visitTree: each ]
+!
+
+visitChildren: aBusinessObject
+	aBusinessObject children do: [ :each |
+		each accept: self ]
+!
+
 visitTree: aComponent
 	aComponent accept: self.
 	self visitChildTrees: aComponent.
-!
-
-visitTroop: aTroop
-	self subclassResponsibility
 ! !
 
 CWVisitor class instanceVariableNames: 'singleton'!
 
 CWVisitor subclass: #CWJsonWriter
-	instanceVariableNames: ''
+	instanceVariableNames: 'stream indentLevel otNumber'
 	package: 'Easnoth-Visitors'!
+
+!CWJsonWriter methodsFor: 'helper'!
+
+extractKeyFrom: url
+	| imageName |
+	imageName := (url subStrings: '/') last.
+	^ (imageName subStrings: '.') first
+! !
+
+!CWJsonWriter methodsFor: 'initialize-release'!
+
+initialize
+	super initialize.
+	stream := StringStream on: ''.
+	indentLevel := 0.
+! !
+
+!CWJsonWriter methodsFor: 'public'!
+
+exportMap: aMap
+	"returns the string to write down in the json file"
+
+	aMap removeSelection.
+	self visitMap: aMap.
+	^ stream collection asString
+! !
+
+!CWJsonWriter methodsFor: 'stream API'!
+
+cr
+	stream cr.
+	1 to: indentLevel do: [ :each | stream tab ]
+!
+
+crIndentDecr
+	self decreaseIndent.
+	self cr.
+!
+
+crIndentIncr
+	self increaseIndent.
+	self cr.
+!
+
+decreaseIndent
+	indentLevel := indentLevel - 1.
+	indentLevel < 0 ifTrue: [ self error: 'indentation problem' ]
+!
+
+increaseIndent
+	indentLevel := indentLevel + 1
+!
+
+nextPutAll: aString
+	stream nextPutAll: aString
+!
+
+space
+	stream space
+! !
+
+!CWJsonWriter methodsFor: 'stream HL API'!
+
+commaCr
+	self 
+		nextPutAll: ',';
+		cr
+!
+
+endArray
+	self 
+		crIndentDecr;
+		nextPutAll: ']'
+!
+
+endObject
+	self 
+		crIndentDecr;
+		nextPutAll: '}'.
+!
+
+objectFieldName: aName intValue: anInt
+	" ""aName"": anInt "
+
+	self 
+		nextPutAll: '"';
+		nextPutAll: aName;
+		nextPutAll: '": ';
+		nextPutAll: anInt printString
+!
+
+objectFieldName: aName stringValue: aString
+	" ""aName"": ""aString"" "
+
+	self 
+		nextPutAll: '"';
+		nextPutAll: aName;
+		nextPutAll: '": "';
+		nextPutAll: aString;
+		nextPutAll: '"'
+!
+
+startArrayNamed: aString
+	self 
+		nextPutAll: '"';
+		nextPutAll: aString;
+		nextPutAll: '": [';
+		crIndentIncr
+!
+
+startObject
+	self 
+		nextPutAll: '{';
+		crIndentIncr
+!
+
+startObjectNamed: aName
+	self 
+		nextPutAll: '"';
+		nextPutAll: aName;
+		nextPutAll: '": ';
+		startObject
+! !
+
+!CWJsonWriter methodsFor: 'visiting'!
+
+visitCell: aCell
+	otNumber := 0.
+	self 
+		startObject;
+		visitChildren: aCell;
+		endObject.
+!
+
+visitChildren: aBusinessObject
+	aBusinessObject children withIndexDo: [ :child :i |
+			child accept: self.
+			i = aBusinessObject children size 
+				ifFalse: [ self commaCr ] ].
+!
+
+visitGameOverTile: aGameOverTile
+	self error: 'gameOverTile should have been removed before exportation'
+!
+
+visitHeros: aHeros
+	self
+		startObjectNamed: 'heros';
+		visitMonster: aHeros
+!
+
+visitMap: aMap
+	self 
+		startObject;
+		objectFieldName: 'name' stringValue: 'foo';
+		commaCr;
+		startArrayNamed: 'row';
+		visitChildren: aMap;
+		endArray;
+		endObject.
+!
+
+visitMonster: aMonster
+	self
+		objectFieldName: 'name' stringValue: (self extractKeyFrom: aMonster image src);
+		commaCr;
+		objectFieldName: 'side' intValue: aMonster side;
+		endObject
+!
+
+visitOverTile: anOverTile
+	otNumber := otNumber + 1.
+	self objectFieldName: 'overtile', otNumber stringValue: (self extractKeyFrom: anOverTile image src).
+!
+
+visitRow: aRow
+	self 
+		startObject;
+		startArrayNamed: 'cells';
+		visitChildren: aRow;
+		endArray;
+		endObject.
+!
+
+visitTile: aTile
+	self objectFieldName: 'tile' stringValue: (self extractKeyFrom: aTile image src)
+!
+
+visitTroop: aTroop
+	self
+		startObjectNamed: 'troop';
+		visitMonster: aTroop
+! !
 
 CWVisitor subclass: #CWMapInterpreter
 	instanceVariableNames: 'executionContext'

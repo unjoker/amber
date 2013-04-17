@@ -740,35 +740,36 @@ selector: "initializeFromJson:",
 category: 'initialize-release',
 fn: function (aJsonCell){
 var self=this;
-var elements;
+var elements,ots;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2,$3;
 elements=_st(aJsonCell)._keys();
 self["@background"]=_st($Array())._new();
-$1=_st(_st(elements)._first()).__eq("tile");
+$1=_st(elements)._includes_("tile");
 if(smalltalk.assert($1)){
 _st(self)._backgroundAdd_(_st(_st(self)._newTile())._initializeFromKey_(_st(aJsonCell)._tile()));
 };
-$2=_st(elements)._includes_("overtiles");
-if(smalltalk.assert($2)){
-_st(self)._backgroundAddAll_(_st(_st(aJsonCell)._overtiles())._collect_((function(each){
+ots=_st(_st(aJsonCell)._keys())._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(self)._newOverTile())._initializeFromKey_(_st(each)._overtile());
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})));
-};
-$3=_st(_st(elements)._last()).__eq("heros");
-if(smalltalk.assert($3)){
+return _st(each)._match_("overtile");
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(ots)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._backgroundAdd_(_st(_st(self)._newOverTile())._initializeFromKey_(_st(aJsonCell)._at_(each)));
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+$2=_st(elements)._includes_("heros");
+if(smalltalk.assert($2)){
 _st(self)._monster_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._heros()));
 };
-$4=_st(_st(elements)._last()).__eq("troop");
-if(smalltalk.assert($4)){
+$3=_st(elements)._includes_("troop");
+if(smalltalk.assert($3)){
 _st(self)._monster_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
 };
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements},smalltalk.CWCell)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements,ots:ots},smalltalk.CWCell)})},
 args: ["aJsonCell"],
-source: "initializeFromJson: aJsonCell\x0a    | elements |\x0a    \x0a    elements := aJsonCell keys.\x0a    background := Array new.\x0a\x09\x0a    elements first = 'tile'\x0a    \x09ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].\x0a    (elements includes: 'overtiles') \x0a    \x09ifTrue: [ self backgroundAddAll: (aJsonCell overtiles collect: [:each | \x0a\x09\x09\x09self newOverTile initializeFromKey: each overtile] ) ].\x0a    elements last = 'heros'\x0a    \x09ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].\x0a    elements last = 'troop'\x0a    \x09ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].",
-messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "=", "first", "backgroundAddAll:", "collect:", "overtile", "newOverTile", "overtiles", "includes:", "monster:", "initializeFromJson:", "heros", "newHeros", "last", "troop", "newTroop"],
+source: "initializeFromJson: aJsonCell\x0a    | elements ots |\x0a    \x0a    elements := aJsonCell keys.\x0a    background := Array new.\x0a\x09\x0a\x09(elements includes: 'tile') \x0a    \x09ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].\x0a\x09\x22replace match: with beginsWith: later ...\x22\x0a\x09ots := aJsonCell keys select: [ :each | each match: 'overtile' ].\x0a\x09ots do: [ :each |\x0a\x09\x09self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].\x0a\x09(elements includes: 'heros') \x0a    \x09ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].\x0a\x09(elements includes: 'troop') \x0a    \x09ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].",
+messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "includes:", "select:", "match:", "do:", "at:", "newOverTile", "monster:", "initializeFromJson:", "heros", "newHeros", "troop", "newTroop"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWCell);

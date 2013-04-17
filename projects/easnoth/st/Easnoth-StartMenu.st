@@ -36,7 +36,7 @@ renderOn: html
 startBeta
 	"'body' asJQuery remove: box."
 	box hidden.
-	CWBootstrapper bootstrap: 5
+	CWBootstrapper bootstrap: 7
 ! !
 
 !CWStartMenu class methodsFor: 'not yet classified'!

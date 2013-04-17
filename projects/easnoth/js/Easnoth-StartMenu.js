@@ -62,10 +62,10 @@ var self=this;
 function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@box"])._hidden();
-_st($CWBootstrapper())._bootstrap_((5));
+_st($CWBootstrapper())._bootstrap_((7));
 return self}, function($ctx1) {$ctx1.fill(self,"startBeta",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startBeta\x0a\x09\x22'body' asJQuery remove: box.\x22\x0a\x09box hidden.\x0a\x09CWBootstrapper bootstrap: 5",
+source: "startBeta\x0a\x09\x22'body' asJQuery remove: box.\x22\x0a\x09box hidden.\x0a\x09CWBootstrapper bootstrap: 7",
 messageSends: ["hidden", "bootstrap:"],
 referencedClasses: ["CWBootstrapper"]
 }),

@@ -237,19 +237,20 @@ troopClass
 !CWCell methodsFor: 'initialize-release'!
 
 initializeFromJson: aJsonCell
-    | elements |
+    | elements ots |
     
     elements := aJsonCell keys.
     background := Array new.
 	
-    elements first = 'tile'
+	(elements includes: 'tile') 
     	ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].
-    (elements includes: 'overtiles') 
-    	ifTrue: [ self backgroundAddAll: (aJsonCell overtiles collect: [:each | 
-			self newOverTile initializeFromKey: each overtile] ) ].
-    elements last = 'heros'
+	"replace match: with beginsWith: later ..."
+	ots := aJsonCell keys select: [ :each | each match: 'overtile' ].
+	ots do: [ :each |
+		self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].
+	(elements includes: 'heros') 
     	ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].
-    elements last = 'troop'
+	(elements includes: 'troop') 
     	ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].
 ! !
 

@@ -926,3 +926,19 @@ smalltalk.addClass('CWBasicAggressiveAI', smalltalk.CWAI, [], 'Easnoth-Game');
 smalltalk.addClass('CWHuman', smalltalk.CWPlayer, [], 'Easnoth-Game');
 
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "subStrings:",
+category: '*Easnoth-Game',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self.split(aString);
+return self}, function($ctx1) {$ctx1.fill(self,"subStrings:",{aString:aString},smalltalk.String)})},
+args: ["aString"],
+source: "subStrings: aString\x0a\x09<return self.split(aString)>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.String);
+
