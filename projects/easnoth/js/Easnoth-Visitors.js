@@ -674,13 +674,13 @@ var self=this;
 var imageName;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-imageName=_st(_st(url)._subStrings_("/"))._last();
-$1=_st(_st(imageName)._subStrings_("."))._first();
+imageName=_st(_st(url)._tokenize_("/"))._last();
+$1=_st(_st(imageName)._tokenize_("."))._first();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"extractKeyFrom:",{url:url,imageName:imageName},smalltalk.CWJsonWriter)})},
 args: ["url"],
-source: "extractKeyFrom: url\x0a\x09| imageName |\x0a\x09imageName := (url subStrings: '/') last.\x0a\x09^ (imageName subStrings: '.') first",
-messageSends: ["last", "subStrings:", "first"],
+source: "extractKeyFrom: url\x0a\x09| imageName |\x0a\x09imageName := (url tokenize: '/') last.\x0a\x09^ (imageName tokenize: '.') first",
+messageSends: ["last", "tokenize:", "first"],
 referencedClasses: []
 }),
 smalltalk.CWJsonWriter);

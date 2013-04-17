@@ -202,8 +202,8 @@ CWVisitor subclass: #CWJsonWriter
 
 extractKeyFrom: url
 	| imageName |
-	imageName := (url subStrings: '/') last.
-	^ (imageName subStrings: '.') first
+	imageName := (url tokenize: '/') last.
+	^ (imageName tokenize: '.') first
 ! !
 
 !CWJsonWriter methodsFor: 'initialize-release'!

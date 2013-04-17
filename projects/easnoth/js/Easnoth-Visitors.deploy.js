@@ -488,11 +488,11 @@ var self=this;
 var imageName;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-imageName=_st(_st(url)._subStrings_("/"))._last();
-$1=_st(_st(imageName)._subStrings_("."))._first();
+imageName=_st(_st(url)._tokenize_("/"))._last();
+$1=_st(_st(imageName)._tokenize_("."))._first();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"extractKeyFrom:",{url:url,imageName:imageName},smalltalk.CWJsonWriter)})},
-messageSends: ["last", "subStrings:", "first"]}),
+messageSends: ["last", "tokenize:", "first"]}),
 smalltalk.CWJsonWriter);
 
 smalltalk.addMethod(
