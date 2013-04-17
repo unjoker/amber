@@ -1,11 +1,20 @@
 Smalltalk current createPackage: 'Easnoth-StartMenu'!
+Widget subclass: #CWGameSettings
+	instanceVariableNames: 'players mapNumber'
+	package: 'Easnoth-StartMenu'!
+
 Widget subclass: #CWStartMenu
-	instanceVariableNames: 'box'
+	instanceVariableNames: 'box gameSettings'
 	package: 'Easnoth-StartMenu'!
 !CWStartMenu commentStamp!
 Should implement the menu with multiplayer and stuff here!
 
 !CWStartMenu methodsFor: 'rendering'!
+
+initialize
+	super initialize.
+	gameSettings := CWGameSettings new
+!
 
 renderOn: html
 	box := html div
@@ -19,14 +28,36 @@ renderOn: html
 					html li
 						with: [ html a 
 							href: '#';
-							with: 'tutorial'; 
+							style: 'color: #aaa';
+							with: 'Tutorial'; 
 							onClick: [window alert: 'for future use' ] 
 					].
 					html li
 						with: [ html a 
 							href: '#';
-							with: 'run beta'; 
+							style: 'color: #aaa';
+							with: 'Campaign'; 
+							onClick: [window alert: 'for future use' ] 
+					].
+					html li
+						with: [ html a 
+							href: '#';
+							with: 'Custom game'; 
 							onClick: [self startBeta ] 
+					].
+					html li
+						with: [ html a 
+							href: '#';
+							with: 'Network game'; 
+							style: 'color: #aaa';
+							onClick: [ window alert: 'for future use'  ] 
+					].
+					html li
+						with: [ html a 
+							href: '#';
+							with: 'Credits'; 
+							style: 'color: #aaa';
+							onClick: [ window alert: 'for future use'  ] 
 					].
 			]
 		];

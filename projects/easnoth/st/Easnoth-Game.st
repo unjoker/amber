@@ -376,9 +376,3 @@ CWPlayer subclass: #CWHuman
 	instanceVariableNames: ''
 	package: 'Easnoth-Game'!
 
-!String methodsFor: '*Easnoth-Game'!
-
-subStrings: aString
-	<return self.split(aString)>
-! !
-
