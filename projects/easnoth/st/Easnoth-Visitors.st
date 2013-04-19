@@ -518,7 +518,6 @@ initialize
 
 initializeForMap: aMap
 	map := aMap.
-	Transcript show: 'init mapDrawer with: ', map printString.
 	self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).
 !
 

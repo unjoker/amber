@@ -29,7 +29,7 @@ checkIfReady
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
-	Transcript show: gameSettings; cr.
+	"Transcript show: gameSettings; cr."
 	CWGame new initializeWithSettings: gameSettings
 !
 

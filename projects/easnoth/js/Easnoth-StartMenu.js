@@ -26,19 +26,14 @@ selector: "bootstrap:",
 category: 'initialize-release',
 fn: function (gameSettings){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=$Transcript();
-_st($1)._show_(gameSettings);
-$2=_st($1)._cr();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09Transcript show: gameSettings; cr.\x0a\x09CWGame new initializeWithSettings: gameSettings ",
-messageSends: ["show:", "cr", "initializeWithSettings:", "new"],
-referencedClasses: ["Transcript", "CWGame"]
+source: "bootstrap: gameSettings\x0a\x09\x22Transcript show: gameSettings; cr.\x22\x0a\x09CWGame new initializeWithSettings: gameSettings ",
+messageSends: ["initializeWithSettings:", "new"],
+referencedClasses: ["CWGame"]
 }),
 smalltalk.CWBootstrapper);
 

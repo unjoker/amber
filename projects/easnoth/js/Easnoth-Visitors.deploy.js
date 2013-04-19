@@ -1063,13 +1063,11 @@ smalltalk.method({
 selector: "initializeForMap:",
 fn: function (aMap){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=aMap;
-_st($Transcript())._show_(_st("init mapDrawer with: ").__comma(_st(self["@map"])._printString()));
 _st(_st(self)._padding())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(self["@map"])._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWMapDrawer)})},
-messageSends: ["show:", ",", "printString", "x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding"]}),
+messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
