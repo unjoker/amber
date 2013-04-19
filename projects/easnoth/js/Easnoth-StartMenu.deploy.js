@@ -19,16 +19,11 @@ smalltalk.method({
 selector: "bootstrap:",
 fn: function (gameSettings){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=$Transcript();
-_st($1)._show_(gameSettings);
-$2=_st($1)._cr();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
-messageSends: ["show:", "cr", "initializeWithSettings:", "new"]}),
+messageSends: ["initializeWithSettings:", "new"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
