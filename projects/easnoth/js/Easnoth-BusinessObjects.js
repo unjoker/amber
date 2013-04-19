@@ -1617,18 +1617,20 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "printString",
+selector: "printOn:",
 category: 'printing',
-fn: function (){
+fn: function (aStream){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st("a Map (").__comma(_st(self["@rows"])._size())).__comma(" rows)");
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"printString",{},smalltalk.CWMap)})},
-args: [],
-source: "printString\x0a\x09^ 'a Map (', rows size, ' rows)'",
-messageSends: [",", "size"],
+var $1,$2;
+$1=aStream;
+_st($1)._nextPutAll_("a Map (");
+_st($1)._nextPutAll_(_st(_st(self["@rows"])._size())._printString());
+$2=_st($1)._nextPutAll_(" rows)");
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWMap)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x09aStream\x0a\x09\x09nextPutAll: 'a Map (';\x0a\x09\x09nextPutAll: rows size printString;\x0a\x09\x09nextPutAll: ' rows)'",
+messageSends: ["nextPutAll:", "printString", "size"],
 referencedClasses: []
 }),
 smalltalk.CWMap);

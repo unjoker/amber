@@ -515,8 +515,11 @@ neighboursOf: row cellIndex: cellIndex
 
 !CWMap methodsFor: 'printing'!
 
-printString
-	^ 'a Map (', rows size, ' rows)'
+printOn: aStream
+	aStream
+		nextPutAll: 'a Map (';
+		nextPutAll: rows size printString;
+		nextPutAll: ' rows)'
 ! !
 
 !CWMap methodsFor: 'rendering'!
