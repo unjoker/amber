@@ -1198,15 +1198,17 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "printString",
-fn: function (){
+selector: "printOn:",
+fn: function (aStream){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st("a Map (").__comma(_st(self["@rows"])._size())).__comma(" rows)");
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"printString",{},smalltalk.CWMap)})},
-messageSends: [",", "size"]}),
+var $1,$2;
+$1=aStream;
+_st($1)._nextPutAll_("a Map (");
+_st($1)._nextPutAll_(_st(_st(self["@rows"])._size())._printString());
+$2=_st($1)._nextPutAll_(" rows)");
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWMap)})},
+messageSends: ["nextPutAll:", "printString", "size"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(

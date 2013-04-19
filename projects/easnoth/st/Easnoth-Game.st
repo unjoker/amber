@@ -1,67 +1,4 @@
 Smalltalk current createPackage: 'Easnoth-Game'!
-Object subclass: #CWBootstrapper
-	instanceVariableNames: 'objectToLoad objectLoaded'
-	package: 'Easnoth-Game'!
-!CWBootstrapper commentStamp!
-Bootstrap the system. Currently work only for games, not for the map editor!
-
-!CWBootstrapper methodsFor: 'accessing'!
-
-announcer
-	^ CWEasnothAnnouncer current
-!
-
-imagesToPreload
-	^ Array new
-		add: 'red';
-		add: 'green';
-		add: 'white';
-		yourself
-! !
-
-!CWBootstrapper methodsFor: 'events'!
-
-checkIfReady
-	objectToLoad = objectLoaded
-		ifTrue: [ self announcer announce: CWGameStart new]
-! !
-
-!CWBootstrapper methodsFor: 'initialize-release'!
-
-bootstrap: mapIndex
-	CWGame newWithMapIndex: mapIndex
-!
-
-initialize
-	super initialize.
-	objectToLoad := 0.
-	objectLoaded := 0.
-	self initializeEventHandling.
-	self preloadImages
-!
-
-initializeEventHandling
-	self announcer 
-		on: CWWaitForObject 
-		do: [ objectToLoad := objectToLoad + 1 ].
-	self announcer 
-		on: CWObjectLoaded 
-			do: [ objectLoaded := objectLoaded + 1.
-				self checkIfReady].
-!
-
-preloadImages
-	self imagesToPreload do: [ :key |
-		CWGameOverTile newImageFrom: key ]
-! !
-
-!CWBootstrapper class methodsFor: 'instance creation'!
-
-bootstrap: mapIndex
-	^ self new
-		bootstrap: mapIndex
-! !
-
 Object subclass: #CWEventDispatcher
 	instanceVariableNames: 'canvas map padding game'
 	package: 'Easnoth-Game'!
@@ -289,23 +226,14 @@ initializeEventHandling
 		do: [ self nextTurn ]
 !
 
-initializeMapWithIndex: index
-	map := CWMap newWithMapIndex: index.
+initializeWithSettings: gameSettings
+	map := CWMap newWithMapIndex: gameSettings mapNumber.
+	playerPool := gameSettings players.
 	self initializeEventHandling.
 !
 
 removeLoadingBar
 	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
-! !
-
-!CWGame class methodsFor: 'instance creation'!
-
-newWithMapIndex: index
-	^ self new initializeMapWithIndex: index
-!
-
-newWithMapIndex: index ai: aBool
-	^ self new initializeMapWithIndex: index
 ! !
 
 Object subclass: #CWGameContext
@@ -355,7 +283,7 @@ initialize
 ! !
 
 Object subclass: #CWPlayer
-	instanceVariableNames: 'side'
+	instanceVariableNames: 'side team'
 	package: 'Easnoth-Game'!
 !CWPlayer commentStamp!
 I represent a player playing Easnoth.!
@@ -365,10 +293,6 @@ CWPlayer subclass: #CWAI
 	package: 'Easnoth-Game'!
 
 CWAI subclass: #CWAggressWeakestAI
-	instanceVariableNames: ''
-	package: 'Easnoth-Game'!
-
-CWAI subclass: #CWBasicAggressiveAI
 	instanceVariableNames: ''
 	package: 'Easnoth-Game'!
 

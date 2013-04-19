@@ -1,175 +1,4 @@
 smalltalk.addPackage('Easnoth-Game');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded'], 'Easnoth-Game');
-smalltalk.CWBootstrapper.comment="Bootstrap the system. Currently work only for games, not for the map editor"
-smalltalk.addMethod(
-smalltalk.method({
-selector: "announcer",
-category: 'accessing',
-fn: function (){
-var self=this;
-function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st($CWEasnothAnnouncer())._current();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWBootstrapper)})},
-args: [],
-source: "announcer\x0a\x09^ CWEasnothAnnouncer current",
-messageSends: ["current"],
-referencedClasses: ["CWEasnothAnnouncer"]
-}),
-smalltalk.CWBootstrapper);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "bootstrap:",
-category: 'initialize-release',
-fn: function (mapIndex){
-var self=this;
-function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
-return smalltalk.withContext(function($ctx1) { 
-_st($CWGame())._newWithMapIndex_(mapIndex);
-return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{mapIndex:mapIndex},smalltalk.CWBootstrapper)})},
-args: ["mapIndex"],
-source: "bootstrap: mapIndex\x0a\x09CWGame newWithMapIndex: mapIndex",
-messageSends: ["newWithMapIndex:"],
-referencedClasses: ["CWGame"]
-}),
-smalltalk.CWBootstrapper);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "checkIfReady",
-category: 'events',
-fn: function (){
-var self=this;
-function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self["@objectToLoad"]).__eq(self["@objectLoaded"]);
-if(smalltalk.assert($1)){
-_st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
-};
-return self}, function($ctx1) {$ctx1.fill(self,"checkIfReady",{},smalltalk.CWBootstrapper)})},
-args: [],
-source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ self announcer announce: CWGameStart new]",
-messageSends: ["ifTrue:", "announce:", "new", "announcer", "="],
-referencedClasses: ["CWGameStart"]
-}),
-smalltalk.CWBootstrapper);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "imagesToPreload",
-category: 'accessing',
-fn: function (){
-var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$3,$1;
-$2=_st($Array())._new();
-_st($2)._add_("red");
-_st($2)._add_("green");
-_st($2)._add_("white");
-$3=_st($2)._yourself();
-$1=$3;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"imagesToPreload",{},smalltalk.CWBootstrapper)})},
-args: [],
-source: "imagesToPreload\x0a\x09^ Array new\x0a\x09\x09add: 'red';\x0a\x09\x09add: 'green';\x0a\x09\x09add: 'white';\x0a\x09\x09yourself",
-messageSends: ["add:", "new", "yourself"],
-referencedClasses: ["Array"]
-}),
-smalltalk.CWBootstrapper);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initialize",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@objectToLoad"]=(0);
-self["@objectLoaded"]=(0);
-_st(self)._initializeEventHandling();
-_st(self)._preloadImages();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWBootstrapper)})},
-args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09objectToLoad := 0.\x0a\x09objectLoaded := 0.\x0a\x09self initializeEventHandling.\x0a\x09self preloadImages",
-messageSends: ["initialize", "initializeEventHandling", "preloadImages"],
-referencedClasses: []
-}),
-smalltalk.CWBootstrapper);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeEventHandling",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
-function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._announcer())._on_do_($CWWaitForObject(),(function(){
-return smalltalk.withContext(function($ctx2) {
-self["@objectToLoad"]=_st(self["@objectToLoad"]).__plus((1));
-return self["@objectToLoad"];
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWObjectLoaded(),(function(){
-return smalltalk.withContext(function($ctx2) {
-self["@objectLoaded"]=_st(self["@objectLoaded"]).__plus((1));
-self["@objectLoaded"];
-return _st(self)._checkIfReady();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWBootstrapper)})},
-args: [],
-source: "initializeEventHandling\x0a\x09self announcer \x0a\x09\x09on: CWWaitForObject \x0a\x09\x09do: [ objectToLoad := objectToLoad + 1 ].\x0a\x09self announcer \x0a\x09\x09on: CWObjectLoaded \x0a\x09\x09\x09do: [ objectLoaded := objectLoaded + 1.\x0a\x09\x09\x09\x09self checkIfReady].",
-messageSends: ["on:do:", "+", "announcer", "checkIfReady"],
-referencedClasses: ["CWWaitForObject", "CWObjectLoaded"]
-}),
-smalltalk.CWBootstrapper);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "preloadImages",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-function $CWGameOverTile(){return smalltalk.CWGameOverTile||(typeof CWGameOverTile=="undefined"?nil:CWGameOverTile)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._imagesToPreload())._do_((function(key){
-return smalltalk.withContext(function($ctx2) {
-return _st($CWGameOverTile())._newImageFrom_(key);
-}, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"preloadImages",{},smalltalk.CWBootstrapper)})},
-args: [],
-source: "preloadImages\x0a\x09self imagesToPreload do: [ :key |\x0a\x09\x09CWGameOverTile newImageFrom: key ]\x0a\x09",
-messageSends: ["do:", "newImageFrom:", "imagesToPreload"],
-referencedClasses: ["CWGameOverTile"]
-}),
-smalltalk.CWBootstrapper);
-
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "bootstrap:",
-category: 'instance creation',
-fn: function (mapIndex){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._bootstrap_(mapIndex);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{mapIndex:mapIndex},smalltalk.CWBootstrapper.klass)})},
-args: ["mapIndex"],
-source: "bootstrap: mapIndex\x0a\x09^ self new\x0a\x09\x09bootstrap: mapIndex",
-messageSends: ["bootstrap:", "new"],
-referencedClasses: []
-}),
-smalltalk.CWBootstrapper.klass);
-
-
 smalltalk.addClass('CWEventDispatcher', smalltalk.Object, ['canvas', 'map', 'padding', 'game'], 'Easnoth-Game');
 smalltalk.CWEventDispatcher.comment="I dispatch event from eventManager canvas to cells. "
 smalltalk.addMethod(
@@ -640,18 +469,19 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeMapWithIndex:",
+selector: "initializeWithSettings:",
 category: 'initialize-release',
-fn: function (index){
+fn: function (gameSettings){
 var self=this;
 function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
 return smalltalk.withContext(function($ctx1) { 
-self["@map"]=_st($CWMap())._newWithMapIndex_(index);
+self["@map"]=_st($CWMap())._newWithMapIndex_(_st(gameSettings)._mapNumber());
+self["@playerPool"]=_st(gameSettings)._players();
 _st(self)._initializeEventHandling();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeMapWithIndex:",{index:index},smalltalk.CWGameBoard)})},
-args: ["index"],
-source: "initializeMapWithIndex: index\x0a\x09map := CWMap newWithMapIndex: index.\x0a\x09self initializeEventHandling.\x0a\x09",
-messageSends: ["newWithMapIndex:", "initializeEventHandling"],
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSettings:",{gameSettings:gameSettings},smalltalk.CWGame)})},
+args: ["gameSettings"],
+source: "initializeWithSettings: gameSettings\x0a\x09map := CWMap newWithMapIndex: gameSettings mapNumber.\x0a\x09playerPool := gameSettings players.\x0a\x09self initializeEventHandling.",
+messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializeEventHandling"],
 referencedClasses: ["CWMap"]
 }),
 smalltalk.CWGame);
@@ -730,42 +560,6 @@ referencedClasses: ["CWEventDispatcher"]
 }),
 smalltalk.CWGame);
 
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newWithMapIndex:",
-category: 'instance creation',
-fn: function (index){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._initializeMapWithIndex_(index);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:",{index:index},smalltalk.CWGame.klass)})},
-args: ["index"],
-source: "newWithMapIndex: index\x0a\x09^ self new initializeMapWithIndex: index ",
-messageSends: ["initializeMapWithIndex:", "new"],
-referencedClasses: []
-}),
-smalltalk.CWGame.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newWithMapIndex:ai:",
-category: 'instance creation',
-fn: function (index,aBool){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._initializeMapWithIndex_(index);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWithMapIndex:ai:",{index:index,aBool:aBool},smalltalk.CWGame.klass)})},
-args: ["index", "aBool"],
-source: "newWithMapIndex: index ai: aBool\x0a\x09^ self new initializeMapWithIndex: index ",
-messageSends: ["initializeMapWithIndex:", "new"],
-referencedClasses: []
-}),
-smalltalk.CWGame.klass);
 
 
 smalltalk.addClass('CWGameContext', smalltalk.Object, ['currentPlayer', 'currentCell'], 'Easnoth-Game');
@@ -910,7 +704,7 @@ smalltalk.CWGameContext);
 
 
 
-smalltalk.addClass('CWPlayer', smalltalk.Object, ['side'], 'Easnoth-Game');
+smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-Game');
 smalltalk.CWPlayer.comment="I represent a player playing Easnoth."
 
 
@@ -918,9 +712,6 @@ smalltalk.addClass('CWAI', smalltalk.CWPlayer, [], 'Easnoth-Game');
 
 
 smalltalk.addClass('CWAggressWeakestAI', smalltalk.CWAI, [], 'Easnoth-Game');
-
-
-smalltalk.addClass('CWBasicAggressiveAI', smalltalk.CWAI, [], 'Easnoth-Game');
 
 
 smalltalk.addClass('CWHuman', smalltalk.CWPlayer, [], 'Easnoth-Game');
