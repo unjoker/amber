@@ -176,27 +176,33 @@ announce: event
 
 activateMonsters
 	| armyPlaying monster1 |
-
-	armyPlaying := map monstersFromSide: self gameContext currentPlayer.
-
+	armyPlaying := map monstersFromSide: self gameContext currentPlayerSide.
 	(armyPlaying size = 0) 
-		ifTrue: [ window alert: 'Someone just won. Guess who ? winner : ' , self gameContext currentPlayer negated ] 
+		ifTrue: [ window alert: 'Someone just won. Guess who ? loser : ' , self gameContext currentPlayer ] 
 		ifFalse: [ self pickMonster ]
 !
 
 firstTurn
+	self gameContext nextTurn: (playerPool at: 1).
 	self activateMonsters.
+!
+
+nextPlayer
+	| currentPlayer index |
+	currentPlayer := self gameContext currentPlayer. 
+	index := playerPool indexOf: currentPlayer.
+	^ playerPool at: index + 1 ifAbsent: [ playerPool at: 1 ]
 !
 
 nextTurn
 	map desactivateMonsters.
 	map removeSelection.
-	self gameContext nextTurn.
+	self gameContext nextTurn: self nextPlayer.
 	self activateMonsters.
 !
 
 pickMonster
-	map readyToPickMonsters: self gameContext currentPlayer.
+	map readyToPickMonsters: self gameContext currentPlayerSide.
 	map showActiveMonsters.
 	map updateGOTs.
 !
@@ -226,9 +232,15 @@ initializeEventHandling
 		do: [ self nextTurn ]
 !
 
+initializePlayerSides
+	playerPool withIndexDo: [ :player :i |
+		player side: i - 1.5 * 2 ].
+!
+
 initializeWithSettings: gameSettings
 	map := CWMap newWithMapIndex: gameSettings mapNumber.
 	playerPool := gameSettings players.
+	self initializePlayerSides.
 	self initializeEventHandling.
 !
 
@@ -270,16 +282,9 @@ currentPlayerSide
 
 !CWGameContext methodsFor: 'game logic'!
 
-nextTurn
-	currentPlayer := currentPlayer negated.
-	currentCell := nil.
-! !
-
-!CWGameContext methodsFor: 'initialize-release'!
-
-initialize
-	super initialize.
-	currentPlayer := 2 atRandom - 1.5 * 2
+nextTurn: nextPlayer
+	currentPlayer := nextPlayer.
+	currentCell := nil
 ! !
 
 Object subclass: #CWPlayer
@@ -287,6 +292,19 @@ Object subclass: #CWPlayer
 	package: 'Easnoth-Game'!
 !CWPlayer commentStamp!
 I represent a player playing Easnoth.!
+
+!CWPlayer methodsFor: 'accessing'!
+
+side
+	^ side
+!
+
+side: int
+	side := int
+!
+
+startTurn
+! !
 
 CWPlayer subclass: #CWAI
 	instanceVariableNames: ''

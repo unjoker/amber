@@ -1,0 +1,7 @@
+{
+    "army": "trolls",
+    "heros": "warrior",
+    "warrior": "grunt",
+    "archer" : "lobber",
+    "mage" : "shaman"
+}

@@ -29,7 +29,7 @@ checkIfReady
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
-	"Transcript show: gameSettings; cr."
+	Transcript show: gameSettings; cr.
 	CWGame new initializeWithSettings: gameSettings
 !
 
@@ -66,6 +66,8 @@ bootstrap: gameSettings
 Widget subclass: #CWGameSettings
 	instanceVariableNames: 'players mapNumber'
 	package: 'Easnoth-StartMenu'!
+!CWGameSettings commentStamp!
+I represent the game settings. My instance variables are set before the game, in the start menus. Then, the CWBootstrapper handles my data to launch corectly the game.!
 
 !CWGameSettings methodsFor: 'accessing'!
 
@@ -145,6 +147,18 @@ initialize
 
 !CWStartMenu methodsFor: 'rendering'!
 
+armySelectBox: playerNumber on: html
+	| selectBox |
+	selectBox := html select.
+	selectBox
+		onChange: [];
+		with: [
+			html option with: 'elves'.
+			html option with: 'humans'.
+			html option with: 'merfolks'.
+			html option with: 'trolls' ].
+!
+
 menuOn: html with: dict
 	^ html div
 		class: 'intro';
@@ -170,39 +184,33 @@ playerMenu
 				html ul 
 					class: 'menu';
 					with: [
-						html li with: 'Player 1'.
-						html li with: [
-							selectBox := html select. 
-							selectBox onChange: [ gameSettings players at: 1 put: (Smalltalk current at: selectBox asJQuery val) new ];
-								with: [
-									html option 
-										with: 'human';
-										value: 'CWHuman'.
-									html option 
-										with: 'AI type 1';
-										value: 'CWAggressWeakestAI'].
-							html select 
-								onChange: [];
-								with: [
-									html option with: 'elves'.
-									html option with: 'humans'.
-									html option with: 'merfolks'.
-									html option with: 'trolls'. ] ].
-						html li with: 'Player 2'.
-						html li with: [
-							html select 
-								onChange: [];
-								with: [
-									html option with: 'human'.
-									html option with: 'AI type 1' ].
-							html select 
-								onChange: [];
-								with: [
-									html option with: 'army 2' ] ].
+						1 to: 2 do: [ :n |
+							self playerSelection: n on: html ].
 						html li with: [
 							html button
 								with: 'start';
 								onClick: [ self startBeta ] ] ] ]
+!
+
+playerSelectBox: playerNumber on: html
+	| selectBox |
+	selectBox := html select. 
+	selectBox 
+		onChange: [ gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new ];
+		with: [
+			html option 
+				with: 'human';
+				value: 'CWHuman'.
+			html option 
+				with: 'AI type 1';
+				value: 'CWAggressWeakestAI'].
+!
+
+playerSelection: playerNumber on: html
+	html li with: 'Player ', playerNumber.
+	html li with: [
+		self playerSelectBox: playerNumber on: html.
+		self armySelectBox: playerNumber on: html ].
 !
 
 renderOn: html
