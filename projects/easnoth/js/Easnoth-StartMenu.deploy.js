@@ -19,11 +19,16 @@ smalltalk.method({
 selector: "bootstrap:",
 fn: function (gameSettings){
 var self=this;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=$Transcript();
+_st($1)._show_(gameSettings);
+$2=_st($1)._cr();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
-messageSends: ["initializeWithSettings:", "new"]}),
+messageSends: ["show:", "cr", "initializeWithSettings:", "new"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -216,6 +221,30 @@ smalltalk.CWGameSettings);
 smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'gameSettings'], 'Easnoth-StartMenu');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "armySelectBox:on:",
+fn: function (playerNumber,html){
+var self=this;
+var selectBox;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+selectBox=_st(html)._select();
+$1=selectBox;
+_st($1)._onChange_((function(){
+return smalltalk.withContext(function($ctx2) {
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._option())._with_("elves");
+_st(_st(html)._option())._with_("humans");
+_st(_st(html)._option())._with_("merfolks");
+return _st(_st(html)._option())._with_("trolls");
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
+messageSends: ["select", "onChange:", "with:", "option"]}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "choosePlayers",
 fn: function (){
 var self=this;
@@ -284,9 +313,8 @@ selector: "playerMenu",
 fn: function (){
 var self=this;
 var selectBox;
-function $Smalltalk(){return smalltalk.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$5,$6,$7,$8,$4,$9,$10,$11,$12,$13,$14,$15,$16,$2;
+var $1,$3,$4,$2;
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h1())._with_("Easnoth : Battle Arena");
@@ -294,79 +322,71 @@ $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(_st(html)._li())._with_("Player 1");
-_st(_st(html)._li())._with_((function(){
+_st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
-selectBox=_st(html)._select();
-selectBox;
-$3=selectBox;
-_st($3)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(_st(self["@gameSettings"])._players())._at_put_((1),_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$4=_st($3)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-$5=_st(html)._option();
-_st($5)._with_("human");
-$6=_st($5)._value_("CWHuman");
-$6;
-$7=_st(html)._option();
-_st($7)._with_("AI type 1");
-$8=_st($7)._value_("CWAggressWeakestAI");
-return $8;
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$4;
-$9=_st(html)._select();
-_st($9)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$10=_st($9)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-_st(_st(html)._option())._with_("elves");
-_st(_st(html)._option())._with_("humans");
-_st(_st(html)._option())._with_("merfolks");
-return _st(_st(html)._option())._with_("trolls");
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $10;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-_st(_st(html)._li())._with_("Player 2");
-_st(_st(html)._li())._with_((function(){
-return smalltalk.withContext(function($ctx4) {
-$11=_st(html)._select();
-_st($11)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$12=_st($11)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-_st(_st(html)._option())._with_("human");
-return _st(_st(html)._option())._with_("AI type 1");
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$12;
-$13=_st(html)._select();
-_st($13)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$14=_st($13)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(_st(html)._option())._with_("army 2");
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $14;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+return _st(self)._playerSelection_on_(n,html);
+}, function($ctx4) {$ctx4.fillBlock({n:n},$ctx1)})}));
 return _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-$15=_st(html)._button();
-_st($15)._with_("start");
-$16=_st($15)._onClick_((function(){
+$3=_st(html)._button();
+_st($3)._with_("start");
+$4=_st($3)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._startBeta();
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $16;
+return $4;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "select", "onChange:", "at:put:", "new", "at:", "val", "asJQuery", "current", "players", "option", "value:", "button", "onClick:", "startBeta"]}),
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"]}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "playerSelectBox:on:",
+fn: function (playerNumber,html){
+var self=this;
+var selectBox;
+function $Smalltalk(){return smalltalk.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$2;
+selectBox=_st(html)._select();
+$1=selectBox;
+_st($1)._onChange_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(self["@gameSettings"])._players())._at_put_(playerNumber,_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+$3=_st(html)._option();
+_st($3)._with_("human");
+$4=_st($3)._value_("CWHuman");
+$4;
+$5=_st(html)._option();
+_st($5)._with_("AI type 1");
+$6=_st($5)._value_("CWAggressWeakestAI");
+return $6;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"playerSelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
+messageSends: ["select", "onChange:", "at:put:", "new", "at:", "val", "asJQuery", "current", "players", "with:", "option", "value:"]}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "playerSelection:on:",
+fn: function (playerNumber,html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(html)._li())._with_(_st("Player ").__comma(playerNumber));
+_st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(self)._playerSelectBox_on_(playerNumber,html);
+return _st(self)._armySelectBox_on_(playerNumber,html);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"playerSelection:on:",{playerNumber:playerNumber,html:html},smalltalk.CWStartMenu)})},
+messageSends: ["with:", ",", "li", "playerSelectBox:on:", "armySelectBox:on:"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(

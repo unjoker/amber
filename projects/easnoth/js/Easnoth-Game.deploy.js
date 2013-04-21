@@ -254,15 +254,15 @@ var self=this;
 var armyPlaying,monster1;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-armyPlaying=_st(self["@map"])._monstersFromSide_(_st(_st(self)._gameContext())._currentPlayer());
+armyPlaying=_st(self["@map"])._monstersFromSide_(_st(_st(self)._gameContext())._currentPlayerSide());
 $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
-_st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(_st(self)._gameContext())._currentPlayer())._negated()));
+_st(window)._alert_(_st("Someone just won. Guess who ? loser : ").__comma(_st(_st(self)._gameContext())._currentPlayer()));
 } else {
 _st(self)._pickMonster();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"activateMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.CWGame)})},
-messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "=", "size"]}),
+messageSends: ["monstersFromSide:", "currentPlayerSide", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "currentPlayer", "pickMonster", "=", "size"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -307,9 +307,10 @@ selector: "firstTurn",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._gameContext())._nextTurn_(_st(self["@playerPool"])._at_((1)));
 _st(self)._activateMonsters();
 return self}, function($ctx1) {$ctx1.fill(self,"firstTurn",{},smalltalk.CWGame)})},
-messageSends: ["activateMonsters"]}),
+messageSends: ["nextTurn:", "at:", "gameContext", "activateMonsters"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -362,6 +363,20 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializePlayerSides",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@playerPool"])._withIndexDo_((function(player,i){
+return smalltalk.withContext(function($ctx2) {
+return _st(player)._side_(_st(_st(i).__minus((1.5))).__star((2)));
+}, function($ctx2) {$ctx2.fillBlock({player:player,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializePlayerSides",{},smalltalk.CWGame)})},
+messageSends: ["withIndexDo:", "side:", "*", "-"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeWithSettings:",
 fn: function (gameSettings){
 var self=this;
@@ -369,9 +384,29 @@ function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=_st($CWMap())._newWithMapIndex_(_st(gameSettings)._mapNumber());
 self["@playerPool"]=_st(gameSettings)._players();
+_st(self)._initializePlayerSides();
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSettings:",{gameSettings:gameSettings},smalltalk.CWGame)})},
-messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializeEventHandling"]}),
+messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializePlayerSides", "initializeEventHandling"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextPlayer",
+fn: function (){
+var self=this;
+var currentPlayer,index;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+currentPlayer=_st(_st(self)._gameContext())._currentPlayer();
+index=_st(self["@playerPool"])._indexOf_(currentPlayer);
+$1=_st(self["@playerPool"])._at_ifAbsent_(_st(index).__plus((1)),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self["@playerPool"])._at_((1));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"nextPlayer",{currentPlayer:currentPlayer,index:index},smalltalk.CWGame)})},
+messageSends: ["currentPlayer", "gameContext", "indexOf:", "at:ifAbsent:", "+", "at:"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -382,10 +417,10 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@map"])._desactivateMonsters();
 _st(self["@map"])._removeSelection();
-_st(_st(self)._gameContext())._nextTurn();
+_st(_st(self)._gameContext())._nextTurn_(_st(self)._nextPlayer());
 _st(self)._activateMonsters();
 return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
-messageSends: ["desactivateMonsters", "removeSelection", "nextTurn", "gameContext", "activateMonsters"]}),
+messageSends: ["desactivateMonsters", "removeSelection", "nextTurn:", "nextPlayer", "gameContext", "activateMonsters"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -394,11 +429,11 @@ selector: "pickMonster",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayer());
+_st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayerSide());
 _st(self["@map"])._showActiveMonsters();
 _st(self["@map"])._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"pickMonster",{},smalltalk.CWGame)})},
-messageSends: ["readyToPickMonsters:", "currentPlayer", "gameContext", "showActiveMonsters", "updateGOTs"]}),
+messageSends: ["readyToPickMonsters:", "currentPlayerSide", "gameContext", "showActiveMonsters", "updateGOTs"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -507,31 +542,53 @@ smalltalk.CWGameContext);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-fn: function (){
+selector: "nextTurn:",
+fn: function (nextPlayer){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@currentPlayer"]=_st(_st(_st((2))._atRandom()).__minus((1.5))).__star((2));
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameContext)})},
-messageSends: ["initialize", "*", "-", "atRandom"]}),
-smalltalk.CWGameContext);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "nextTurn",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@currentPlayer"]=_st(self["@currentPlayer"])._negated();
+self["@currentPlayer"]=nextPlayer;
 self["@currentCell"]=nil;
-return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGameContext)})},
-messageSends: ["negated"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"nextTurn:",{nextPlayer:nextPlayer},smalltalk.CWGameContext)})},
+messageSends: []}),
 smalltalk.CWGameContext);
 
 
 
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-Game');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "side",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@side"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"side",{},smalltalk.CWPlayer)})},
+messageSends: []}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "side:",
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@side"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"side:",{int:int},smalltalk.CWPlayer)})},
+messageSends: []}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"startTurn",{},smalltalk.CWPlayer)})},
+messageSends: []}),
+smalltalk.CWPlayer);
+
 
 
 smalltalk.addClass('CWAI', smalltalk.CWPlayer, [], 'Easnoth-Game');

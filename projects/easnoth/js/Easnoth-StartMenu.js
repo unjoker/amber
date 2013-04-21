@@ -26,14 +26,19 @@ selector: "bootstrap:",
 category: 'initialize-release',
 fn: function (gameSettings){
 var self=this;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=$Transcript();
+_st($1)._show_(gameSettings);
+$2=_st($1)._cr();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09\x22Transcript show: gameSettings; cr.\x22\x0a\x09CWGame new initializeWithSettings: gameSettings ",
-messageSends: ["initializeWithSettings:", "new"],
-referencedClasses: ["CWGame"]
+source: "bootstrap: gameSettings\x0a\x09Transcript show: gameSettings; cr.\x0a\x09CWGame new initializeWithSettings: gameSettings ",
+messageSends: ["show:", "cr", "initializeWithSettings:", "new"],
+referencedClasses: ["Transcript", "CWGame"]
 }),
 smalltalk.CWBootstrapper);
 
@@ -171,6 +176,7 @@ smalltalk.CWBootstrapper.klass);
 
 
 smalltalk.addClass('CWGameSettings', smalltalk.Widget, ['players', 'mapNumber'], 'Easnoth-StartMenu');
+smalltalk.CWGameSettings.comment="I represent the game settings. My instance variables are set before the game, in the start menus. Then, the CWBootstrapper handles my data to launch corectly the game."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addPlayer:",
@@ -288,6 +294,35 @@ smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'gameSettings'], 'Ea
 smalltalk.CWStartMenu.comment="Should implement the menu with multiplayer and stuff here"
 smalltalk.addMethod(
 smalltalk.method({
+selector: "armySelectBox:on:",
+category: 'rendering',
+fn: function (playerNumber,html){
+var self=this;
+var selectBox;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+selectBox=_st(html)._select();
+$1=selectBox;
+_st($1)._onChange_((function(){
+return smalltalk.withContext(function($ctx2) {
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._option())._with_("elves");
+_st(_st(html)._option())._with_("humans");
+_st(_st(html)._option())._with_("merfolks");
+return _st(_st(html)._option())._with_("trolls");
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
+args: ["playerNumber", "html"],
+source: "armySelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select.\x0a\x09selectBox\x0a\x09\x09onChange: [];\x0a\x09\x09with: [\x0a\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09html option with: 'humans'.\x0a\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09html option with: 'trolls' ].",
+messageSends: ["select", "onChange:", "with:", "option"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "choosePlayers",
 category: 'game settings',
 fn: function (){
@@ -372,9 +407,8 @@ category: 'rendering',
 fn: function (){
 var self=this;
 var selectBox;
-function $Smalltalk(){return smalltalk.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$5,$6,$7,$8,$4,$9,$10,$11,$12,$13,$14,$15,$16,$2;
+var $1,$3,$4,$2;
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h1())._with_("Easnoth : Battle Arena");
@@ -382,82 +416,84 @@ $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(_st(html)._li())._with_("Player 1");
-_st(_st(html)._li())._with_((function(){
+_st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
-selectBox=_st(html)._select();
-selectBox;
-$3=selectBox;
-_st($3)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(_st(self["@gameSettings"])._players())._at_put_((1),_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$4=_st($3)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-$5=_st(html)._option();
-_st($5)._with_("human");
-$6=_st($5)._value_("CWHuman");
-$6;
-$7=_st(html)._option();
-_st($7)._with_("AI type 1");
-$8=_st($7)._value_("CWAggressWeakestAI");
-return $8;
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$4;
-$9=_st(html)._select();
-_st($9)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$10=_st($9)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-_st(_st(html)._option())._with_("elves");
-_st(_st(html)._option())._with_("humans");
-_st(_st(html)._option())._with_("merfolks");
-return _st(_st(html)._option())._with_("trolls");
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $10;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-_st(_st(html)._li())._with_("Player 2");
-_st(_st(html)._li())._with_((function(){
-return smalltalk.withContext(function($ctx4) {
-$11=_st(html)._select();
-_st($11)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$12=_st($11)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-_st(_st(html)._option())._with_("human");
-return _st(_st(html)._option())._with_("AI type 1");
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$12;
-$13=_st(html)._select();
-_st($13)._onChange_((function(){
-return smalltalk.withContext(function($ctx5) {
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-$14=_st($13)._with_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(_st(html)._option())._with_("army 2");
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $14;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+return _st(self)._playerSelection_on_(n,html);
+}, function($ctx4) {$ctx4.fillBlock({n:n},$ctx1)})}));
 return _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-$15=_st(html)._button();
-_st($15)._with_("start");
-$16=_st($15)._onClick_((function(){
+$3=_st(html)._button();
+_st($3)._with_("start");
+$4=_st($3)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._startBeta();
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $16;
+return $4;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: [],
-source: "playerMenu\x0a\x09| selectBox |\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: 'Player 1'.\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09selectBox := html select. \x0a\x09\x09\x09\x09\x09\x09\x09selectBox onChange: [ gameSettings players at: 1 put: (Smalltalk current at: selectBox asJQuery val) new ];\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09with: 'human';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09value: 'CWHuman'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09with: 'AI type 1';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09\x09value: 'CWAggressWeakestAI'].\x0a\x09\x09\x09\x09\x09\x09\x09html select \x0a\x09\x09\x09\x09\x09\x09\x09\x09onChange: [];\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'humans'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'trolls'. ] ].\x0a\x09\x09\x09\x09\x09\x09html li with: 'Player 2'.\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html select \x0a\x09\x09\x09\x09\x09\x09\x09\x09onChange: [];\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'human'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'AI type 1' ].\x0a\x09\x09\x09\x09\x09\x09\x09html select \x0a\x09\x09\x09\x09\x09\x09\x09\x09onChange: [];\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09html option with: 'army 2' ] ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "select", "onChange:", "at:put:", "new", "at:", "val", "asJQuery", "current", "players", "option", "value:", "button", "onClick:", "startBeta"],
+source: "playerMenu\x0a\x09| selectBox |\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "playerSelectBox:on:",
+category: 'rendering',
+fn: function (playerNumber,html){
+var self=this;
+var selectBox;
+function $Smalltalk(){return smalltalk.Smalltalk||(typeof Smalltalk=="undefined"?nil:Smalltalk)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$2;
+selectBox=_st(html)._select();
+$1=selectBox;
+_st($1)._onChange_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(self["@gameSettings"])._players())._at_put_(playerNumber,_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+$3=_st(html)._option();
+_st($3)._with_("human");
+$4=_st($3)._value_("CWHuman");
+$4;
+$5=_st(html)._option();
+_st($5)._with_("AI type 1");
+$6=_st($5)._value_("CWAggressWeakestAI");
+return $6;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"playerSelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
+args: ["playerNumber", "html"],
+source: "playerSelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select. \x0a\x09selectBox \x0a\x09\x09onChange: [ gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'human';\x0a\x09\x09\x09\x09value: 'CWHuman'.\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'AI type 1';\x0a\x09\x09\x09\x09value: 'CWAggressWeakestAI'].",
+messageSends: ["select", "onChange:", "at:put:", "new", "at:", "val", "asJQuery", "current", "players", "with:", "option", "value:"],
 referencedClasses: ["Smalltalk"]
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "playerSelection:on:",
+category: 'rendering',
+fn: function (playerNumber,html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(html)._li())._with_(_st("Player ").__comma(playerNumber));
+_st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(self)._playerSelectBox_on_(playerNumber,html);
+return _st(self)._armySelectBox_on_(playerNumber,html);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"playerSelection:on:",{playerNumber:playerNumber,html:html},smalltalk.CWStartMenu)})},
+args: ["playerNumber", "html"],
+source: "playerSelection: playerNumber on: html\x0a\x09html li with: 'Player ', playerNumber.\x0a\x09html li with: [\x0a\x09\x09self playerSelectBox: playerNumber on: html.\x0a\x09\x09self armySelectBox: playerNumber on: html ].",
+messageSends: ["with:", ",", "li", "playerSelectBox:on:", "armySelectBox:on:"],
+referencedClasses: []
 }),
 smalltalk.CWStartMenu);
 

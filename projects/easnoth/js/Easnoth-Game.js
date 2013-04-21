@@ -322,17 +322,17 @@ var self=this;
 var armyPlaying,monster1;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-armyPlaying=_st(self["@map"])._monstersFromSide_(_st(_st(self)._gameContext())._currentPlayer());
+armyPlaying=_st(self["@map"])._monstersFromSide_(_st(_st(self)._gameContext())._currentPlayerSide());
 $1=_st(_st(armyPlaying)._size()).__eq((0));
 if(smalltalk.assert($1)){
-_st(window)._alert_(_st("Someone just won. Guess who ? winner : ").__comma(_st(_st(_st(self)._gameContext())._currentPlayer())._negated()));
+_st(window)._alert_(_st("Someone just won. Guess who ? loser : ").__comma(_st(_st(self)._gameContext())._currentPlayer()));
 } else {
 _st(self)._pickMonster();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"activateMonsters",{armyPlaying:armyPlaying,monster1:monster1},smalltalk.CWGame)})},
 args: [],
-source: "activateMonsters\x0a\x09| armyPlaying monster1 |\x0a\x0a\x09armyPlaying := map monstersFromSide: self gameContext currentPlayer.\x0a\x0a\x09(armyPlaying size = 0) \x0a\x09\x09ifTrue: [ window alert: 'Someone just won. Guess who ? winner : ' , self gameContext currentPlayer negated ] \x0a\x09\x09ifFalse: [ self pickMonster ]",
-messageSends: ["monstersFromSide:", "currentPlayer", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "negated", "pickMonster", "=", "size"],
+source: "activateMonsters\x0a\x09| armyPlaying monster1 |\x0a\x09armyPlaying := map monstersFromSide: self gameContext currentPlayerSide.\x0a\x09(armyPlaying size = 0) \x0a\x09\x09ifTrue: [ window alert: 'Someone just won. Guess who ? loser : ' , self gameContext currentPlayer ] \x0a\x09\x09ifFalse: [ self pickMonster ]",
+messageSends: ["monstersFromSide:", "currentPlayerSide", "gameContext", "ifTrue:ifFalse:", "alert:", ",", "currentPlayer", "pickMonster", "=", "size"],
 referencedClasses: []
 }),
 smalltalk.CWGame);
@@ -395,11 +395,12 @@ category: 'game logic',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._gameContext())._nextTurn_(_st(self["@playerPool"])._at_((1)));
 _st(self)._activateMonsters();
 return self}, function($ctx1) {$ctx1.fill(self,"firstTurn",{},smalltalk.CWGame)})},
 args: [],
-source: "firstTurn\x0a\x09self activateMonsters.",
-messageSends: ["activateMonsters"],
+source: "firstTurn\x0a\x09self gameContext nextTurn: (playerPool at: 1).\x0a\x09self activateMonsters.",
+messageSends: ["nextTurn:", "at:", "gameContext", "activateMonsters"],
 referencedClasses: []
 }),
 smalltalk.CWGame);
@@ -469,6 +470,25 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializePlayerSides",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@playerPool"])._withIndexDo_((function(player,i){
+return smalltalk.withContext(function($ctx2) {
+return _st(player)._side_(_st(_st(i).__minus((1.5))).__star((2)));
+}, function($ctx2) {$ctx2.fillBlock({player:player,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializePlayerSides",{},smalltalk.CWGame)})},
+args: [],
+source: "initializePlayerSides\x0a\x09playerPool withIndexDo: [ :player :i |\x0a\x09\x09player side: i - 1.5 * 2 ].",
+messageSends: ["withIndexDo:", "side:", "*", "-"],
+referencedClasses: []
+}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeWithSettings:",
 category: 'initialize-release',
 fn: function (gameSettings){
@@ -477,12 +497,37 @@ function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=_st($CWMap())._newWithMapIndex_(_st(gameSettings)._mapNumber());
 self["@playerPool"]=_st(gameSettings)._players();
+_st(self)._initializePlayerSides();
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSettings:",{gameSettings:gameSettings},smalltalk.CWGame)})},
 args: ["gameSettings"],
-source: "initializeWithSettings: gameSettings\x0a\x09map := CWMap newWithMapIndex: gameSettings mapNumber.\x0a\x09playerPool := gameSettings players.\x0a\x09self initializeEventHandling.",
-messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializeEventHandling"],
+source: "initializeWithSettings: gameSettings\x0a\x09map := CWMap newWithMapIndex: gameSettings mapNumber.\x0a\x09playerPool := gameSettings players.\x0a\x09self initializePlayerSides.\x0a\x09self initializeEventHandling.",
+messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializePlayerSides", "initializeEventHandling"],
 referencedClasses: ["CWMap"]
+}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextPlayer",
+category: 'game logic',
+fn: function (){
+var self=this;
+var currentPlayer,index;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+currentPlayer=_st(_st(self)._gameContext())._currentPlayer();
+index=_st(self["@playerPool"])._indexOf_(currentPlayer);
+$1=_st(self["@playerPool"])._at_ifAbsent_(_st(index).__plus((1)),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self["@playerPool"])._at_((1));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"nextPlayer",{currentPlayer:currentPlayer,index:index},smalltalk.CWGame)})},
+args: [],
+source: "nextPlayer\x0a\x09| currentPlayer index |\x0a\x09currentPlayer := self gameContext currentPlayer. \x0a\x09index := playerPool indexOf: currentPlayer.\x0a\x09^ playerPool at: index + 1 ifAbsent: [ playerPool at: 1 ]",
+messageSends: ["currentPlayer", "gameContext", "indexOf:", "at:ifAbsent:", "+", "at:"],
+referencedClasses: []
 }),
 smalltalk.CWGame);
 
@@ -495,12 +540,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@map"])._desactivateMonsters();
 _st(self["@map"])._removeSelection();
-_st(_st(self)._gameContext())._nextTurn();
+_st(_st(self)._gameContext())._nextTurn_(_st(self)._nextPlayer());
 _st(self)._activateMonsters();
 return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGame)})},
 args: [],
-source: "nextTurn\x0a\x09map desactivateMonsters.\x0a\x09map removeSelection.\x0a\x09self gameContext nextTurn.\x0a\x09self activateMonsters.",
-messageSends: ["desactivateMonsters", "removeSelection", "nextTurn", "gameContext", "activateMonsters"],
+source: "nextTurn\x0a\x09map desactivateMonsters.\x0a\x09map removeSelection.\x0a\x09self gameContext nextTurn: self nextPlayer.\x0a\x09self activateMonsters.",
+messageSends: ["desactivateMonsters", "removeSelection", "nextTurn:", "nextPlayer", "gameContext", "activateMonsters"],
 referencedClasses: []
 }),
 smalltalk.CWGame);
@@ -512,13 +557,13 @@ category: 'game logic',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayer());
+_st(self["@map"])._readyToPickMonsters_(_st(_st(self)._gameContext())._currentPlayerSide());
 _st(self["@map"])._showActiveMonsters();
 _st(self["@map"])._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"pickMonster",{},smalltalk.CWGame)})},
 args: [],
-source: "pickMonster\x0a\x09map readyToPickMonsters: self gameContext currentPlayer.\x0a\x09map showActiveMonsters.\x0a\x09map updateGOTs.",
-messageSends: ["readyToPickMonsters:", "currentPlayer", "gameContext", "showActiveMonsters", "updateGOTs"],
+source: "pickMonster\x0a\x09map readyToPickMonsters: self gameContext currentPlayerSide.\x0a\x09map showActiveMonsters.\x0a\x09map updateGOTs.",
+messageSends: ["readyToPickMonsters:", "currentPlayerSide", "gameContext", "showActiveMonsters", "updateGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWGame);
@@ -670,34 +715,17 @@ smalltalk.CWGameContext);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@currentPlayer"]=_st(_st(_st((2))._atRandom()).__minus((1.5))).__star((2));
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameContext)})},
-args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09currentPlayer := 2 atRandom - 1.5 * 2",
-messageSends: ["initialize", "*", "-", "atRandom"],
-referencedClasses: []
-}),
-smalltalk.CWGameContext);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "nextTurn",
+selector: "nextTurn:",
 category: 'game logic',
-fn: function (){
+fn: function (nextPlayer){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@currentPlayer"]=_st(self["@currentPlayer"])._negated();
+self["@currentPlayer"]=nextPlayer;
 self["@currentCell"]=nil;
-return self}, function($ctx1) {$ctx1.fill(self,"nextTurn",{},smalltalk.CWGameContext)})},
-args: [],
-source: "nextTurn\x0a\x09currentPlayer := currentPlayer negated.\x0a\x09currentCell := nil.",
-messageSends: ["negated"],
+return self}, function($ctx1) {$ctx1.fill(self,"nextTurn:",{nextPlayer:nextPlayer},smalltalk.CWGameContext)})},
+args: ["nextPlayer"],
+source: "nextTurn: nextPlayer\x0a\x09currentPlayer := nextPlayer.\x0a\x09currentCell := nil",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWGameContext);
@@ -706,6 +734,55 @@ smalltalk.CWGameContext);
 
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-Game');
 smalltalk.CWPlayer.comment="I represent a player playing Easnoth."
+smalltalk.addMethod(
+smalltalk.method({
+selector: "side",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@side"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"side",{},smalltalk.CWPlayer)})},
+args: [],
+source: "side\x0a\x09^ side",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "side:",
+category: 'accessing',
+fn: function (int){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@side"]=int;
+return self}, function($ctx1) {$ctx1.fill(self,"side:",{int:int},smalltalk.CWPlayer)})},
+args: ["int"],
+source: "side: int\x0a\x09side := int",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startTurn",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"startTurn",{},smalltalk.CWPlayer)})},
+args: [],
+source: "startTurn",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWPlayer);
+
 
 
 smalltalk.addClass('CWAI', smalltalk.CWPlayer, [], 'Easnoth-Game');
