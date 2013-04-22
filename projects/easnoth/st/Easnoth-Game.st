@@ -208,6 +208,8 @@ pickMonster
 !
 
 startGame
+	playerPool do: [ :player |
+		player addMonstersToMap: map ].
 	self removeLoadingBar.
 	map initializeDrawer.
 	CWEventDispatcher new initializeForMap: map game: self.
@@ -237,10 +239,17 @@ initializePlayerSides
 		player side: i - 1.5 * 2 ].
 !
 
+initializePlayerTeams
+	playerPool do: [ :player |
+		map ifNil: [ Transcript show: #foo ].
+		player initializeWithMap: map ]
+!
+
 initializeWithSettings: gameSettings
 	map := CWMap newWithMapIndex: gameSettings mapNumber.
 	playerPool := gameSettings players.
 	self initializePlayerSides.
+	self initializePlayerTeams.
 	self initializeEventHandling.
 !
 
@@ -295,6 +304,22 @@ I represent a player playing Easnoth.!
 
 !CWPlayer methodsFor: 'accessing'!
 
+announce: event
+	self announcer announce: event
+!
+
+announcer
+	^ CWEasnothAnnouncer current
+!
+
+monstersPositionArray
+	"hack for now. should be stored in database"
+	
+	^ self side = 1
+		ifTrue: [ { 1@4 . 1@6 . 2@6. 3@6 . 4@6 } ]
+		ifFalse: [ { 7@1 . 8@1 . 9@1. 6@1 . 9@3 } ]
+!
+
 side
 	^ side
 !
@@ -303,7 +328,78 @@ side: int
 	side := int
 !
 
+team
+	^ team
+!
+
+team: aTeam
+	team := aTeam
+! !
+
+!CWPlayer methodsFor: 'factory'!
+
+newHeros: key army: army
+		^ self newMonster: key army: army class: CWHeros
+!
+
+newMonster: key army: army class: aClass
+		"creates a new monster with self as player"
+		^ aClass new initializeFromKey: key army: army player: self
+!
+
+newTroop: key army: army
+		^ self newMonster: key army: army class: CWTroop
+! !
+
+!CWPlayer methodsFor: 'game logic'!
+
 startTurn
+! !
+
+!CWPlayer methodsFor: 'initialize-release'!
+
+addMonstersToMap: aMap
+	"hack for now"
+	
+	| positions |
+	positions := self monstersPositionArray.
+	positions withIndexDo: [ :point :n |
+		((aMap childAt: point x) childAt: point y) addMonster: (team at: n) ].
+!
+
+initializeWithMap: aMap
+	"get the monsters of the player and put them in the map. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the players"
+	
+	self announce: CWWaitForObject new.
+	
+	jQuery 
+		getJSON: 'ressources/json/armies/', self team, '.json' 
+		onSuccess: [:data |
+			self initializeWithMap: aMap army: data.
+			self announce: CWObjectLoaded new]
+!
+
+initializeWithMap: aMap army: data
+		"initialize the monsters of the player and put them in the map. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player"
+		| monsters |
+		monsters := Array new.
+		1 to: 5 by: 2 do: [:n |
+			monsters at: n put: (self newTroop: data warrior army: team) ].
+		2 to: 4 by: 2 do: [:n |
+			monsters at: n put: (self newHeros: data heros army: team) ].
+		team := monsters.
+! !
+
+!CWPlayer methodsFor: 'printing'!
+
+printOn: aStream
+	aStream 
+		nextPutAll: self class name;
+		nextPutAll: '(';
+		nextPutAll: side printString;
+		nextPutAll: '-';
+		nextPutAll: team printString;
+		nextPutAll: ')'
 ! !
 
 CWPlayer subclass: #CWAI

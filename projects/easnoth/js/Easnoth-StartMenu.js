@@ -26,19 +26,14 @@ selector: "bootstrap:",
 category: 'initialize-release',
 fn: function (gameSettings){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=$Transcript();
-_st($1)._show_(gameSettings);
-$2=_st($1)._cr();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09Transcript show: gameSettings; cr.\x0a\x09CWGame new initializeWithSettings: gameSettings ",
-messageSends: ["show:", "cr", "initializeWithSettings:", "new"],
-referencedClasses: ["Transcript", "CWGame"]
+source: "bootstrap: gameSettings\x0a\x09\x22Transcript show: gameSettings; cr.\x22\x0a\x09CWGame new initializeWithSettings: gameSettings ",
+messageSends: ["initializeWithSettings:", "new"],
+referencedClasses: ["CWGame"]
 }),
 smalltalk.CWBootstrapper);
 
@@ -305,6 +300,7 @@ selectBox=_st(html)._select();
 $1=selectBox;
 _st($1)._onChange_((function(){
 return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_(_st(_st(selectBox)._asJQuery())._val());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -315,8 +311,8 @@ return _st(_st(html)._option())._with_("trolls");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: ["playerNumber", "html"],
-source: "armySelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select.\x0a\x09selectBox\x0a\x09\x09onChange: [];\x0a\x09\x09with: [\x0a\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09html option with: 'humans'.\x0a\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09html option with: 'trolls' ].",
-messageSends: ["select", "onChange:", "with:", "option"],
+source: "armySelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select.\x0a\x09selectBox\x0a\x09\x09onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09html option with: 'humans'.\x0a\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09html option with: 'trolls' ].",
+messageSends: ["select", "onChange:", "team:", "val", "asJQuery", "at:", "players", "with:", "option"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -327,15 +323,33 @@ selector: "choosePlayers",
 category: 'game settings',
 fn: function (){
 var self=this;
-function $CWHuman(){return smalltalk.CWHuman||(typeof CWHuman=="undefined"?nil:CWHuman)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@gameSettings"])._addPlayer_(_st($CWHuman())._new());
-_st(self["@gameSettings"])._addPlayer_(_st($CWHuman())._new());
+_st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
+_st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self)._playerMenu();
 return self}, function($ctx1) {$ctx1.fill(self,"choosePlayers",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "choosePlayers\x0a\x09gameSettings addPlayer: CWHuman new.\x0a\x09gameSettings addPlayer: CWHuman new.\x0a\x09self playerMenu",
-messageSends: ["addPlayer:", "new", "playerMenu"],
+source: "choosePlayers\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09self playerMenu",
+messageSends: ["addPlayer:", "defaultPlayer", "playerMenu"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultPlayer",
+category: 'accessing',
+fn: function (){
+var self=this;
+function $CWHuman(){return smalltalk.CWHuman||(typeof CWHuman=="undefined"?nil:CWHuman)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st($CWHuman())._new())._team_("elves");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultPlayer",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "defaultPlayer\x0a\x09^ CWHuman new team: 'elves'",
+messageSends: ["team:", "new"],
 referencedClasses: ["CWHuman"]
 }),
 smalltalk.CWStartMenu);
@@ -454,9 +468,13 @@ var $1,$3,$4,$5,$6,$2;
 selectBox=_st(html)._select();
 $1=selectBox;
 _st($1)._onChange_((function(){
+var oldTeam;
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(self["@gameSettings"])._players())._at_put_(playerNumber,_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+oldTeam=_st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team();
+oldTeam;
+_st(_st(self["@gameSettings"])._players())._at_put_(playerNumber,_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
+return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_(oldTeam);
+}, function($ctx2) {$ctx2.fillBlock({oldTeam:oldTeam},$ctx1)})}));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 $3=_st(html)._option();
@@ -470,8 +488,8 @@ return $6;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerSelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: ["playerNumber", "html"],
-source: "playerSelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select. \x0a\x09selectBox \x0a\x09\x09onChange: [ gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'human';\x0a\x09\x09\x09\x09value: 'CWHuman'.\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'AI type 1';\x0a\x09\x09\x09\x09value: 'CWAggressWeakestAI'].",
-messageSends: ["select", "onChange:", "at:put:", "new", "at:", "val", "asJQuery", "current", "players", "with:", "option", "value:"],
+source: "playerSelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select. \x0a\x09selectBox \x0a\x09\x09onChange: [ \x0a\x09\x09\x09| oldTeam |\x0a\x09\x09\x09oldTeam := (gameSettings players at: playerNumber) team.\x0a\x09\x09\x09gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.\x0a\x09\x09\x09(gameSettings players at: playerNumber) team: oldTeam ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'human';\x0a\x09\x09\x09\x09value: 'CWHuman'.\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'AI type 1';\x0a\x09\x09\x09\x09value: 'CWAggressWeakestAI'].",
+messageSends: ["select", "onChange:", "team", "at:", "players", "at:put:", "new", "val", "asJQuery", "current", "team:", "with:", "option", "value:"],
 referencedClasses: ["Smalltalk"]
 }),
 smalltalk.CWStartMenu);
@@ -538,41 +556,41 @@ selector: "startingMenuDict",
 category: 'accessing',
 fn: function (){
 var self=this;
-var dict1;
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-dict1=_st($Dictionary())._new();
-_st(dict1)._at_put_("Tutorial",(function(){
+var $2,$3,$1;
+$2=_st($Dictionary())._new();
+_st($2)._at_put_("Tutorial",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Campaign",(function(){
+_st($2)._at_put_("Campaign",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Custom game",(function(){
+_st($2)._at_put_("Custom game",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._choosePlayers();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Network game",(function(){
+_st($2)._at_put_("Network game",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Map Editor",(function(){
+_st($2)._at_put_("Map Editor",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Credits",(function(){
+_st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$1=dict1;
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{dict1:dict1},smalltalk.CWStartMenu)})},
+}, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startingMenuDict\x0a\x09| dict1 |\x0a\x09dict1 := Dictionary new.\x0a\x09dict1 at: 'Tutorial' put: [window alert: 'for future use' ].\x0a\x09dict1 at: 'Campaign' put: [window alert: 'for future use' ].\x0a\x09dict1 at: 'Custom game' put: [ self choosePlayers ].\x0a\x09dict1 at: 'Network game' put: [window alert: 'for future use' ].\x0a\x09dict1 at: 'Map Editor' put: [window alert: 'for future use' ].\x0a\x09dict1 at: 'Credits' put: [window alert: 'for future use' ].\x0a\x09^ dict1",
-messageSends: ["new", "at:put:", "alert:", "choosePlayers"],
+source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09at: 'Network game' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Credits' put: [window alert: 'for future use' ];\x0a\x09\x09yourself",
+messageSends: ["at:put:", "alert:", "new", "choosePlayers", "yourself"],
 referencedClasses: ["Dictionary"]
 }),
 smalltalk.CWStartMenu);

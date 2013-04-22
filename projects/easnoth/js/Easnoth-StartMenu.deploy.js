@@ -19,16 +19,11 @@ smalltalk.method({
 selector: "bootstrap:",
 fn: function (gameSettings){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=$Transcript();
-_st($1)._show_(gameSettings);
-$2=_st($1)._cr();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
-messageSends: ["show:", "cr", "initializeWithSettings:", "new"]}),
+messageSends: ["initializeWithSettings:", "new"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -231,6 +226,7 @@ selectBox=_st(html)._select();
 $1=selectBox;
 _st($1)._onChange_((function(){
 return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_(_st(_st(selectBox)._asJQuery())._val());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -240,7 +236,7 @@ _st(_st(html)._option())._with_("merfolks");
 return _st(_st(html)._option())._with_("trolls");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["select", "onChange:", "with:", "option"]}),
+messageSends: ["select", "onChange:", "team:", "val", "asJQuery", "at:", "players", "with:", "option"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -248,13 +244,26 @@ smalltalk.method({
 selector: "choosePlayers",
 fn: function (){
 var self=this;
-function $CWHuman(){return smalltalk.CWHuman||(typeof CWHuman=="undefined"?nil:CWHuman)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@gameSettings"])._addPlayer_(_st($CWHuman())._new());
-_st(self["@gameSettings"])._addPlayer_(_st($CWHuman())._new());
+_st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
+_st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self)._playerMenu();
 return self}, function($ctx1) {$ctx1.fill(self,"choosePlayers",{},smalltalk.CWStartMenu)})},
-messageSends: ["addPlayer:", "new", "playerMenu"]}),
+messageSends: ["addPlayer:", "defaultPlayer", "playerMenu"]}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defaultPlayer",
+fn: function (){
+var self=this;
+function $CWHuman(){return smalltalk.CWHuman||(typeof CWHuman=="undefined"?nil:CWHuman)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st($CWHuman())._new())._team_("elves");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultPlayer",{},smalltalk.CWStartMenu)})},
+messageSends: ["team:", "new"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -355,9 +364,13 @@ var $1,$3,$4,$5,$6,$2;
 selectBox=_st(html)._select();
 $1=selectBox;
 _st($1)._onChange_((function(){
+var oldTeam;
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(self["@gameSettings"])._players())._at_put_(playerNumber,_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+oldTeam=_st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team();
+oldTeam;
+_st(_st(self["@gameSettings"])._players())._at_put_(playerNumber,_st(_st(_st($Smalltalk())._current())._at_(_st(_st(selectBox)._asJQuery())._val()))._new());
+return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_(oldTeam);
+}, function($ctx2) {$ctx2.fillBlock({oldTeam:oldTeam},$ctx1)})}));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 $3=_st(html)._option();
@@ -370,7 +383,7 @@ $6=_st($5)._value_("CWAggressWeakestAI");
 return $6;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerSelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["select", "onChange:", "at:put:", "new", "at:", "val", "asJQuery", "current", "players", "with:", "option", "value:"]}),
+messageSends: ["select", "onChange:", "team", "at:", "players", "at:put:", "new", "val", "asJQuery", "current", "team:", "with:", "option", "value:"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -419,39 +432,39 @@ smalltalk.method({
 selector: "startingMenuDict",
 fn: function (){
 var self=this;
-var dict1;
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-dict1=_st($Dictionary())._new();
-_st(dict1)._at_put_("Tutorial",(function(){
+var $2,$3,$1;
+$2=_st($Dictionary())._new();
+_st($2)._at_put_("Tutorial",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Campaign",(function(){
+_st($2)._at_put_("Campaign",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Custom game",(function(){
+_st($2)._at_put_("Custom game",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._choosePlayers();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Network game",(function(){
+_st($2)._at_put_("Network game",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Map Editor",(function(){
+_st($2)._at_put_("Map Editor",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(dict1)._at_put_("Credits",(function(){
+_st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$1=dict1;
+$3=_st($2)._yourself();
+$1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{dict1:dict1},smalltalk.CWStartMenu)})},
-messageSends: ["new", "at:put:", "alert:", "choosePlayers"]}),
+}, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
+messageSends: ["at:put:", "alert:", "new", "choosePlayers", "yourself"]}),
 smalltalk.CWStartMenu);
 
 

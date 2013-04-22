@@ -545,7 +545,7 @@ var self=this;
 var elements,ots;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
+var $1;
 elements=_st(aJsonCell)._keys();
 self["@background"]=_st($Array())._new();
 $1=_st(elements)._includes_("tile");
@@ -560,16 +560,8 @@ _st(ots)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._backgroundAdd_(_st(_st(self)._newOverTile())._initializeFromKey_(_st(aJsonCell)._at_(each)));
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-$2=_st(elements)._includes_("heros");
-if(smalltalk.assert($2)){
-_st(self)._monster_(_st(_st(self)._newHeros())._initializeFromJson_(_st(aJsonCell)._heros()));
-};
-$3=_st(elements)._includes_("troop");
-if(smalltalk.assert($3)){
-_st(self)._monster_(_st(_st(self)._newTroop())._initializeFromJson_(_st(aJsonCell)._troop()));
-};
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements,ots:ots},smalltalk.CWCell)})},
-messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "includes:", "select:", "match:", "do:", "at:", "newOverTile", "monster:", "initializeFromJson:", "heros", "newHeros", "troop", "newTroop"]}),
+messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "includes:", "select:", "match:", "do:", "at:", "newOverTile"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1738,7 +1730,7 @@ smalltalk.CWWall);
 
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['side', 'currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -2038,10 +2030,22 @@ fn: function (aJson){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(aJson)._name()]);
-_st(self)._side_(_st(aJson)._side());
 _st(self)._loadStats_(_st(aJson)._name());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJson:aJson},smalltalk.CWMonster)})},
-messageSends: ["initializeFromKey:", "name", "side:", "side", "loadStats:"]}),
+messageSends: ["initializeFromKey:", "name", "loadStats:"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeFromKey:army:player:",
+fn: function (aKey,anArmy,aPlayer){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(_st(anArmy).__comma("/")).__comma(aKey)]);
+_st(self)._player_(aPlayer);
+_st(self)._loadStats_(_st(_st(anArmy).__comma("/")).__comma(aKey));
+return self}, function($ctx1) {$ctx1.fill(self,"initializeFromKey:army:player:",{aKey:aKey,anArmy:anArmy,aPlayer:aPlayer},smalltalk.CWMonster)})},
+messageSends: ["initializeFromKey:", ",", "player:", "loadStats:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2140,6 +2144,30 @@ return _st(callback)._value();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"moveTo:inContext:callback:",{aCell:aCell,gameContext:gameContext,callback:callback},smalltalk.CWMonster)})},
 messageSends: ["animationMoveFrom:to:callback:", "currentCell", "changeStateAfterMoving:", "state", "select:", "checkForNextTurn", "value"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "player",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@player"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"player",{},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "player:",
+fn: function (aPlayer){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@player"]=aPlayer;
+return self}, function($ctx1) {$ctx1.fill(self,"player:",{aPlayer:aPlayer},smalltalk.CWMonster)})},
+messageSends: []}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2267,21 +2295,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@side"];
+$1=_st(self["@player"])._side();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"side",{},smalltalk.CWMonster)})},
-messageSends: []}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "side:",
-fn: function (int){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@side"]=int;
-return self}, function($ctx1) {$ctx1.fill(self,"side:",{int:int},smalltalk.CWMonster)})},
-messageSends: []}),
+messageSends: ["side"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
