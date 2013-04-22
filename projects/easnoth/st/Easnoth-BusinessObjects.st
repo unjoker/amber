@@ -248,10 +248,10 @@ initializeFromJson: aJsonCell
 	ots := aJsonCell keys select: [ :each | each match: 'overtile' ].
 	ots do: [ :each |
 		self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].
-	(elements includes: 'heros') 
+	"(elements includes: 'heros') 
     	ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].
 	(elements includes: 'troop') 
-    	ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].
+    	ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ]."
 ! !
 
 !CWCell methodsFor: 'neighbourhood'!
@@ -810,7 +810,7 @@ accept: aVisitor
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: 'side currentMove move attack dices hp range state'
+	instanceVariableNames: 'currentMove move attack dices hp range state player'
 	package: 'Easnoth-BusinessObjects'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
@@ -863,6 +863,14 @@ move: int
 	move := int
 !
 
+player
+	^ player
+!
+
+player: aPlayer
+	player := aPlayer
+!
+
 range
 	^ range
 !
@@ -872,11 +880,7 @@ range: int
 !
 
 side
-	^ side
-!
-
-side: int
-	side := int
+	^ player side
 ! !
 
 !CWMonster methodsFor: 'animation'!
@@ -987,8 +991,14 @@ initialize
 
 initializeFromJson: aJson
 	super initializeFromKey: aJson name.
-	self side: aJson side.
+	"self side: aJson side."
 	self loadStats: aJson name.
+!
+
+initializeFromKey: aKey army: anArmy player: aPlayer
+	super initializeFromKey: anArmy, '/', aKey.
+	self player: aPlayer.
+	self loadStats: anArmy, '/', aKey.
 !
 
 loadStats: aJson

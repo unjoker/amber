@@ -377,6 +377,28 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializePlayerTeams",
+fn: function (){
+var self=this;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+_st(self["@playerPool"])._do_((function(player){
+return smalltalk.withContext(function($ctx2) {
+$1=self["@map"];
+if(($receiver = $1) == nil || $receiver == undefined){
+_st($Transcript())._show_("foo");
+} else {
+$1;
+};
+return _st(player)._initializeWithMap_(self["@map"]);
+}, function($ctx2) {$ctx2.fillBlock({player:player},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializePlayerTeams",{},smalltalk.CWGame)})},
+messageSends: ["do:", "ifNil:", "show:", "initializeWithMap:"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeWithSettings:",
 fn: function (gameSettings){
 var self=this;
@@ -385,9 +407,10 @@ return smalltalk.withContext(function($ctx1) {
 self["@map"]=_st($CWMap())._newWithMapIndex_(_st(gameSettings)._mapNumber());
 self["@playerPool"]=_st(gameSettings)._players();
 _st(self)._initializePlayerSides();
+_st(self)._initializePlayerTeams();
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSettings:",{gameSettings:gameSettings},smalltalk.CWGame)})},
-messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializePlayerSides", "initializeEventHandling"]}),
+messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializePlayerSides", "initializePlayerTeams", "initializeEventHandling"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -454,13 +477,17 @@ fn: function (){
 var self=this;
 function $CWEventDispatcher(){return smalltalk.CWEventDispatcher||(typeof CWEventDispatcher=="undefined"?nil:CWEventDispatcher)}
 return smalltalk.withContext(function($ctx1) { 
+_st(self["@playerPool"])._do_((function(player){
+return smalltalk.withContext(function($ctx2) {
+return _st(player)._addMonstersToMap_(self["@map"]);
+}, function($ctx2) {$ctx2.fillBlock({player:player},$ctx1)})}));
 _st(self)._removeLoadingBar();
 _st(self["@map"])._initializeDrawer();
 _st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
 _st(self["@map"])._updateMap();
 _st(self)._firstTurn();
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWGame)})},
-messageSends: ["removeLoadingBar", "initializeDrawer", "initializeForMap:game:", "new", "updateMap", "firstTurn"]}),
+messageSends: ["do:", "addMonstersToMap:", "removeLoadingBar", "initializeDrawer", "initializeForMap:game:", "new", "updateMap", "firstTurn"]}),
 smalltalk.CWGame);
 
 
@@ -557,6 +584,164 @@ smalltalk.CWGameContext);
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-Game');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "addMonstersToMap:",
+fn: function (aMap){
+var self=this;
+var positions;
+return smalltalk.withContext(function($ctx1) { 
+positions=_st(self)._monstersPositionArray();
+_st(positions)._withIndexDo_((function(point,n){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(aMap)._childAt_(_st(point)._x()))._childAt_(_st(point)._y()))._addMonster_(_st(self["@team"])._at_(n));
+}, function($ctx2) {$ctx2.fillBlock({point:point,n:n},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"addMonstersToMap:",{aMap:aMap,positions:positions},smalltalk.CWPlayer)})},
+messageSends: ["monstersPositionArray", "withIndexDo:", "addMonster:", "at:", "childAt:", "y", "x"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "announce:",
+fn: function (event){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._announce_(event);
+return self}, function($ctx1) {$ctx1.fill(self,"announce:",{event:event},smalltalk.CWPlayer)})},
+messageSends: ["announce:", "announcer"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "announcer",
+fn: function (){
+var self=this;
+function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($CWEasnothAnnouncer())._current();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWPlayer)})},
+messageSends: ["current"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeWithMap:",
+fn: function (aMap){
+var self=this;
+function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
+function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st($CWWaitForObject())._new());
+_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/armies/").__comma(_st(self)._team())).__comma(".json"),(function(data){
+return smalltalk.withContext(function($ctx2) {
+_st(self)._initializeWithMap_army_(aMap,data);
+return _st(self)._announce_(_st($CWObjectLoaded())._new());
+}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:",{aMap:aMap},smalltalk.CWPlayer)})},
+messageSends: ["announce:", "new", "getJSON:onSuccess:", ",", "team", "initializeWithMap:army:"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeWithMap:army:",
+fn: function (aMap,data){
+var self=this;
+var monsters;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+monsters=_st($Array())._new();
+_st((1))._to_by_do_((5),(2),(function(n){
+return smalltalk.withContext(function($ctx2) {
+return _st(monsters)._at_put_(n,_st(self)._newTroop_army_(_st(data)._warrior(),self["@team"]));
+}, function($ctx2) {$ctx2.fillBlock({n:n},$ctx1)})}));
+_st((2))._to_by_do_((4),(2),(function(n){
+return smalltalk.withContext(function($ctx2) {
+return _st(monsters)._at_put_(n,_st(self)._newHeros_army_(_st(data)._heros(),self["@team"]));
+}, function($ctx2) {$ctx2.fillBlock({n:n},$ctx1)})}));
+self["@team"]=monsters;
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
+messageSends: ["new", "to:by:do:", "at:put:", "newTroop:army:", "warrior", "newHeros:army:", "heros"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monstersPositionArray",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$1;
+$2=_st(_st(self)._side()).__eq((1));
+if(smalltalk.assert($2)){
+$1=[_st((1)).__at((4)),_st((1)).__at((6)),_st((2)).__at((6)),_st((3)).__at((6)),_st((4)).__at((6))];
+} else {
+$1=[_st((7)).__at((1)),_st((8)).__at((1)),_st((9)).__at((1)),_st((6)).__at((1)),_st((9)).__at((3))];
+};
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monstersPositionArray",{},smalltalk.CWPlayer)})},
+messageSends: ["ifTrue:ifFalse:", "@", "=", "side"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newHeros:army:",
+fn: function (key,army){
+var self=this;
+function $CWHeros(){return smalltalk.CWHeros||(typeof CWHeros=="undefined"?nil:CWHeros)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newMonster_army_class_(key,army,$CWHeros());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newHeros:army:",{key:key,army:army},smalltalk.CWPlayer)})},
+messageSends: ["newMonster:army:class:"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newMonster:army:class:",
+fn: function (key,army,aClass){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(aClass)._new())._initializeFromKey_army_player_(key,army,self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newMonster:army:class:",{key:key,army:army,aClass:aClass},smalltalk.CWPlayer)})},
+messageSends: ["initializeFromKey:army:player:", "new"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newTroop:army:",
+fn: function (key,army){
+var self=this;
+function $CWTroop(){return smalltalk.CWTroop||(typeof CWTroop=="undefined"?nil:CWTroop)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newMonster_army_class_(key,army,$CWTroop());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newTroop:army:",{key:key,army:army},smalltalk.CWPlayer)})},
+messageSends: ["newMonster:army:class:"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+fn: function (aStream){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=aStream;
+_st($1)._nextPutAll_(_st(_st(self)._class())._name());
+_st($1)._nextPutAll_("(");
+_st($1)._nextPutAll_(_st(self["@side"])._printString());
+_st($1)._nextPutAll_("-");
+_st($1)._nextPutAll_(_st(self["@team"])._printString());
+$2=_st($1)._nextPutAll_(")");
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWPlayer)})},
+messageSends: ["nextPutAll:", "name", "class", "printString"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "side",
 fn: function (){
 var self=this;
@@ -586,6 +771,30 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return self}, function($ctx1) {$ctx1.fill(self,"startTurn",{},smalltalk.CWPlayer)})},
+messageSends: []}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "team",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@team"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"team",{},smalltalk.CWPlayer)})},
+messageSends: []}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "team:",
+fn: function (aTeam){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@team"]=aTeam;
+return self}, function($ctx1) {$ctx1.fill(self,"team:",{aTeam:aTeam},smalltalk.CWPlayer)})},
 messageSends: []}),
 smalltalk.CWPlayer);
 

@@ -29,7 +29,7 @@ checkIfReady
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
-	Transcript show: gameSettings; cr.
+	"Transcript show: gameSettings; cr."
 	CWGame new initializeWithSettings: gameSettings
 !
 
@@ -112,23 +112,26 @@ Should implement the menu with multiplayer and stuff here!
 
 !CWStartMenu methodsFor: 'accessing'!
 
+defaultPlayer
+	^ CWHuman new team: 'elves'
+!
+
 startingMenuDict
-	| dict1 |
-	dict1 := Dictionary new.
-	dict1 at: 'Tutorial' put: [window alert: 'for future use' ].
-	dict1 at: 'Campaign' put: [window alert: 'for future use' ].
-	dict1 at: 'Custom game' put: [ self choosePlayers ].
-	dict1 at: 'Network game' put: [window alert: 'for future use' ].
-	dict1 at: 'Map Editor' put: [window alert: 'for future use' ].
-	dict1 at: 'Credits' put: [window alert: 'for future use' ].
-	^ dict1
+	^ Dictionary new
+		at: 'Tutorial' put: [window alert: 'for future use' ];
+		at: 'Campaign' put: [window alert: 'for future use' ];
+		at: 'Custom game' put: [ self choosePlayers ];
+		at: 'Network game' put: [window alert: 'for future use' ];
+		at: 'Map Editor' put: [window alert: 'for future use' ];
+		at: 'Credits' put: [window alert: 'for future use' ];
+		yourself
 ! !
 
 !CWStartMenu methodsFor: 'game settings'!
 
 choosePlayers
-	gameSettings addPlayer: CWHuman new.
-	gameSettings addPlayer: CWHuman new.
+	gameSettings addPlayer: self defaultPlayer.
+	gameSettings addPlayer: self defaultPlayer.
 	self playerMenu
 !
 
@@ -151,7 +154,7 @@ armySelectBox: playerNumber on: html
 	| selectBox |
 	selectBox := html select.
 	selectBox
-		onChange: [];
+		onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];
 		with: [
 			html option with: 'elves'.
 			html option with: 'humans'.
@@ -196,7 +199,11 @@ playerSelectBox: playerNumber on: html
 	| selectBox |
 	selectBox := html select. 
 	selectBox 
-		onChange: [ gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new ];
+		onChange: [ 
+			| oldTeam |
+			oldTeam := (gameSettings players at: playerNumber) team.
+			gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.
+			(gameSettings players at: playerNumber) team: oldTeam ];
 		with: [
 			html option 
 				with: 'human';
