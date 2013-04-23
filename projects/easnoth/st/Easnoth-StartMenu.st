@@ -118,11 +118,11 @@ defaultPlayer
 
 startingMenuDict
 	^ Dictionary new
-		at: 'Tutorial' put: [window alert: 'for future use' ];
-		at: 'Campaign' put: [window alert: 'for future use' ];
+		at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];
+		at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];
 		at: 'Custom game' put: [ self choosePlayers ];
-		at: 'Network game' put: [window alert: 'for future use' ];
-		at: 'Map Editor' put: [window alert: 'for future use' ];
+		at: 'Network game' put: [window alert: 'for future use, click on custom game' ];
+		at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];
 		at: 'Credits' put: [ self credits ];
 		yourself
 ! !
