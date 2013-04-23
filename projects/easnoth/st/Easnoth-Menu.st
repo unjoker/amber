@@ -301,6 +301,13 @@ renderOn: html
 		"'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]]."
                 html button with: 'class browser';
                         onClick: [Browser open].
+				html br.
+				html iframe
+					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=97614502002';
+					at: 'frameborder' put: 0;
+					at: 'scrolling' put: 'no';
+					style:'border:none; overflow:hidden; width:450px; height:21px;';
+					at: 'allowTransparency' put: 'true'.
 	].
 	"self update."
 !
