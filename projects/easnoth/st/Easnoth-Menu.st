@@ -278,8 +278,8 @@ update
 			].
 			"html tr with: 'special : ', self monster special."
 		].
-		"html h5 with: 'debug'.
-                html span with: 'state : ', self monster state class."
+		html h5 with: 'debug'.
+                html span with: 'state : ', self monster state class.
         ].
 ! !
 

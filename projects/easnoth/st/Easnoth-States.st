@@ -33,6 +33,10 @@ cell: aCell canBeAttackedBy: side
 	^ false
 !
 
+hasMonster
+	^ false
+!
+
 mouseClick: aCell context: gameContext
 	self subClassResponsbility
 !
@@ -151,6 +155,10 @@ cell: aCell canBeAttackedBy: side
 	^ (aCell side = side) not
 !
 
+hasMonster
+	^ true
+!
+
 mouseClick: aCell context: gameContext
 	aCell monster select: gameContext
 !
@@ -179,6 +187,10 @@ addSelector: aCell
 
 cell: aCell addMonster: aMonster
 	self error: 'cannot add a monster to a cell that has already a monster and a *red* selector'.
+!
+
+hasMonster 
+	^true
 !
 
 mouseClick: aCell context: gameContext
@@ -214,6 +226,10 @@ checkForNextTurn: aMonster
 
 desactivate: aMonster
 	aMonster changeState: CWInactive
+!
+
+isInactive
+	^ false
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -394,6 +410,10 @@ checkForNextTurn: aMonster
 
 desactivate: aMonster
 	"Do nothing already inactive"
+!
+
+isInactive
+	^ true
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext

@@ -69,6 +69,17 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasMonster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWCellState)})},
+messageSends: []}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "mouseClick:context:",
 fn: function (aCell,gameContext){
 var self=this;
@@ -320,6 +331,17 @@ smalltalk.CWHasMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasMonster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWHasMonster)})},
+messageSends: []}),
+smalltalk.CWHasMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "mouseClick:context:",
 fn: function (aCell,gameContext){
 var self=this;
@@ -376,6 +398,17 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._error_("cannot add a monster to a cell that has already a monster and a *red* selector");
 return self}, function($ctx1) {$ctx1.fill(self,"cell:addMonster:",{aCell:aCell,aMonster:aMonster},smalltalk.CWHasMonsterSelected)})},
 messageSends: ["error:"]}),
+smalltalk.CWHasMonsterSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hasMonster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWHasMonsterSelected)})},
+messageSends: []}),
 smalltalk.CWHasMonsterSelected);
 
 smalltalk.addMethod(
@@ -481,6 +514,17 @@ return smalltalk.withContext(function($ctx1) {
 _st(aMonster)._changeState_($CWInactive());
 return self}, function($ctx1) {$ctx1.fill(self,"desactivate:",{aMonster:aMonster},smalltalk.CWMonsterState)})},
 messageSends: ["changeState:"]}),
+smalltalk.CWMonsterState);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isInactive",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isInactive",{},smalltalk.CWMonsterState)})},
+messageSends: []}),
 smalltalk.CWMonsterState);
 
 smalltalk.addMethod(
@@ -850,6 +894,17 @@ fn: function (aMonster){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return self}, function($ctx1) {$ctx1.fill(self,"desactivate:",{aMonster:aMonster},smalltalk.CWInactive)})},
+messageSends: []}),
+smalltalk.CWInactive);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isInactive",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isInactive",{},smalltalk.CWInactive)})},
 messageSends: []}),
 smalltalk.CWInactive);
 

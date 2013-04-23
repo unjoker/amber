@@ -471,10 +471,12 @@ return _st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._m
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $2;
+$2;
+_st(_st(html)._h5())._with_("debug");
+return _st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._monster())._state())._class()));
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "td", "dices", "attack"]}),
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "td", "dices", "attack", "h5", "class", "state", "span"]}),
 smalltalk.CWMonsterWatcher);
 
 smalltalk.addMethod(

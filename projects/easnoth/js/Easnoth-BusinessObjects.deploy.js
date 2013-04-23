@@ -322,6 +322,25 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "attackableNeighboursConsideringMoveCycle:attackCycle:fromSide:",
+fn: function (cycleMove,cycleAttack,side){
+var self=this;
+var selectableCells;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+selectableCells=_st(self)._selectableNeighboursMoveCycle_attackCycle_fromSide_(cycleMove,cycleAttack,side);
+_st(selectableCells)._remove_(self);
+$1=_st(selectableCells)._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._hasMonster();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursConsideringMoveCycle:attackCycle:fromSide:",{cycleMove:cycleMove,cycleAttack:cycleAttack,side:side,selectableCells:selectableCells},smalltalk.CWCell)})},
+messageSends: ["selectableNeighboursMoveCycle:attackCycle:fromSide:", "remove:", "select:", "hasMonster"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "attackableNeighboursCycle:fromSide:",
 fn: function (cycleNumber,side){
 var self=this;
@@ -521,6 +540,19 @@ $1=$CWGameOverTile();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"gameOverTileClass",{},smalltalk.CWCell)})},
 messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hasMonster",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._hasMonster();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWCell)})},
+messageSends: ["hasMonster", "state"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1988,6 +2020,18 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "die",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._parent())._removeMonster();
+_st(_st(self)._player())._removeMonster_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"die",{},smalltalk.CWMonster)})},
+messageSends: ["removeMonster", "parent", "removeMonster:", "player"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "hp",
 fn: function (){
 var self=this;
@@ -2057,6 +2101,19 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._changeState_(_st(self)._defaultState());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeState",{},smalltalk.CWMonster)})},
 messageSends: ["changeState:", "defaultState"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isInactive",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._isInactive();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isInactive",{},smalltalk.CWMonster)})},
+messageSends: ["isInactive", "state"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2230,10 +2287,10 @@ var $1;
 _st(self)._hp_(_st(_st(self)._hp()).__minus(anInt));
 $1=_st(_st(self)._hp()).__lt((1));
 if(smalltalk.assert($1)){
-_st(_st(self)._parent())._removeMonster();
+_st(self)._die();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"removeHP:",{anInt:anInt},smalltalk.CWMonster)})},
-messageSends: ["hp:", "-", "hp", "ifTrue:", "removeMonster", "parent", "<"]}),
+messageSends: ["hp:", "-", "hp", "ifTrue:", "die", "<"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

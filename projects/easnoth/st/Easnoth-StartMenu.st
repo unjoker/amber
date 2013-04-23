@@ -123,7 +123,7 @@ startingMenuDict
 		at: 'Custom game' put: [ self choosePlayers ];
 		at: 'Network game' put: [window alert: 'for future use' ];
 		at: 'Map Editor' put: [window alert: 'for future use' ];
-		at: 'Credits' put: [window alert: 'for future use' ];
+		at: 'Credits' put: [ self credits ];
 		yourself
 ! !
 
@@ -160,6 +160,37 @@ armySelectBox: playerNumber on: html
 			html option with: 'humans'.
 			html option with: 'merfolks'.
 			html option with: 'trolls' ].
+!
+
+credits
+	box contents: [ :html | 
+				html h1 with: 'Easnoth : Battle Arena'.
+				html ul 
+					class: 'menu';
+					with: [
+						html li with: [
+							html span with: 'Core developer : '.
+							html a 
+								with: 'Clément Béra';
+								href: 'http://clementbera.wordpress.com/' ].
+						html li with: [
+							html span with: 'Graphics : '.
+							html a
+								with: 'Battle for Wesnoth';
+								href: 'http://www.wesnoth.org/' ].
+						html li with: 'Thanks to :'.
+						html li with: [
+							html a
+								with: 'Amber web framework';
+								href: 'http://amber-lang.net/' ].
+						html li with: [
+							html a
+								with: 'Nicolas Petton (Amber core developer)';
+								href: 'www.nicolas-petton.fr/' ].
+						html li with: [
+							html button
+								with: '> back <';
+								onClick: [ self choosePlayers ] ] ] ]
 !
 
 menuOn: html with: dict
