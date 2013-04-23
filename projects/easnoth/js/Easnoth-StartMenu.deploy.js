@@ -500,11 +500,11 @@ var $2,$3,$1;
 $2=_st($Dictionary())._new();
 _st($2)._at_put_("Tutorial",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use");
+return _st(window)._alert_("for future use, click on custom game");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Campaign",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use");
+return _st(window)._alert_("for future use, click on custom game");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Custom game",(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -512,11 +512,11 @@ return _st(self)._choosePlayers();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Network game",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use");
+return _st(window)._alert_("for future use, click on custom game");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Map Editor",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use");
+return _st(window)._alert_("for future use, click on custom game");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
