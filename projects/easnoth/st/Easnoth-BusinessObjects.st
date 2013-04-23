@@ -236,6 +236,10 @@ troopClass
 
 !CWCell methodsFor: 'initialize-release'!
 
+free
+	^ self monster isNil
+!
+
 initializeFromJson: aJsonCell
     | elements ots |
     
@@ -255,6 +259,15 @@ initializeFromJson: aJsonCell
 ! !
 
 !CWCell methodsFor: 'neighbourhood'!
+
+attackableNeighboursConsideringMoveCycle: cycleMove attackCycle: cycleAttack fromSide: side
+	"for AI. Answers the collection of attackable ennemies considering the move of the monster"
+	
+	| selectableCells |
+	selectableCells := self selectableNeighboursMoveCycle: cycleMove attackCycle: cycleAttack fromSide: side.
+	selectableCells remove: self.
+	^ selectableCells select: [ :each | each hasMonster ]
+!
 
 attackableNeighboursCycle: cycleNumber fromSide: side
 	"no range attack for now"
@@ -366,6 +379,10 @@ canMoveTo
 	^ self state canMoveTo: self
 !
 
+hasMonster
+	^ self state hasMonster
+!
+
 mouseClick: gameContext
 	self state mouseClick: self context: gameContext.
 !
@@ -399,12 +416,6 @@ state
 
 state: aState
 	state := aState
-! !
-
-!CWCell methodsFor: 'testing'!
-
-free
-	^ self monster isNil
 ! !
 
 !CWCell methodsFor: 'visiting'!
@@ -935,10 +946,15 @@ attackNeighbour: anotherMonster inContext: gameContext
 		self updateMonstersAndGOTs ]
 !
 
+die
+	self parent removeMonster.
+	self player removeMonster: self.
+!
+
 removeHP: anInt
      self hp: self hp - anInt.
      self hp < 1 ifTrue: [
-           self parent removeMonster ].
+           self die ].
 !
 
 rollDicesCallBack: aBlock
@@ -1061,6 +1077,10 @@ checkForNextTurn
 
 desactivateMonsters
 	self state desactivate: self
+!
+
+isInactive
+	^ self state isInactive
 !
 
 moveTo: aCell inContext: gameContext

@@ -337,6 +337,73 @@ smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "credits",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$2;
+_st(self["@box"])._contents_((function(html){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
+$1=_st(html)._ul();
+_st($1)._class_("menu");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._span())._with_("Core developer : ");
+$3=_st(html)._a();
+_st($3)._with_("Clément Béra");
+$4=_st($3)._href_("http://clementbera.wordpress.com/");
+return $4;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+_st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._span())._with_("Graphics : ");
+$5=_st(html)._a();
+_st($5)._with_("Battle for Wesnoth");
+$6=_st($5)._href_("http://www.wesnoth.org/");
+return $6;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+_st(_st(html)._li())._with_("Thanks to :");
+_st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+$7=_st(html)._a();
+_st($7)._with_("Amber web framework");
+$8=_st($7)._href_("http://amber-lang.net/");
+return $8;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+_st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+$9=_st(html)._a();
+_st($9)._with_("Nicolas Petton (Amber core developer)");
+$10=_st($9)._href_("www.nicolas-petton.fr/");
+return $10;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+return _st(_st(html)._li())._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+$11=_st(html)._button();
+_st($11)._with_("> back <");
+$12=_st($11)._onClick_((function(){
+return smalltalk.withContext(function($ctx5) {
+return _st(self)._choosePlayers();
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+return $12;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "credits\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html span with: 'Core developer : '.\x0a\x09\x09\x09\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Clément Béra';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://clementbera.wordpress.com/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html span with: 'Graphics : '.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Battle for Wesnoth';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.wesnoth.org/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: 'Thanks to :'.\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Amber web framework';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://amber-lang.net/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Nicolas Petton (Amber core developer)';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'www.nicolas-petton.fr/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self choosePlayers ] ] ] ] ",
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "span", "a", "href:", "li", "button", "onClick:", "choosePlayers"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "defaultPlayer",
 category: 'accessing',
 fn: function (){
@@ -582,15 +649,15 @@ return _st(window)._alert_("for future use");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use");
+return _st(self)._credits();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09at: 'Network game' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Credits' put: [window alert: 'for future use' ];\x0a\x09\x09yourself",
-messageSends: ["at:put:", "alert:", "new", "choosePlayers", "yourself"],
+source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09at: 'Network game' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use' ];\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
+messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"],
 referencedClasses: ["Dictionary"]
 }),
 smalltalk.CWStartMenu);

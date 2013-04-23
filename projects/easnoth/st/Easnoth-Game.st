@@ -158,6 +158,10 @@ announcer
 	^ CWEasnothAnnouncer current
 !
 
+currentPlayer
+	^ self gameContext currentPlayer
+!
+
 eventManagerLayerId
 	^ '#eventManager'
 !
@@ -174,47 +178,21 @@ announce: event
 
 !CWGame methodsFor: 'game logic'!
 
-activateMonsters
-	| armyPlaying monster1 |
-	armyPlaying := map monstersFromSide: self gameContext currentPlayerSide.
-	(armyPlaying size = 0) 
-		ifTrue: [ window alert: 'Someone just won. Guess who ? loser : ' , self gameContext currentPlayer ] 
-		ifFalse: [ self pickMonster ]
-!
-
 firstTurn
-	self gameContext nextTurn: (playerPool at: 1).
-	self activateMonsters.
+	self gameContext nextTurn: (playerPool at: 2 atRandom).
+	self currentPlayer startTurn.
 !
 
 nextPlayer
-	| currentPlayer index |
-	currentPlayer := self gameContext currentPlayer. 
-	index := playerPool indexOf: currentPlayer.
+	| index |
+	index := playerPool indexOf: self currentPlayer.
 	^ playerPool at: index + 1 ifAbsent: [ playerPool at: 1 ]
 !
 
 nextTurn
-	map desactivateMonsters.
-	map removeSelection.
+	self currentPlayer endTurn.
 	self gameContext nextTurn: self nextPlayer.
-	self activateMonsters.
-!
-
-pickMonster
-	map readyToPickMonsters: self gameContext currentPlayerSide.
-	map showActiveMonsters.
-	map updateGOTs.
-!
-
-startGame
-	playerPool do: [ :player |
-		player addMonstersToMap: map ].
-	self removeLoadingBar.
-	map initializeDrawer.
-	CWEventDispatcher new initializeForMap: map game: self.
-	map updateMap.
-	self firstTurn.
+	self currentPlayer startTurn.
 ! !
 
 !CWGame methodsFor: 'initialize-release'!
@@ -234,27 +212,38 @@ initializeEventHandling
 		do: [ self nextTurn ]
 !
 
-initializePlayerSides
-	playerPool withIndexDo: [ :player :i |
-		player side: i - 1.5 * 2 ].
+initializePlayerMonsters
+	playerPool do: [ :player |
+		player addMonstersToMap: map ].
 !
 
-initializePlayerTeams
-	playerPool do: [ :player |
-		map ifNil: [ Transcript show: #foo ].
-		player initializeWithMap: map ]
+initializePlayers
+	"To check and refactor"
+
+	playerPool withIndexDo: [ :player :i |
+		player side: i - 1.5 * 2. "works only for 2 players. Enough for now"
+		player initializeWithMap: map.
+		(player isKindOf: CWAI) ifTrue: [ player gameContext: self gameContext ] ]
 !
 
 initializeWithSettings: gameSettings
 	map := CWMap newWithMapIndex: gameSettings mapNumber.
 	playerPool := gameSettings players.
-	self initializePlayerSides.
-	self initializePlayerTeams.
+	self initializePlayers.
 	self initializeEventHandling.
 !
 
 removeLoadingBar
 	'.loading' asJQuery animate: #{ 'top' -> '-60%'} duration: 2500.
+!
+
+startGame
+	self removeLoadingBar.
+	self initializePlayerMonsters.
+	map initializeDrawer.
+	CWEventDispatcher new initializeForMap: map game: self.
+	map updateMap.
+	self firstTurn.
 ! !
 
 Object subclass: #CWGameContext
@@ -353,7 +342,29 @@ newTroop: key army: army
 
 !CWPlayer methodsFor: 'game logic'!
 
+endTurn
+	| map |
+	self team size = 0 ifTrue: [^ self ].
+	map := (self team at: 1) root.
+	map desactivateMonsters.
+	map removeSelection.
+!
+
+pickMonster
+	self team size = 0 ifTrue: [ ^ self ].
+	self team do: [ :each |
+		each readyToBePicked.
+		each parent showActiveMonsters ].
+	(self team at: 1) root updateGOTs.
+!
+
+removeMonster: aMonster
+	self team remove: aMonster.
+	self team size = 0 ifTrue: [ "should be event for endGame"  window alert: 'Someone just won. Guess who ? loser : ' , self ]
+!
+
 startTurn
+	self pickMonster
 ! !
 
 !CWPlayer methodsFor: 'initialize-release'!
@@ -403,12 +414,95 @@ printOn: aStream
 ! !
 
 CWPlayer subclass: #CWAI
-	instanceVariableNames: ''
+	instanceVariableNames: 'gameContext'
 	package: 'Easnoth-Game'!
 
+!CWAI methodsFor: 'accessing'!
+
+gameContext
+	^ gameContext
+!
+
+gameContext: aCtx
+	gameContext := aCtx
+! !
+
 CWAI subclass: #CWAggressWeakestAI
-	instanceVariableNames: ''
+	instanceVariableNames: 'bestMove bestScore'
 	package: 'Easnoth-Game'!
+!CWAggressWeakestAI commentStamp!
+For each move, I calcul a score which correspond to :
+- how many damage the attacking monster will do (depends on number of dices + attack percentage )
+- do I have a high chance to kill the foe ?
+- how many hp left have the foe ( I try to attack the weakest foe)
+ Then I execute the move that has the highest score.
+ 
+ If I cannot attack, I just do some random move.!
+
+!CWAggressWeakestAI methodsFor: 'game logic'!
+
+calculBestMove
+	"Calcul the best move for the AI player. see class comment for details" 
+
+	| monsterPotential attackableTargets score |
+	self team do: [ :monster |
+		monsterPotential := monster dices * monster attack.
+		attackableTargets := monster parent attackableNeighboursConsideringMoveCycle: monster move attackCycle: monster attack fromSide: side.
+		attackableTargets do: [ :target |
+			score := monsterPotential - (100 * target monster hp). 
+			monsterPotential > (100 * target monster hp)
+				ifTrue: [ "high percentage of killing the foe" score := score + 105].
+			score > bestScore
+				ifTrue: [ 
+					bestScore := score.
+					bestMove := { monster . target } ] ] ]
+!
+
+executeBestMove
+	"To refactor"
+
+	| monster targetCell duration relatedTargetCell |
+	monster := bestMove at: 1.
+	targetCell := bestMove at: 2.
+	monster parent mouseClick: self gameContext.
+	[ 
+		relatedTargetCell := CWActive default cell: monster parent ToMoveBeforeAttack: targetCell.
+		duration := (monster parent pathTo: relatedTargetCell) size - 1 * 300.
+		targetCell mouseClick: self gameContext.
+		[ monster isInactive ifFalse: [ self announce: CWNextTurnEvent new ] ] valueWithTimeout: duration + 2000 + self time. "add attack time from 800 to 2000"
+	] valueWithTimeout: self time.
+!
+
+randomMove
+	| randomDude targetCell duration |
+	randomDude := self team at: self team size atRandom.
+	randomDude parent mouseClick: self gameContext.
+	[	
+		targetCell := ((randomDude parent movableNeighboursCycle: randomDude move - 1) remove: randomDude parent; yourself) atRandom.
+		duration := (randomDude parent pathTo: targetCell) size * 300.
+		targetCell mouseClick: self gameContext.
+		[ self announce: CWNextTurnEvent new ] valueWithTimeout: duration + self time.
+	] valueWithTimeout: self time.
+!
+
+reinitialize
+	bestScore := 9999 negated.
+	bestMove := nil.
+!
+
+startTurn
+	self team isEmpty ifTrue: [^ self].
+	super startTurn.
+	self reinitialize.
+	self calculBestMove.
+	bestMove ifNil: [ ^ self randomMove ].
+	self executeBestMove
+!
+
+time
+	"time for user to see what AI is doing"
+	^ 500
+! !
 
 CWPlayer subclass: #CWHuman
 	instanceVariableNames: ''
