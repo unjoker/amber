@@ -510,7 +510,7 @@ var self=this;
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$2;
+var $1,$3,$4,$5,$6,$7,$8,$2;
 $1=_st(html)._div();
 _st($1)._class_("stuff");
 $2=_st($1)._with_((function(){
@@ -530,10 +530,18 @@ $6=_st($5)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $6;
+$6;
+_st(html)._br();
+$7=_st(html)._iframe();
+_st($7)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=97614502002");
+_st($7)._at_put_("frameborder",(0));
+_st($7)._at_put_("scrolling","no");
+_st($7)._style_("border:none; overflow:hidden; width:450px; height:21px;");
+$8=_st($7)._at_put_("allowTransparency","true");
+return $8;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open"]}),
+messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:"]}),
 smalltalk.CWTurnWatcher);
 
 smalltalk.addMethod(
