@@ -9,7 +9,7 @@ fn: function (aVisitor){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CoreWidget)})},
+return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWComponent)})},
 args: ["aVisitor"],
 source: "accept: aVisitor\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -121,31 +121,6 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "monstersFromSide:",
-category: 'selection',
-fn: function (aSide){
-var self=this;
-var col;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-col=_st($Array())._new();
-_st(_st(self)._children())._collect_((function(child){
-return smalltalk.withContext(function($ctx2) {
-return _st(col)._addAll_(_st(child)._monstersFromSide_(aSide));
-}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
-$1=col;
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"monstersFromSide:",{aSide:aSide,col:col},smalltalk.CWComponent)})},
-args: ["aSide"],
-source: "monstersFromSide: aSide\x0a\x09| col |\x0a\x09col := Array new.\x0a\x09self children collect: [ :child |\x0a\x09\x09col addAll: (child monstersFromSide: aSide) ].\x0a\x09^ col",
-messageSends: ["new", "collect:", "addAll:", "monstersFromSide:", "children"],
-referencedClasses: ["Array"]
-}),
-smalltalk.CWComponent);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "parent",
 category: 'accessing',
 fn: function (){
@@ -154,7 +129,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 $1=self["@parent"];
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"parent",{},smalltalk.CoreWidget)})},
+}, function($ctx1) {$ctx1.fill(self,"parent",{},smalltalk.CWComponent)})},
 args: [],
 source: "parent\x0a\x09^ parent",
 messageSends: [],
@@ -170,29 +145,10 @@ fn: function (object){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@parent"]=object;
-return self}, function($ctx1) {$ctx1.fill(self,"parent:",{object:object},smalltalk.CWBusinessObject)})},
+return self}, function($ctx1) {$ctx1.fill(self,"parent:",{object:object},smalltalk.CWComponent)})},
 args: ["object"],
 source: "parent: object\x0a\x09parent := object",
 messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWComponent);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "readyToPickMonsters:",
-category: 'selection',
-fn: function (playerSide){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._children())._do_((function(child){
-return smalltalk.withContext(function($ctx2) {
-return _st(child)._readyToPickMonsters_(playerSide);
-}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"readyToPickMonsters:",{playerSide:playerSide},smalltalk.CWComponent)})},
-args: ["playerSide"],
-source: "readyToPickMonsters: playerSide\x0a\x09self children do: [ :child |\x0a\x09\x09child readyToPickMonsters: playerSide ]",
-messageSends: ["do:", "readyToPickMonsters:", "children"],
 referencedClasses: []
 }),
 smalltalk.CWComponent);
@@ -614,6 +570,43 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "cellToMoveBeforeAttack:",
+category: 'neighbourhood',
+fn: function (cellLast){
+var self=this;
+var possibleCells,closestCell,shortestPath;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+possibleCells=_st(_st(cellLast)._neighbours())._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._isFreeSelected();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+shortestPath=(9999);
+_st(possibleCells)._do_((function(each){
+var pathSize;
+return smalltalk.withContext(function($ctx2) {
+pathSize=_st(_st(self)._pathTo_(each))._size();
+pathSize;
+$1=_st(pathSize).__lt(shortestPath);
+if(smalltalk.assert($1)){
+shortestPath=pathSize;
+shortestPath;
+closestCell=each;
+return closestCell;
+};
+}, function($ctx2) {$ctx2.fillBlock({each:each,pathSize:pathSize},$ctx1)})}));
+$2=closestCell;
+return $2;
+}, function($ctx1) {$ctx1.fill(self,"cellToMoveBeforeAttack:",{cellLast:cellLast,possibleCells:possibleCells,closestCell:closestCell,shortestPath:shortestPath},smalltalk.CWCell)})},
+args: ["cellLast"],
+source: "cellToMoveBeforeAttack: cellLast\x0a\x09\x22Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.\x0a\x09Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster\x22\x0a\x0a\x09| possibleCells closestCell shortestPath |\x0a\x09possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].\x0a\x09shortestPath := 9999.\x0a\x09possibleCells do: [ :each | \x0a\x09\x09| pathSize |\x0a\x09\x09pathSize := (self pathTo: each) size.\x0a\x09\x09pathSize < shortestPath \x0a\x09\x09\x09ifTrue: [ \x0a\x09\x09\x09\x09shortestPath := pathSize.\x0a\x09\x09\x09\x09closestCell := each ] ].\x0a\x09^ closestCell",
+messageSends: ["select:", "isFreeSelected", "neighbours", "do:", "size", "pathTo:", "ifTrue:", "<"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "changeState:",
 category: 'state machine',
 fn: function (stateClass){
@@ -759,25 +752,6 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "herosClass",
-category: 'factory',
-fn: function (){
-var self=this;
-function $CWHeros(){return smalltalk.CWHeros||(typeof CWHeros=="undefined"?nil:CWHeros)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=$CWHeros();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"herosClass",{},smalltalk.CWCell)})},
-args: [],
-source: "herosClass\x0a\x09^ CWHeros",
-messageSends: [],
-referencedClasses: ["CWHeros"]
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initializeFromJson:",
 category: 'initialize-release',
 fn: function (aJsonCell){
@@ -802,7 +776,7 @@ return _st(self)._backgroundAdd_(_st(_st(self)._newOverTile())._initializeFromKe
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJsonCell:aJsonCell,elements:elements,ots:ots},smalltalk.CWCell)})},
 args: ["aJsonCell"],
-source: "initializeFromJson: aJsonCell\x0a    | elements ots |\x0a    \x0a    elements := aJsonCell keys.\x0a    background := Array new.\x0a\x09\x0a\x09(elements includes: 'tile') \x0a    \x09ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].\x0a\x09\x22replace match: with beginsWith: later ...\x22\x0a\x09ots := aJsonCell keys select: [ :each | each match: 'overtile' ].\x0a\x09ots do: [ :each |\x0a\x09\x09self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].\x0a\x09\x22(elements includes: 'heros') \x0a    \x09ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].\x0a\x09(elements includes: 'troop') \x0a    \x09ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ].\x22",
+source: "initializeFromJson: aJsonCell\x0a    | elements ots |\x0a    \x0a    elements := aJsonCell keys.\x0a    background := Array new.\x0a\x09\x0a\x09(elements includes: 'tile') \x0a    \x09ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].\x0a\x09\x22replace match: with beginsWith: later ...\x22\x0a\x09ots := aJsonCell keys select: [ :each | each match: 'overtile' ].\x0a\x09ots do: [ :each |\x0a\x09\x09self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].",
 messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "includes:", "select:", "match:", "do:", "at:", "newOverTile"],
 referencedClasses: ["Array"]
 }),
@@ -827,34 +801,18 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "mapCoods",
-category: 'accessing',
+selector: "isFreeSelected",
+category: 'state delegation',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=self["@mapCoods"];
+$1=_st(_st(self)._state())._isFreeSelected();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"mapCoods",{},smalltalk.CWCell)})},
+}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWCell)})},
 args: [],
-source: "mapCoods\x0a\x09^ mapCoods",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "mapCoods:",
-category: 'accessing',
-fn: function (aPoint){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@mapCoods"]=aPoint;
-return self}, function($ctx1) {$ctx1.fill(self,"mapCoods:",{aPoint:aPoint},smalltalk.CWCell)})},
-args: ["aPoint"],
-source: "mapCoods: aPoint\x0a\x09mapCoods := aPoint.",
-messageSends: [],
+source: "isFreeSelected\x0a\x09^ self state isFreeSelected",
+messageSends: ["isFreeSelected", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -1013,24 +971,6 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newHeros",
-category: 'factory',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self)._newChild_(_st(self)._herosClass());
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newHeros",{},smalltalk.CWCell)})},
-args: [],
-source: "newHeros\x0a\x09 ^ self newChild: self herosClass",
-messageSends: ["newChild:", "herosClass"],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "newOverTile",
 category: 'factory',
 fn: function (){
@@ -1061,24 +1001,6 @@ return $1;
 args: [],
 source: "newTile\x0a\x09 ^ self newChild: self tileClass ",
 messageSends: ["newChild:", "tileClass"],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newTroop",
-category: 'factory',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(self)._newChild_(_st(self)._troopClass());
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newTroop",{},smalltalk.CWCell)})},
-args: [],
-source: "newTroop\x0a\x09 ^ self newChild: self troopClass",
-messageSends: ["newChild:", "troopClass"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -1349,25 +1271,6 @@ args: [],
 source: "tileClass\x0a\x09^ CWTile",
 messageSends: [],
 referencedClasses: ["CWTile"]
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "troopClass",
-category: 'factory',
-fn: function (){
-var self=this;
-function $CWTroop(){return smalltalk.CWTroop||(typeof CWTroop=="undefined"?nil:CWTroop)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=$CWTroop();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"troopClass",{},smalltalk.CWCell)})},
-args: [],
-source: "troopClass\x0a\x09^ CWTroop",
-messageSends: [],
-referencedClasses: ["CWTroop"]
 }),
 smalltalk.CWCell);
 
@@ -2225,6 +2128,22 @@ referencedClasses: []
 smalltalk.CWBackground);
 
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "folderName",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "back";
+}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWBackground.klass)})},
+args: [],
+source: "folderName\x0a\x09^ 'back'",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWBackground.klass);
+
 
 smalltalk.addClass('CWOverTile', smalltalk.CWBackground, [], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
@@ -2548,6 +2467,24 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "attackPotential",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@attack"]).__star(self["@dices"]);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attackPotential",{},smalltalk.CWMonster)})},
+args: [],
+source: "attackPotential\x0a\x09\x22Answers the power of attack of the monster\x22\x0a\x09^ attack * dices",
+messageSends: ["*"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "attackTo:inContext:",
 category: 'state delegation',
 fn: function (aCell,gameContext){
@@ -2558,6 +2495,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"attackTo:inContext:",{aCell:aCel
 args: ["aCell", "gameContext"],
 source: "attackTo: aCell inContext: gameContext\x0a\x09self state monster: self attackTo: aCell inContext: gameContext",
 messageSends: ["monster:attackTo:inContext:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "attackableTargets",
+category: 'fighting',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._parent())._attackableNeighboursConsideringMoveCycle_attackCycle_fromSide_(_st(self)._move(),_st(self)._attack(),_st(self)._side());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attackableTargets",{},smalltalk.CWMonster)})},
+args: [],
+source: "attackableTargets\x0a\x09\x22Answers the list of monsters this monster can attack, including the ones he needs to move before attack\x22\x0a\x09^ self parent attackableNeighboursConsideringMoveCycle: self move attackCycle: self attack fromSide: self side.",
+messageSends: ["attackableNeighboursConsideringMoveCycle:attackCycle:fromSide:", "move", "attack", "side", "parent"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2668,6 +2623,24 @@ args: [],
 source: "defaultState\x0a\x09\x22When map is initialized the monster will get this state by default\x22\x0a\x09^ CWInactive",
 messageSends: [],
 referencedClasses: ["CWInactive"]
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "defensePotential",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@hp"]).__star((100));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defensePotential",{},smalltalk.CWMonster)})},
+args: [],
+source: "defensePotential\x0a\x09\x22Answers the power of defense of the monster\x22\x0a\x09^ hp * 100",
+messageSends: ["*"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -2883,29 +2856,6 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "monstersFromSide:",
-category: 'selection',
-fn: function (aSide){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=_st(_st(self)._side()).__eq(aSide);
-if(smalltalk.assert($2)){
-$1=[self];
-} else {
-$1=[];
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"monstersFromSide:",{aSide:aSide},smalltalk.CWMonster)})},
-args: ["aSide"],
-source: "monstersFromSide: aSide\x0a\x09^ self side = aSide \x0a\x09\x09ifTrue: [ { self } ]\x0a\x09\x09ifFalse: [ #() ]",
-messageSends: ["ifTrue:ifFalse:", "=", "side"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "move",
 category: 'accessing',
 fn: function (){
@@ -3056,26 +3006,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"readyToBePicked",{},smalltalk.CW
 args: [],
 source: "readyToBePicked\x0a\x09self state readyToPick: self",
 messageSends: ["readyToPick:", "state"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "readyToPickMonsters:",
-category: 'selection',
-fn: function (playerSide){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._side()).__eq(playerSide);
-if(smalltalk.assert($1)){
-_st(self)._readyToBePicked();
-};
-return self}, function($ctx1) {$ctx1.fill(self,"readyToPickMonsters:",{playerSide:playerSide},smalltalk.CWMonster)})},
-args: ["playerSide"],
-source: "readyToPickMonsters: playerSide\x0a\x09self side = playerSide \x0a\x09\x09ifTrue: [ self readyToBePicked ]",
-messageSends: ["ifTrue:", "readyToBePicked", "=", "side"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);

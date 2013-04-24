@@ -9,7 +9,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@cellIndex"]=_st(self["@cellIndex"]).__plus((1));
-return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWMapVisitorContext)})},
+return self}, function($ctx1) {$ctx1.fill(self,"nextCell",{},smalltalk.CWMapInterpreterContext)})},
 args: [],
 source: "nextCell\x0a\x09cellIndex := cellIndex + 1.",
 messageSends: ["+"],
@@ -26,7 +26,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@rowIndex"]=_st(self["@rowIndex"]).__plus((1));
 self["@cellIndex"]=(0);
-return self}, function($ctx1) {$ctx1.fill(self,"nextRow",{},smalltalk.CWMapVisitorContext)})},
+return self}, function($ctx1) {$ctx1.fill(self,"nextRow",{},smalltalk.CWMapInterpreterContext)})},
 args: [],
 source: "nextRow\x0a\x09rowIndex := rowIndex + 1.\x0a\x09cellIndex := 0",
 messageSends: ["+"],
@@ -43,7 +43,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@rowIndex"]=(0);
 self["@cellIndex"]=(0);
-return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWMapVisitorContext)})},
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWMapInterpreterContext)})},
 args: [],
 source: "reset\x0a\x09rowIndex := 0.\x0a\x09cellIndex := 0",
 messageSends: [],
@@ -69,7 +69,7 @@ $1=self["@default"];
 $1=$2;
 };
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMapVisitorContext.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMapInterpreterContext.klass)})},
 args: [],
 source: "default\x0a\x09^ default ifNil: [ default := self new ]",
 messageSends: ["ifNil:", "new"],
@@ -229,11 +229,12 @@ category: 'visiting',
 fn: function (aTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self["@drawer"])._drawBackTile_(_st(self["@drawer"])._backgroundContext());
 _st(self["@drawer"])._drawIsometric_inContext_(aTile,_st(self["@drawer"])._backgroundContext());
 return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.CWGlobalDrawingContext)})},
 args: ["aTile"],
-source: "visitTile: aTile\x0a\x09drawer drawIsometric: aTile inContext: drawer backgroundContext.",
-messageSends: ["drawIsometric:inContext:", "backgroundContext"],
+source: "visitTile: aTile\x0a\x09drawer drawBackTile: drawer backgroundContext.\x0a\x09drawer drawIsometric: aTile inContext: drawer backgroundContext.",
+messageSends: ["drawBackTile:", "backgroundContext", "drawIsometric:inContext:"],
 referencedClasses: []
 }),
 smalltalk.CWGlobalDrawingContext);
@@ -334,7 +335,7 @@ fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitCell:",{aCell:aCell},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitCell:",{aCell:aCell},smalltalk.CWVisitor)})},
 args: ["aCell"],
 source: "visitCell: aCell\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -388,7 +389,7 @@ fn: function (aGameOverTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{aGameOverTile:aGameOverTile},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{aGameOverTile:aGameOverTile},smalltalk.CWVisitor)})},
 args: ["aGameOverTile"],
 source: "visitGameOverTile: aGameOverTile\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -404,7 +405,7 @@ fn: function (aHeros){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{aHeros:aHeros},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{aHeros:aHeros},smalltalk.CWVisitor)})},
 args: ["aHeros"],
 source: "visitHeros: aHeros\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -420,7 +421,7 @@ fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitMap:",{aMap:aMap},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitMap:",{aMap:aMap},smalltalk.CWVisitor)})},
 args: ["aMap"],
 source: "visitMap: aMap\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -436,7 +437,7 @@ fn: function (anOverTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{anOverTile:anOverTile},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{anOverTile:anOverTile},smalltalk.CWVisitor)})},
 args: ["anOverTile"],
 source: "visitOverTile: anOverTile\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -452,7 +453,7 @@ fn: function (aRow){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitRow:",{aRow:aRow},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitRow:",{aRow:aRow},smalltalk.CWVisitor)})},
 args: ["aRow"],
 source: "visitRow: aRow\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -468,7 +469,7 @@ fn: function (aTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.CWVisitor)})},
 args: ["aTile"],
 source: "visitTile: aTile\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -501,7 +502,7 @@ fn: function (aTroop){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.MapVisitor)})},
+return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWVisitor)})},
 args: ["aTroop"],
 source: "visitTroop: aTroop\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
@@ -1292,6 +1293,26 @@ args: ["object", "ctx", "x", "y"],
 source: "display: object inContext: ctx X: x y: y\x0a\x09ctx\x0a\x09\x09drawImage: object image\x0a\x09\x09x: x\x0a\x09\x09y: y.",
 messageSends: ["drawImage:x:y:", "image"],
 referencedClasses: []
+}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "drawBackTile:",
+category: 'rendering',
+fn: function (ctx){
+var self=this;
+function $CWBackground(){return smalltalk.CWBackground||(typeof CWBackground=="undefined"?nil:CWBackground)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._safeDraw_inContext_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(ctx)._drawImage_x_y_(_st(_st($CWBackground())._imageCache())._at_("back"),_st(_st(_st(self)._currentPoint())._x()).__minus((4)),_st(_st(_st(self)._currentPoint())._y()).__plus((20)));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
+return self}, function($ctx1) {$ctx1.fill(self,"drawBackTile:",{ctx:ctx},smalltalk.CWMapDrawer)})},
+args: ["ctx"],
+source: "drawBackTile: ctx\x0a\x09self safeDraw: [ ctx drawImage: (CWBackground imageCache at: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx",
+messageSends: ["safeDraw:inContext:", "drawImage:x:y:", "at:", "imageCache", "-", "x", "currentPoint", "+", "y"],
+referencedClasses: ["CWBackground"]
 }),
 smalltalk.CWMapDrawer);
 

@@ -57,19 +57,6 @@ desactivateMonsters
 		child desactivateMonsters ]
 !
 
-monstersFromSide: aSide
-	| col |
-	col := Array new.
-	self children collect: [ :child |
-		col addAll: (child monstersFromSide: aSide) ].
-	^ col
-!
-
-readyToPickMonsters: playerSide
-	self children do: [ :child |
-		child readyToPickMonsters: playerSide ]
-!
-
 removeSelection
 	self children do: [ :child |
 		child removeSelection ]
@@ -164,14 +151,6 @@ gameOverTile: aGOT
 	gameOverTile := aGOT
 !
 
-mapCoods
-	^ mapCoods
-!
-
-mapCoods: aPoint
-	mapCoods := aPoint.
-!
-
 monster
 	^ monster
 !
@@ -198,16 +177,8 @@ gameOverTileClass
 	^ CWGameOverTile
 !
 
-herosClass
-	^ CWHeros
-!
-
 newGameOverTile
 	 ^ self newChild: self gameOverTileClass
-!
-
-newHeros
-	 ^ self newChild: self herosClass
 !
 
 newOverTile
@@ -218,20 +189,12 @@ newTile
 	 ^ self newChild: self tileClass
 !
 
-newTroop
-	 ^ self newChild: self troopClass
-!
-
 overTileClass
 	^ CWOverTile
 !
 
 tileClass
 	^ CWTile
-!
-
-troopClass
-	^ CWTroop
 ! !
 
 !CWCell methodsFor: 'initialize-release'!
@@ -252,10 +215,6 @@ initializeFromJson: aJsonCell
 	ots := aJsonCell keys select: [ :each | each match: 'overtile' ].
 	ots do: [ :each |
 		self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].
-	"(elements includes: 'heros') 
-    	ifTrue: [ self monster: (self newHeros initializeFromJson: aJsonCell heros) ].
-	(elements includes: 'troop') 
-    	ifTrue: [ self monster: (self newTroop initializeFromJson: aJsonCell troop) ]."
 ! !
 
 !CWCell methodsFor: 'neighbourhood'!
@@ -284,6 +243,23 @@ attackableNeighboursFrom: side
 	attackableCells do: [ :each |
 			each addSelector ].
 	^ attackableCells
+!
+
+cellToMoveBeforeAttack: cellLast
+	"Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.
+	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
+
+	| possibleCells closestCell shortestPath |
+	possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].
+	shortestPath := 9999.
+	possibleCells do: [ :each | 
+		| pathSize |
+		pathSize := (self pathTo: each) size.
+		pathSize < shortestPath 
+			ifTrue: [ 
+				shortestPath := pathSize.
+				closestCell := each ] ].
+	^ closestCell
 !
 
 movableNeighbours
@@ -381,6 +357,10 @@ canMoveTo
 
 hasMonster
 	^ self state hasMonster
+!
+
+isFreeSelected
+	^ self state isFreeSelected
 !
 
 mouseClick: gameContext
@@ -756,6 +736,12 @@ accept: aVisitor
 	self shouldNotImplement
 ! !
 
+!CWBackground class methodsFor: 'accessing'!
+
+folderName
+	^ 'back'
+! !
+
 CWBackground subclass: #CWOverTile
 	instanceVariableNames: ''
 	package: 'Easnoth-BusinessObjects'!
@@ -836,6 +822,11 @@ attack: int
 	attack := int
 !
 
+attackPotential
+	"Answers the power of attack of the monster"
+	^ attack * dices
+!
+
 currentMove
 	^ currentMove
 !
@@ -848,6 +839,11 @@ currentMove: int
 defaultState
 	"When map is initialized the monster will get this state by default"
 	^ CWInactive
+!
+
+defensePotential
+	"Answers the power of defense of the monster"
+	^ hp * 100
 !
 
 dices
@@ -944,6 +940,11 @@ attackNeighbour: anotherMonster inContext: gameContext
         self select: gameContext.
 		self checkForNextTurn.
 		self updateMonstersAndGOTs ]
+!
+
+attackableTargets
+	"Answers the list of monsters this monster can attack, including the ones he needs to move before attack"
+	^ self parent attackableNeighboursConsideringMoveCycle: self move attackCycle: self attack fromSide: self side.
 !
 
 die
@@ -1045,19 +1046,6 @@ updateStats: aKey
 	"Case where the json file finished loading during the execution of this method but before the new call back was set up"
 	(self class jsonStatCache includesKey: aKey) 
 		ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].
-! !
-
-!CWMonster methodsFor: 'selection'!
-
-monstersFromSide: aSide
-	^ self side = aSide 
-		ifTrue: [ { self } ]
-		ifFalse: [ #() ]
-!
-
-readyToPickMonsters: playerSide
-	self side = playerSide 
-		ifTrue: [ self readyToBePicked ]
 ! !
 
 !CWMonster methodsFor: 'state delegation'!
