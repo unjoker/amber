@@ -1306,12 +1306,12 @@ function $CWBackground(){return smalltalk.CWBackground||(typeof CWBackground=="u
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._safeDraw_inContext_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(ctx)._drawImage_x_y_(_st(_st($CWBackground())._imageCache())._at_("back"),_st(_st(_st(self)._currentPoint())._x()).__minus((4)),_st(_st(_st(self)._currentPoint())._y()).__plus((20)));
+return _st(ctx)._drawImage_x_y_(_st($CWBackground())._imageCacheAt_("back"),_st(_st(_st(self)._currentPoint())._x()).__minus((4)),_st(_st(_st(self)._currentPoint())._y()).__plus((20)));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
 return self}, function($ctx1) {$ctx1.fill(self,"drawBackTile:",{ctx:ctx},smalltalk.CWMapDrawer)})},
 args: ["ctx"],
-source: "drawBackTile: ctx\x0a\x09self safeDraw: [ ctx drawImage: (CWBackground imageCache at: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx",
-messageSends: ["safeDraw:inContext:", "drawImage:x:y:", "at:", "imageCache", "-", "x", "currentPoint", "+", "y"],
+source: "drawBackTile: ctx\x0a\x09self safeDraw: [ ctx drawImage: (CWBackground imageCacheAt: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx",
+messageSends: ["safeDraw:inContext:", "drawImage:x:y:", "imageCacheAt:", "-", "x", "currentPoint", "+", "y"],
 referencedClasses: ["CWBackground"]
 }),
 smalltalk.CWMapDrawer);

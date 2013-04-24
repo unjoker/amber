@@ -10,11 +10,12 @@
                     loadAmber({
                               files: ['Easnoth-States','Easnoth-BusinessObjects.js', 'Easnoth-Visitors.js', 'Easnoth-Announcements.js', 'Easnoth-StartMenu.js', 'Easnoth-Menu.js', 'Easnoth-Game.js'],
                               prefix: 'projects/easnoth/js',
-                                                            deploy: true});
+                              ready: function() {smalltalk.CWStartMenu._start()},
+                                                                                 deploy: true});
                     </script>
                 <title>Easnoth : Battle Arena</title>
                 </head>
-	<body class="editor"onload="adjust();smalltalk.CWStartMenu._start();">
+	<body class="editor"onload="adjust();">
         <canvas id="background" width="1366" height="768">
             Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
         </canvas>

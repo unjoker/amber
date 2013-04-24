@@ -582,7 +582,7 @@ display: object inContext: ctx X: x y: y
 !
 
 drawBackTile: ctx
-	self safeDraw: [ ctx drawImage: (CWBackground imageCache at: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
+	self safeDraw: [ ctx drawImage: (CWBackground imageCacheAt: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
 !
 
 drawHeros: heros

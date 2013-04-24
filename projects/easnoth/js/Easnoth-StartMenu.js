@@ -172,7 +172,7 @@ referencedClasses: []
 smalltalk.CWBootstrapper.klass);
 
 
-smalltalk.addClass('CWGameSettings', smalltalk.Widget, ['players', 'mapNumber'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWGameSettings', smalltalk.Object, ['players', 'mapNumber'], 'Easnoth-StartMenu');
 smalltalk.CWGameSettings.comment="I represent the game settings. My instance variables are set before the game, in the start menus. Then, the CWBootstrapper handles my data to launch corectly the game."
 smalltalk.addMethod(
 smalltalk.method({
@@ -198,7 +198,7 @@ fn: function (){
 var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
+smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@players"]=_st($Array())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameSettings)})},
 args: [],
