@@ -105,11 +105,13 @@ selector: "preloadImages",
 fn: function (){
 var self=this;
 function $CWGameOverTile(){return smalltalk.CWGameOverTile||(typeof CWGameOverTile=="undefined"?nil:CWGameOverTile)}
+function $CWBackground(){return smalltalk.CWBackground||(typeof CWBackground=="undefined"?nil:CWBackground)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._imagesToPreload())._do_((function(key){
 return smalltalk.withContext(function($ctx2) {
 return _st($CWGameOverTile())._newImageFrom_(key);
 }, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
+_st($CWBackground())._newImageFrom_("back");
 return self}, function($ctx1) {$ctx1.fill(self,"preloadImages",{},smalltalk.CWBootstrapper)})},
 messageSends: ["do:", "newImageFrom:", "imagesToPreload"]}),
 smalltalk.CWBootstrapper);
@@ -393,6 +395,7 @@ $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
+_st(_st(html)._li())._with_("Humans or elves are recommended for AI");
 _st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
 return _st(self)._playerSelection_on_(n,html);
@@ -411,7 +414,7 @@ return $4;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"]}),
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -529,18 +532,6 @@ return $1;
 messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"]}),
 smalltalk.CWStartMenu);
 
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "example",
-fn: function (){
-var self=this;
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st($CWStartMenu())._new())._appendToJQuery_(_st("body")._asJQuery());
-return self}, function($ctx1) {$ctx1.fill(self,"example",{},smalltalk.CWStartMenu.klass)})},
-messageSends: ["appendToJQuery:", "asJQuery", "new"]}),
-smalltalk.CWStartMenu.klass);
 
 smalltalk.addMethod(
 smalltalk.method({

@@ -53,7 +53,8 @@ initializeEventHandling
 
 preloadImages
 	self imagesToPreload do: [ :key |
-		CWGameOverTile newImageFrom: key ]
+		CWGameOverTile newImageFrom: key ].
+	CWBackground newImageFrom: 'back'.
 ! !
 
 !CWBootstrapper class methodsFor: 'instance creation'!
@@ -144,7 +145,7 @@ startBeta
 !CWStartMenu methodsFor: 'initalize-release'!
 
 initialize
-	super initialize.
+	super initialize. 
 	gameSettings := CWGameSettings new
 ! !
 
@@ -218,6 +219,7 @@ playerMenu
 				html ul 
 					class: 'menu';
 					with: [
+						html li with: 'Humans or elves are recommended for AI'.
 						1 to: 2 do: [ :n |
 							self playerSelection: n on: html ].
 						html li with: [
@@ -256,10 +258,6 @@ renderOn: html
 ! !
 
 !CWStartMenu class methodsFor: 'not yet classified'!
-
-example
-	CWStartMenu new appendToJQuery: 'body' asJQuery
-!
 
 start
 	^ self new appendToJQuery: 'body' asJQuery

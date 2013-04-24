@@ -110,6 +110,22 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isFreeSelected",
+category: 'cell state API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWCellState)})},
+args: [],
+source: "isFreeSelected\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "mouseClick:context:",
 category: 'cell state API',
 fn: function (aCell,gameContext){
@@ -336,6 +352,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"cell:addMonster:",{aCell:aCell,a
 args: ["aCell", "aMonster"],
 source: "cell: aCell addMonster: aMonster\x0a\x09self error: 'cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)'.",
 messageSends: ["error:"],
+referencedClasses: []
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isFreeSelected",
+category: 'cell state API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWFreeSelected)})},
+args: [],
+source: "isFreeSelected\x0a\x09^ true",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
@@ -722,10 +754,11 @@ var self=this;
 function $CWInactive(){return smalltalk.CWInactive||(typeof CWInactive=="undefined"?nil:CWInactive)}
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._changeState_($CWInactive());
+_st(aMonster)._currentMove_((0));
 return self}, function($ctx1) {$ctx1.fill(self,"desactivate:",{aMonster:aMonster},smalltalk.CWMonsterState)})},
 args: ["aMonster"],
-source: "desactivate: aMonster\x0a\x09aMonster changeState: CWInactive",
-messageSends: ["changeState:"],
+source: "desactivate: aMonster\x0a\x09aMonster changeState: CWInactive.\x0a\x09aMonster currentMove: 0",
+messageSends: ["changeState:", "currentMove:"],
 referencedClasses: ["CWInactive"]
 }),
 smalltalk.CWMonsterState);
@@ -834,44 +867,6 @@ smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-States');
 smalltalk.CWActive.comment="Monster can move and attack"
 smalltalk.addMethod(
 smalltalk.method({
-selector: "cell:ToMoveBeforeAttack:",
-category: 'monster state API',
-fn: function (cell1,cellLast){
-var self=this;
-var possibleCells,closestCell,shortestPath;
-function $CWFreeSelected(){return smalltalk.CWFreeSelected||(typeof CWFreeSelected=="undefined"?nil:CWFreeSelected)}
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-possibleCells=_st(_st(cellLast)._neighbours())._select_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(_st(each)._state()).__eq(_st($CWFreeSelected())._default());
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-shortestPath=(9999);
-_st(possibleCells)._do_((function(each){
-var pathSize;
-return smalltalk.withContext(function($ctx2) {
-pathSize=_st(_st(cell1)._pathTo_(each))._size();
-pathSize;
-$1=_st(pathSize).__lt(shortestPath);
-if(smalltalk.assert($1)){
-shortestPath=pathSize;
-shortestPath;
-closestCell=each;
-return closestCell;
-};
-}, function($ctx2) {$ctx2.fillBlock({each:each,pathSize:pathSize},$ctx1)})}));
-$2=closestCell;
-return $2;
-}, function($ctx1) {$ctx1.fill(self,"cell:ToMoveBeforeAttack:",{cell1:cell1,cellLast:cellLast,possibleCells:possibleCells,closestCell:closestCell,shortestPath:shortestPath},smalltalk.CWActive)})},
-args: ["cell1", "cellLast"],
-source: "cell: cell1 ToMoveBeforeAttack: cellLast\x0a\x09\x22Assumes that the monster is at cell1 and want to attack cellLast, which is not a neighbour.\x0a\x09Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster\x22\x0a\x0a\x09| possibleCells closestCell shortestPath |\x0a\x09possibleCells := cellLast neighbours select: [:each |\x0a\x09\x09each state = CWFreeSelected default ].\x0a\x09shortestPath := 9999.\x0a\x09possibleCells do: [ :each | \x0a\x09\x09| pathSize |\x0a\x09\x09pathSize := (cell1 pathTo: each) size.\x0a\x09\x09pathSize < shortestPath \x0a\x09\x09\x09ifTrue: [ \x0a\x09\x09\x09\x09shortestPath := pathSize.\x0a\x09\x09\x09\x09closestCell := each ] ].\x0a\x09^ closestCell",
-messageSends: ["select:", "=", "default", "state", "neighbours", "do:", "size", "pathTo:", "ifTrue:", "<"],
-referencedClasses: ["CWFreeSelected"]
-}),
-smalltalk.CWActive);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "changeStateAfterAttacking:",
 category: 'private',
 fn: function (aMonster){
@@ -936,7 +931,7 @@ $1=_st(_st(aCell)._neighbours())._includes_(_st(aMonster)._parent());
 if(smalltalk.assert($1)){
 _st(aMonster)._attackNeighbour_inContext_(_st(aCell)._monster(),gameContext);
 } else {
-toMoveCell=_st(self)._cell_ToMoveBeforeAttack_(_st(aMonster)._parent(),aCell);
+toMoveCell=_st(_st(aMonster)._parent())._cellToMoveBeforeAttack_(aCell);
 toMoveCell;
 _st(aMonster)._moveTo_inContext_callback_(toMoveCell,gameContext,(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -946,8 +941,8 @@ return _st(aMonster)._updateGOTs();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
 args: ["aMonster", "aCell", "gameContext"],
-source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09(aCell neighbours includes: aMonster parent) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := self cell: aMonster parent ToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext.\x0a\x09\x09\x09\x09aMonster updateGOTs ] ] \x0a\x09\x09ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]",
-messageSends: ["ifFalse:ifTrue:", "cell:ToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "updateGOTs", "attackNeighbour:inContext:", "monster", "includes:", "neighbours"],
+source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09(aCell neighbours includes: aMonster parent) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext.\x0a\x09\x09\x09\x09aMonster updateGOTs ] ] \x0a\x09\x09ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]",
+messageSends: ["ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "updateGOTs", "attackNeighbour:inContext:", "monster", "includes:", "neighbours"],
 referencedClasses: []
 }),
 smalltalk.CWActive);

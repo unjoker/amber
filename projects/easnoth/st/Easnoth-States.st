@@ -37,6 +37,10 @@ hasMonster
 	^ false
 !
 
+isFreeSelected
+	^ false
+!
+
 mouseClick: aCell context: gameContext
 	self subClassResponsbility
 !
@@ -115,6 +119,10 @@ addSelector: aCell
 
 cell: aCell addMonster: aMonster
 	self error: 'cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)'.
+!
+
+isFreeSelected
+	^ true
 !
 
 mouseClick: aCell context: gameContext
@@ -225,7 +233,8 @@ checkForNextTurn: aMonster
 !
 
 desactivate: aMonster
-	aMonster changeState: CWInactive
+	aMonster changeState: CWInactive.
+	aMonster currentMove: 0
 !
 
 isInactive
@@ -270,24 +279,6 @@ Monster can move and attack!
 
 !CWActive methodsFor: 'monster state API'!
 
-cell: cell1 ToMoveBeforeAttack: cellLast
-	"Assumes that the monster is at cell1 and want to attack cellLast, which is not a neighbour.
-	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
-
-	| possibleCells closestCell shortestPath |
-	possibleCells := cellLast neighbours select: [:each |
-		each state = CWFreeSelected default ].
-	shortestPath := 9999.
-	possibleCells do: [ :each | 
-		| pathSize |
-		pathSize := (cell1 pathTo: each) size.
-		pathSize < shortestPath 
-			ifTrue: [ 
-				shortestPath := pathSize.
-				closestCell := each ] ].
-	^ closestCell
-!
-
 checkForNextTurn: aMonster
 	"do nothing for now"
 !
@@ -296,7 +287,7 @@ monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
 	(aCell neighbours includes: aMonster parent) 
 		ifFalse: [ 
-			toMoveCell := self cell: aMonster parent ToMoveBeforeAttack: aCell.
+			toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.
 			aMonster moveTo: toMoveCell inContext: gameContext callback: [
 				aMonster attackTo: aCell inContext: gameContext.
 				aMonster updateGOTs ] ] 

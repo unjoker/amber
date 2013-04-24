@@ -96,6 +96,7 @@ visitOverTile: ot
 !
 
 visitTile: aTile
+	drawer drawBackTile: drawer backgroundContext.
 	drawer drawIsometric: aTile inContext: drawer backgroundContext.
 !
 
@@ -578,6 +579,10 @@ display: object inContext: ctx X: x y: y
 		drawImage: object image
 		x: x
 		y: y.
+!
+
+drawBackTile: ctx
+	self safeDraw: [ ctx drawImage: (CWBackground imageCache at: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
 !
 
 drawHeros: heros

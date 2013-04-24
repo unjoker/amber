@@ -137,16 +137,18 @@ category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWGameOverTile(){return smalltalk.CWGameOverTile||(typeof CWGameOverTile=="undefined"?nil:CWGameOverTile)}
+function $CWBackground(){return smalltalk.CWBackground||(typeof CWBackground=="undefined"?nil:CWBackground)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._imagesToPreload())._do_((function(key){
 return smalltalk.withContext(function($ctx2) {
 return _st($CWGameOverTile())._newImageFrom_(key);
 }, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
+_st($CWBackground())._newImageFrom_("back");
 return self}, function($ctx1) {$ctx1.fill(self,"preloadImages",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "preloadImages\x0a\x09self imagesToPreload do: [ :key |\x0a\x09\x09CWGameOverTile newImageFrom: key ]\x0a\x09",
+source: "preloadImages\x0a\x09self imagesToPreload do: [ :key |\x0a\x09\x09CWGameOverTile newImageFrom: key ].\x0a\x09CWBackground newImageFrom: 'back'.",
 messageSends: ["do:", "newImageFrom:", "imagesToPreload"],
-referencedClasses: ["CWGameOverTile"]
+referencedClasses: ["CWGameOverTile", "CWBackground"]
 }),
 smalltalk.CWBootstrapper);
 
@@ -433,7 +435,7 @@ smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
 self["@gameSettings"]=_st($CWGameSettings())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09gameSettings := CWGameSettings new",
+source: "initialize\x0a\x09super initialize. \x0a\x09gameSettings := CWGameSettings new",
 messageSends: ["initialize", "new"],
 referencedClasses: ["CWGameSettings"]
 }),
@@ -497,6 +499,7 @@ $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
+_st(_st(html)._li())._with_("Humans or elves are recommended for AI");
 _st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
 return _st(self)._playerSelection_on_(n,html);
@@ -516,8 +519,8 @@ return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: [],
-source: "playerMenu\x0a\x09| selectBox |\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"],
+source: "playerMenu\x0a\x09| selectBox |\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: 'Humans or elves are recommended for AI'.\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -665,23 +668,6 @@ smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "example",
-category: 'not yet classified',
-fn: function (){
-var self=this;
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st($CWStartMenu())._new())._appendToJQuery_(_st("body")._asJQuery());
-return self}, function($ctx1) {$ctx1.fill(self,"example",{},smalltalk.CWStartMenu.klass)})},
-args: [],
-source: "example\x0a\x09CWStartMenu new appendToJQuery: 'body' asJQuery",
-messageSends: ["appendToJQuery:", "asJQuery", "new"],
-referencedClasses: ["CWStartMenu"]
-}),
-smalltalk.CWStartMenu.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "start",
 category: 'not yet classified',
 fn: function (){
@@ -692,7 +678,7 @@ $1=_st(_st(self)._new())._appendToJQuery_(_st("body")._asJQuery());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"start",{},smalltalk.CWStartMenu.klass)})},
 args: [],
-source: "start\x0a\x09^ self new appendToJQuery: 'body' asJQuery",
+source: "start\x0a\x09^ self new appendToJQuery: 'body' asJQuery ",
 messageSends: ["appendToJQuery:", "asJQuery", "new"],
 referencedClasses: []
 }),
