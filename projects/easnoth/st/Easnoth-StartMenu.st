@@ -64,7 +64,7 @@ bootstrap: gameSettings
 		bootstrap: gameSettings
 ! !
 
-Widget subclass: #CWGameSettings
+Object subclass: #CWGameSettings
 	instanceVariableNames: 'players mapNumber'
 	package: 'Easnoth-StartMenu'!
 !CWGameSettings commentStamp!

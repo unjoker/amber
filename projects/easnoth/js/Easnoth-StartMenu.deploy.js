@@ -131,7 +131,7 @@ messageSends: ["bootstrap:", "new"]}),
 smalltalk.CWBootstrapper.klass);
 
 
-smalltalk.addClass('CWGameSettings', smalltalk.Widget, ['players', 'mapNumber'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWGameSettings', smalltalk.Object, ['players', 'mapNumber'], 'Easnoth-StartMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addPlayer:",
@@ -150,7 +150,7 @@ fn: function (){
 var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
+smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@players"]=_st($Array())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameSettings)})},
 messageSends: ["initialize", "new"]}),
