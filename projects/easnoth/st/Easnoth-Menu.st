@@ -137,7 +137,10 @@ initialize
 	super initialize.
 	self announcer 
 		on: CWDicesRolledEvent
-		do: [ :event | self showDices: event ]
+		do: [ :event | self showDices: event ].
+	self announcer 
+		on: CWMonsterUpdateEvent
+		do: [ :event | self showDicesNoAnimation: event monster ]
 !
 
 renderOn: html
@@ -178,6 +181,11 @@ showDices: aResDices
 	| cb |
 	cb := [ aResDices callback value: aResDices ].
 	self updateDices: aResDices dices kills: aResDices kills callBack: cb.
+!
+
+showDicesNoAnimation: monster
+	"should change the number of dices without animation"
+	"self updateDices: monster dices kills: monster kills callBack: []."
 ! !
 
 CWActionMenuComponent subclass: #CWMapControls

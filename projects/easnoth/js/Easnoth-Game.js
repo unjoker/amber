@@ -840,19 +840,16 @@ var monsters;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 monsters=_st($Array())._new();
-_st((1))._to_by_do_((5),(2),(function(n){
-return smalltalk.withContext(function($ctx2) {
-return _st(monsters)._at_put_(n,_st(self)._newTroop_army_(_st(data)._warrior(),self["@team"]));
-}, function($ctx2) {$ctx2.fillBlock({n:n},$ctx1)})}));
-_st((2))._to_by_do_((4),(2),(function(n){
-return smalltalk.withContext(function($ctx2) {
-return _st(monsters)._at_put_(n,_st(self)._newHeros_army_(_st(data)._heros(),self["@team"]));
-}, function($ctx2) {$ctx2.fillBlock({n:n},$ctx1)})}));
+_st(monsters)._at_put_((1),_st(self)._newTroop_(_st(data)._troop()));
+_st(monsters)._at_put_((2),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
+_st(monsters)._at_put_((3),_st(self)._newRange_(_st(data)._range()));
+_st(monsters)._at_put_((4),_st(self)._newCavalry_(_st(data)._cavalry()));
+_st(monsters)._at_put_((5),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()));
 self["@team"]=monsters;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
 args: ["aMap", "data"],
-source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player and put them in the map. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x091 to: 5 by: 2 do: [:n |\x0a\x09\x09\x09monsters at: n put: (self newTroop: data warrior army: team) ].\x0a\x09\x092 to: 4 by: 2 do: [:n |\x0a\x09\x09\x09monsters at: n put: (self newHeros: data heros army: team) ].\x0a\x09\x09team := monsters.",
-messageSends: ["new", "to:by:do:", "at:put:", "newTroop:army:", "warrior", "newHeros:army:", "heros"],
+source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x09monsters at: 1 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 2 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 3 put: (self newRange: data range).\x0a\x09\x09monsters at: 4 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09team := monsters.",
+messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWPlayer);
@@ -882,57 +879,140 @@ smalltalk.CWPlayer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newHeros:army:",
+selector: "newCavalry:",
 category: 'factory',
-fn: function (key,army){
+fn: function (jsonStat){
 var self=this;
-function $CWHeros(){return smalltalk.CWHeros||(typeof CWHeros=="undefined"?nil:CWHeros)}
+function $CWUnitStrategy(){return smalltalk.CWUnitStrategy||(typeof CWUnitStrategy=="undefined"?nil:CWUnitStrategy)}
+function $CWCavalryStrategy(){return smalltalk.CWCavalryStrategy||(typeof CWCavalryStrategy=="undefined"?nil:CWCavalryStrategy)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self)._newMonster_army_class_(key,army,$CWHeros());
+$1=_st(self)._newMonster_heros_type_(jsonStat,$CWUnitStrategy(),$CWCavalryStrategy());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newHeros:army:",{key:key,army:army},smalltalk.CWPlayer)})},
-args: ["key", "army"],
-source: "newHeros: key army: army\x0a\x09\x09^ self newMonster: key army: army class: CWHeros",
-messageSends: ["newMonster:army:class:"],
-referencedClasses: ["CWHeros"]
+}, function($ctx1) {$ctx1.fill(self,"newCavalry:",{jsonStat:jsonStat},smalltalk.CWPlayer)})},
+args: ["jsonStat"],
+source: "newCavalry: jsonStat\x0a\x09\x09^ self newMonster: jsonStat heros: CWUnitStrategy type: CWCavalryStrategy",
+messageSends: ["newMonster:heros:type:"],
+referencedClasses: ["CWUnitStrategy", "CWCavalryStrategy"]
 }),
 smalltalk.CWPlayer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newMonster:army:class:",
+selector: "newCavalryHeros:",
 category: 'factory',
-fn: function (key,army,aClass){
+fn: function (jsonStat){
 var self=this;
+function $CWHerosStrategy(){return smalltalk.CWHerosStrategy||(typeof CWHerosStrategy=="undefined"?nil:CWHerosStrategy)}
+function $CWCavalryStrategy(){return smalltalk.CWCavalryStrategy||(typeof CWCavalryStrategy=="undefined"?nil:CWCavalryStrategy)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(aClass)._new())._initializeFromKey_army_player_(key,army,self);
+$1=_st(self)._newMonster_heros_type_(jsonStat,$CWHerosStrategy(),$CWCavalryStrategy());
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newMonster:army:class:",{key:key,army:army,aClass:aClass},smalltalk.CWPlayer)})},
-args: ["key", "army", "aClass"],
-source: "newMonster: key army: army class: aClass\x0a\x09\x09\x22creates a new monster with self as player\x22\x0a\x09\x09^ aClass new initializeFromKey: key army: army player: self",
-messageSends: ["initializeFromKey:army:player:", "new"],
-referencedClasses: []
+}, function($ctx1) {$ctx1.fill(self,"newCavalryHeros:",{jsonStat:jsonStat},smalltalk.CWPlayer)})},
+args: ["jsonStat"],
+source: "newCavalryHeros: jsonStat\x0a\x09\x09^ self newMonster: jsonStat heros: CWHerosStrategy type: CWCavalryStrategy",
+messageSends: ["newMonster:heros:type:"],
+referencedClasses: ["CWHerosStrategy", "CWCavalryStrategy"]
 }),
 smalltalk.CWPlayer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newTroop:army:",
+selector: "newMonster:heros:type:",
 category: 'factory',
-fn: function (key,army){
+fn: function (jsonStat,strat,aType){
 var self=this;
-function $CWTroop(){return smalltalk.CWTroop||(typeof CWTroop=="undefined"?nil:CWTroop)}
+function $CWMonster(){return smalltalk.CWMonster||(typeof CWMonster=="undefined"?nil:CWMonster)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self)._newMonster_army_class_(key,army,$CWTroop());
+$1=_st(_st($CWMonster())._new())._initializeWithStat_army_player_heros_type_(jsonStat,_st(self)._team(),self,strat,aType);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newTroop:army:",{key:key,army:army},smalltalk.CWPlayer)})},
-args: ["key", "army"],
-source: "newTroop: key army: army\x0a\x09\x09^ self newMonster: key army: army class: CWTroop",
-messageSends: ["newMonster:army:class:"],
-referencedClasses: ["CWTroop"]
+}, function($ctx1) {$ctx1.fill(self,"newMonster:heros:type:",{jsonStat:jsonStat,strat:strat,aType:aType},smalltalk.CWPlayer)})},
+args: ["jsonStat", "strat", "aType"],
+source: "newMonster: jsonStat heros: strat type: aType\x0a\x09\x09\x22creates a new monster with self as player\x22\x0a\x09\x09^ CWMonster new initializeWithStat: jsonStat army: self team player: self heros: strat type: aType",
+messageSends: ["initializeWithStat:army:player:heros:type:", "team", "new"],
+referencedClasses: ["CWMonster"]
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newRange:",
+category: 'factory',
+fn: function (jsonStat){
+var self=this;
+function $CWUnitStrategy(){return smalltalk.CWUnitStrategy||(typeof CWUnitStrategy=="undefined"?nil:CWUnitStrategy)}
+function $CWRangeStrategy(){return smalltalk.CWRangeStrategy||(typeof CWRangeStrategy=="undefined"?nil:CWRangeStrategy)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newMonster_heros_type_(jsonStat,$CWUnitStrategy(),$CWRangeStrategy());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newRange:",{jsonStat:jsonStat},smalltalk.CWPlayer)})},
+args: ["jsonStat"],
+source: "newRange: jsonStat\x0a\x09\x09^ self newMonster: jsonStat heros: CWUnitStrategy type: CWRangeStrategy",
+messageSends: ["newMonster:heros:type:"],
+referencedClasses: ["CWUnitStrategy", "CWRangeStrategy"]
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newRangeHeros:",
+category: 'factory',
+fn: function (jsonStat){
+var self=this;
+function $CWHerosStrategy(){return smalltalk.CWHerosStrategy||(typeof CWHerosStrategy=="undefined"?nil:CWHerosStrategy)}
+function $CWRangeStrategy(){return smalltalk.CWRangeStrategy||(typeof CWRangeStrategy=="undefined"?nil:CWRangeStrategy)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newMonster_heros_type_(jsonStat,$CWHerosStrategy(),$CWRangeStrategy());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newRangeHeros:",{jsonStat:jsonStat},smalltalk.CWPlayer)})},
+args: ["jsonStat"],
+source: "newRangeHeros: jsonStat\x0a\x09\x09^ self newMonster: jsonStat heros: CWHerosStrategy type: CWRangeStrategy",
+messageSends: ["newMonster:heros:type:"],
+referencedClasses: ["CWHerosStrategy", "CWRangeStrategy"]
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newTroop:",
+category: 'factory',
+fn: function (jsonStat){
+var self=this;
+function $CWUnitStrategy(){return smalltalk.CWUnitStrategy||(typeof CWUnitStrategy=="undefined"?nil:CWUnitStrategy)}
+function $CWTroopStrategy(){return smalltalk.CWTroopStrategy||(typeof CWTroopStrategy=="undefined"?nil:CWTroopStrategy)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newMonster_heros_type_(jsonStat,$CWUnitStrategy(),$CWTroopStrategy());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newTroop:",{jsonStat:jsonStat},smalltalk.CWPlayer)})},
+args: ["jsonStat"],
+source: "newTroop: jsonStat\x0a\x09\x09^ self newMonster: jsonStat heros: CWUnitStrategy type: CWTroopStrategy",
+messageSends: ["newMonster:heros:type:"],
+referencedClasses: ["CWUnitStrategy", "CWTroopStrategy"]
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newTroopHeros:",
+category: 'factory',
+fn: function (jsonStat){
+var self=this;
+function $CWHerosStrategy(){return smalltalk.CWHerosStrategy||(typeof CWHerosStrategy=="undefined"?nil:CWHerosStrategy)}
+function $CWTroopStrategy(){return smalltalk.CWTroopStrategy||(typeof CWTroopStrategy=="undefined"?nil:CWTroopStrategy)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._newMonster_heros_type_(jsonStat,$CWHerosStrategy(),$CWTroopStrategy());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newTroopHeros:",{jsonStat:jsonStat},smalltalk.CWPlayer)})},
+args: ["jsonStat"],
+source: "newTroopHeros: jsonStat\x0a\x09\x09^ self newMonster: jsonStat heros: CWHerosStrategy type: CWTroopStrategy",
+messageSends: ["newMonster:heros:type:"],
+referencedClasses: ["CWHerosStrategy", "CWTroopStrategy"]
 }),
 smalltalk.CWPlayer);
 

@@ -270,14 +270,19 @@ selector: "initialize",
 fn: function (){
 var self=this;
 function $CWDicesRolledEvent(){return smalltalk.CWDicesRolledEvent||(typeof CWDicesRolledEvent=="undefined"?nil:CWDicesRolledEvent)}
+function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenuComponent.fn.prototype._initialize.apply(_st(self), []);
 _st(_st(self)._announcer())._on_do_($CWDicesRolledEvent(),(function(event){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._showDices_(event);
 }, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWMonsterUpdateEvent(),(function(event){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._showDicesNoAnimation_(_st(event)._monster());
+}, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDices)})},
-messageSends: ["initialize", "on:do:", "showDices:", "announcer"]}),
+messageSends: ["initialize", "on:do:", "showDices:", "announcer", "showDicesNoAnimation:", "monster"]}),
 smalltalk.CWDices);
 
 smalltalk.addMethod(
@@ -310,6 +315,16 @@ return _st(_st(aResDices)._callback())._value_(aResDices);
 _st(self)._updateDices_kills_callBack_(_st(aResDices)._dices(),_st(aResDices)._kills(),cb);
 return self}, function($ctx1) {$ctx1.fill(self,"showDices:",{aResDices:aResDices,cb:cb},smalltalk.CWDices)})},
 messageSends: ["value:", "callback", "updateDices:kills:callBack:", "dices", "kills"]}),
+smalltalk.CWDices);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showDicesNoAnimation:",
+fn: function (monster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"showDicesNoAnimation:",{monster:monster},smalltalk.CWDices)})},
+messageSends: []}),
 smalltalk.CWDices);
 
 smalltalk.addMethod(

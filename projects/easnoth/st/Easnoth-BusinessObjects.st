@@ -807,7 +807,7 @@ accept: aVisitor
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: 'currentMove move attack dices hp range state player'
+	instanceVariableNames: 'currentMove move attack dices hp range state player special strategy typeStrategy'
 	package: 'Easnoth-BusinessObjects'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
@@ -888,6 +888,14 @@ range: int
 
 side
 	^ player side
+!
+
+special
+	^ special
+!
+
+special: aString
+	special := aString
 ! !
 
 !CWMonster methodsFor: 'animation'!
@@ -996,10 +1004,6 @@ addStats: aKey
 			self announce: CWObjectLoaded new]
 !
 
-defaultHp
-	self subclassResponsibility
-!
-
 initialize
 	super initialize.
 	self currentMove: 0.
@@ -1018,6 +1022,21 @@ initializeFromKey: aKey army: anArmy player: aPlayer
 	self loadStats: anArmy, '/', aKey.
 !
 
+initializeWithStat: jsonStat army: army player: aPlayer
+1halt.
+	super initializeFromKey: army, '/troop'.
+	self player: aPlayer.
+	self stats: jsonStat.
+!
+
+initializeWithStat: jsonStat army: army player: aPlayer heros: strat type: aType
+	self player: aPlayer.
+	strategy := strat default.
+	typeStrategy := aType default.
+	self stats: jsonStat.
+	super initializeFromKey: army, '/', self key.
+!
+
 loadStats: aJson
 	(self class jsonStatCache includesKey: aJson,'success') 
 		ifTrue: [ self updateStats: aJson ] 
@@ -1028,9 +1047,8 @@ stats: jsonStats
 	self move: jsonStats move.
 	self range: jsonStats range.
 	self attack: jsonStats attack.
-	"self knockback: jsonStats knockback."
 	self dices: jsonStats dices.
-	"self special: jsonStats special."
+	self special: jsonStats special.
 	self hp: self defaultHp.
 !
 
@@ -1106,10 +1124,18 @@ state: aState
 	state := aState
 ! !
 
-!CWMonster methodsFor: 'visiting'!
+!CWMonster methodsFor: 'strategy delegation'!
 
 accept: aVisitor
-	self shouldNotImplement
+	^ strategy accept: aVisitor for: self
+!
+
+defaultHp
+	^ strategy defaultHP
+!
+
+key
+	^ typeStrategy key, strategy key
 ! !
 
 CWMonster class instanceVariableNames: 'jsonStatCache'!
@@ -1156,38 +1182,6 @@ emptyMonster
 		attack: 0";
 		knockback: 0;
 		special:'none'."
-! !
-
-CWMonster subclass: #CWHeros
-	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
-
-!CWHeros methodsFor: 'initialize-release'!
-
-defaultHp
-	^ 2
-! !
-
-!CWHeros methodsFor: 'visiting'!
-
-accept: aVisitor
-	^ aVisitor visitHeros: self
-! !
-
-CWMonster subclass: #CWTroop
-	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
-
-!CWTroop methodsFor: 'initialize-release'!
-
-defaultHp
-	^ 4
-! !
-
-!CWTroop methodsFor: 'visiting'!
-
-accept: aVisitor
-	^ aVisitor visitTroop: self
 ! !
 
 !JSObjectProxy methodsFor: '*Easnoth-BusinessObjects'!
