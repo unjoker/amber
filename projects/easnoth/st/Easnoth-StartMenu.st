@@ -158,9 +158,10 @@ armySelectBox: playerNumber on: html
 		onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];
 		with: [
 			html option with: 'elves'.
-			html option with: 'humans'.
+			html option with: 'human-kingdom'.
 			html option with: 'merfolks'.
-			html option with: 'trolls' ].
+			html option with: 'dwarves'.
+			html option with: 'human-outlaws' ].
 !
 
 credits

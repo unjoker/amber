@@ -2293,20 +2293,22 @@ smalltalk.CWWall);
 
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy'], 'Easnoth-BusinessObjects');
 smalltalk.CWMonster.comment="I represent people on the map. My instances variables are the stats of the guy I represent."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
-category: 'visiting',
+category: 'strategy delegation',
 fn: function (aVisitor){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._shouldNotImplement();
-return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWMonster)})},
+var $1;
+$1=_st(self["@strategy"])._accept_for_(aVisitor,self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWMonster)})},
 args: ["aVisitor"],
-source: "accept: aVisitor\x0a\x09self shouldNotImplement",
-messageSends: ["shouldNotImplement"],
+source: "accept: aVisitor\x0a\x09^ strategy accept: aVisitor for: self",
+messageSends: ["accept:for:"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2594,15 +2596,17 @@ smalltalk.CWMonster);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "defaultHp",
-category: 'initialize-release',
+category: 'strategy delegation',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWMonster)})},
+var $1;
+$1=_st(self["@strategy"])._defaultHP();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWMonster)})},
 args: [],
-source: "defaultHp\x0a\x09self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
+source: "defaultHp\x0a\x09^ strategy defaultHP",
+messageSends: ["defaultHP"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2816,6 +2820,45 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeWithStat:army:player:",
+category: 'initialize-release',
+fn: function (jsonStat,army,aPlayer){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st((1))._halt();
+smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(army).__comma("/troop")]);
+_st(self)._player_(aPlayer);
+_st(self)._stats_(jsonStat);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithStat:army:player:",{jsonStat:jsonStat,army:army,aPlayer:aPlayer},smalltalk.CWMonster)})},
+args: ["jsonStat", "army", "aPlayer"],
+source: "initializeWithStat: jsonStat army: army player: aPlayer\x0a1halt.\x0a\x09super initializeFromKey: army, '/troop'.\x0a\x09self player: aPlayer.\x0a\x09self stats: jsonStat.",
+messageSends: ["halt", "initializeFromKey:", ",", "player:", "stats:"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeWithStat:army:player:heros:type:",
+category: 'initialize-release',
+fn: function (jsonStat,army,aPlayer,strat,aType){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._player_(aPlayer);
+self["@strategy"]=_st(strat)._default();
+self["@typeStrategy"]=_st(aType)._default();
+_st(self)._stats_(jsonStat);
+smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(_st(army).__comma("/")).__comma(_st(self)._key())]);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithStat:army:player:heros:type:",{jsonStat:jsonStat,army:army,aPlayer:aPlayer,strat:strat,aType:aType},smalltalk.CWMonster)})},
+args: ["jsonStat", "army", "aPlayer", "strat", "aType"],
+source: "initializeWithStat: jsonStat army: army player: aPlayer heros: strat type: aType\x0a\x09self player: aPlayer.\x0a\x09strategy := strat default.\x0a\x09typeStrategy := aType default.\x0a\x09self stats: jsonStat.\x0a\x09super initializeFromKey: army, '/', self key.",
+messageSends: ["player:", "default", "stats:", "initializeFromKey:", ",", "key"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isInactive",
 category: 'state delegation',
 fn: function (){
@@ -2828,6 +2871,24 @@ return $1;
 args: [],
 source: "isInactive\x0a\x09^ self state isInactive",
 messageSends: ["isInactive", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "key",
+category: 'strategy delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self["@typeStrategy"])._key()).__comma(_st(self["@strategy"])._key());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"key",{},smalltalk.CWMonster)})},
+args: [],
+source: "key\x0a\x09^ typeStrategy key, strategy key",
+messageSends: [",", "key"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3118,6 +3179,40 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "special",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@special"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"special",{},smalltalk.CWMonster)})},
+args: [],
+source: "special\x0a\x09^ special",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "special:",
+category: 'accessing',
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@special"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"special:",{aString:aString},smalltalk.CWMonster)})},
+args: ["aString"],
+source: "special: aString\x0a\x09special := aString",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "state",
 category: 'state machine',
 fn: function (){
@@ -3161,11 +3256,12 @@ _st(self)._move_(_st(jsonStats)._move());
 _st(self)._range_(_st(jsonStats)._range());
 _st(self)._attack_(_st(jsonStats)._attack());
 _st(self)._dices_(_st(jsonStats)._dices());
+_st(self)._special_(_st(jsonStats)._special());
 _st(self)._hp_(_st(self)._defaultHp());
 return self}, function($ctx1) {$ctx1.fill(self,"stats:",{jsonStats:jsonStats},smalltalk.CWMonster)})},
 args: ["jsonStats"],
-source: "stats: jsonStats\x0a\x09self move: jsonStats move.\x0a\x09self range: jsonStats range.\x0a\x09self attack: jsonStats attack.\x0a\x09\x22self knockback: jsonStats knockback.\x22\x0a\x09self dices: jsonStats dices.\x0a\x09\x22self special: jsonStats special.\x22\x0a\x09self hp: self defaultHp.",
-messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"],
+source: "stats: jsonStats\x0a\x09self move: jsonStats move.\x0a\x09self range: jsonStats range.\x0a\x09self attack: jsonStats attack.\x0a\x09self dices: jsonStats dices.\x0a\x09self special: jsonStats special.\x0a\x09self hp: self defaultHp.",
+messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "special:", "special", "hp:", "defaultHp"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3323,84 +3419,6 @@ messageSends: ["at:put:", "jsonStatCache"],
 referencedClasses: []
 }),
 smalltalk.CWMonster.klass);
-
-
-smalltalk.addClass('CWHeros', smalltalk.CWMonster, [], 'Easnoth-BusinessObjects');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-category: 'visiting',
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitHeros_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWHeros)})},
-args: ["aVisitor"],
-source: "accept: aVisitor\x0a\x09^ aVisitor visitHeros: self",
-messageSends: ["visitHeros:"],
-referencedClasses: []
-}),
-smalltalk.CWHeros);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "defaultHp",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=(2);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWHeros)})},
-args: [],
-source: "defaultHp\x0a\x09^ 2",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWHeros);
-
-
-
-smalltalk.addClass('CWTroop', smalltalk.CWMonster, [], 'Easnoth-BusinessObjects');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-category: 'visiting',
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitTroop_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWTroop)})},
-args: ["aVisitor"],
-source: "accept: aVisitor\x0a\x09^ aVisitor visitTroop: self",
-messageSends: ["visitTroop:"],
-referencedClasses: []
-}),
-smalltalk.CWTroop);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "defaultHp",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=(4);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWTroop)})},
-args: [],
-source: "defaultHp\x0a\x09^ 4",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWTroop);
-
 
 
 smalltalk.addMethod(

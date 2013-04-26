@@ -233,9 +233,10 @@ return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._option())._with_("elves");
-_st(_st(html)._option())._with_("humans");
+_st(_st(html)._option())._with_("human-kingdom");
 _st(_st(html)._option())._with_("merfolks");
-return _st(_st(html)._option())._with_("trolls");
+_st(_st(html)._option())._with_("dwarves");
+return _st(_st(html)._option())._with_("human-outlaws");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
 messageSends: ["select", "onChange:", "team:", "val", "asJQuery", "at:", "players", "with:", "option"]}),

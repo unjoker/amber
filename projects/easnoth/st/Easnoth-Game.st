@@ -330,17 +330,33 @@ endGame
 
 !CWPlayer methodsFor: 'factory'!
 
-newHeros: key army: army
-		^ self newMonster: key army: army class: CWHeros
+newCavalry: jsonStat
+		^ self newMonster: jsonStat heros: CWUnitStrategy type: CWCavalryStrategy
 !
 
-newMonster: key army: army class: aClass
+newCavalryHeros: jsonStat
+		^ self newMonster: jsonStat heros: CWHerosStrategy type: CWCavalryStrategy
+!
+
+newMonster: jsonStat heros: strat type: aType
 		"creates a new monster with self as player"
-		^ aClass new initializeFromKey: key army: army player: self
+		^ CWMonster new initializeWithStat: jsonStat army: self team player: self heros: strat type: aType
 !
 
-newTroop: key army: army
-		^ self newMonster: key army: army class: CWTroop
+newRange: jsonStat
+		^ self newMonster: jsonStat heros: CWUnitStrategy type: CWRangeStrategy
+!
+
+newRangeHeros: jsonStat
+		^ self newMonster: jsonStat heros: CWHerosStrategy type: CWRangeStrategy
+!
+
+newTroop: jsonStat
+		^ self newMonster: jsonStat heros: CWUnitStrategy type: CWTroopStrategy
+!
+
+newTroopHeros: jsonStat
+		^ self newMonster: jsonStat heros: CWHerosStrategy type: CWTroopStrategy
 ! !
 
 !CWPlayer methodsFor: 'game logic'!
@@ -389,13 +405,14 @@ initializeWithMap: aMap
 !
 
 initializeWithMap: aMap army: data
-		"initialize the monsters of the player and put them in the map. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player"
+		"initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player"
 		| monsters |
 		monsters := Array new.
-		1 to: 5 by: 2 do: [:n |
-			monsters at: n put: (self newTroop: data warrior army: team) ].
-		2 to: 4 by: 2 do: [:n |
-			monsters at: n put: (self newHeros: data heros army: team) ].
+		monsters at: 1 put: (self newTroop: data troop).
+		monsters at: 2 put: (self newTroopHeros: data troopHeros).
+		monsters at: 3 put: (self newRange: data range).
+		monsters at: 4 put: (self newCavalry: data cavalry).
+		monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).
 		team := monsters.
 ! !
 

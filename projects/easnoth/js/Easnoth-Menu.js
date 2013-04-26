@@ -367,17 +367,22 @@ category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWDicesRolledEvent(){return smalltalk.CWDicesRolledEvent||(typeof CWDicesRolledEvent=="undefined"?nil:CWDicesRolledEvent)}
+function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenuComponent.fn.prototype._initialize.apply(_st(self), []);
 _st(_st(self)._announcer())._on_do_($CWDicesRolledEvent(),(function(event){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._showDices_(event);
 }, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWMonsterUpdateEvent(),(function(event){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._showDicesNoAnimation_(_st(event)._monster());
+}, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDices)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self announcer \x0a\x09\x09on: CWDicesRolledEvent\x0a\x09\x09do: [ :event | self showDices: event ]",
-messageSends: ["initialize", "on:do:", "showDices:", "announcer"],
-referencedClasses: ["CWDicesRolledEvent"]
+source: "initialize\x0a\x09super initialize.\x0a\x09self announcer \x0a\x09\x09on: CWDicesRolledEvent\x0a\x09\x09do: [ :event | self showDices: event ].\x0a\x09self announcer \x0a\x09\x09on: CWMonsterUpdateEvent\x0a\x09\x09do: [ :event | self showDicesNoAnimation: event monster ]",
+messageSends: ["initialize", "on:do:", "showDices:", "announcer", "showDicesNoAnimation:", "monster"],
+referencedClasses: ["CWDicesRolledEvent", "CWMonsterUpdateEvent"]
 }),
 smalltalk.CWDices);
 
@@ -419,6 +424,21 @@ return self}, function($ctx1) {$ctx1.fill(self,"showDices:",{aResDices:aResDices
 args: ["aResDices"],
 source: "showDices: aResDices\x0a\x09| cb |\x0a\x09cb := [ aResDices callback value: aResDices ].\x0a\x09self updateDices: aResDices dices kills: aResDices kills callBack: cb.",
 messageSends: ["value:", "callback", "updateDices:kills:callBack:", "dices", "kills"],
+referencedClasses: []
+}),
+smalltalk.CWDices);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "showDicesNoAnimation:",
+category: 'public',
+fn: function (monster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"showDicesNoAnimation:",{monster:monster},smalltalk.CWDices)})},
+args: ["monster"],
+source: "showDicesNoAnimation: monster\x0a\x09\x22should change the number of dices without animation\x22\x0a\x09\x22self updateDices: monster dices kills: monster kills callBack: [].\x22",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWDices);

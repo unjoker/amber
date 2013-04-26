@@ -241,16 +241,16 @@ smalltalk.CWGlobalDrawingContext);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "visitTroop:",
+selector: "visitUnit:",
 category: 'visiting',
-fn: function (aTroop){
+fn: function (aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._drawTroop_(aTroop);
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWGlobalDrawingContext)})},
-args: ["aTroop"],
-source: "visitTroop: aTroop\x0a\x09drawer drawTroop: aTroop",
-messageSends: ["drawTroop:"],
+_st(self["@drawer"])._drawUnit_(aUnit);
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWGlobalDrawingContext)})},
+args: ["aUnit"],
+source: "visitUnit: aUnit\x0a\x09drawer drawUnit: aUnit",
+messageSends: ["drawUnit:"],
 referencedClasses: []
 }),
 smalltalk.CWGlobalDrawingContext);
@@ -310,14 +310,14 @@ smalltalk.CWGOTDrawingContext);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "visitTroop:",
+selector: "visitUnit:",
 category: 'visiting',
-fn: function (aTroop){
+fn: function (aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWGOTDrawingContext)})},
-args: ["aTroop"],
-source: "visitTroop: aTroop\x0a\x09\x22do nothing\x22",
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWGOTDrawingContext)})},
+args: ["aUnit"],
+source: "visitUnit: aUnit\x0a\x09\x22do nothing\x22",
 messageSends: [],
 referencedClasses: []
 }),
@@ -496,15 +496,15 @@ smalltalk.CWVisitor);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "visitTroop:",
+selector: "visitUnit:",
 category: 'visiting',
-fn: function (aTroop){
+fn: function (aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWVisitor)})},
-args: ["aTroop"],
-source: "visitTroop: aTroop\x0a\x09self subclassResponsibility",
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWVisitor)})},
+args: ["aUnit"],
+source: "visitUnit: aUnit\x0a\x09self subclassResponsibility",
 messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
@@ -1039,18 +1039,18 @@ smalltalk.CWJsonWriter);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "visitTroop:",
+selector: "visitUnit:",
 category: 'visiting',
-fn: function (aTroop){
+fn: function (aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=self;
-_st($1)._startObjectNamed_("troop");
-$2=_st($1)._visitMonster_(aTroop);
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWJsonWriter)})},
-args: ["aTroop"],
-source: "visitTroop: aTroop\x0a\x09self\x0a\x09\x09startObjectNamed: 'troop';\x0a\x09\x09visitMonster: aTroop",
+_st($1)._startObjectNamed_("unit");
+$2=_st($1)._visitMonster_(aUnit);
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWJsonWriter)})},
+args: ["aUnit"],
+source: "visitUnit: aUnit\x0a\x09self\x0a\x09\x09startObjectNamed: 'unit';\x0a\x09\x09visitMonster: aUnit",
 messageSends: ["startObjectNamed:", "visitMonster:"],
 referencedClasses: []
 }),
@@ -1369,9 +1369,9 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawTroop:",
+selector: "drawUnit:",
 category: 'rendering',
-fn: function (aTroop){
+fn: function (aUnit){
 var self=this;
 var xArray,yArray,ctx;
 return smalltalk.withContext(function($ctx1) { 
@@ -1379,18 +1379,18 @@ var $1;
 xArray=[(17), (37), (-11), (9)];
 yArray=[(33), (23), (26), (15)];
 ctx=_st(self)._monsterContext();
-_st(_st((1))._to_(_st(aTroop)._hp()))._do_((function(i){
+_st(_st((1))._to_(_st(aUnit)._hp()))._do_((function(i){
 return smalltalk.withContext(function($ctx2) {
-$1=_st(_st(aTroop)._side())._negative();
+$1=_st(_st(aUnit)._side())._negative();
 if(smalltalk.assert($1)){
-return _st(self)._reverseDisplay_inContext_xPad_yPad_(aTroop,ctx,_st((72)).__plus(_st(xArray)._at_(i)),_st(yArray)._at_(i));
+return _st(self)._reverseDisplay_inContext_xPad_yPad_(aUnit,ctx,_st((72)).__plus(_st(xArray)._at_(i)),_st(yArray)._at_(i));
 } else {
-return _st(self)._display_inContext_X_y_(aTroop,ctx,_st(_st(_st(self)._currentPoint())._x()).__plus(_st(xArray)._at_(i)),_st(_st(_st(self)._currentPoint())._y()).__minus(_st(yArray)._at_(i)));
+return _st(self)._display_inContext_X_y_(aUnit,ctx,_st(_st(_st(self)._currentPoint())._x()).__plus(_st(xArray)._at_(i)),_st(_st(_st(self)._currentPoint())._y()).__minus(_st(yArray)._at_(i)));
 };
 }, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"drawTroop:",{aTroop:aTroop,xArray:xArray,yArray:yArray,ctx:ctx},smalltalk.CWMapDrawer)})},
-args: ["aTroop"],
-source: "drawTroop: aTroop\x0a\x09| xArray yArray ctx |\x0a\x0a\x09xArray := #(17 37 -11 9).\x0a\x09yArray := #(33 23 26 15).\x0a\x0a\x09ctx := self monsterContext.\x0a\x09(1 to: aTroop hp) do: [ :i |\x0a\x09\x09(aTroop side negative) ifTrue: [\x0a\x09\x09\x09\x09self reverseDisplay: aTroop inContext: ctx xPad: 72 + (xArray at: i) yPad: (yArray at: i)\x0a\x09\x09\x09] ifFalse: [\x0a\x09\x09\x09\x09self display: aTroop inContext: ctx X: self currentPoint x + (xArray at: i) y: self currentPoint y - (yArray at: i)\x0a\x09\x09\x09]\x0a\x09]",
+return self}, function($ctx1) {$ctx1.fill(self,"drawUnit:",{aUnit:aUnit,xArray:xArray,yArray:yArray,ctx:ctx},smalltalk.CWMapDrawer)})},
+args: ["aUnit"],
+source: "drawUnit: aUnit\x0a\x09| xArray yArray ctx |\x0a\x0a\x09xArray := #(17 37 -11 9).\x0a\x09yArray := #(33 23 26 15).\x0a\x0a\x09ctx := self monsterContext.\x0a\x09(1 to: aUnit hp) do: [ :i |\x0a\x09\x09(aUnit side negative) ifTrue: [\x0a\x09\x09\x09\x09self reverseDisplay: aUnit inContext: ctx xPad: 72 + (xArray at: i) yPad: (yArray at: i)\x0a\x09\x09\x09] ifFalse: [\x0a\x09\x09\x09\x09self display: aUnit inContext: ctx X: self currentPoint x + (xArray at: i) y: self currentPoint y - (yArray at: i)\x0a\x09\x09\x09]\x0a\x09]",
 messageSends: ["monsterContext", "do:", "ifTrue:ifFalse:", "reverseDisplay:inContext:xPad:yPad:", "+", "at:", "display:inContext:X:y:", "x", "currentPoint", "-", "y", "negative", "side", "to:", "hp"],
 referencedClasses: []
 }),
@@ -1882,16 +1882,16 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "visitTroop:",
+selector: "visitUnit:",
 category: 'visiting',
-fn: function (aTroop){
+fn: function (aUnit){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._executionContext())._visitTroop_(aTroop);
-return self}, function($ctx1) {$ctx1.fill(self,"visitTroop:",{aTroop:aTroop},smalltalk.CWMapDrawer)})},
-args: ["aTroop"],
-source: "visitTroop: aTroop\x0a\x09self executionContext visitTroop: aTroop",
-messageSends: ["visitTroop:", "executionContext"],
+_st(_st(self)._executionContext())._visitUnit_(aUnit);
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWMapDrawer)})},
+args: ["aUnit"],
+source: "visitUnit: aUnit\x0a\x09self executionContext visitUnit: aUnit",
+messageSends: ["visitUnit:", "executionContext"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);

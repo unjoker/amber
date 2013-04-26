@@ -1706,16 +1706,18 @@ smalltalk.CWWall);
 
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player'], 'Easnoth-BusinessObjects');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy'], 'Easnoth-BusinessObjects');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
 fn: function (aVisitor){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._shouldNotImplement();
-return self}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWMonster)})},
-messageSends: ["shouldNotImplement"]}),
+var $1;
+$1=_st(self["@strategy"])._accept_for_(aVisitor,self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWMonster)})},
+messageSends: ["accept:for:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -1934,9 +1936,11 @@ selector: "defaultHp",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWMonster)})},
-messageSends: ["subclassResponsibility"]}),
+var $1;
+$1=_st(self["@strategy"])._defaultHP();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWMonster)})},
+messageSends: ["defaultHP"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2088,6 +2092,35 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeWithStat:army:player:",
+fn: function (jsonStat,army,aPlayer){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st((1))._halt();
+smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(army).__comma("/troop")]);
+_st(self)._player_(aPlayer);
+_st(self)._stats_(jsonStat);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithStat:army:player:",{jsonStat:jsonStat,army:army,aPlayer:aPlayer},smalltalk.CWMonster)})},
+messageSends: ["halt", "initializeFromKey:", ",", "player:", "stats:"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeWithStat:army:player:heros:type:",
+fn: function (jsonStat,army,aPlayer,strat,aType){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._player_(aPlayer);
+self["@strategy"]=_st(strat)._default();
+self["@typeStrategy"]=_st(aType)._default();
+_st(self)._stats_(jsonStat);
+smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(_st(army).__comma("/")).__comma(_st(self)._key())]);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeWithStat:army:player:heros:type:",{jsonStat:jsonStat,army:army,aPlayer:aPlayer,strat:strat,aType:aType},smalltalk.CWMonster)})},
+messageSends: ["player:", "default", "stats:", "initializeFromKey:", ",", "key"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isInactive",
 fn: function (){
 var self=this;
@@ -2097,6 +2130,19 @@ $1=_st(_st(self)._state())._isInactive();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"isInactive",{},smalltalk.CWMonster)})},
 messageSends: ["isInactive", "state"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "key",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self["@typeStrategy"])._key()).__comma(_st(self["@strategy"])._key());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"key",{},smalltalk.CWMonster)})},
+messageSends: [",", "key"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2310,6 +2356,30 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "special",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@special"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"special",{},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "special:",
+fn: function (aString){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@special"]=aString;
+return self}, function($ctx1) {$ctx1.fill(self,"special:",{aString:aString},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "state",
 fn: function (){
 var self=this;
@@ -2342,9 +2412,10 @@ _st(self)._move_(_st(jsonStats)._move());
 _st(self)._range_(_st(jsonStats)._range());
 _st(self)._attack_(_st(jsonStats)._attack());
 _st(self)._dices_(_st(jsonStats)._dices());
+_st(self)._special_(_st(jsonStats)._special());
 _st(self)._hp_(_st(self)._defaultHp());
 return self}, function($ctx1) {$ctx1.fill(self,"stats:",{jsonStats:jsonStats},smalltalk.CWMonster)})},
-messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "hp:", "defaultHp"]}),
+messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "special:", "special", "hp:", "defaultHp"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2465,64 +2536,6 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:put:",{aKey:aKey,aJson:aJson},smalltalk.CWMonster.klass)})},
 messageSends: ["at:put:", "jsonStatCache"]}),
 smalltalk.CWMonster.klass);
-
-
-smalltalk.addClass('CWHeros', smalltalk.CWMonster, [], 'Easnoth-BusinessObjects');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitHeros_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWHeros)})},
-messageSends: ["visitHeros:"]}),
-smalltalk.CWHeros);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "defaultHp",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=(2);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWHeros)})},
-messageSends: []}),
-smalltalk.CWHeros);
-
-
-
-smalltalk.addClass('CWTroop', smalltalk.CWMonster, [], 'Easnoth-BusinessObjects');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitTroop_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWTroop)})},
-messageSends: ["visitTroop:"]}),
-smalltalk.CWTroop);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "defaultHp",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=(4);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"defaultHp",{},smalltalk.CWTroop)})},
-messageSends: []}),
-smalltalk.CWTroop);
-
 
 
 smalltalk.addMethod(

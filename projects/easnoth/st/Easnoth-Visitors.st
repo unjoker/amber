@@ -100,8 +100,8 @@ visitTile: aTile
 	drawer drawIsometric: aTile inContext: drawer backgroundContext.
 !
 
-visitTroop: aTroop
-	drawer drawTroop: aTroop
+visitUnit: aUnit
+	drawer drawUnit: aUnit
 ! !
 
 CWGlobalDrawingContext subclass: #CWMonsterAndGOTDrawingContext
@@ -132,7 +132,7 @@ visitHeros: heros
 	"do nothing"
 !
 
-visitTroop: aTroop
+visitUnit: aUnit
 	"do nothing"
 ! !
 
@@ -172,7 +172,7 @@ visitTile: aTile
 	self subclassResponsibility
 !
 
-visitTroop: aTroop
+visitUnit: aUnit
 	self subclassResponsibility
 ! !
 
@@ -386,10 +386,10 @@ visitTile: aTile
 	self objectFieldName: 'tile' stringValue: (self extractKeyFrom: aTile image src)
 !
 
-visitTroop: aTroop
+visitUnit: aUnit
 	self
-		startObjectNamed: 'troop';
-		visitMonster: aTroop
+		startObjectNamed: 'unit';
+		visitMonster: aUnit
 ! !
 
 CWVisitor subclass: #CWMapInterpreter
@@ -609,18 +609,18 @@ drawIsometric: object inContext: ctx
 		inContext: ctx
 !
 
-drawTroop: aTroop
+drawUnit: aUnit
 	| xArray yArray ctx |
 
 	xArray := #(17 37 -11 9).
 	yArray := #(33 23 26 15).
 
 	ctx := self monsterContext.
-	(1 to: aTroop hp) do: [ :i |
-		(aTroop side negative) ifTrue: [
-				self reverseDisplay: aTroop inContext: ctx xPad: 72 + (xArray at: i) yPad: (yArray at: i)
+	(1 to: aUnit hp) do: [ :i |
+		(aUnit side negative) ifTrue: [
+				self reverseDisplay: aUnit inContext: ctx xPad: 72 + (xArray at: i) yPad: (yArray at: i)
 			] ifFalse: [
-				self display: aTroop inContext: ctx X: self currentPoint x + (xArray at: i) y: self currentPoint y - (yArray at: i)
+				self display: aUnit inContext: ctx X: self currentPoint x + (xArray at: i) y: self currentPoint y - (yArray at: i)
 			]
 	]
 !
@@ -673,7 +673,7 @@ visitTile: aTile
 	self executionContext visitTile: aTile
 !
 
-visitTroop: aTroop
-	self executionContext visitTroop: aTroop
+visitUnit: aUnit
+	self executionContext visitUnit: aUnit
 ! !
 
