@@ -477,19 +477,27 @@ return smalltalk.withContext(function($ctx4) {
 _st(_st(html)._td())._with_((function(){
 return smalltalk.withContext(function($ctx5) {
 _st(_st(html)._tr())._with_(_st("hp : ").__comma(_st(_st(self)._monster())._hp()));
-return _st(_st(html)._tr())._with_(_st(_st(_st("move : ").__comma(_st(_st(self)._monster())._currentMove())).__comma("/")).__comma(_st(_st(self)._monster())._move()));
+_st(_st(html)._tr())._with_(_st(_st(_st("move : ").__comma(_st(_st(self)._monster())._currentMove())).__comma("/")).__comma(_st(_st(self)._monster())._move()));
+return _st(_st(html)._tr())._with_(_st("range : ").__comma(_st(_st(self)._monster())._range()));
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 return _st(_st(html)._td())._with_((function(){
 return smalltalk.withContext(function($ctx5) {
 _st(_st(html)._tr())._with_(_st("dices : ").__comma(_st(_st(self)._monster())._dices()));
-return _st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._monster())._attack())).__comma(" %"));
+_st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._monster())._attack())).__comma(" %"));
+return _st(_st(html)._tr())._with_(_st("special : ").__comma(_st(_st(self)._monster())._special()));
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $2;
+$2;
+_st(_st(html)._h5())._with_("debug");
+_st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._monster())._state())._class()));
+_st(html)._br();
+_st(_st(html)._span())._with_(_st("attackPot : ").__comma(_st(_st(self)._monster())._attackPotential()));
+_st(html)._br();
+return _st(_st(html)._span())._with_(_st("cell : ").__comma(_st(_st(_st(self)._monster())._parent())._printString()));
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "td", "dices", "attack"]}),
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special", "h5", "class", "state", "span", "br", "attackPotential", "printString", "parent"]}),
 smalltalk.CWMonsterWatcher);
 
 smalltalk.addMethod(

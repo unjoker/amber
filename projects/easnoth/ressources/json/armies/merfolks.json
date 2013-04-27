@@ -4,7 +4,7 @@
 	"troopHeros" : {"move": 2, "dices": 4, "attack": 50, "range": 1, "special":"none"},
 	"range" : {"move": 2, "dices": 3, "attack": 40, "range": 3, "special":"none"},
 	"rangeHeros" : {"move": 2, "dices": 4, "attack": 50, "range": 3, "special":"none"},
-	"cavalry" : {"move": 4, "dices": 3, "attack": 40, "range": 1, "special":"none"},
-	"cavalryHeros" : {"move": 4, "dices": 4, "attack": 50, "range": 1, "special":"none"},
+	"cavalry" : {"move": 4, "dices": 3, "attack": 40, "range": 1, "special":"fly"},
+	"cavalryHeros" : {"move": 4, "dices": 4, "attack": 50, "range": 1, "special":"fly"},
 	"mage" : {"move": 1, "dices": 5, "attack": 40, "range": 1, "special":"none"}
 }

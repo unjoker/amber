@@ -146,6 +146,10 @@ initializeForMap: aMap game: aGame
 	self initializeEventHandling.
 ! !
 
+Object subclass: #CWExtendedCell
+	instanceVariableNames: 'cell prevCell'
+	package: 'Easnoth-Game'!
+
 Object subclass: #CWGame
 	instanceVariableNames: 'map context playerPool'
 	package: 'Easnoth-Game'!
@@ -280,6 +284,40 @@ nextTurn: nextPlayer
 	currentCell := nil
 ! !
 
+Object subclass: #CWPathFinder
+	instanceVariableNames: 'studiedList listToStudy'
+	package: 'Easnoth-Game'!
+
+!CWPathFinder methodsFor: 'pathfinding'!
+
+pathFrom: cellStart to: cellEnd
+	"Answers the shortest path from the current cell to the cell clicked"
+
+	| path tempArray |
+	self resetList.
+	listToStudy add: cellStart.
+	tempArray := Array new.
+	listToStudy do: [ :cell |
+		cell neighbours do: [ :each |
+			(studiedList values includes: each) ifFalse: [ tempArray add: each ] ] ]
+	"freeNeighbours.
+	path := Array with: cellLast.
+	[ self = path last ] whileFalse: [ path add: path last prevCell ].
+	^ path"
+! !
+
+!CWPathFinder methodsFor: 'private'!
+
+resetList
+	studiedList := Set new.
+	listToStudy := Set new.
+! !
+
+!CWPathFinder methodsFor: 'selection'!
+
+selectableTilesFor: aMonster
+! !
+
 Object subclass: #CWPlayer
 	instanceVariableNames: 'side team'
 	package: 'Easnoth-Game'!
@@ -292,8 +330,8 @@ monstersPositionArray
 	"hack for now. should be stored in database"
 	
 	^ self side = 1
-		ifTrue: [ { 1@4 . 1@6 . 2@6. 3@6 . 4@6 } ]
-		ifFalse: [ { 7@1 . 8@1 . 9@1. 6@1 . 9@3 } ]
+		ifTrue: [ { 1@4 . 1@6 . 2@6. 3@6 . 4@6 . 1@3 } ]
+		ifFalse: [ { 7@1 . 8@1 . 9@1. 6@1 . 9@3 . 9@4} ]
 !
 
 side
@@ -410,9 +448,10 @@ initializeWithMap: aMap army: data
 		monsters := Array new.
 		monsters at: 1 put: (self newTroop: data troop).
 		monsters at: 2 put: (self newTroopHeros: data troopHeros).
-		monsters at: 3 put: (self newRange: data range).
+		monsters at: 3 put: (self newRange: data troop).
 		monsters at: 4 put: (self newCavalry: data cavalry).
 		monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).
+		monsters at: 6 put: (self newRangeHeros: data troopHeros).
 		team := monsters.
 ! !
 
@@ -468,12 +507,14 @@ calculBestMove
 	| score bestScore |
 	bestScore := 9999 negated.
 	self team do: [ :monster |
+		monster currentMove: monster move.
 		monster attackableTargets do: [ :target |
 			score := monster attackPotential - target monster defensePotential. 
 			score > bestScore ifTrue: [ 
 				bestScore := score.
 				monsterToPlay := monster.
-				cellToTarget := target ] ] ]
+				cellToTarget := target ] ].
+		monster currentMove: 0. ]
 !
 
 checkForNextTurn: monster
@@ -511,8 +552,14 @@ executeMove
 
 randomMove
 	"Assumes that no monster can attack. Set bestMove to some random move of some random monster"
+	| cellsToGo |
 	monsterToPlay := self team at: self team size atRandom.
-	cellToTarget := ((monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent; yourself) atRandom.
+	"hack for the selected cells for pathfinding ..."
+	monsterToPlay root removeSelection.
+	"end hack"
+	cellsToGo := (monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent.
+	cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. "Case where the monster cannot move (surrounded by allies)"
+	cellToTarget := cellsToGo asArray atRandom.
 !
 
 reinitialize
@@ -534,4 +581,13 @@ startTurn: map
 CWPlayer subclass: #CWHuman
 	instanceVariableNames: ''
 	package: 'Easnoth-Game'!
+
+!SequenceableCollection methodsFor: '*Easnoth-Game'!
+
+at: index ifPresent: aBlock ifAbsent: anotherBlock
+
+	^(index <= self size and: [ index > 0 ])
+		ifTrue: [ aBlock value: (self at: index) ]
+		ifFalse: [ anotherBlock value ]
+! !
 

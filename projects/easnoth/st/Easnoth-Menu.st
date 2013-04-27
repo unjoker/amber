@@ -276,19 +276,21 @@ update
 				html td with: [
                         		html tr with: 'hp : ', self monster hp.
                         		html tr with: 'move : ', self monster currentMove, '/', self monster move.
-                        		"html tr with: 'range : ', self monster range."
+                        		html tr with: 'range : ', self monster range.
 				].
 				html td with: [
                        			html tr with: 'dices : ', self monster dices.
                         		html tr with: 'attack : ', self monster attack,' %'.
-                       			"html tr with: 'knockBack : ', self monster knockback,' %'."
+                       			html tr with: 'special : ', self monster special.
 				]
 			].
-			"html tr with: 'special : ', self monster special."
 		].
-		"html h5 with: 'debug'.
+		html h5 with: 'debug'.
                 html span with: 'state : ', self monster state class.
-                html span with: 'attackPot : ', self monster attackPotential."
+				html br.
+                html span with: 'attackPot : ', self monster attackPotential.
+				html br.
+                html span with: 'cell : ', self monster parent printString.
         ].
 ! !
 

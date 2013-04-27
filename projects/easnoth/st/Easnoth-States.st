@@ -21,10 +21,6 @@ addSelector: aCell
 	self subclassResponsibility
 !
 
-canMoveTo: cell
-	^ false
-!
-
 cell: aCell addMonster: aMonster
 	self subclassResponsibility
 !
@@ -34,6 +30,10 @@ cell: aCell canBeAttackedBy: side
 !
 
 hasMonster
+	^ false
+!
+
+isFree
 	^ false
 !
 
@@ -78,16 +78,14 @@ addSelector: aCell
 	aCell changeState: CWFreeSelected
 !
 
-canMoveTo: aCell
-	"should dispatch but as it is not used..."
-	"^ aCell tile isWall not"
-	^ true
-!
-
 cell: aCell addMonster: aMonster
 	aMonster parent: aCell.
 	aCell monster: aMonster.
 	aCell changeState: CWHasMonster
+!
+
+isFree
+	^ true
 !
 
 mouseClick: aCell context: gameContext
@@ -168,7 +166,7 @@ hasMonster
 !
 
 mouseClick: aCell context: gameContext
-	aCell monster select: gameContext
+	aCell monster selectInContext: gameContext
 !
 
 removeMonster: aCell
@@ -195,6 +193,11 @@ addSelector: aCell
 
 cell: aCell addMonster: aMonster
 	self error: 'cannot add a monster to a cell that has already a monster and a *red* selector'.
+!
+
+cell: aCell canBeAttackedBy: side
+	"This method should be removed. but seems to have problem then with move + attack. Dont know why."
+	^ (aCell side = side) not
 !
 
 hasMonster 
@@ -285,17 +288,17 @@ checkForNextTurn: aMonster
 
 monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
-	(aCell neighbours includes: aMonster parent) 
+	"Need to fix it for range attack"
+	(aMonster selectAttackableCells includes: aCell ) 
 		ifFalse: [ 
 			toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.
 			aMonster moveTo: toMoveCell inContext: gameContext callback: [
-				aMonster attackTo: aCell inContext: gameContext.
-				aMonster updateGOTs ] ] 
+				aMonster attackTo: aCell inContext: gameContext ] ] 
 		ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]
 !
 
 select: aMonster inContext: gameContext
-	aMonster parent selectableNeighboursMoveCycle: aMonster currentMove attackCycle: aMonster range fromSide: aMonster side.
+	aMonster selectActionCells.
 	gameContext currentMonster: aMonster.
 	aMonster updateGOTs.
 ! !
@@ -328,7 +331,7 @@ monster: aMonster attackTo: aCell inContext: gameContext
 !
 
 select: aMonster inContext: gameContext
-	aMonster parent movableNeighboursCycle: aMonster currentMove.
+	aMonster selectMovableCells.
 	aMonster updateGOTs.
 	gameContext currentMonster: aMonster
 ! !
@@ -354,11 +357,12 @@ The monster has moved its full moved there. (currentMove = 0)!
 
 checkForNextTurn: aMonster
 	| col |
-	col := 	aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.
+	col := 	aMonster selectAttackableCells.
 	col ifEmpty: [ aMonster announce: CWNextTurnEvent new ]
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
+	"need fx for range attack"
 	aMonster attackNeighbour: aCell monster inContext: gameContext
 !
 
@@ -367,7 +371,7 @@ monster: aMonster moveTo: aCell inContext: gameContext
 !
 
 select: aMonster inContext: gameContext
-	aMonster parent attackableNeighboursCycle: aMonster range fromSide: aMonster side.
+	aMonster selectAttackableCells.
 	aMonster updateGOTs.
 	gameContext currentMonster: aMonster
 ! !
@@ -465,7 +469,7 @@ select: aMonster inContext: gameContext
 	aMonster root removeSelection.
 	aMonster root desactivateMonsters.
 	aMonster activate.
-	aMonster select: gameContext
+	aMonster selectInContext: gameContext
 ! !
 
 !CWToPick methodsFor: 'private'!

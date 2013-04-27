@@ -97,6 +97,10 @@ children
 
 childAt: index 
 	^ self children at: index
+!
+
+childAt: index ifPresent: aBlock
+	^ self children at: index ifPresent: aBlock
 ! !
 
 !CWComposite methodsFor: 'factory'!
@@ -219,29 +223,31 @@ initializeFromJson: aJsonCell
 
 !CWCell methodsFor: 'neighbourhood'!
 
-attackableNeighboursConsideringMoveCycle: cycleMove attackCycle: cycleAttack fromSide: side
+attackableNeighboursConsideringMoveForMonster: aMonster
 	"for AI. Answers the collection of attackable ennemies considering the move of the monster"
 	
 	| selectableCells |
-	selectableCells := self selectableNeighboursMoveCycle: cycleMove attackCycle: cycleAttack fromSide: side.
-	selectableCells remove: self.
+	selectableCells := self selectableNeighboursForMonster: aMonster.
 	^ selectableCells select: [ :each | each hasMonster ]
 !
 
-attackableNeighboursCycle: cycleNumber fromSide: side
-	"no range attack for now"
+attackableNeighboursForMonster: aMonster
 	
-	self root removeSelection.
+	| attackableCells tempCells |
 	
-	^ self attackableNeighboursFrom: side
+	attackableCells := Set new.
+	tempCells := self movableNeighboursCycle: aMonster range - 1.
+	
+	tempCells do: [ :each |
+		attackableCells addAll: (each attackableNeighboursFrom: aMonster side) ].
+
+	^ attackableCells
 !
 
 attackableNeighboursFrom: side
 	|attackableCells|
 	attackableCells := self neighbours select: [ :each | 
 					each canBeAttackedBy: side ].
-	attackableCells do: [ :each |
-			each addSelector ].
 	^ attackableCells
 !
 
@@ -262,13 +268,22 @@ cellToMoveBeforeAttack: cellLast
 	^ closestCell
 !
 
+freeNeighbours
+	^ self neighbours select: [ :each | each isFree ]
+!
+
+monstersNeighbours
+	^ self neighbours select: [ :each | each hasMonster ]
+!
+
 movableNeighbours
 	|movableCells|
+
 	movableCells := self neighbours select: [ :each | 
-			each canMoveTo ].
+			each isFree ].
 	movableCells do: [ :each |
-			each addSelector.
-			each prevCell: self ].
+			each prevCell: self.
+			each addSelector].
 			
 	^ movableCells
 !
@@ -276,9 +291,7 @@ movableNeighbours
 movableNeighboursCycle: cycleNumber
 	| movableCells tempSet |
 	
-	self root removeSelection.
-	
-	movableCells := { self }.
+	movableCells := { self } asSet.
 	1 to: cycleNumber do: [ :i |
 		tempSet := Set new.
 		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
@@ -301,18 +314,15 @@ pathTo: cellLast
 	^ path
 !
 
-selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: side
+selectableNeighboursForMonster: aMonster
 	| selectableCells tempSet |
 
-	"movable cells"
-	selectableCells := self movableNeighboursCycle: cycleNumber.
+	selectableCells := self movableNeighboursCycle: aMonster currentMove.
 
-	 "all attackable cells from any movable cell"
 	 tempSet := Set new.
-	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursFrom: side) ].
+	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonster: aMonster) ].
 	 selectableCells addAll: tempSet.
-
-	^ selectableCells
+	 ^ selectableCells remove: self
 ! !
 
 !CWCell methodsFor: 'printing'!
@@ -351,12 +361,12 @@ canBeAttackedBy: side
 	^ self state cell: self canBeAttackedBy: side
 !
 
-canMoveTo
-	^ self state canMoveTo: self
-!
-
 hasMonster
 	^ self state hasMonster
+!
+
+isFree
+	^ self state isFree
 !
 
 isFreeSelected
@@ -600,25 +610,25 @@ initializeFromJson: jsonRow
 cellsNextToI: i j: j 
 	| neighbours |
 	neighbours := Array new.
-	neighbours add: (self childAt: j).
+	self childAt: j  ifPresent: [ :child | neighbours add: child ] .
 	i \\ 2 = 0 ifFalse: [
-		j < self cells size ifTrue: [neighbours add: (self childAt: j + 1)].
+		j < self cells size ifTrue: [ self childAt: j + 1 ifPresent: [ :child | neighbours add: child ] ].
 	] ifTrue: [
-		j > 1 ifTrue: [neighbours add: (self childAt: j - 1)].
+		j > 1 ifTrue: [ self childAt: j - 1 ifPresent: [ :child | neighbours add: child ] ].
 	].
 	^ neighbours
 !
 
 neighboursOf: aCell
-	"Here we give a Set to simply game logic later (no twice the cell in the set)"
+	"Here we give a Set to simplify game logic later (no twice the cell in the set)"
 
 	| cellIndex neighbours |
 	neighbours := Set new.
 	cellIndex := self cells indexOf: aCell.
 	cellIndex = 1 
-		ifFalse: [ neighbours add: (self childAt: cellIndex - 1) ].
+		ifFalse: [ self childAt: cellIndex - 1 ifPresent: [ :child | neighbours add: child ] ].
 	cellIndex = self cells size 
-		ifFalse: [ neighbours add: (self childAt: cellIndex + 1) ].
+		ifFalse: [ self childAt: cellIndex + 1  ifPresent: [ :child | neighbours add: child ] ].
 	neighbours addAll: (self parent neighboursOf: self cellIndex: cellIndex).
 	^ neighbours
 ! !
@@ -913,7 +923,7 @@ animationMoveFrom: cell1 to: cellLast callback: callback
 	1 to: moveNumber do: [ :j |
 		[ (path at: path size - j) addMonster: self.
         (path at: path size + 1 - j) removeMonster.
-		cell1 root updateMonstersAndGOTs .
+		cell1 root updateMonstersAndGOTs.
 		self currentMove: self currentMove - 1.
 		self announceUpdate ] valueWithTimeout: 300 * j ].
 	
@@ -929,7 +939,7 @@ moveTo: aCell inContext: gameContext callback: callback
 	
 	self animationMoveFrom: gameContext currentCell to: aCell callback: [	
 		self state changeStateAfterMoving: self.
-		self select: gameContext.
+		self selectInContext: gameContext.
 		self checkForNextTurn.
 		callback value.
 	].
@@ -945,14 +955,9 @@ attackNeighbour: anotherMonster inContext: gameContext
 
 	self rollDicesCallBack: [ :diceRes |
 		anotherMonster removeHP: diceRes kills.
-        self select: gameContext.
+        self selectInContext: gameContext.
 		self checkForNextTurn.
 		self updateMonstersAndGOTs ]
-!
-
-attackableTargets
-	"Answers the list of monsters this monster can attack, including the ones he needs to move before attack"
-	^ self parent attackableNeighboursConsideringMoveCycle: self move attackCycle: self attack fromSide: self side.
 !
 
 die
@@ -984,49 +989,10 @@ rollDicesCallBack: aBlock
 
 !CWMonster methodsFor: 'initialize-release'!
 
-addStats: aKey
-	| keySuccess |
-	
-	keySuccess := aKey,'success'.
-	
-	self announce: CWWaitForObject new.
-	
-    self class 
-		jsonStatCacheAt: keySuccess 
-		put: [:statsNew | 
-			self class jsonStatCacheAt: aKey put: statsNew.
-       		self stats: statsNew ].
-
-	jQuery 
-		getJSON: 'ressources/json/monsters/', aKey, '.json' 
-		onSuccess: [:data | 
-			(self class jsonStatCacheAt: keySuccess) value: data.
-			self announce: CWObjectLoaded new]
-!
-
 initialize
 	super initialize.
 	self currentMove: 0.
 	self initializeState
-!
-
-initializeFromJson: aJson
-	super initializeFromKey: aJson name.
-	"self side: aJson side."
-	self loadStats: aJson name.
-!
-
-initializeFromKey: aKey army: anArmy player: aPlayer
-	super initializeFromKey: anArmy, '/', aKey.
-	self player: aPlayer.
-	self loadStats: anArmy, '/', aKey.
-!
-
-initializeWithStat: jsonStat army: army player: aPlayer
-1halt.
-	super initializeFromKey: army, '/troop'.
-	self player: aPlayer.
-	self stats: jsonStat.
 !
 
 initializeWithStat: jsonStat army: army player: aPlayer heros: strat type: aType
@@ -1037,12 +1003,6 @@ initializeWithStat: jsonStat army: army player: aPlayer heros: strat type: aType
 	super initializeFromKey: army, '/', self key.
 !
 
-loadStats: aJson
-	(self class jsonStatCache includesKey: aJson,'success') 
-		ifTrue: [ self updateStats: aJson ] 
-		ifFalse: [ self addStats: aJson ].
-!
-
 stats: jsonStats
 	self move: jsonStats move.
 	self range: jsonStats range.
@@ -1050,20 +1010,45 @@ stats: jsonStats
 	self dices: jsonStats dices.
 	self special: jsonStats special.
 	self hp: self defaultHp.
+! !
+
+!CWMonster methodsFor: 'printing'!
+
+printOn: aStream
+	aStream nextPutAll: 'a Monster('.
+	aStream nextPutAll: self parent printString.
+	aStream nextPutAll: ')'.
+! !
+
+!CWMonster methodsFor: 'selection'!
+
+addSelectorsTo: cells
+	
+	self root removeSelection.
+	cells do: [:each | each addSelector ].
+	
+	"HACKY, to recalcul prevCell, need true pathfinding for this to be fine"
+	self parent movableNeighboursCycle: self currentMove.
+	
+	^ cells
 !
 
-updateStats: aKey 
-	|keySuccess oldCallBack|
+attackableTargets
+	"Answers the list of monsters this monster can attack, including the ones he needs to move before attack"
+	self root removeSelection. "To remove the selected stuff created by attackableTargets or you will no get the shit out of attackableTagets"
+	^ self parent attackableNeighboursConsideringMoveForMonster: self.
+!
 
-	keySuccess := aKey,'success'.
-	oldCallBack := self class jsonStatCacheAt: keySuccess.
-	self class jsonStatCacheAt: keySuccess put: [:statsNew | 
-			self stats: statsNew. 
-			oldCallBack value: statsNew ].
-			
-	"Case where the json file finished loading during the execution of this method but before the new call back was set up"
-	(self class jsonStatCache includesKey: aKey) 
-		ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].
+selectActionCells
+	^ self addSelectorsTo: (self parent selectableNeighboursForMonster: self).
+!
+
+selectAttackableCells
+	^ self addSelectorsTo: (self parent attackableNeighboursForMonster: self)
+!
+
+selectMovableCells
+	^ self addSelectorsTo: ((self parent movableNeighboursCycle: self currentMove) remove: self parent; yourself )
 ! !
 
 !CWMonster methodsFor: 'state delegation'!
@@ -1097,9 +1082,9 @@ readyToBePicked
 	self state readyToPick: self
 !
 
-select: gameContext
-	self state select: self inContext: gameContext.
-	self announceUpdate
+selectInContext: gameContext
+	self announceUpdate.
+	^ self state select: self inContext: gameContext
 !
 
 showActiveMonster
@@ -1146,24 +1131,6 @@ folderName
 	^ 'monsters'
 ! !
 
-!CWMonster class methodsFor: 'caching'!
-
-jsonStatCache
-	^ jsonStatCache ifNil: [ jsonStatCache := Dictionary new ]
-!
-
-jsonStatCacheAt: aKey
-	^ self jsonStatCache at: aKey
-!
-
-jsonStatCacheAt: aKey ifAbsent: aBlock
-	^ self jsonStatCache at: aKey ifAbsent: aBlock
-!
-
-jsonStatCacheAt: aKey put: aJson
-	^ self jsonStatCache at: aKey put: aJson
-! !
-
 !CWMonster class methodsFor: 'instance creation'!
 
 emptyMonster
@@ -1179,9 +1146,8 @@ emptyMonster
 		move: 0;
 		range: 0;
 		dices: 0;
-		attack: 0";
-		knockback: 0;
-		special:'none'."
+		attack: 0;
+		special:'none'.
 ! !
 
 !JSObjectProxy methodsFor: '*Easnoth-BusinessObjects'!
