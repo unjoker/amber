@@ -301,6 +301,24 @@ smalltalk.CWComposite);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "childAt:ifPresent:",
+category: 'children management',
+fn: function (index,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._children())._at_ifPresent_(index,aBlock);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"childAt:ifPresent:",{index:index,aBlock:aBlock},smalltalk.CWComposite)})},
+args: ["index", "aBlock"],
+source: "childAt: index ifPresent: aBlock\x0a\x09^ self children at: index ifPresent: aBlock",
+messageSends: ["at:ifPresent:", "children"],
+referencedClasses: []
+}),
+smalltalk.CWComposite);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "children",
 category: 'accessing',
 fn: function (){
@@ -405,44 +423,50 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "attackableNeighboursConsideringMoveCycle:attackCycle:fromSide:",
+selector: "attackableNeighboursConsideringMoveForMonster:",
 category: 'neighbourhood',
-fn: function (cycleMove,cycleAttack,side){
+fn: function (aMonster){
 var self=this;
 var selectableCells;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-selectableCells=_st(self)._selectableNeighboursMoveCycle_attackCycle_fromSide_(cycleMove,cycleAttack,side);
-_st(selectableCells)._remove_(self);
+selectableCells=_st(self)._selectableNeighboursForMonster_(aMonster);
 $1=_st(selectableCells)._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._hasMonster();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursConsideringMoveCycle:attackCycle:fromSide:",{cycleMove:cycleMove,cycleAttack:cycleAttack,side:side,selectableCells:selectableCells},smalltalk.CWCell)})},
-args: ["cycleMove", "cycleAttack", "side"],
-source: "attackableNeighboursConsideringMoveCycle: cycleMove attackCycle: cycleAttack fromSide: side\x0a\x09\x22for AI. Answers the collection of attackable ennemies considering the move of the monster\x22\x0a\x09\x0a\x09| selectableCells |\x0a\x09selectableCells := self selectableNeighboursMoveCycle: cycleMove attackCycle: cycleAttack fromSide: side.\x0a\x09selectableCells remove: self.\x0a\x09^ selectableCells select: [ :each | each hasMonster ]",
-messageSends: ["selectableNeighboursMoveCycle:attackCycle:fromSide:", "remove:", "select:", "hasMonster"],
+}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursConsideringMoveForMonster:",{aMonster:aMonster,selectableCells:selectableCells},smalltalk.CWCell)})},
+args: ["aMonster"],
+source: "attackableNeighboursConsideringMoveForMonster: aMonster\x0a\x09\x22for AI. Answers the collection of attackable ennemies considering the move of the monster\x22\x0a\x09\x0a\x09| selectableCells |\x0a\x09selectableCells := self selectableNeighboursForMonster: aMonster.\x0a\x09^ selectableCells select: [ :each | each hasMonster ]",
+messageSends: ["selectableNeighboursForMonster:", "select:", "hasMonster"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "attackableNeighboursCycle:fromSide:",
+selector: "attackableNeighboursForMonster:",
 category: 'neighbourhood',
-fn: function (cycleNumber,side){
+fn: function (aMonster){
 var self=this;
+var attackableCells,tempCells;
+function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st(_st(self)._root())._removeSelection();
-$1=_st(self)._attackableNeighboursFrom_(side);
+attackableCells=_st($Set())._new();
+tempCells=_st(self)._movableNeighboursCycle_(_st(_st(aMonster)._range()).__minus((1)));
+_st(tempCells)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(attackableCells)._addAll_(_st(each)._attackableNeighboursFrom_(_st(aMonster)._side()));
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+$1=attackableCells;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursCycle:fromSide:",{cycleNumber:cycleNumber,side:side},smalltalk.CWCell)})},
-args: ["cycleNumber", "side"],
-source: "attackableNeighboursCycle: cycleNumber fromSide: side\x0a\x09\x22no range attack for now\x22\x0a\x09\x0a\x09self root removeSelection.\x0a\x09\x0a\x09^ self attackableNeighboursFrom: side",
-messageSends: ["removeSelection", "root", "attackableNeighboursFrom:"],
-referencedClasses: []
+}, function($ctx1) {$ctx1.fill(self,"attackableNeighboursForMonster:",{aMonster:aMonster,attackableCells:attackableCells,tempCells:tempCells},smalltalk.CWCell)})},
+args: ["aMonster"],
+source: "attackableNeighboursForMonster: aMonster\x0a\x09\x0a\x09| attackableCells tempCells |\x0a\x09\x0a\x09attackableCells := Set new.\x0a\x09tempCells := self movableNeighboursCycle: aMonster range - 1.\x0a\x09\x0a\x09tempCells do: [ :each |\x0a\x09\x09attackableCells addAll: (each attackableNeighboursFrom: aMonster side) ].\x0a\x0a\x09^ attackableCells",
+messageSends: ["new", "movableNeighboursCycle:", "-", "range", "do:", "addAll:", "attackableNeighboursFrom:", "side"],
+referencedClasses: ["Set"]
 }),
 smalltalk.CWCell);
 
@@ -459,16 +483,12 @@ attackableCells=_st(_st(self)._neighbours())._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._canBeAttackedBy_(side);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-_st(attackableCells)._do_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(each)._addSelector();
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $1=attackableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attackableNeighboursFrom:",{side:side,attackableCells:attackableCells},smalltalk.CWCell)})},
 args: ["side"],
-source: "attackableNeighboursFrom: side\x0a\x09|attackableCells|\x0a\x09attackableCells := self neighbours select: [ :each | \x0a\x09\x09\x09\x09\x09each canBeAttackedBy: side ].\x0a\x09attackableCells do: [ :each |\x0a\x09\x09\x09each addSelector ].\x0a\x09^ attackableCells",
-messageSends: ["select:", "canBeAttackedBy:", "neighbours", "do:", "addSelector"],
+source: "attackableNeighboursFrom: side\x0a\x09|attackableCells|\x0a\x09attackableCells := self neighbours select: [ :each | \x0a\x09\x09\x09\x09\x09each canBeAttackedBy: side ].\x0a\x09^ attackableCells",
+messageSends: ["select:", "canBeAttackedBy:", "neighbours"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -546,24 +566,6 @@ return $1;
 args: ["side"],
 source: "canBeAttackedBy: side\x0a\x09^ self state cell: self canBeAttackedBy: side",
 messageSends: ["cell:canBeAttackedBy:", "state"],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "canMoveTo",
-category: 'state delegation',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._state())._canMoveTo_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"canMoveTo",{},smalltalk.CWCell)})},
-args: [],
-source: "canMoveTo\x0a\x09^ self state canMoveTo: self",
-messageSends: ["canMoveTo:", "state"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -675,6 +677,27 @@ return $1;
 args: [],
 source: "free\x0a\x09^ self monster isNil",
 messageSends: ["isNil", "monster"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "freeNeighbours",
+category: 'neighbourhood',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._neighbours())._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._isFree();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"freeNeighbours",{},smalltalk.CWCell)})},
+args: [],
+source: "freeNeighbours\x0a\x09^ self neighbours select: [ :each | each isFree ]",
+messageSends: ["select:", "isFree", "neighbours"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -801,6 +824,24 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isFree",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._isFree();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isFree",{},smalltalk.CWCell)})},
+args: [],
+source: "isFree\x0a\x09^ self state isFree",
+messageSends: ["isFree", "state"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isFreeSelected",
 category: 'state delegation',
 fn: function (){
@@ -853,6 +894,27 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "monstersNeighbours",
+category: 'neighbourhood',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._neighbours())._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._hasMonster();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monstersNeighbours",{},smalltalk.CWCell)})},
+args: [],
+source: "monstersNeighbours\x0a\x09^ self neighbours select: [ :each | each hasMonster ]",
+messageSends: ["select:", "hasMonster", "neighbours"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "mouseClick:",
 category: 'state delegation',
 fn: function (gameContext){
@@ -878,19 +940,19 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 movableCells=_st(_st(self)._neighbours())._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._canMoveTo();
+return _st(each)._isFree();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-_st(each)._addSelector();
-return _st(each)._prevCell_(self);
+_st(each)._prevCell_(self);
+return _st(each)._addSelector();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighbours",{movableCells:movableCells},smalltalk.CWCell)})},
 args: [],
-source: "movableNeighbours\x0a\x09|movableCells|\x0a\x09movableCells := self neighbours select: [ :each | \x0a\x09\x09\x09each canMoveTo ].\x0a\x09movableCells do: [ :each |\x0a\x09\x09\x09each addSelector.\x0a\x09\x09\x09each prevCell: self ].\x0a\x09\x09\x09\x0a\x09^ movableCells",
-messageSends: ["select:", "canMoveTo", "neighbours", "do:", "addSelector", "prevCell:"],
+source: "movableNeighbours\x0a\x09|movableCells|\x0a\x0a\x09movableCells := self neighbours select: [ :each | \x0a\x09\x09\x09each isFree ].\x0a\x09movableCells do: [ :each |\x0a\x09\x09\x09each prevCell: self.\x0a\x09\x09\x09each addSelector].\x0a\x09\x09\x09\x0a\x09^ movableCells",
+messageSends: ["select:", "isFree", "neighbours", "do:", "prevCell:", "addSelector"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -905,8 +967,7 @@ var movableCells,tempSet;
 function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st(_st(self)._root())._removeSelection();
-movableCells=[self];
+movableCells=_st([self])._asSet();
 _st((1))._to_do_(cycleNumber,(function(i){
 return smalltalk.withContext(function($ctx2) {
 tempSet=_st($Set())._new();
@@ -921,8 +982,8 @@ $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighboursCycle:",{cycleNumber:cycleNumber,movableCells:movableCells,tempSet:tempSet},smalltalk.CWCell)})},
 args: ["cycleNumber"],
-source: "movableNeighboursCycle: cycleNumber\x0a\x09| movableCells tempSet |\x0a\x09\x0a\x09self root removeSelection.\x0a\x09\x0a\x09movableCells := { self }.\x0a\x091 to: cycleNumber do: [ :i |\x0a\x09\x09tempSet := Set new.\x0a\x09\x09movableCells do: [ :each | tempSet addAll: each movableNeighbours ].\x0a\x09\x09movableCells addAll: tempSet].\x0a\x09\x0a\x09^ movableCells",
-messageSends: ["removeSelection", "root", "to:do:", "new", "do:", "addAll:", "movableNeighbours"],
+source: "movableNeighboursCycle: cycleNumber\x0a\x09| movableCells tempSet |\x0a\x09\x0a\x09movableCells := { self } asSet.\x0a\x091 to: cycleNumber do: [ :i |\x0a\x09\x09tempSet := Set new.\x0a\x09\x09movableCells do: [ :each | tempSet addAll: each movableNeighbours ].\x0a\x09\x09movableCells addAll: tempSet].\x0a\x09\x0a\x09^ movableCells",
+messageSends: ["asSet", "to:do:", "new", "do:", "addAll:", "movableNeighbours"],
 referencedClasses: ["Set"]
 }),
 smalltalk.CWCell);
@@ -1156,27 +1217,27 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "selectableNeighboursMoveCycle:attackCycle:fromSide:",
+selector: "selectableNeighboursForMonster:",
 category: 'neighbourhood',
-fn: function (cycleNumber,cycleNumber2,side){
+fn: function (aMonster){
 var self=this;
 var selectableCells,tempSet;
 function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-selectableCells=_st(self)._movableNeighboursCycle_(cycleNumber);
+selectableCells=_st(self)._movableNeighboursCycle_(_st(aMonster)._currentMove());
 tempSet=_st($Set())._new();
 _st(selectableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(tempSet)._addAll_(_st(each)._attackableNeighboursFrom_(side));
+return _st(tempSet)._addAll_(_st(each)._attackableNeighboursForMonster_(aMonster));
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(selectableCells)._addAll_(tempSet);
-$1=selectableCells;
+$1=_st(selectableCells)._remove_(self);
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"selectableNeighboursMoveCycle:attackCycle:fromSide:",{cycleNumber:cycleNumber,cycleNumber2:cycleNumber2,side:side,selectableCells:selectableCells,tempSet:tempSet},smalltalk.CWCell)})},
-args: ["cycleNumber", "cycleNumber2", "side"],
-source: "selectableNeighboursMoveCycle: cycleNumber attackCycle: cycleNumber2 fromSide: side\x0a\x09| selectableCells tempSet |\x0a\x0a\x09\x22movable cells\x22\x0a\x09selectableCells := self movableNeighboursCycle: cycleNumber.\x0a\x0a\x09 \x22all attackable cells from any movable cell\x22\x0a\x09 tempSet := Set new.\x0a\x09 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursFrom: side) ].\x0a\x09 selectableCells addAll: tempSet.\x0a\x0a\x09^ selectableCells",
-messageSends: ["movableNeighboursCycle:", "new", "do:", "addAll:", "attackableNeighboursFrom:"],
+}, function($ctx1) {$ctx1.fill(self,"selectableNeighboursForMonster:",{aMonster:aMonster,selectableCells:selectableCells,tempSet:tempSet},smalltalk.CWCell)})},
+args: ["aMonster"],
+source: "selectableNeighboursForMonster: aMonster\x0a\x09| selectableCells tempSet |\x0a\x0a\x09selectableCells := self movableNeighboursCycle: aMonster currentMove.\x0a\x0a\x09 tempSet := Set new.\x0a\x09 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonster: aMonster) ].\x0a\x09 selectableCells addAll: tempSet.\x0a\x09 ^ selectableCells remove: self",
+messageSends: ["movableNeighboursCycle:", "currentMove", "new", "do:", "addAll:", "attackableNeighboursForMonster:", "remove:"],
 referencedClasses: ["Set"]
 }),
 smalltalk.CWCell);
@@ -1738,25 +1799,34 @@ function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4;
 neighbours=_st($Array())._new();
-_st(neighbours)._add_(_st(self)._childAt_(j));
+_st(self)._childAt_ifPresent_(j,(function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(neighbours)._add_(child);
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
 $1=_st(_st(i).__backslash_backslash((2))).__eq((0));
 if(smalltalk.assert($1)){
 $3=_st(j).__gt((1));
 if(smalltalk.assert($3)){
-_st(neighbours)._add_(_st(self)._childAt_(_st(j).__minus((1))));
+_st(self)._childAt_ifPresent_(_st(j).__minus((1)),(function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(neighbours)._add_(child);
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
 };
 } else {
 $2=_st(j).__lt(_st(_st(self)._cells())._size());
 if(smalltalk.assert($2)){
-_st(neighbours)._add_(_st(self)._childAt_(_st(j).__plus((1))));
+_st(self)._childAt_ifPresent_(_st(j).__plus((1)),(function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(neighbours)._add_(child);
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
 };
 };
 $4=neighbours;
 return $4;
 }, function($ctx1) {$ctx1.fill(self,"cellsNextToI:j:",{i:i,j:j,neighbours:neighbours},smalltalk.CWRow)})},
 args: ["i", "j"],
-source: "cellsNextToI: i j: j \x0a\x09| neighbours |\x0a\x09neighbours := Array new.\x0a\x09neighbours add: (self childAt: j).\x0a\x09i \x5c\x5c 2 = 0 ifFalse: [\x0a\x09\x09j < self cells size ifTrue: [neighbours add: (self childAt: j + 1)].\x0a\x09] ifTrue: [\x0a\x09\x09j > 1 ifTrue: [neighbours add: (self childAt: j - 1)].\x0a\x09].\x0a\x09^ neighbours",
-messageSends: ["new", "add:", "childAt:", "ifFalse:ifTrue:", "ifTrue:", "+", "<", "size", "cells", "-", ">", "=", "\x5c\x5c"],
+source: "cellsNextToI: i j: j \x0a\x09| neighbours |\x0a\x09neighbours := Array new.\x0a\x09self childAt: j  ifPresent: [ :child | neighbours add: child ] .\x0a\x09i \x5c\x5c 2 = 0 ifFalse: [\x0a\x09\x09j < self cells size ifTrue: [ self childAt: j + 1 ifPresent: [ :child | neighbours add: child ] ].\x0a\x09] ifTrue: [\x0a\x09\x09j > 1 ifTrue: [ self childAt: j - 1 ifPresent: [ :child | neighbours add: child ] ].\x0a\x09].\x0a\x09^ neighbours",
+messageSends: ["new", "childAt:ifPresent:", "add:", "ifFalse:ifTrue:", "ifTrue:", "+", "<", "size", "cells", "-", ">", "=", "\x5c\x5c"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWRow);
@@ -1838,19 +1908,25 @@ neighbours=_st($Set())._new();
 cellIndex=_st(_st(self)._cells())._indexOf_(aCell);
 $1=_st(cellIndex).__eq((1));
 if(! smalltalk.assert($1)){
-_st(neighbours)._add_(_st(self)._childAt_(_st(cellIndex).__minus((1))));
+_st(self)._childAt_ifPresent_(_st(cellIndex).__minus((1)),(function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(neighbours)._add_(child);
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
 };
 $2=_st(cellIndex).__eq(_st(_st(self)._cells())._size());
 if(! smalltalk.assert($2)){
-_st(neighbours)._add_(_st(self)._childAt_(_st(cellIndex).__plus((1))));
+_st(self)._childAt_ifPresent_(_st(cellIndex).__plus((1)),(function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(neighbours)._add_(child);
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
 };
 _st(neighbours)._addAll_(_st(_st(self)._parent())._neighboursOf_cellIndex_(self,cellIndex));
 $3=neighbours;
 return $3;
 }, function($ctx1) {$ctx1.fill(self,"neighboursOf:",{aCell:aCell,cellIndex:cellIndex,neighbours:neighbours},smalltalk.CWRow)})},
 args: ["aCell"],
-source: "neighboursOf: aCell\x0a\x09\x22Here we give a Set to simply game logic later (no twice the cell in the set)\x22\x0a\x0a\x09| cellIndex neighbours |\x0a\x09neighbours := Set new.\x0a\x09cellIndex := self cells indexOf: aCell.\x0a\x09cellIndex = 1 \x0a\x09\x09ifFalse: [ neighbours add: (self childAt: cellIndex - 1) ].\x0a\x09cellIndex = self cells size \x0a\x09\x09ifFalse: [ neighbours add: (self childAt: cellIndex + 1) ].\x0a\x09neighbours addAll: (self parent neighboursOf: self cellIndex: cellIndex).\x0a\x09^ neighbours",
-messageSends: ["new", "indexOf:", "cells", "ifFalse:", "add:", "childAt:", "-", "=", "+", "size", "addAll:", "neighboursOf:cellIndex:", "parent"],
+source: "neighboursOf: aCell\x0a\x09\x22Here we give a Set to simplify game logic later (no twice the cell in the set)\x22\x0a\x0a\x09| cellIndex neighbours |\x0a\x09neighbours := Set new.\x0a\x09cellIndex := self cells indexOf: aCell.\x0a\x09cellIndex = 1 \x0a\x09\x09ifFalse: [ self childAt: cellIndex - 1 ifPresent: [ :child | neighbours add: child ] ].\x0a\x09cellIndex = self cells size \x0a\x09\x09ifFalse: [ self childAt: cellIndex + 1  ifPresent: [ :child | neighbours add: child ] ].\x0a\x09neighbours addAll: (self parent neighboursOf: self cellIndex: cellIndex).\x0a\x09^ neighbours",
+messageSends: ["new", "indexOf:", "cells", "ifFalse:", "childAt:ifPresent:", "-", "add:", "=", "+", "size", "addAll:", "neighboursOf:cellIndex:", "parent"],
 referencedClasses: ["Set"]
 }),
 smalltalk.CWRow);
@@ -2331,31 +2407,25 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "addStats:",
-category: 'initialize-release',
-fn: function (aKey){
+selector: "addSelectorsTo:",
+category: 'selection',
+fn: function (cells){
 var self=this;
-var keySuccess;
-function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
-function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
 return smalltalk.withContext(function($ctx1) { 
-keySuccess=_st(aKey).__comma("success");
-_st(self)._announce_(_st($CWWaitForObject())._new());
-_st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
+var $1;
+_st(_st(self)._root())._removeSelection();
+_st(cells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(self)._class())._jsonStatCacheAt_put_(aKey,statsNew);
-return _st(self)._stats_(statsNew);
-}, function($ctx2) {$ctx2.fillBlock({statsNew:statsNew},$ctx1)})}));
-_st(jQuery)._getJSON_onSuccess_(_st(_st("ressources/json/monsters/").__comma(aKey)).__comma(".json"),(function(data){
-return smalltalk.withContext(function($ctx2) {
-_st(_st(_st(self)._class())._jsonStatCacheAt_(keySuccess))._value_(data);
-return _st(self)._announce_(_st($CWObjectLoaded())._new());
-}, function($ctx2) {$ctx2.fillBlock({data:data},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"addStats:",{aKey:aKey,keySuccess:keySuccess},smalltalk.CWMonster)})},
-args: ["aKey"],
-source: "addStats: aKey\x0a\x09| keySuccess |\x0a\x09\x0a\x09keySuccess := aKey,'success'.\x0a\x09\x0a\x09self announce: CWWaitForObject new.\x0a\x09\x0a    self class \x0a\x09\x09jsonStatCacheAt: keySuccess \x0a\x09\x09put: [:statsNew | \x0a\x09\x09\x09self class jsonStatCacheAt: aKey put: statsNew.\x0a       \x09\x09self stats: statsNew ].\x0a\x0a\x09jQuery \x0a\x09\x09getJSON: 'ressources/json/monsters/', aKey, '.json' \x0a\x09\x09onSuccess: [:data | \x0a\x09\x09\x09(self class jsonStatCacheAt: keySuccess) value: data.\x0a\x09\x09\x09self announce: CWObjectLoaded new]",
-messageSends: [",", "announce:", "new", "jsonStatCacheAt:put:", "class", "stats:", "getJSON:onSuccess:", "value:", "jsonStatCacheAt:"],
-referencedClasses: ["CWWaitForObject", "CWObjectLoaded"]
+return _st(each)._addSelector();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+_st(_st(self)._parent())._movableNeighboursCycle_(_st(self)._currentMove());
+$1=cells;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"addSelectorsTo:",{cells:cells},smalltalk.CWMonster)})},
+args: ["cells"],
+source: "addSelectorsTo: cells\x0a\x09\x0a\x09self root removeSelection.\x0a\x09cells do: [:each | each addSelector ].\x0a\x09\x0a\x09\x22HACKY, to recalcul prevCell, need true pathfinding for this to be fine\x22\x0a\x09self parent movableNeighboursCycle: self currentMove.\x0a\x09\x0a\x09^ cells",
+messageSends: ["removeSelection", "root", "do:", "addSelector", "movableNeighboursCycle:", "currentMove", "parent"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
@@ -2385,7 +2455,7 @@ return _st(self)._announceUpdate();
 _st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
 return self}, function($ctx1) {$ctx1.fill(self,"animationMoveFrom:to:callback:",{cell1:cell1,cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonster)})},
 args: ["cell1", "cellLast", "callback"],
-source: "animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := cell1 pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a \x0a\x09cell1 root removeSelection.\x0a\x09cell1 updateGOTs.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) addMonster: self.\x0a        (path at: path size + 1 - j) removeMonster.\x0a\x09\x09cell1 root updateMonstersAndGOTs .\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
+source: "animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := cell1 pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a \x0a\x09cell1 root removeSelection.\x0a\x09cell1 updateGOTs.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) addMonster: self.\x0a        (path at: path size + 1 - j) removeMonster.\x0a\x09\x09cell1 root updateMonstersAndGOTs.\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
 messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "updateGOTs", "to:do:", "valueWithTimeout:", "*", "addMonster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove", "announceUpdate"],
 referencedClasses: []
 }),
@@ -2455,14 +2525,14 @@ _st(self)._updateGOTs();
 _st(self)._rollDicesCallBack_((function(diceRes){
 return smalltalk.withContext(function($ctx2) {
 _st(anotherMonster)._removeHP_(_st(diceRes)._kills());
-_st(self)._select_(gameContext);
+_st(self)._selectInContext_(gameContext);
 _st(self)._checkForNextTurn();
 return _st(self)._updateMonstersAndGOTs();
 }, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"attackNeighbour:inContext:",{anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWMonster)})},
 args: ["anotherMonster", "gameContext"],
-source: "attackNeighbour: anotherMonster inContext: gameContext\x0a\x09\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x09self updateGOTs.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self select: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09self updateMonstersAndGOTs ]",
-messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "updateGOTs", "rollDicesCallBack:", "removeHP:", "kills", "select:", "checkForNextTurn", "updateMonstersAndGOTs"],
+source: "attackNeighbour: anotherMonster inContext: gameContext\x0a\x09\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x09self updateGOTs.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self selectInContext: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09self updateMonstersAndGOTs ]",
+messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "updateGOTs", "rollDicesCallBack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2504,17 +2574,18 @@ smalltalk.CWMonster);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "attackableTargets",
-category: 'fighting',
+category: 'selection',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._parent())._attackableNeighboursConsideringMoveCycle_attackCycle_fromSide_(_st(self)._move(),_st(self)._attack(),_st(self)._side());
+_st(_st(self)._root())._removeSelection();
+$1=_st(_st(self)._parent())._attackableNeighboursConsideringMoveForMonster_(self);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attackableTargets",{},smalltalk.CWMonster)})},
 args: [],
-source: "attackableTargets\x0a\x09\x22Answers the list of monsters this monster can attack, including the ones he needs to move before attack\x22\x0a\x09^ self parent attackableNeighboursConsideringMoveCycle: self move attackCycle: self attack fromSide: self side.",
-messageSends: ["attackableNeighboursConsideringMoveCycle:attackCycle:fromSide:", "move", "attack", "side", "parent"],
+source: "attackableTargets\x0a\x09\x22Answers the list of monsters this monster can attack, including the ones he needs to move before attack\x22\x0a\x09self root removeSelection. \x22To remove the selected stuff created by attackableTargets or you will no get the shit out of attackableTagets\x22\x0a\x09^ self parent attackableNeighboursConsideringMoveForMonster: self.",
+messageSends: ["removeSelection", "root", "attackableNeighboursConsideringMoveForMonster:", "parent"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2769,41 +2840,6 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initializeFromJson:",
-category: 'initialize-release',
-fn: function (aJson){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(aJson)._name()]);
-_st(self)._loadStats_(_st(aJson)._name());
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{aJson:aJson},smalltalk.CWMonster)})},
-args: ["aJson"],
-source: "initializeFromJson: aJson\x0a\x09super initializeFromKey: aJson name.\x0a\x09\x22self side: aJson side.\x22\x0a\x09self loadStats: aJson name.",
-messageSends: ["initializeFromKey:", "name", "loadStats:"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeFromKey:army:player:",
-category: 'initialize-release',
-fn: function (aKey,anArmy,aPlayer){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(_st(anArmy).__comma("/")).__comma(aKey)]);
-_st(self)._player_(aPlayer);
-_st(self)._loadStats_(_st(_st(anArmy).__comma("/")).__comma(aKey));
-return self}, function($ctx1) {$ctx1.fill(self,"initializeFromKey:army:player:",{aKey:aKey,anArmy:anArmy,aPlayer:aPlayer},smalltalk.CWMonster)})},
-args: ["aKey", "anArmy", "aPlayer"],
-source: "initializeFromKey: aKey army: anArmy player: aPlayer\x0a\x09super initializeFromKey: anArmy, '/', aKey.\x0a\x09self player: aPlayer.\x0a\x09self loadStats: anArmy, '/', aKey.",
-messageSends: ["initializeFromKey:", ",", "player:", "loadStats:"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initializeState",
 category: 'state machine',
 fn: function (){
@@ -2814,25 +2850,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"initializeState",{},smalltalk.CW
 args: [],
 source: "initializeState\x0a\x09self changeState: self defaultState",
 messageSends: ["changeState:", "defaultState"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeWithStat:army:player:",
-category: 'initialize-release',
-fn: function (jsonStat,army,aPlayer){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st((1))._halt();
-smalltalk.CWImageLeaf.fn.prototype._initializeFromKey_.apply(_st(self), [_st(army).__comma("/troop")]);
-_st(self)._player_(aPlayer);
-_st(self)._stats_(jsonStat);
-return self}, function($ctx1) {$ctx1.fill(self,"initializeWithStat:army:player:",{jsonStat:jsonStat,army:army,aPlayer:aPlayer},smalltalk.CWMonster)})},
-args: ["jsonStat", "army", "aPlayer"],
-source: "initializeWithStat: jsonStat army: army player: aPlayer\x0a1halt.\x0a\x09super initializeFromKey: army, '/troop'.\x0a\x09self player: aPlayer.\x0a\x09self stats: jsonStat.",
-messageSends: ["halt", "initializeFromKey:", ",", "player:", "stats:"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2889,28 +2906,6 @@ return $1;
 args: [],
 source: "key\x0a\x09^ typeStrategy key, strategy key",
 messageSends: [",", "key"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "loadStats:",
-category: 'initialize-release',
-fn: function (aJson){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(_st(self)._class())._jsonStatCache())._includesKey_(_st(aJson).__comma("success"));
-if(smalltalk.assert($1)){
-_st(self)._updateStats_(aJson);
-} else {
-_st(self)._addStats_(aJson);
-};
-return self}, function($ctx1) {$ctx1.fill(self,"loadStats:",{aJson:aJson},smalltalk.CWMonster)})},
-args: ["aJson"],
-source: "loadStats: aJson\x0a\x09(self class jsonStatCache includesKey: aJson,'success') \x0a\x09\x09ifTrue: [ self updateStats: aJson ] \x0a\x09\x09ifFalse: [ self addStats: aJson ].",
-messageSends: ["ifTrue:ifFalse:", "updateStats:", "addStats:", "includesKey:", ",", "jsonStatCache", "class"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2975,14 +2970,14 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._animationMoveFrom_to_callback_(_st(gameContext)._currentCell(),aCell,(function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(self)._state())._changeStateAfterMoving_(self);
-_st(self)._select_(gameContext);
+_st(self)._selectInContext_(gameContext);
 _st(self)._checkForNextTurn();
 return _st(callback)._value();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"moveTo:inContext:callback:",{aCell:aCell,gameContext:gameContext,callback:callback},smalltalk.CWMonster)})},
 args: ["aCell", "gameContext", "callback"],
-source: "moveTo: aCell inContext: gameContext callback: callback\x0a\x09\x22triggers the animation for the monster move\x22\x0a\x09\x0a\x09self animationMoveFrom: gameContext currentCell to: aCell callback: [\x09\x0a\x09\x09self state changeStateAfterMoving: self.\x0a\x09\x09self select: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09callback value.\x0a\x09].",
-messageSends: ["animationMoveFrom:to:callback:", "currentCell", "changeStateAfterMoving:", "state", "select:", "checkForNextTurn", "value"],
+source: "moveTo: aCell inContext: gameContext callback: callback\x0a\x09\x22triggers the animation for the monster move\x22\x0a\x09\x0a\x09self animationMoveFrom: gameContext currentCell to: aCell callback: [\x09\x0a\x09\x09self state changeStateAfterMoving: self.\x0a\x09\x09self selectInContext: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09callback value.\x0a\x09].",
+messageSends: ["animationMoveFrom:to:callback:", "currentCell", "changeStateAfterMoving:", "state", "selectInContext:", "checkForNextTurn", "value"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3017,6 +3012,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"player:",{aPlayer:aPlayer},small
 args: ["aPlayer"],
 source: "player: aPlayer\x0a\x09player := aPlayer",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "printOn:",
+category: 'printing',
+fn: function (aStream){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(aStream)._nextPutAll_("a Monster(");
+_st(aStream)._nextPutAll_(_st(_st(self)._parent())._printString());
+_st(aStream)._nextPutAll_(")");
+return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWMonster)})},
+args: ["aStream"],
+source: "printOn: aStream\x0a\x09aStream nextPutAll: 'a Monster('.\x0a\x09aStream nextPutAll: self parent printString.\x0a\x09aStream nextPutAll: ')'.",
+messageSends: ["nextPutAll:", "printString", "parent"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3128,17 +3141,76 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "select:",
+selector: "selectActionCells",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._addSelectorsTo_(_st(_st(self)._parent())._selectableNeighboursForMonster_(self));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selectActionCells",{},smalltalk.CWMonster)})},
+args: [],
+source: "selectActionCells\x0a\x09^ self addSelectorsTo: (self parent selectableNeighboursForMonster: self).",
+messageSends: ["addSelectorsTo:", "selectableNeighboursForMonster:", "parent"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "selectAttackableCells",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._addSelectorsTo_(_st(_st(self)._parent())._attackableNeighboursForMonster_(self));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selectAttackableCells",{},smalltalk.CWMonster)})},
+args: [],
+source: "selectAttackableCells\x0a\x09^ self addSelectorsTo: (self parent attackableNeighboursForMonster: self)",
+messageSends: ["addSelectorsTo:", "attackableNeighboursForMonster:", "parent"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "selectInContext:",
 category: 'state delegation',
 fn: function (gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._state())._select_inContext_(self,gameContext);
+var $1;
 _st(self)._announceUpdate();
-return self}, function($ctx1) {$ctx1.fill(self,"select:",{gameContext:gameContext},smalltalk.CWMonster)})},
+$1=_st(_st(self)._state())._select_inContext_(self,gameContext);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selectInContext:",{gameContext:gameContext},smalltalk.CWMonster)})},
 args: ["gameContext"],
-source: "select: gameContext\x0a\x09self state select: self inContext: gameContext.\x0a\x09self announceUpdate",
-messageSends: ["select:inContext:", "state", "announceUpdate"],
+source: "selectInContext: gameContext\x0a\x09self announceUpdate.\x0a\x09^ self state select: self inContext: gameContext",
+messageSends: ["announceUpdate", "select:inContext:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "selectMovableCells",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st(_st(self)._parent())._movableNeighboursCycle_(_st(self)._currentMove());
+_st($2)._remove_(_st(self)._parent());
+$3=_st($2)._yourself();
+$1=_st(self)._addSelectorsTo_($3);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selectMovableCells",{},smalltalk.CWMonster)})},
+args: [],
+source: "selectMovableCells\x0a\x09^ self addSelectorsTo: ((self parent movableNeighboursCycle: self currentMove) remove: self parent; yourself )",
+messageSends: ["addSelectorsTo:", "remove:", "parent", "movableNeighboursCycle:", "currentMove", "yourself"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3266,34 +3338,6 @@ referencedClasses: []
 }),
 smalltalk.CWMonster);
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "updateStats:",
-category: 'initialize-release',
-fn: function (aKey){
-var self=this;
-var keySuccess,oldCallBack;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-keySuccess=_st(aKey).__comma("success");
-oldCallBack=_st(_st(self)._class())._jsonStatCacheAt_(keySuccess);
-_st(_st(self)._class())._jsonStatCacheAt_put_(keySuccess,(function(statsNew){
-return smalltalk.withContext(function($ctx2) {
-_st(self)._stats_(statsNew);
-return _st(oldCallBack)._value_(statsNew);
-}, function($ctx2) {$ctx2.fillBlock({statsNew:statsNew},$ctx1)})}));
-$1=_st(_st(_st(self)._class())._jsonStatCache())._includesKey_(aKey);
-if(smalltalk.assert($1)){
-_st(self)._stats_(_st(_st(self)._class())._jsonStatCacheAt_(aKey));
-};
-return self}, function($ctx1) {$ctx1.fill(self,"updateStats:",{aKey:aKey,keySuccess:keySuccess,oldCallBack:oldCallBack},smalltalk.CWMonster)})},
-args: ["aKey"],
-source: "updateStats: aKey \x0a\x09|keySuccess oldCallBack|\x0a\x0a\x09keySuccess := aKey,'success'.\x0a\x09oldCallBack := self class jsonStatCacheAt: keySuccess.\x0a\x09self class jsonStatCacheAt: keySuccess put: [:statsNew | \x0a\x09\x09\x09self stats: statsNew. \x0a\x09\x09\x09oldCallBack value: statsNew ].\x0a\x09\x09\x09\x0a\x09\x22Case where the json file finished loading during the execution of this method but before the new call back was set up\x22\x0a\x09(self class jsonStatCache includesKey: aKey) \x0a\x09\x09ifTrue: [self stats: (self class jsonStatCacheAt: aKey)].",
-messageSends: [",", "jsonStatCacheAt:", "class", "jsonStatCacheAt:put:", "stats:", "value:", "ifTrue:", "includesKey:", "jsonStatCache"],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
 
 smalltalk.CWMonster.klass.iVarNames = ['jsonStatCache'];
 smalltalk.addMethod(
@@ -3314,13 +3358,14 @@ _st($2)._hp_((0));
 _st($2)._move_((0));
 _st($2)._range_((0));
 _st($2)._dices_((0));
-$3=_st($2)._attack_((0));
+_st($2)._attack_((0));
+$3=_st($2)._special_("none");
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"emptyMonster",{fakeImage:fakeImage},smalltalk.CWMonster.klass)})},
 args: [],
-source: "emptyMonster\x0a\x09\x22Answers a fake instance of a monster with empty stats.\x0a\x09Displayed by the menu when no monster is selected\x22\x0a\x09\x0a\x09| fakeImage |\x0a\x09fakeImage := NativeFunction constructor: 'Image'.\x0a\x09fakeImage at: 'src' put:'ressources/images/interro.png'.\x0a\x09^ self new\x0a\x09\x09image: fakeImage;\x0a\x09\x09hp: 0;\x0a\x09\x09move: 0;\x0a\x09\x09range: 0;\x0a\x09\x09dices: 0;\x0a\x09\x09attack: 0\x22;\x0a\x09\x09knockback: 0;\x0a\x09\x09special:'none'.\x22",
-messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:"],
+source: "emptyMonster\x0a\x09\x22Answers a fake instance of a monster with empty stats.\x0a\x09Displayed by the menu when no monster is selected\x22\x0a\x09\x0a\x09| fakeImage |\x0a\x09fakeImage := NativeFunction constructor: 'Image'.\x0a\x09fakeImage at: 'src' put:'ressources/images/interro.png'.\x0a\x09^ self new\x0a\x09\x09image: fakeImage;\x0a\x09\x09hp: 0;\x0a\x09\x09move: 0;\x0a\x09\x09range: 0;\x0a\x09\x09dices: 0;\x0a\x09\x09attack: 0;\x0a\x09\x09special:'none'.",
+messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:", "special:"],
 referencedClasses: ["NativeFunction"]
 }),
 smalltalk.CWMonster.klass);
@@ -3337,85 +3382,6 @@ return "monsters";
 args: [],
 source: "folderName\x0a\x09^ 'monsters'",
 messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWMonster.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsonStatCache",
-category: 'caching',
-fn: function (){
-var self=this;
-function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self["@jsonStatCache"];
-if(($receiver = $2) == nil || $receiver == undefined){
-self["@jsonStatCache"]=_st($Dictionary())._new();
-$1=self["@jsonStatCache"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"jsonStatCache",{},smalltalk.CWMonster.klass)})},
-args: [],
-source: "jsonStatCache\x0a\x09^ jsonStatCache ifNil: [ jsonStatCache := Dictionary new ]",
-messageSends: ["ifNil:", "new"],
-referencedClasses: ["Dictionary"]
-}),
-smalltalk.CWMonster.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsonStatCacheAt:",
-category: 'caching',
-fn: function (aKey){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._jsonStatCache())._at_(aKey);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:",{aKey:aKey},smalltalk.CWMonster.klass)})},
-args: ["aKey"],
-source: "jsonStatCacheAt: aKey\x0a\x09^ self jsonStatCache at: aKey",
-messageSends: ["at:", "jsonStatCache"],
-referencedClasses: []
-}),
-smalltalk.CWMonster.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsonStatCacheAt:ifAbsent:",
-category: 'caching',
-fn: function (aKey,aBlock){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._jsonStatCache())._at_ifAbsent_(aKey,aBlock);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:ifAbsent:",{aKey:aKey,aBlock:aBlock},smalltalk.CWMonster.klass)})},
-args: ["aKey", "aBlock"],
-source: "jsonStatCacheAt: aKey ifAbsent: aBlock\x0a\x09^ self jsonStatCache at: aKey ifAbsent: aBlock",
-messageSends: ["at:ifAbsent:", "jsonStatCache"],
-referencedClasses: []
-}),
-smalltalk.CWMonster.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "jsonStatCacheAt:put:",
-category: 'caching',
-fn: function (aKey,aJson){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._jsonStatCache())._at_put_(aKey,aJson);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"jsonStatCacheAt:put:",{aKey:aKey,aJson:aJson},smalltalk.CWMonster.klass)})},
-args: ["aKey", "aJson"],
-source: "jsonStatCacheAt: aKey put: aJson\x0a\x09^ self jsonStatCache at: aKey put: aJson",
-messageSends: ["at:put:", "jsonStatCache"],
 referencedClasses: []
 }),
 smalltalk.CWMonster.klass);
