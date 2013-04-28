@@ -138,9 +138,9 @@ selector: "visitGameOverTile:",
 fn: function (got){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._drawIsometric_inContext_(got,_st(self["@drawer"])._gameContext());
+_st(self["@drawer"])._drawGOT_(got);
 return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{got:got},smalltalk.CWGlobalDrawingContext)})},
-messageSends: ["drawIsometric:inContext:", "gameContext"]}),
+messageSends: ["drawGOT:"]}),
 smalltalk.CWGlobalDrawingContext);
 
 smalltalk.addMethod(
@@ -957,6 +957,22 @@ return _st(ctx)._drawImage_x_y_(_st($CWBackground())._imageCacheAt_("back"),_st(
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
 return self}, function($ctx1) {$ctx1.fill(self,"drawBackTile:",{ctx:ctx},smalltalk.CWMapDrawer)})},
 messageSends: ["safeDraw:inContext:", "drawImage:x:y:", "imageCacheAt:", "-", "x", "currentPoint", "+", "y"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "drawGOT:",
+fn: function (got){
+var self=this;
+var ctx;
+return smalltalk.withContext(function($ctx1) { 
+ctx=_st(self)._gameContext();
+_st(self)._safeDraw_inContext_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._display_inContext_X_y_(got,ctx,_st(_st(_st(self)._currentPoint())._x()).__minus((14)),_st(_st(_st(self)._currentPoint())._y()).__minus((10)));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
+return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:",{got:got,ctx:ctx},smalltalk.CWMapDrawer)})},
+messageSends: ["gameContext", "safeDraw:inContext:", "display:inContext:X:y:", "-", "x", "currentPoint", "y"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(

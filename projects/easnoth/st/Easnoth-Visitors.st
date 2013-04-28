@@ -84,7 +84,7 @@ reset: aDrawer
 !CWGlobalDrawingContext methodsFor: 'visiting'!
 
 visitGameOverTile: got
-	drawer drawIsometric: got inContext: drawer gameContext
+	drawer drawGOT: got
 !
 
 visitHeros: heros
@@ -97,7 +97,7 @@ visitOverTile: ot
 
 visitTile: aTile
 	drawer drawBackTile: drawer backgroundContext.
-	drawer drawIsometric: aTile inContext: drawer backgroundContext.
+	drawer drawIsometric: aTile inContext: drawer backgroundContext
 !
 
 visitUnit: aUnit
@@ -583,6 +583,12 @@ display: object inContext: ctx X: x y: y
 
 drawBackTile: ctx
 	self safeDraw: [ ctx drawImage: (CWBackground imageCacheAt: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
+!
+
+drawGOT: got
+	| ctx |
+	ctx := self gameContext.
+	self safeDraw: [ self display: got inContext: ctx X: self currentPoint x - 14 y: self currentPoint y - 10 ] inContext: ctx
 !
 
 drawHeros: heros
