@@ -285,12 +285,12 @@ update
 				]
 			].
 		].
-		html h5 with: 'debug'.
+		"html h5 with: 'debug'.
                 html span with: 'state : ', self monster state class.
 				html br.
                 html span with: 'attackPot : ', self monster attackPotential.
 				html br.
-                html span with: 'cell : ', self monster parent printString.
+                html span with: 'cell : ', self monster parent printString."
         ].
 ! !
 

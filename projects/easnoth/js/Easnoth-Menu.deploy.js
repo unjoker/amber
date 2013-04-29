@@ -488,16 +488,10 @@ return _st(_st(html)._tr())._with_(_st("special : ").__comma(_st(_st(self)._mons
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$2;
-_st(_st(html)._h5())._with_("debug");
-_st(_st(html)._span())._with_(_st("state : ").__comma(_st(_st(_st(self)._monster())._state())._class()));
-_st(html)._br();
-_st(_st(html)._span())._with_(_st("attackPot : ").__comma(_st(_st(self)._monster())._attackPotential()));
-_st(html)._br();
-return _st(_st(html)._span())._with_(_st("cell : ").__comma(_st(_st(_st(self)._monster())._parent())._printString()));
+return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special", "h5", "class", "state", "span", "br", "attackPotential", "printString", "parent"]}),
+messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special"]}),
 smalltalk.CWMonsterWatcher);
 
 smalltalk.addMethod(

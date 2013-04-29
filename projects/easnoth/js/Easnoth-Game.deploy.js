@@ -1013,7 +1013,15 @@ fn: function (){
 var self=this;
 var relatedTargetCell,duration;
 return smalltalk.withContext(function($ctx1) { 
+var $1;
 relatedTargetCell=_st(_st(self["@monsterToPlay"])._parent())._cellToMoveBeforeAttack_(self["@cellToTarget"]);
+$1=relatedTargetCell;
+if(($receiver = $1) == nil || $receiver == undefined){
+relatedTargetCell=_st(self["@monsterToPlay"])._parent();
+relatedTargetCell;
+} else {
+$1;
+};
 duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
@@ -1021,7 +1029,7 @@ return smalltalk.withContext(function($ctx2) {
 return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
-messageSends: ["cellToMoveBeforeAttack:", "parent", "*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"]}),
+messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"]}),
 smalltalk.CWAggressWeakestAI);
 
 smalltalk.addMethod(
