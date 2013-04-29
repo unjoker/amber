@@ -947,7 +947,8 @@ moveTo: aCell inContext: gameContext callback: callback
 
 !CWMonster methodsFor: 'fighting'!
 
-attackNeighbour: anotherMonster inContext: gameContext
+attack: anotherMonster inContext: gameContext bonus: int
+	"int is for now -1 0 or 1 and represents the advantages / disadvantages of attacks"
 	
 	self state changeStateAfterAttacking: self.
     self root removeSelection.
@@ -957,12 +958,30 @@ attackNeighbour: anotherMonster inContext: gameContext
 		anotherMonster removeHP: diceRes kills.
         self selectInContext: gameContext.
 		self checkForNextTurn.
-		self updateMonstersAndGOTs ]
+		self updateMonstersAndGOTs ] bonusDices: int bonusAttack: int * 10
+!
+
+attackNeighbour: anotherMonster inContext: gameContext
+	"Dispatch to type strategy for advantages of attacks"
+	
+	^ typeStrategy monster: self attackNeighbour: anotherMonster inContext: gameContext
 !
 
 die
 	self parent removeMonster.
 	self player removeMonster: self.
+!
+
+isAttackedByCavalry: aMonster inContext: gameContext
+	^ typeStrategy monster: self isAttackedByCavalry: aMonster inContext: gameContext
+!
+
+isAttackedByRange: aMonster inContext: gameContext
+	^ typeStrategy monster: self isAttackedByRange: aMonster inContext: gameContext
+!
+
+isAttackedByTroop: aMonster inContext: gameContext
+	^ typeStrategy monster: self isAttackedByTroop: aMonster inContext: gameContext
 !
 
 removeHP: anInt
@@ -982,6 +1001,22 @@ rollDicesCallBack: aBlock
 	dicesRolledEvent := CWDicesRolledEvent new
 		kills: kill;
 		dices: self dices;
+		callback: aBlock;
+		yourself.
+	self announce: dicesRolledEvent
+!
+
+rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
+	"roll the dices to attack an ennemy"
+	
+	| kill dicesRolledEvent |
+	kill := (1 to: self dices + bonusDices) inject: 0 into: [ :acc :index | 
+		100 atRandom < (self attack + bonusAttack)
+			ifTrue: [ acc + 1 ] 
+			ifFalse: [ acc ] ]. 
+	dicesRolledEvent := CWDicesRolledEvent new
+		kills: kill;
+		dices: self dices + bonusDices;
 		callback: aBlock;
 		yourself.
 	self announce: dicesRolledEvent

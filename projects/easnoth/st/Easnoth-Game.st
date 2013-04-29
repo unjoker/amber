@@ -583,6 +583,12 @@ CWPlayer subclass: #CWHuman
 	instanceVariableNames: ''
 	package: 'Easnoth-Game'!
 
+!Boolean methodsFor: '*Easnoth-Game'!
+
+asBit
+	^ self ifTrue: [ 1 ] ifFalse: [ 0 ]
+! !
+
 !SequenceableCollection methodsFor: '*Easnoth-Game'!
 
 at: index ifPresent: aBlock ifAbsent: anotherBlock
