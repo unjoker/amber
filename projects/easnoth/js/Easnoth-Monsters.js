@@ -1,5 +1,6 @@
 smalltalk.addPackage('Easnoth-Monsters');
 smalltalk.addClass('CWStrategy', smalltalk.Object, [], 'Easnoth-Monsters');
+smalltalk.CWStrategy.comment="Just here for the sngleton pattern :)"
 
 smalltalk.CWStrategy.klass.iVarNames = ['default'];
 smalltalk.addMethod(
@@ -207,6 +208,70 @@ referencedClasses: []
 }),
 smalltalk.CWMonsterTypeStrategy);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:attackNeighbour:inContext:",
+category: 'type strategy API',
+fn: function (aMonster,anotherMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"monster:attackNeighbour:inContext:",{aMonster:aMonster,anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWMonsterTypeStrategy)})},
+args: ["aMonster", "anotherMonster", "gameContext"],
+source: "monster: aMonster attackNeighbour: anotherMonster inContext: gameContext\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterTypeStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByCavalry:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByCavalry:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWMonsterTypeStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterTypeStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByRange:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByRange:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWMonsterTypeStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByRange: aMonster inContext: gameContext\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterTypeStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByTroop:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByTroop:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWMonsterTypeStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterTypeStrategy);
+
 
 
 smalltalk.addClass('CWCavalryStrategy', smalltalk.CWMonsterTypeStrategy, [], 'Easnoth-Monsters');
@@ -222,6 +287,78 @@ return "cavalry";
 args: [],
 source: "key\x0a\x09^ 'cavalry'",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCavalryStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:attackNeighbour:inContext:",
+category: 'type strategy API',
+fn: function (aCavalry,anotherMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(anotherMonster)._isAttackedByCavalry_inContext_(aCavalry,gameContext);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:attackNeighbour:inContext:",{aCavalry:aCavalry,anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWCavalryStrategy)})},
+args: ["aCavalry", "anotherMonster", "gameContext"],
+source: "monster: aCavalry attackNeighbour: anotherMonster inContext: gameContext\x0a\x09^ anotherMonster isAttackedByCavalry: aCavalry inContext: gameContext",
+messageSends: ["isAttackedByCavalry:inContext:"],
+referencedClasses: []
+}),
+smalltalk.CWCavalryStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByCavalry:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(0));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByCavalry:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWCavalryStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: 0",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWCavalryStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByRange:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(-1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByRange:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWCavalryStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByRange: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: -1",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWCavalryStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByTroop:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByTroop:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWCavalryStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: 1",
+messageSends: ["attack:inContext:bonus:"],
 referencedClasses: []
 }),
 smalltalk.CWCavalryStrategy);
@@ -245,6 +382,78 @@ referencedClasses: []
 }),
 smalltalk.CWRangeStrategy);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:attackNeighbour:inContext:",
+category: 'type strategy API',
+fn: function (aRange,anotherMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(anotherMonster)._isAttackedByRange_inContext_(aRange,gameContext);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:attackNeighbour:inContext:",{aRange:aRange,anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWRangeStrategy)})},
+args: ["aRange", "anotherMonster", "gameContext"],
+source: "monster: aRange attackNeighbour: anotherMonster inContext: gameContext\x0a\x09^ anotherMonster isAttackedByRange: aRange inContext: gameContext",
+messageSends: ["isAttackedByRange:inContext:"],
+referencedClasses: []
+}),
+smalltalk.CWRangeStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByCavalry:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByCavalry:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWRangeStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: 1",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWRangeStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByRange:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(0));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByRange:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWRangeStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByRange: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: 0",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWRangeStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByTroop:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(-1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByTroop:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWRangeStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: -1",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWRangeStrategy);
+
 
 
 smalltalk.addClass('CWTroopStrategy', smalltalk.CWMonsterTypeStrategy, [], 'Easnoth-Monsters');
@@ -260,6 +469,78 @@ return "troop";
 args: [],
 source: "key\x0a\x09^ 'troop'",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWTroopStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:attackNeighbour:inContext:",
+category: 'type strategy API',
+fn: function (aTroop,anotherMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(anotherMonster)._isAttackedByTroop_inContext_(aTroop,gameContext);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:attackNeighbour:inContext:",{aTroop:aTroop,anotherMonster:anotherMonster,gameContext:gameContext},smalltalk.CWTroopStrategy)})},
+args: ["aTroop", "anotherMonster", "gameContext"],
+source: "monster: aTroop attackNeighbour: anotherMonster inContext: gameContext\x0a\x09^ anotherMonster isAttackedByTroop: aTroop inContext: gameContext",
+messageSends: ["isAttackedByTroop:inContext:"],
+referencedClasses: []
+}),
+smalltalk.CWTroopStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByCavalry:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(-1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByCavalry:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWTroopStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: -1",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWTroopStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByRange:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(1));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByRange:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWTroopStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByRange: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: 1",
+messageSends: ["attack:inContext:bonus:"],
+referencedClasses: []
+}),
+smalltalk.CWTroopStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "monster:isAttackedByTroop:inContext:",
+category: 'type strategy API',
+fn: function (targetMonster,aMonster,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aMonster)._attack_inContext_bonus_(targetMonster,gameContext,(0));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"monster:isAttackedByTroop:inContext:",{targetMonster:targetMonster,aMonster:aMonster,gameContext:gameContext},smalltalk.CWTroopStrategy)})},
+args: ["targetMonster", "aMonster", "gameContext"],
+source: "monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext\x0a\x09^ aMonster attack: targetMonster inContext: gameContext bonus: 0",
+messageSends: ["attack:inContext:bonus:"],
 referencedClasses: []
 }),
 smalltalk.CWTroopStrategy);
