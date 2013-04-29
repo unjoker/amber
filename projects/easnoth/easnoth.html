@@ -1,23 +1,23 @@
-<!DOCTYPE html>
-<html>
+	<!DOCTYPE html> 
+	<html>
 	<head>
 		<meta charset="UTF-8">
-            <link rel="stylesheet" type="text/css" href="css/mainstyle.css">
-                <script src="js/style.js" type="text/javascript"></script>
-                <script src="../../js/amber.js" type="text/javascript"></script>
-                <script type="text/javascript">
-                    
-                    loadAmber({
-                              files: ['Easnoth-States','Easnoth-BusinessObjects.js', 'Easnoth-Visitors.js', 'Easnoth-Announcements.js', 'Easnoth-StartMenu.js', 'Easnoth-Menu.js', 'Easnoth-Game.js'],
-                              prefix: 'projects/easnoth/js',
-                              ready: function() {smalltalk.CWStartMenu._start()},
-                                                                                 deploy: true});
-                    </script>
-                <title>Easnoth : Battle Arena</title>
-                </head>
-	<body class="editor"onload="adjust();">
-        <canvas id="background" width="1366" height="768">
-            Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
+		<link rel="stylesheet" type="text/css" href="css/mainstyle.css">
+		<script src="js/style.js" type="text/javascript"></script>
+		<script src="../../js/amber.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			loadAmber({
+			files: ['Easnoth-States','Easnoth-BusinessObjects.js', 'Easnoth-Visitors.js', 'Easnoth-Announcements.js', 'Easnoth-StartMenu.js', 'Easnoth-Menu.js', 'Easnoth-Game.js', 'Easnoth-Monsters'],
+			prefix: 'projects/easnoth/js',
+            ready: function() {smalltalk.CWStartMenu._start()},
+			deploy: true});
+		</script>
+		<title>Easnoth : Battle Arena</title>
+	</head>
+	<body class="editor"onload="adjust();"> 
+        <canvas id="background" width="1366" height="768"> 
+               Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
         </canvas>
         <canvas id="game" class="layer" width="1366" height="768">
             Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
@@ -30,5 +30,5 @@
         </canvas>
 		<div class="menuEditor" id="menuEditor">
 		</div>
-    </body>
+</body>
 </html>

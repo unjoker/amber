@@ -527,6 +527,7 @@ checkForNextTurn: monster
 executeAttack
 	| relatedTargetCell duration |
 	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.
+	relatedTargetCell ifNil: [ "case where the ennemy is neighbour and no free cells around" relatedTargetCell := monsterToPlay parent ].
 	duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.
 	cellToTarget mouseClick: self gameContext. 
 	[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.
