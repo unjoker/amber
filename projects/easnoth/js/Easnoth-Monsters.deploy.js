@@ -47,6 +47,17 @@ smalltalk.CWMonsterStrategy);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isHeros",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWMonsterStrategy)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWMonsterStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "key",
 fn: function (){
 var self=this;
@@ -82,6 +93,17 @@ var $1;
 $1=(2);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"defaultHP",{},smalltalk.CWHerosStrategy)})},
+messageSends: []}),
+smalltalk.CWHerosStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isHeros",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWHerosStrategy)})},
 messageSends: []}),
 smalltalk.CWHerosStrategy);
 
@@ -127,6 +149,17 @@ smalltalk.CWUnitStrategy);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isHeros",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWUnitStrategy)})},
+messageSends: []}),
+smalltalk.CWUnitStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "key",
 fn: function (){
 var self=this;
@@ -139,6 +172,17 @@ smalltalk.CWUnitStrategy);
 
 
 smalltalk.addClass('CWMonsterTypeStrategy', smalltalk.CWStrategy, [], 'Easnoth-Monsters');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRanged",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isRanged",{},smalltalk.CWMonsterTypeStrategy)})},
+messageSends: []}),
+smalltalk.CWMonsterTypeStrategy);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "key",
@@ -263,6 +307,17 @@ smalltalk.CWCavalryStrategy);
 
 
 smalltalk.addClass('CWRangeStrategy', smalltalk.CWMonsterTypeStrategy, [], 'Easnoth-Monsters');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRanged",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isRanged",{},smalltalk.CWRangeStrategy)})},
+messageSends: []}),
+smalltalk.CWRangeStrategy);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "key",

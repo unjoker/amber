@@ -201,14 +201,12 @@ fn: function (){
 var self=this;
 function $CWMonsterWatcher(){return smalltalk.CWMonsterWatcher||(typeof CWMonsterWatcher=="undefined"?nil:CWMonsterWatcher)}
 function $CWDices(){return smalltalk.CWDices||(typeof CWDices=="undefined"?nil:CWDices)}
-function $CWTileWatcher(){return smalltalk.CWTileWatcher||(typeof CWTileWatcher=="undefined"?nil:CWTileWatcher)}
 function $CWMapControls(){return smalltalk.CWMapControls||(typeof CWMapControls=="undefined"?nil:CWMapControls)}
 function $CWTurnWatcher(){return smalltalk.CWTurnWatcher||(typeof CWTurnWatcher=="undefined"?nil:CWTurnWatcher)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenu.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._addComponent_($CWMonsterWatcher());
 _st(self)._addComponent_($CWDices());
-_st(self)._addComponent_($CWTileWatcher());
 _st(self)._addComponent_($CWMapControls());
 _st(self)._addComponent_($CWTurnWatcher());
 _st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
@@ -375,19 +373,60 @@ smalltalk.CWDices);
 smalltalk.addClass('CWMapControls', smalltalk.CWActionMenuComponent, [], 'Easnoth-Menu');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "go:",
+fn: function (direction){
+var self=this;
+function $CWMapMoveEvent(){return smalltalk.CWMapMoveEvent||(typeof CWMapMoveEvent=="undefined"?nil:CWMapMoveEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st(_st($CWMapMoveEvent())._new())._directionMethod_(direction));
+return self}, function($ctx1) {$ctx1.fill(self,"go:",{direction:direction},smalltalk.CWMapControls)})},
+messageSends: ["announce:", "directionMethod:", "new"]}),
+smalltalk.CWMapControls);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 _st($1)._width_((500));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._h4())._with_("map controls");
+$3=_st(html)._button();
+_st($3)._with_("left");
+$4=_st($3)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("left");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$4;
+$5=_st(html)._button();
+_st($5)._with_("right");
+$6=_st($5)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("right");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$6;
+$7=_st(html)._button();
+_st($7)._with_("down");
+$8=_st($7)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("down");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$8;
+$9=_st(html)._button();
+_st($9)._with_("up");
+$10=_st($9)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("up");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
-messageSends: ["class:", "div", "width:", "with:"]}),
+messageSends: ["class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:"]}),
 smalltalk.CWMapControls);
 
 
@@ -511,9 +550,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"watchMonster:",{aMonster:aMonste
 messageSends: ["ifFalse:", "update", "="]}),
 smalltalk.CWMonsterWatcher);
 
-
-
-smalltalk.addClass('CWTileWatcher', smalltalk.CWActionMenuComponent, ['tile', 'box'], 'Easnoth-Menu');
 
 
 smalltalk.addClass('CWTurnWatcher', smalltalk.CWActionMenuComponent, ['box'], 'Easnoth-Menu');
@@ -672,6 +708,17 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._animate_callBack_(_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background","url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0"),cb);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:callback:",{html:html,cb:cb},smalltalk.CWDice)})},
 messageSends: ["animate:callBack:", "css:put:", "asJQuery", "img:", "backgroundPictureUrl"]}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsiblity();
+return self}, function($ctx1) {$ctx1.fill(self,"url",{},smalltalk.CWDice)})},
+messageSends: ["subclassResponsiblity"]}),
 smalltalk.CWDice);
 
 

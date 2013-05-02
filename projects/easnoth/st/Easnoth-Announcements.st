@@ -27,6 +27,20 @@ CWBootstrapEvent subclass: #CWWaitForObject
 !CWWaitForObject commentStamp!
 Triggered when an asynchronous request is sent to get a JSON or an image!
 
+CWEasnothAnnouncement subclass: #CWMapMoveEvent
+	instanceVariableNames: 'directionMethod'
+	package: 'Easnoth-Announcements'!
+
+!CWMapMoveEvent methodsFor: 'accessing'!
+
+directionMethod
+	^ directionMethod
+!
+
+directionMethod: aMethod
+	directionMethod := aMethod
+! !
+
 CWEasnothAnnouncement subclass: #CWMenuUpdateEvent
 	instanceVariableNames: ''
 	package: 'Easnoth-Announcements'!

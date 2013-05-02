@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-StartMenu');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar'], 'Easnoth-StartMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announcer",
@@ -19,11 +19,13 @@ smalltalk.method({
 selector: "bootstrap:",
 fn: function (gameSettings){
 var self=this;
+function $CWLoadingBar(){return smalltalk.CWLoadingBar||(typeof CWLoadingBar=="undefined"?nil:CWLoadingBar)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
+self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("body")._asJQuery());
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
-messageSends: ["initializeWithSettings:", "new"]}),
+messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -31,15 +33,14 @@ smalltalk.method({
 selector: "checkIfReady",
 fn: function (){
 var self=this;
-function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@objectToLoad"]).__eq(self["@objectLoaded"]);
 if(smalltalk.assert($1)){
-_st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
+_st(self)._startGame();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"checkIfReady",{},smalltalk.CWBootstrapper)})},
-messageSends: ["ifTrue:", "announce:", "new", "announcer", "="]}),
+messageSends: ["ifTrue:", "startGame", "="]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -114,6 +115,19 @@ return _st($CWGameOverTile())._newImageFrom_(key);
 _st($CWBackground())._newImageFrom_("back");
 return self}, function($ctx1) {$ctx1.fill(self,"preloadImages",{},smalltalk.CWBootstrapper)})},
 messageSends: ["do:", "newImageFrom:", "imagesToPreload"]}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startGame",
+fn: function (){
+var self=this;
+function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@loadingBar"])._hide();
+_st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWBootstrapper)})},
+messageSends: ["hide", "announce:", "new", "announcer"]}),
 smalltalk.CWBootstrapper);
 
 
@@ -212,6 +226,35 @@ _st(aStream)._nextPutAll_(")");
 return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWGameSettings)})},
 messageSends: ["nextPutAll:", "printString", "do:", "printOn:"]}),
 smalltalk.CWGameSettings);
+
+
+
+smalltalk.addClass('CWLoadingBar', smalltalk.Widget, ['box'], 'Easnoth-StartMenu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hide",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@box"])._hidden();
+return self}, function($ctx1) {$ctx1.fill(self,"hide",{},smalltalk.CWLoadingBar)})},
+messageSends: ["hidden"]}),
+smalltalk.CWLoadingBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._img();
+_st($1)._class_("loadBar");
+$2=_st($1)._src_("ressources/images/loading.png");
+self["@box"]=$2;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWLoadingBar)})},
+messageSends: ["class:", "img", "src:"]}),
+smalltalk.CWLoadingBar);
 
 
 

@@ -945,6 +945,7 @@ var self=this;
 var toMoveCell;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st(_st(aMonster)._root())._removeSelection();
 $1=_st(_st(aMonster)._selectAttackableCells())._includes_(aCell);
 if(smalltalk.assert($1)){
 _st(aMonster)._attackNeighbour_inContext_(_st(aCell)._monster(),gameContext);
@@ -958,8 +959,8 @@ return _st(aMonster)._attackTo_inContext_(aCell,gameContext);
 };
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
 args: ["aMonster", "aCell", "gameContext"],
-source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09\x22Need to fix it for range attack\x22\x0a\x09(aMonster selectAttackableCells includes: aCell ) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext ] ] \x0a\x09\x09ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]",
-messageSends: ["ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attackNeighbour:inContext:", "monster", "includes:", "selectAttackableCells"],
+source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09aMonster root removeSelection. \x22This reinitialize prevCell for selectAttackableCells calcul\x22\x0a\x09(aMonster selectAttackableCells includes: aCell ) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext ] ] \x0a\x09\x09ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]",
+messageSends: ["removeSelection", "root", "ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attackNeighbour:inContext:", "monster", "includes:", "selectAttackableCells"],
 referencedClasses: []
 }),
 smalltalk.CWActive);

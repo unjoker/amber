@@ -1,5 +1,124 @@
 smalltalk.addPackage('Easnoth-Game');
-smalltalk.addClass('CWEventDispatcher', smalltalk.Object, ['canvas', 'map', 'padding', 'game'], 'Easnoth-Game');
+smalltalk.addClass('CWAssociationList', smalltalk.Array, [], 'Easnoth-Game');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "collect:",
+category: 'collection protocol',
+fn: function (aBlock){
+var self=this;
+var res;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+res=_st($Array())._new();
+_st(self)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(res)._add_(_st(aBlock)._value_(each));
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+$1=res;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"collect:",{aBlock:aBlock,res:res},smalltalk.CWAssociationList)})},
+args: ["aBlock"],
+source: "collect: aBlock\x0a\x09| res |\x0a\x09res := Array new.\x0a\x09self do: [ :each |\x0a\x09\x09res add: (aBlock value: each) ].\x0a\x09^ res",
+messageSends: ["new", "do:", "add:", "value:"],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWAssociationList);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "keyAtValue:",
+category: 'collection protocol',
+fn: function (aValue){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+var $early={};
+try {
+_st(self)._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(_st(each)._value()).__eq(aValue);
+if(smalltalk.assert($1)){
+$2=_st(each)._key();
+throw $early=[$2];
+};
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}
+catch(e) {if(e===$early)return e[0]; throw e}
+}, function($ctx1) {$ctx1.fill(self,"keyAtValue:",{aValue:aValue},smalltalk.CWAssociationList)})},
+args: ["aValue"],
+source: "keyAtValue: aValue\x0a\x09self do: [ :each |\x0a\x09\x09each value = aValue ifTrue: [ ^ each key ] ]",
+messageSends: ["do:", "ifTrue:", "key", "=", "value"],
+referencedClasses: []
+}),
+smalltalk.CWAssociationList);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "keys",
+category: 'collection protocol',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._collect_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._key();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"keys",{},smalltalk.CWAssociationList)})},
+args: [],
+source: "keys\x0a\x09^ self collect: [ :each | each key ]",
+messageSends: ["collect:", "key"],
+referencedClasses: []
+}),
+smalltalk.CWAssociationList);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "keysAndValuesDo:",
+category: 'collection protocol',
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._do_((function(assoc){
+return smalltalk.withContext(function($ctx2) {
+return _st(aBlock)._value_value_(_st(assoc)._key(),_st(assoc)._value());
+}, function($ctx2) {$ctx2.fillBlock({assoc:assoc},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"keysAndValuesDo:",{aBlock:aBlock},smalltalk.CWAssociationList)})},
+args: ["aBlock"],
+source: "keysAndValuesDo: aBlock\x0a\x09^ self do: [ :assoc | \x0a\x09\x09aBlock value: assoc key value: assoc value ]",
+messageSends: ["do:", "value:value:", "key", "value"],
+referencedClasses: []
+}),
+smalltalk.CWAssociationList);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "values",
+category: 'collection protocol',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._collect_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._value();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"values",{},smalltalk.CWAssociationList)})},
+args: [],
+source: "values\x0a\x09^ self collect: [ :each | each value ]",
+messageSends: ["collect:", "value"],
+referencedClasses: []
+}),
+smalltalk.CWAssociationList);
+
+
+
+smalltalk.addClass('CWEventDispatcher', smalltalk.Object, ['canvas', 'map', 'drawer', 'game', 'suspended'], 'Easnoth-Game');
 smalltalk.CWEventDispatcher.comment="I dispatch event from eventManager canvas to cells. "
 smalltalk.addMethod(
 smalltalk.method({
@@ -100,7 +219,7 @@ return nil;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"currentCell:",{anEvent:anEvent,x:x,y:y,cood:cood},smalltalk.CWEventDispatcher)})},
 args: ["anEvent"],
-source: "currentCell: anEvent\x0a\x09|x y cood|\x0a\x09\x0a        x := anEvent pageX - self canvas element offsetLeft.\x0a        y := anEvent pageY - self canvas element offsetTop.\x0a\x0a        cood := self mouseCoodToHexCoodX: x y: y.\x0a\x09\x0a\x09\x22if out of map then nil\x22\x0a\x09^ self cellAt: cood x y: cood y ifAbsent: [ nil ]",
+source: "currentCell: anEvent\x0a\x09|x y cood|\x0a\x09\x0a     x := anEvent pageX - self canvas element offsetLeft.\x0a     y := anEvent pageY - self canvas element offsetTop.\x0a\x0a     cood := self mouseCoodToHexCoodX: x y: y.\x0a\x09\x0a\x09\x22if out of map then nil\x22\x0a\x09^ self cellAt: cood x y: cood y ifAbsent: [ nil ]",
 messageSends: ["-", "offsetLeft", "element", "canvas", "pageX", "offsetTop", "pageY", "mouseCoodToHexCoodX:y:", "cellAt:y:ifAbsent:", "x", "y"],
 referencedClasses: []
 }),
@@ -114,18 +233,22 @@ fn: function (event){
 var self=this;
 var cc;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
+$1=self["@suspended"];
+if(! smalltalk.assert($1)){
 cc=_st(self)._currentCell_(event);
-$1=cc;
-if(($receiver = $1) == nil || $receiver == undefined){
-$1;
+cc;
+$2=cc;
+if(($receiver = $2) == nil || $receiver == undefined){
+$2;
 } else {
 _st(cc)._mouseClick_(_st(self["@game"])._gameContext());
 };
+};
 return self}, function($ctx1) {$ctx1.fill(self,"dispatchMouseClick:",{event:event,cc:cc},smalltalk.CWEventDispatcher)})},
 args: ["event"],
-source: "dispatchMouseClick: event\x0a\x09| cc |\x0a\x09cc := self currentCell: event.\x0a\x09cc ifNotNil: [ \x0a\x09\x09cc mouseClick: game gameContext ].",
-messageSends: ["currentCell:", "ifNotNil:", "mouseClick:", "gameContext"],
+source: "dispatchMouseClick: event\x0a\x09| cc |\x0a\x09suspended ifFalse: [\x0a\x09\x09cc := self currentCell: event.\x0a\x09\x09cc ifNotNil: [ \x0a\x09\x09\x09cc mouseClick: game gameContext ] ]",
+messageSends: ["ifFalse:", "currentCell:", "ifNotNil:", "mouseClick:", "gameContext"],
 referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
@@ -156,10 +279,11 @@ function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefin
 function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?nil:TagBrush)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+self["@suspended"]=false;
 self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).",
+source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).",
 messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"],
 referencedClasses: ["HTMLCanvas", "TagBrush"]
 }),
@@ -193,12 +317,12 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@game"]=aGame;
 self["@map"]=aMap;
-self["@padding"]=_st(_st(aMap)._drawer())._padding();
+self["@drawer"]=_st(aMap)._drawer();
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:game:",{aMap:aMap,aGame:aGame},smalltalk.CWEventDispatcher)})},
 args: ["aMap", "aGame"],
-source: "initializeForMap: aMap game: aGame\x0a\x09game := aGame.\x0a\x09map := aMap.\x0a\x09padding := aMap drawer padding.\x0a\x09self initializeEventHandling.",
-messageSends: ["padding", "drawer", "initializeEventHandling"],
+source: "initializeForMap: aMap game: aGame\x0a\x09game := aGame.\x0a\x09map := aMap.\x0a\x09drawer := aMap drawer.\x0a\x09self initializeEventHandling.",
+messageSends: ["drawer", "initializeEventHandling"],
 referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
@@ -212,8 +336,8 @@ var self=this;
 var xHex,yHex,array,mapDisplayX,mapDisplayY;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-mapDisplayX=_st(self["@padding"])._x();
-mapDisplayY=_st(self["@padding"])._y();
+mapDisplayX=_st(_st(self)._padding())._x();
+mapDisplayY=_st(_st(self)._padding())._y();
 array=_st(self)._mouseCoodToHexCoodX_y_mapX_mapY_(x,y,mapDisplayX,mapDisplayY);
 xHex=_st(array)._at_((1));
 yHex=_st(array)._at_((2));
@@ -221,8 +345,8 @@ $1=_st(xHex).__at(yHex);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"mouseCoodToHexCoodX:y:",{x:x,y:y,xHex:xHex,yHex:yHex,array:array,mapDisplayX:mapDisplayX,mapDisplayY:mapDisplayY},smalltalk.CWEventDispatcher)})},
 args: ["x", "y"],
-source: "mouseCoodToHexCoodX: x y: y\x0a\x09\x22function that take mouse cood in pixel and return the coods of the tile selected\x22\x0a\x09\x0a\x09\x22algo is in javascript\x22\x0a\x0a\x09| xHex yHex array mapDisplayX mapDisplayY|\x0a                \x0a\x09mapDisplayX := padding x.\x0a\x09mapDisplayY := padding y.\x0a\x0a\x09array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.\x0a    \x0a    xHex := array at: 1.\x0a    yHex := array at: 2.\x0a    \x0a\x09^xHex @ yHex.",
-messageSends: ["x", "y", "mouseCoodToHexCoodX:y:mapX:mapY:", "at:", "@"],
+source: "mouseCoodToHexCoodX: x y: y\x0a\x09\x22function that take mouse cood in pixel and return the coods of the tile selected\x22\x0a\x09\x0a\x09\x22algo is in javascript\x22\x0a\x0a\x09| xHex yHex array mapDisplayX mapDisplayY|\x0a                \x0a\x09mapDisplayX := self padding x.\x0a\x09mapDisplayY := self padding y.\x0a\x0a\x09array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.\x0a    \x0a    xHex := array at: 1.\x0a    yHex := array at: 2.\x0a    \x0a\x09^xHex @ yHex.",
+messageSends: ["x", "padding", "y", "mouseCoodToHexCoodX:y:mapX:mapY:", "at:", "@"],
 referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
@@ -293,6 +417,40 @@ smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "padding",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@drawer"])._padding();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"padding",{},smalltalk.CWEventDispatcher)})},
+args: [],
+source: "padding\x0a\x09^ drawer padding",
+messageSends: ["padding"],
+referencedClasses: []
+}),
+smalltalk.CWEventDispatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "resume",
+category: 'suspending',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@suspended"]=false;
+return self}, function($ctx1) {$ctx1.fill(self,"resume",{},smalltalk.CWEventDispatcher)})},
+args: [],
+source: "resume\x0a\x09suspended := false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWEventDispatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "rowAt:",
 category: 'accessing',
 fn: function (index){
@@ -309,9 +467,22 @@ referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "suspend",
+category: 'suspending',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@suspended"]=true;
+return self}, function($ctx1) {$ctx1.fill(self,"suspend",{},smalltalk.CWEventDispatcher)})},
+args: [],
+source: "suspend\x0a\x09suspended := true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWEventDispatcher);
 
-
-smalltalk.addClass('CWExtendedCell', smalltalk.Object, ['cell', 'prevCell'], 'Easnoth-Game');
 
 
 smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context', 'playerPool'], 'Easnoth-Game');
@@ -437,6 +608,25 @@ args: [],
 source: "initialize\x0a\x09super initialize.\x0a\x09CWFightMenu new.\x0a\x09context := CWGameContext new.",
 messageSends: ["initialize", "new"],
 referencedClasses: ["CWFightMenu", "CWGameContext"]
+}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeAI:",
+category: 'initialize-release',
+fn: function (eventDispatcher){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@playerPool"])._do_((function(player){
+return smalltalk.withContext(function($ctx2) {
+return _st(player)._eventDispatcher_(eventDispatcher);
+}, function($ctx2) {$ctx2.fillBlock({player:player},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializeAI:",{eventDispatcher:eventDispatcher},smalltalk.CWGame)})},
+args: ["eventDispatcher"],
+source: "initializeAI: eventDispatcher\x0a\x09playerPool do: [ :player |\x0a\x09\x09player eventDispatcher: eventDispatcher ]",
+messageSends: ["do:", "eventDispatcher:"],
+referencedClasses: []
 }),
 smalltalk.CWGame);
 
@@ -577,17 +767,19 @@ selector: "startGame",
 category: 'initialize-release',
 fn: function (){
 var self=this;
+var eventDispatcher;
 function $CWEventDispatcher(){return smalltalk.CWEventDispatcher||(typeof CWEventDispatcher=="undefined"?nil:CWEventDispatcher)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._initializePlayerMonsters();
 _st(self["@map"])._initializeDrawer();
-_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
+eventDispatcher=_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
+_st(self)._initializeAI_(eventDispatcher);
 _st(self["@map"])._updateMap();
 _st(self)._firstTurn();
-return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWGame)})},
+return self}, function($ctx1) {$ctx1.fill(self,"startGame",{eventDispatcher:eventDispatcher},smalltalk.CWGame)})},
 args: [],
-source: "startGame\x0a\x09self initializePlayerMonsters.\x0a\x09map initializeDrawer.\x0a\x09CWEventDispatcher new initializeForMap: map game: self.\x0a\x09map updateMap.\x0a\x09self firstTurn.",
-messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "updateMap", "firstTurn"],
+source: "startGame\x0a\x09| eventDispatcher |\x0a\x09self initializePlayerMonsters.\x0a\x09map initializeDrawer.\x0a\x09eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.\x0a\x09self initializeAI: eventDispatcher.\x0a\x09map updateMap.\x0a\x09self firstTurn.",
+messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "firstTurn"],
 referencedClasses: ["CWEventDispatcher"]
 }),
 smalltalk.CWGame);
@@ -719,35 +911,101 @@ smalltalk.CWGameContext);
 
 
 
-smalltalk.addClass('CWPathFinder', smalltalk.Object, ['studiedList', 'listToStudy'], 'Easnoth-Game');
+smalltalk.addClass('CWPathFinder', smalltalk.Object, ['studiedList', 'listToStudy', 'cellLast', 'result'], 'Easnoth-Game');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "iterate",
+category: 'private',
+fn: function (){
+var self=this;
+var tempArray;
+function $CWAssociationList(){return smalltalk.CWAssociationList||(typeof CWAssociationList=="undefined"?nil:CWAssociationList)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3;
+var $early={};
+try {
+tempArray=_st($CWAssociationList())._new();
+_st(self["@listToStudy"])._keysAndValuesDo_((function(key,value){
+return smalltalk.withContext(function($ctx2) {
+_st(self["@studiedList"])._add_(_st(key).__minus_gt(value));
+return _st(_st(value)._freeNeighbours())._do_((function(each){
+return smalltalk.withContext(function($ctx3) {
+$1=_st(_st(self["@studiedList"])._values())._includes_(each);
+if(! smalltalk.assert($1)){
+_st(tempArray)._add_(_st(value).__minus_gt(each));
+$2=_st(each).__eq(self["@cellLast"]);
+if(smalltalk.assert($2)){
+_st(self["@studiedList"])._add_(_st(value).__minus_gt(each));
+$3=_st(self)._pathAnswer();
+throw $early=[$3];
+};
+};
+}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1)})}));
+self["@listToStudy"]=tempArray;
+return self}
+catch(e) {if(e===$early)return e[0]; throw e}
+}, function($ctx1) {$ctx1.fill(self,"iterate",{tempArray:tempArray},smalltalk.CWPathFinder)})},
+args: [],
+source: "iterate\x0a\x09\x22Calculs path for toStudyList cells and set the correct value to it\x22\x0a\x0a\x09| tempArray |\x0a\x0a\x09tempArray := CWAssociationList new.\x0a\x09listToStudy keysAndValuesDo: [ :key :value |\x0a\x09\x09studiedList add: (key -> value).\x0a\x09\x09value freeNeighbours do: [ :each |\x0a\x09\x09\x09(studiedList values includes: each) ifFalse: [ \x0a\x09\x09\x09\x09tempArray add: (value -> each).\x0a\x09\x09\x09\x09each = cellLast ifTrue: [ \x0a\x09\x09\x09\x09\x09studiedList add: (value -> each).\x0a\x09\x09\x09\x09\x09^ self pathAnswer ] ] ] ].\x0a\x09\x09 \x0a\x09listToStudy := tempArray.",
+messageSends: ["new", "keysAndValuesDo:", "add:", "->", "do:", "ifFalse:", "ifTrue:", "pathAnswer", "=", "includes:", "values", "freeNeighbours"],
+referencedClasses: ["CWAssociationList"]
+}),
+smalltalk.CWPathFinder);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "pathAnswer",
+category: 'private',
+fn: function (){
+var self=this;
+var currentCell;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+self["@result"]=_st($Array())._new();
+currentCell=self["@cellLast"];
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(currentCell)._isNil();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileFalse_((function(){
+return smalltalk.withContext(function($ctx2) {
+_st(self["@result"])._add_(currentCell);
+currentCell=_st(self["@studiedList"])._keyAtValue_(currentCell);
+return currentCell;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"pathAnswer",{currentCell:currentCell},smalltalk.CWPathFinder)})},
+args: [],
+source: "pathAnswer\x0a\x09| currentCell |\x0a\x09result := Array new.\x0a\x09currentCell := cellLast.\x0a\x09[ currentCell isNil ] whileFalse: [ \x0a\x09\x09result add: currentCell.\x0a\x09\x09currentCell := studiedList keyAtValue: currentCell ].",
+messageSends: ["new", "whileFalse:", "add:", "keyAtValue:", "isNil"],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWPathFinder);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "pathFrom:to:",
 category: 'pathfinding',
 fn: function (cellStart,cellEnd){
 var self=this;
-var path,tempArray;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 _st(self)._resetList();
-_st(self["@listToStudy"])._add_(cellStart);
-tempArray=_st($Array())._new();
-_st(self["@listToStudy"])._do_((function(cell){
+self["@cellLast"]=cellEnd;
+_st(self["@listToStudy"])._add_(_st(nil).__minus_gt(cellStart));
+_st((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(cell)._neighbours())._do_((function(each){
-return smalltalk.withContext(function($ctx3) {
-$1=_st(_st(self["@studiedList"])._values())._includes_(each);
-if(! smalltalk.assert($1)){
-return _st(tempArray)._add_(each);
-};
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({cell:cell},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"pathFrom:to:",{cellStart:cellStart,cellEnd:cellEnd,path:path,tempArray:tempArray},smalltalk.CWPathFinder)})},
+return _st(self["@result"])._isNil();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._whileTrue_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._iterate();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$1=self["@result"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"pathFrom:to:",{cellStart:cellStart,cellEnd:cellEnd},smalltalk.CWPathFinder)})},
 args: ["cellStart", "cellEnd"],
-source: "pathFrom: cellStart to: cellEnd\x0a\x09\x22Answers the shortest path from the current cell to the cell clicked\x22\x0a\x0a\x09| path tempArray |\x0a\x09self resetList.\x0a\x09listToStudy add: cellStart.\x0a\x09tempArray := Array new.\x0a\x09listToStudy do: [ :cell |\x0a\x09\x09cell neighbours do: [ :each |\x0a\x09\x09\x09(studiedList values includes: each) ifFalse: [ tempArray add: each ] ] ]\x0a\x09\x22freeNeighbours.\x0a\x09path := Array with: cellLast.\x0a\x09[ self = path last ] whileFalse: [ path add: path last prevCell ].\x0a\x09^ path\x22",
-messageSends: ["resetList", "add:", "new", "do:", "ifFalse:", "includes:", "values", "neighbours"],
-referencedClasses: ["Array"]
+source: "pathFrom: cellStart to: cellEnd\x0a\x09\x22Answers the shortest path from the current cell to the cell clicked\x22\x0a\x0a\x09self resetList.\x0a\x09cellLast := cellEnd.\x0a\x09listToStudy add: (nil -> cellStart).\x0a\x09[ result isNil ] whileTrue: [ self iterate ].\x0a\x09\x0a\x09^ result",
+messageSends: ["resetList", "add:", "->", "whileTrue:", "iterate", "isNil"],
+referencedClasses: []
 }),
 smalltalk.CWPathFinder);
 
@@ -757,33 +1015,34 @@ selector: "resetList",
 category: 'private',
 fn: function (){
 var self=this;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $CWAssociationList(){return smalltalk.CWAssociationList||(typeof CWAssociationList=="undefined"?nil:CWAssociationList)}
 return smalltalk.withContext(function($ctx1) { 
-self["@studiedList"]=_st($Set())._new();
-self["@listToStudy"]=_st($Set())._new();
+self["@studiedList"]=_st($CWAssociationList())._new();
+self["@listToStudy"]=_st($CWAssociationList())._new();
+self["@result"]=nil;
 return self}, function($ctx1) {$ctx1.fill(self,"resetList",{},smalltalk.CWPathFinder)})},
 args: [],
-source: "resetList\x0a\x09studiedList := Set new.\x0a\x09listToStudy := Set new.",
+source: "resetList\x0a\x09studiedList := CWAssociationList new.\x0a\x09listToStudy := CWAssociationList new.\x0a\x09result := nil.",
 messageSends: ["new"],
-referencedClasses: ["Set"]
+referencedClasses: ["CWAssociationList"]
 }),
 smalltalk.CWPathFinder);
+
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "selectableTilesFor:",
-category: 'selection',
-fn: function (aMonster){
+selector: "bench",
+category: 'not yet classified',
+fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"selectableTilesFor:",{aMonster:aMonster},smalltalk.CWPathFinder)})},
-args: ["aMonster"],
-source: "selectableTilesFor: aMonster",
+return self}, function($ctx1) {$ctx1.fill(self,"bench",{},smalltalk.CWPathFinder.klass)})},
+args: [],
+source: "bench\x0a\x09\x22[ CWPathFinder new pathFrom: ((self childAt: 9) childAt: 5) to: ((self childAt: 1) childAt: 5) ] timeToRun  1430 .\x0a\x09[ ((self childAt: 9) childAt: 5) movableNeighboursCycle: 10.\x0a\x09((self childAt: 9) childAt: 5) pathTo: ((self childAt: 1) childAt: 5) ] timeToRun 8 \x22",
 messageSends: [],
 referencedClasses: []
 }),
-smalltalk.CWPathFinder);
-
+smalltalk.CWPathFinder.klass);
 
 
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-Game');
@@ -912,15 +1171,15 @@ return smalltalk.withContext(function($ctx1) {
 monsters=_st($Array())._new();
 _st(monsters)._at_put_((1),_st(self)._newTroop_(_st(data)._troop()));
 _st(monsters)._at_put_((2),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
-_st(monsters)._at_put_((3),_st(self)._newRange_(_st(data)._troop()));
+_st(monsters)._at_put_((3),_st(self)._newRange_(_st(data)._range()));
 _st(monsters)._at_put_((4),_st(self)._newCavalry_(_st(data)._cavalry()));
 _st(monsters)._at_put_((5),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()));
-_st(monsters)._at_put_((6),_st(self)._newRangeHeros_(_st(data)._troopHeros()));
+_st(monsters)._at_put_((6),_st(self)._newRangeHeros_(_st(data)._rangeHeros()));
 self["@team"]=monsters;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
 args: ["aMap", "data"],
-source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x09monsters at: 1 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 2 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 3 put: (self newRange: data troop).\x0a\x09\x09monsters at: 4 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09monsters at: 6 put: (self newRangeHeros: data troopHeros).\x0a\x09\x09team := monsters.",
-messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros", "newRangeHeros:"],
+source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x09monsters at: 1 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 2 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 3 put: (self newRange: data range).\x0a\x09\x09monsters at: 4 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09monsters at: 6 put: (self newRangeHeros: data rangeHeros).\x0a\x09\x09team := monsters.",
+messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros", "newRangeHeros:", "rangeHeros"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWPlayer);
@@ -1229,7 +1488,58 @@ smalltalk.CWPlayer);
 
 
 
-smalltalk.addClass('CWAI', smalltalk.CWPlayer, ['gameContext'], 'Easnoth-Game');
+smalltalk.addClass('CWAI', smalltalk.CWPlayer, ['gameContext', 'eventDispatcher'], 'Easnoth-Game');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "endTurn:",
+category: 'game logic',
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWPlayer.fn.prototype._endTurn_.apply(_st(self), [aMap]);
+_st(_st(self)._eventDispatcher())._resume();
+return self}, function($ctx1) {$ctx1.fill(self,"endTurn:",{aMap:aMap},smalltalk.CWAI)})},
+args: ["aMap"],
+source: "endTurn: aMap\x0a\x09super endTurn: aMap.\x0a\x09self eventDispatcher resume",
+messageSends: ["endTurn:", "resume", "eventDispatcher"],
+referencedClasses: []
+}),
+smalltalk.CWAI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "eventDispatcher",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@eventDispatcher"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"eventDispatcher",{},smalltalk.CWAI)})},
+args: [],
+source: "eventDispatcher\x0a\x09^ eventDispatcher",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWAI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "eventDispatcher:",
+category: 'accessing',
+fn: function (ev){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@eventDispatcher"]=ev;
+return self}, function($ctx1) {$ctx1.fill(self,"eventDispatcher:",{ev:ev},smalltalk.CWAI)})},
+args: ["ev"],
+source: "eventDispatcher: ev\x0a\x09eventDispatcher := ev",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWAI);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "gameContext",
@@ -1260,6 +1570,23 @@ return self}, function($ctx1) {$ctx1.fill(self,"gameContext:",{aCtx:aCtx},smallt
 args: ["aCtx"],
 source: "gameContext: aCtx\x0a\x09gameContext := aCtx",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWAI);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startTurn:",
+category: 'game logic',
+fn: function (aMap){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._eventDispatcher())._suspend();
+smalltalk.CWPlayer.fn.prototype._startTurn_.apply(_st(self), [aMap]);
+return self}, function($ctx1) {$ctx1.fill(self,"startTurn:",{aMap:aMap},smalltalk.CWAI)})},
+args: ["aMap"],
+source: "startTurn: aMap\x0a\x09self eventDispatcher suspend.\x0a\x09super startTurn: aMap",
+messageSends: ["suspend", "eventDispatcher", "startTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAI);
@@ -1344,6 +1671,8 @@ relatedTargetCell;
 $1;
 };
 duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
+_st(_st(self["@monsterToPlay"])._root())._removeSelection();
+_st(_st(self["@monsterToPlay"])._parent())._mouseClick_(_st(self)._gameContext());
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -1351,8 +1680,8 @@ return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
-messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
+source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09\x22hack\x22\x0a\x09monsterToPlay root removeSelection.\x0a\x09monsterToPlay parent mouseClick: self gameContext. \x0a\x09\x22end hack : to reset tracks and monsterselected tiles\x22\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
+messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "removeSelection", "root", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1508,6 +1837,21 @@ smalltalk.CWAggressWeakestAI);
 
 
 smalltalk.addClass('CWHuman', smalltalk.CWPlayer, [], 'Easnoth-Game');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "eventDispatcher:",
+category: 'accessing',
+fn: function (anObject){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"eventDispatcher:",{anObject:anObject},smalltalk.CWHuman)})},
+args: ["anObject"],
+source: "eventDispatcher: anObject\x0a\x09\x22not used for humans\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWHuman);
+
 
 
 smalltalk.addMethod(

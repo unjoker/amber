@@ -14,6 +14,33 @@ smalltalk.addClass('CWObjectLoaded', smalltalk.CWBootstrapEvent, [], 'Easnoth-An
 smalltalk.addClass('CWWaitForObject', smalltalk.CWBootstrapEvent, [], 'Easnoth-Announcements');
 
 
+smalltalk.addClass('CWMapMoveEvent', smalltalk.CWEasnothAnnouncement, ['directionMethod'], 'Easnoth-Announcements');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "directionMethod",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@directionMethod"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"directionMethod",{},smalltalk.CWMapMoveEvent)})},
+messageSends: []}),
+smalltalk.CWMapMoveEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "directionMethod:",
+fn: function (aMethod){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@directionMethod"]=aMethod;
+return self}, function($ctx1) {$ctx1.fill(self,"directionMethod:",{aMethod:aMethod},smalltalk.CWMapMoveEvent)})},
+messageSends: []}),
+smalltalk.CWMapMoveEvent);
+
+
+
 smalltalk.addClass('CWMenuUpdateEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
 
 

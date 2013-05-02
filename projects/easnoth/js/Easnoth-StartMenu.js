@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-StartMenu');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar'], 'Easnoth-StartMenu');
 smalltalk.CWBootstrapper.comment="Bootstrap the system. Currently work only for games, not for the map editor"
 smalltalk.addMethod(
 smalltalk.method({
@@ -26,14 +26,16 @@ selector: "bootstrap:",
 category: 'initialize-release',
 fn: function (gameSettings){
 var self=this;
+function $CWLoadingBar(){return smalltalk.CWLoadingBar||(typeof CWLoadingBar=="undefined"?nil:CWLoadingBar)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
+self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("body")._asJQuery());
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09\x22Transcript show: gameSettings; cr.\x22\x0a\x09CWGame new initializeWithSettings: gameSettings ",
-messageSends: ["initializeWithSettings:", "new"],
-referencedClasses: ["CWGame"]
+source: "bootstrap: gameSettings\x0a\x09\x22Transcript show: gameSettings; cr.\x22\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings ",
+messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"],
+referencedClasses: ["CWLoadingBar", "CWGame"]
 }),
 smalltalk.CWBootstrapper);
 
@@ -43,18 +45,17 @@ selector: "checkIfReady",
 category: 'events',
 fn: function (){
 var self=this;
-function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 $1=_st(self["@objectToLoad"]).__eq(self["@objectLoaded"]);
 if(smalltalk.assert($1)){
-_st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
+_st(self)._startGame();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"checkIfReady",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ self announcer announce: CWGameStart new]",
-messageSends: ["ifTrue:", "announce:", "new", "announcer", "="],
-referencedClasses: ["CWGameStart"]
+source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ self startGame ]",
+messageSends: ["ifTrue:", "startGame", "="],
+referencedClasses: []
 }),
 smalltalk.CWBootstrapper);
 
@@ -149,6 +150,24 @@ args: [],
 source: "preloadImages\x0a\x09self imagesToPreload do: [ :key |\x0a\x09\x09CWGameOverTile newImageFrom: key ].\x0a\x09CWBackground newImageFrom: 'back'.",
 messageSends: ["do:", "newImageFrom:", "imagesToPreload"],
 referencedClasses: ["CWGameOverTile", "CWBackground"]
+}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startGame",
+category: 'events',
+fn: function (){
+var self=this;
+function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@loadingBar"])._hide();
+_st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
+return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWBootstrapper)})},
+args: [],
+source: "startGame\x0a\x09loadingBar hide.\x0a\x09self announcer announce: CWGameStart new.",
+messageSends: ["hide", "announce:", "new", "announcer"],
+referencedClasses: ["CWGameStart"]
 }),
 smalltalk.CWBootstrapper);
 
@@ -284,6 +303,45 @@ messageSends: ["nextPutAll:", "printString", "do:", "printOn:"],
 referencedClasses: []
 }),
 smalltalk.CWGameSettings);
+
+
+
+smalltalk.addClass('CWLoadingBar', smalltalk.Widget, ['box'], 'Easnoth-StartMenu');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hide",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@box"])._hidden();
+return self}, function($ctx1) {$ctx1.fill(self,"hide",{},smalltalk.CWLoadingBar)})},
+args: [],
+source: "hide\x0a\x09box hidden",
+messageSends: ["hidden"],
+referencedClasses: []
+}),
+smalltalk.CWLoadingBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(html)._img();
+_st($1)._class_("loadBar");
+$2=_st($1)._src_("ressources/images/loading.png");
+self["@box"]=$2;
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWLoadingBar)})},
+args: ["html"],
+source: "renderOn: html\x0a\x09box := html img\x0a\x09\x09class: 'loadBar';\x0a\x09\x09src: 'ressources/images/loading.png'.",
+messageSends: ["class:", "img", "src:"],
+referencedClasses: []
+}),
+smalltalk.CWLoadingBar);
 
 
 

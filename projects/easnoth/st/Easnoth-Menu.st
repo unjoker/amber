@@ -102,7 +102,6 @@ initialize
 	super initialize.
 	self addComponent: CWMonsterWatcher.
 	self addComponent: CWDices.
-	self addComponent: CWTileWatcher.
 	self addComponent: CWMapControls.
 	self addComponent: CWTurnWatcher.
 	self appendToJQuery: self menuClass asJQuery.
@@ -192,6 +191,12 @@ CWActionMenuComponent subclass: #CWMapControls
 	instanceVariableNames: ''
 	package: 'Easnoth-Menu'!
 
+!CWMapControls methodsFor: 'actions'!
+
+go: direction
+	self announce: (CWMapMoveEvent new directionMethod: direction)
+! !
+
 !CWMapControls methodsFor: 'rendering'!
 
 renderOn: html
@@ -199,28 +204,20 @@ renderOn: html
 		class: 'mapWatcher';
 		width: 500;
 		with: [
-                "html h4
+                html h4
                         with: 'map controls'.
                 html button
                         with: 'left';
-                        onClick: [self actionMenu map goLeft].
+                        onClick: [self go: 'left'].
                 html button
                         with: 'right';
-                        onClick: [self actionMenu map goRight].
+                        onClick: [self go: 'right'].
                 html button
                         with: 'down';
-                        onClick: [self actionMenu map goDown].
+                        onClick: [self go: 'down'].
                 html button
                         with: 'up';
-                        onClick: [self actionMenu map goUp]."
-		"html span 
-			with: '-'.
-                html button
-                        with: 'mh';
-                        onClick: [self actionMenu map mirrorHorizontal].
-                html button
-                        with: 'vh';
-                        onClick: [self actionMenu map mirrorVertical]."
+                        onClick: [self go: 'up'].
 	].
 ! !
 
@@ -294,10 +291,6 @@ update
         ].
 ! !
 
-CWActionMenuComponent subclass: #CWTileWatcher
-	instanceVariableNames: 'tile box'
-	package: 'Easnoth-Menu'!
-
 CWActionMenuComponent subclass: #CWTurnWatcher
 	instanceVariableNames: 'box'
 	package: 'Easnoth-Menu'!
@@ -339,6 +332,10 @@ backgroundPictureUrl
 
 diceRepo
 	^ 'ressources/images/fight/'
+!
+
+url
+	self subclassResponsiblity
 ! !
 
 !CWDice methodsFor: 'rendering'!

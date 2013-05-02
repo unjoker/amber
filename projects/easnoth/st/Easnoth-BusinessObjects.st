@@ -251,36 +251,16 @@ attackableNeighboursFrom: side
 	^ attackableCells
 !
 
-cellToMoveBeforeAttack: cellLast
-	"Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.
-	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
-
-	| possibleCells closestCell shortestPath |
-	possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].
-	shortestPath := 9999.
-	possibleCells do: [ :each | 
-		| pathSize |
-		pathSize := (self pathTo: each) size.
-		pathSize < shortestPath 
-			ifTrue: [ 
-				shortestPath := pathSize.
-				closestCell := each ] ].
-	^ closestCell
-!
-
 freeNeighbours
-	^ self neighbours select: [ :each | each isFree ]
-!
-
-monstersNeighbours
-	^ self neighbours select: [ :each | each hasMonster ]
+	^ self neighbours select: [ :each |  each isFree.]
 !
 
 movableNeighbours
 	|movableCells|
 
-	movableCells := self neighbours select: [ :each | 
-			each isFree ].
+	movableCells := self freeNeighbours.
+	
+	"this add a track for pathfinding..."
 	movableCells do: [ :each |
 			each prevCell: self.
 			each addSelector].
@@ -304,16 +284,6 @@ neighbours
 	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
 !
 
-pathTo: cellLast
-	"Assumes that some cells are selected and that the player clicked on a selected cell.
-	Answers the shortest path from the current cell to the cell clicked"
-
-	| path |
-	path := Array with: cellLast.
-	[ self = path last ] whileFalse: [ path add: path last prevCell ].
-	^ path
-!
-
 selectableNeighboursForMonster: aMonster
 	| selectableCells tempSet |
 
@@ -323,6 +293,56 @@ selectableNeighboursForMonster: aMonster
 	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonster: aMonster) ].
 	 selectableCells addAll: tempSet.
 	 ^ selectableCells remove: self
+! !
+
+!CWCell methodsFor: 'pathfinding'!
+
+cellToMoveBeforeAttack: cellLast
+	"Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.
+	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
+
+	| possibleCells closestCell shortestPath |
+	self monster isRanged ifTrue: [ ^ self cellToMoveBeforeRangeAttack: cellLast ].
+	possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].
+	shortestPath := 9999.
+	possibleCells do: [ :each | 
+		| pathSize |
+		pathSize := (self pathTo: each) size.
+		pathSize < shortestPath 
+			ifTrue: [ 
+				shortestPath := pathSize.
+				closestCell := each ] ].
+	^ closestCell
+!
+
+cellToMoveBeforeRangeAttack: cellLast
+	| possibleCells closestCell shortestPath |
+	"hacky for now ..."
+	self root removeSelection. "remove the old tracks ..."
+	self movableNeighboursCycle: self monster range + self monster currentMove. "create fake tracks to ennemy"
+	possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].
+	shortestPath := 9999.
+	possibleCells do: [ :each | 
+		| pathSize |
+		pathSize := (self pathTo: each) size.
+		pathSize < shortestPath 
+			ifTrue: [ 
+				shortestPath := pathSize.
+				closestCell := each ] ].
+	
+	shortestPath := self pathTo: closestCell. "shortest fake track to ennemy"
+	shortestPath size < self monster range ifTrue: [ ^ self ]. "for AI move calculs only"
+	^ shortestPath at: self monster range. "in fake track, get furthest from ennemy cell where you can attack him"
+!
+
+pathTo: cellLast
+	"Assumes that some cells are selected and that the player clicked on a selected cell.
+	Answers the shortest path from the current cell to the cell clicked"
+
+	| path |
+	path := Array with: cellLast.
+	[ self = path last ] whileFalse: [ path add: path last prevCell ].
+	^ path
 ! !
 
 !CWCell methodsFor: 'printing'!
@@ -950,6 +970,19 @@ moveTo: aCell inContext: gameContext callback: callback
 attack: anotherMonster inContext: gameContext bonus: int
 	"int is for now -1 0 or 1 and represents the advantages / disadvantages of attacks"
 	
+	| ennemySupport ennemyHerosSupport ennemyUnitSupport support herosSupport unitSupport bonusDices bonusAttack |
+	
+	ennemySupport := self support.
+	ennemyHerosSupport := ( ennemySupport select: [ :each | each monster isHeros ] ) size.
+	ennemyUnitSupport := ennemySupport size - ennemyHerosSupport.
+	
+	support := anotherMonster support.
+	herosSupport := ( support select: [ :each | each monster isHeros ] ) size.
+	unitSupport := support size - herosSupport.
+	
+	bonusDices := int + herosSupport - ennemyHerosSupport.
+	bonusAttack := ( int + unitSupport - ennemyUnitSupport ) * 10.
+	
 	self state changeStateAfterAttacking: self.
     self root removeSelection.
 	self updateGOTs.
@@ -958,11 +991,11 @@ attack: anotherMonster inContext: gameContext bonus: int
 		anotherMonster removeHP: diceRes kills.
         self selectInContext: gameContext.
 		self checkForNextTurn.
-		self updateMonstersAndGOTs ] bonusDices: int bonusAttack: int * 10
+		self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack
 !
 
 attackNeighbour: anotherMonster inContext: gameContext
-	"Dispatch to type strategy for advantages of attacks"
+	"Dispatch to type strategy for advantages of attacks and goes to attack:InContext:bonus:"
 	
 	^ typeStrategy monster: self attackNeighbour: anotherMonster inContext: gameContext
 !
@@ -990,22 +1023,6 @@ removeHP: anInt
            self die ].
 !
 
-rollDicesCallBack: aBlock
-	"roll the dices to attack an ennemy"
-	
-	| kill dicesRolledEvent |
-	kill := (1 to: self dices) inject: 0 into: [ :acc :index | 
-		100 atRandom < self attack 
-			ifTrue: [ acc + 1 ] 
-			ifFalse: [ acc ] ]. 
-	dicesRolledEvent := CWDicesRolledEvent new
-		kills: kill;
-		dices: self dices;
-		callback: aBlock;
-		yourself.
-	self announce: dicesRolledEvent
-!
-
 rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
 	"roll the dices to attack an ennemy"
 	
@@ -1020,6 +1037,12 @@ rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
 		callback: aBlock;
 		yourself.
 	self announce: dicesRolledEvent
+!
+
+support
+	"Answers the ennemies near you to calculate how they support the attacker / the defender"
+	
+	^ self parent attackableNeighboursFrom: self side
 ! !
 
 !CWMonster methodsFor: 'initialize-release'!
@@ -1152,6 +1175,18 @@ accept: aVisitor
 
 defaultHp
 	^ strategy defaultHP
+!
+
+isHeros
+	^ strategy isHeros
+!
+
+isRanged
+	^ typeStrategy isRanged
+!
+
+isUnit
+	^ self isHeros not
 !
 
 key
