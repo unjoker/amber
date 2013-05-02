@@ -514,7 +514,14 @@ newMonsterAndGOTDrawingContext
 initialize
 	super initialize. 
 	self initializeLayers.
-	self padding: (self canvasPadding @ self canvasPadding)
+	self padding: (self canvasPadding @ self canvasPadding).
+	self initializeEventHandling.
+!
+
+initializeEventHandling
+	self announcer
+		on: CWMapMoveEvent
+		do: [ :event | self perform: event directionMethod ]
 !
 
 initializeForMap: aMap
@@ -528,6 +535,32 @@ initializeLayers
 		at: 2 put: (self canvasForId: self gameCanvasId);
 		at: 3 put: (self canvasForId: self monsterCanvasId);
 		yourself
+! !
+
+!CWMapDrawer methodsFor: 'map move'!
+
+down
+	padding := padding + (0 @ self moveIncrement).
+	self updateMap
+!
+
+left
+	padding := padding + (self moveIncrement negated @ 0).
+	self updateMap
+!
+
+moveIncrement
+	^ 50
+!
+
+right
+	padding := padding + (self moveIncrement @ 0).
+	self updateMap
+!
+
+up
+	padding := padding + (0 @ self moveIncrement negated).
+	self updateMap
 ! !
 
 !CWMapDrawer methodsFor: 'private'!
@@ -588,7 +621,7 @@ drawBackTile: ctx
 drawGOT: got
 	| ctx |
 	ctx := self gameContext.
-	self safeDraw: [ self display: got inContext: ctx X: self currentPoint x - 14 y: self currentPoint y - 10 ] inContext: ctx
+	self safeDraw: [ self display: got inContext: ctx X: self currentPoint x - 15 y: self currentPoint y - 10 ] inContext: ctx
 !
 
 drawHeros: heros

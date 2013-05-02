@@ -29,6 +29,10 @@ defaultHP
 	self subclassResponsibility
 !
 
+isHeros
+	self subclassResponsibility
+!
+
 key
 	self subclassResponsibility
 ! !
@@ -45,6 +49,10 @@ accept: aVisitor for: aMonster
 
 defaultHP
 	^ 2
+!
+
+isHeros
+	^ true
 !
 
 key
@@ -65,6 +73,10 @@ defaultHP
 	^ 4
 !
 
+isHeros
+	^ false
+!
+
 key
 	^ ''
 ! !
@@ -76,6 +88,10 @@ CWStrategy subclass: #CWMonsterTypeStrategy
 Implements different strategies if the heros is archer, troop or cavalry!
 
 !CWMonsterTypeStrategy methodsFor: 'type strategy API'!
+
+isRanged
+	^ false
+!
 
 key
 	self subclassResponsibility
@@ -128,6 +144,10 @@ CWMonsterTypeStrategy subclass: #CWRangeStrategy
 	package: 'Easnoth-Monsters'!
 
 !CWRangeStrategy methodsFor: 'type strategy API'!
+
+isRanged
+	^ true
+!
 
 key
 	^ 'range'

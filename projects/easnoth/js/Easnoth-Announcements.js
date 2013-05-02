@@ -18,6 +18,43 @@ smalltalk.addClass('CWWaitForObject', smalltalk.CWBootstrapEvent, [], 'Easnoth-A
 smalltalk.CWWaitForObject.comment="Triggered when an asynchronous request is sent to get a JSON or an image"
 
 
+smalltalk.addClass('CWMapMoveEvent', smalltalk.CWEasnothAnnouncement, ['directionMethod'], 'Easnoth-Announcements');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "directionMethod",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@directionMethod"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"directionMethod",{},smalltalk.CWMapMoveEvent)})},
+args: [],
+source: "directionMethod\x0a\x09^ directionMethod",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMapMoveEvent);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "directionMethod:",
+category: 'accessing',
+fn: function (aMethod){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@directionMethod"]=aMethod;
+return self}, function($ctx1) {$ctx1.fill(self,"directionMethod:",{aMethod:aMethod},smalltalk.CWMapMoveEvent)})},
+args: ["aMethod"],
+source: "directionMethod: aMethod\x0a\x09directionMethod := aMethod",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMapMoveEvent);
+
+
+
 smalltalk.addClass('CWMenuUpdateEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
 smalltalk.CWMenuUpdateEvent.comment="All announcements that are related to the menu that need to be updated."
 

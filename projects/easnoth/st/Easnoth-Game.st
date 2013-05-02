@@ -1,6 +1,38 @@
 Smalltalk current createPackage: 'Easnoth-Game'!
+Array subclass: #CWAssociationList
+	instanceVariableNames: ''
+	package: 'Easnoth-Game'!
+
+!CWAssociationList methodsFor: 'collection protocol'!
+
+collect: aBlock
+	| res |
+	res := Array new.
+	self do: [ :each |
+		res add: (aBlock value: each) ].
+	^ res
+!
+
+keyAtValue: aValue
+	self do: [ :each |
+		each value = aValue ifTrue: [ ^ each key ] ]
+!
+
+keys
+	^ self collect: [ :each | each key ]
+!
+
+keysAndValuesDo: aBlock
+	^ self do: [ :assoc | 
+		aBlock value: assoc key value: assoc value ]
+!
+
+values
+	^ self collect: [ :each | each value ]
+! !
+
 Object subclass: #CWEventDispatcher
-	instanceVariableNames: 'canvas map padding game'
+	instanceVariableNames: 'canvas map drawer game suspended'
 	package: 'Easnoth-Game'!
 !CWEventDispatcher commentStamp!
 I dispatch event from eventManager canvas to cells.!
@@ -28,6 +60,10 @@ eventManagerLayerId
 	^ '#eventManager'
 !
 
+padding
+	^ drawer padding
+!
+
 rowAt: index
 	^ map childAt: index
 ! !
@@ -37,10 +73,10 @@ rowAt: index
 currentCell: anEvent
 	|x y cood|
 	
-        x := anEvent pageX - self canvas element offsetLeft.
-        y := anEvent pageY - self canvas element offsetTop.
+     x := anEvent pageX - self canvas element offsetLeft.
+     y := anEvent pageY - self canvas element offsetTop.
 
-        cood := self mouseCoodToHexCoodX: x y: y.
+     cood := self mouseCoodToHexCoodX: x y: y.
 	
 	"if out of map then nil"
 	^ self cellAt: cood x y: cood y ifAbsent: [ nil ]
@@ -53,8 +89,8 @@ mouseCoodToHexCoodX: x y: y
 
 	| xHex yHex array mapDisplayX mapDisplayY|
                 
-	mapDisplayX := padding x.
-	mapDisplayY := padding y.
+	mapDisplayX := self padding x.
+	mapDisplayY := self padding y.
 
 	array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.
     
@@ -122,15 +158,17 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 
 dispatchMouseClick: event
 	| cc |
-	cc := self currentCell: event.
-	cc ifNotNil: [ 
-		cc mouseClick: game gameContext ].
+	suspended ifFalse: [
+		cc := self currentCell: event.
+		cc ifNotNil: [ 
+			cc mouseClick: game gameContext ] ]
 ! !
 
 !CWEventDispatcher methodsFor: 'initialize-release'!
 
 initialize
 	super initialize. 
+	suspended := false.
 	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
 !
 
@@ -142,13 +180,19 @@ initializeEventHandling
 initializeForMap: aMap game: aGame
 	game := aGame.
 	map := aMap.
-	padding := aMap drawer padding.
+	drawer := aMap drawer.
 	self initializeEventHandling.
 ! !
 
-Object subclass: #CWExtendedCell
-	instanceVariableNames: 'cell prevCell'
-	package: 'Easnoth-Game'!
+!CWEventDispatcher methodsFor: 'suspending'!
+
+resume
+	suspended := false
+!
+
+suspend
+	suspended := true
+! !
 
 Object subclass: #CWGame
 	instanceVariableNames: 'map context playerPool'
@@ -207,6 +251,11 @@ initialize
 	context := CWGameContext new.
 !
 
+initializeAI: eventDispatcher
+	playerPool do: [ :player |
+		player eventDispatcher: eventDispatcher ]
+!
+
 initializeEventHandling
 	self announcer
 		on: CWGameStart
@@ -238,9 +287,11 @@ initializeWithSettings: gameSettings
 !
 
 startGame
+	| eventDispatcher |
 	self initializePlayerMonsters.
 	map initializeDrawer.
-	CWEventDispatcher new initializeForMap: map game: self.
+	eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.
+	self initializeAI: eventDispatcher.
 	map updateMap.
 	self firstTurn.
 ! !
@@ -285,7 +336,7 @@ nextTurn: nextPlayer
 ! !
 
 Object subclass: #CWPathFinder
-	instanceVariableNames: 'studiedList listToStudy'
+	instanceVariableNames: 'studiedList listToStudy cellLast result'
 	package: 'Easnoth-Game'!
 
 !CWPathFinder methodsFor: 'pathfinding'!
@@ -293,29 +344,55 @@ Object subclass: #CWPathFinder
 pathFrom: cellStart to: cellEnd
 	"Answers the shortest path from the current cell to the cell clicked"
 
-	| path tempArray |
 	self resetList.
-	listToStudy add: cellStart.
-	tempArray := Array new.
-	listToStudy do: [ :cell |
-		cell neighbours do: [ :each |
-			(studiedList values includes: each) ifFalse: [ tempArray add: each ] ] ]
-	"freeNeighbours.
-	path := Array with: cellLast.
-	[ self = path last ] whileFalse: [ path add: path last prevCell ].
-	^ path"
+	cellLast := cellEnd.
+	listToStudy add: (nil -> cellStart).
+	[ result isNil ] whileTrue: [ self iterate ].
+	
+	^ result
 ! !
 
 !CWPathFinder methodsFor: 'private'!
 
+iterate
+	"Calculs path for toStudyList cells and set the correct value to it"
+
+	| tempArray |
+
+	tempArray := CWAssociationList new.
+	listToStudy keysAndValuesDo: [ :key :value |
+		studiedList add: (key -> value).
+		value freeNeighbours do: [ :each |
+			(studiedList values includes: each) ifFalse: [ 
+				tempArray add: (value -> each).
+				each = cellLast ifTrue: [ 
+					studiedList add: (value -> each).
+					^ self pathAnswer ] ] ] ].
+		 
+	listToStudy := tempArray.
+!
+
+pathAnswer
+	| currentCell |
+	result := Array new.
+	currentCell := cellLast.
+	[ currentCell isNil ] whileFalse: [ 
+		result add: currentCell.
+		currentCell := studiedList keyAtValue: currentCell ].
+!
+
 resetList
-	studiedList := Set new.
-	listToStudy := Set new.
+	studiedList := CWAssociationList new.
+	listToStudy := CWAssociationList new.
+	result := nil.
 ! !
 
-!CWPathFinder methodsFor: 'selection'!
+!CWPathFinder class methodsFor: 'not yet classified'!
 
-selectableTilesFor: aMonster
+bench
+	"[ CWPathFinder new pathFrom: ((self childAt: 9) childAt: 5) to: ((self childAt: 1) childAt: 5) ] timeToRun  1430 .
+	[ ((self childAt: 9) childAt: 5) movableNeighboursCycle: 10.
+	((self childAt: 9) childAt: 5) pathTo: ((self childAt: 1) childAt: 5) ] timeToRun 8 "
 ! !
 
 Object subclass: #CWPlayer
@@ -448,10 +525,10 @@ initializeWithMap: aMap army: data
 		monsters := Array new.
 		monsters at: 1 put: (self newTroop: data troop).
 		monsters at: 2 put: (self newTroopHeros: data troopHeros).
-		monsters at: 3 put: (self newRange: data troop).
+		monsters at: 3 put: (self newRange: data range).
 		monsters at: 4 put: (self newCavalry: data cavalry).
 		monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).
-		monsters at: 6 put: (self newRangeHeros: data troopHeros).
+		monsters at: 6 put: (self newRangeHeros: data rangeHeros).
 		team := monsters.
 ! !
 
@@ -468,10 +545,18 @@ printOn: aStream
 ! !
 
 CWPlayer subclass: #CWAI
-	instanceVariableNames: 'gameContext'
+	instanceVariableNames: 'gameContext eventDispatcher'
 	package: 'Easnoth-Game'!
 
 !CWAI methodsFor: 'accessing'!
+
+eventDispatcher
+	^ eventDispatcher
+!
+
+eventDispatcher: ev
+	eventDispatcher := ev
+!
 
 gameContext
 	^ gameContext
@@ -479,6 +564,18 @@ gameContext
 
 gameContext: aCtx
 	gameContext := aCtx
+! !
+
+!CWAI methodsFor: 'game logic'!
+
+endTurn: aMap
+	super endTurn: aMap.
+	self eventDispatcher resume
+!
+
+startTurn: aMap
+	self eventDispatcher suspend.
+	super startTurn: aMap
 ! !
 
 CWAI subclass: #CWAggressWeakestAI
@@ -529,6 +626,10 @@ executeAttack
 	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.
 	relatedTargetCell ifNil: [ "case where the ennemy is neighbour and no free cells around" relatedTargetCell := monsterToPlay parent ].
 	duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.
+	"hack"
+	monsterToPlay root removeSelection.
+	monsterToPlay parent mouseClick: self gameContext. 
+	"end hack : to reset tracks and monsterselected tiles"
 	cellToTarget mouseClick: self gameContext. 
 	[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.
 !
@@ -582,6 +683,12 @@ startTurn: map
 CWPlayer subclass: #CWHuman
 	instanceVariableNames: ''
 	package: 'Easnoth-Game'!
+
+!CWHuman methodsFor: 'accessing'!
+
+eventDispatcher: anObject
+	"not used for humans"
+! !
 
 !Boolean methodsFor: '*Easnoth-Game'!
 

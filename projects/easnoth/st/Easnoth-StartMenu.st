@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Easnoth-StartMenu'!
 Object subclass: #CWBootstrapper
-	instanceVariableNames: 'objectToLoad objectLoaded'
+	instanceVariableNames: 'objectToLoad objectLoaded loadingBar'
 	package: 'Easnoth-StartMenu'!
 !CWBootstrapper commentStamp!
 Bootstrap the system. Currently work only for games, not for the map editor!
@@ -23,13 +23,19 @@ imagesToPreload
 
 checkIfReady
 	objectToLoad = objectLoaded
-		ifTrue: [ self announcer announce: CWGameStart new]
+		ifTrue: [ self startGame ]
+!
+
+startGame
+	loadingBar hide.
+	self announcer announce: CWGameStart new.
 ! !
 
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
 	"Transcript show: gameSettings; cr."
+	loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.
 	CWGame new initializeWithSettings: gameSettings
 !
 
@@ -103,6 +109,22 @@ printOn: aStream
 	players do: [ :each |
 		each printOn: aStream ].
 	aStream nextPutAll: ')'.
+! !
+
+Widget subclass: #CWLoadingBar
+	instanceVariableNames: 'box'
+	package: 'Easnoth-StartMenu'!
+
+!CWLoadingBar methodsFor: 'rendering'!
+
+hide
+	box hidden
+!
+
+renderOn: html
+	box := html img
+		class: 'loadBar';
+		src: 'ressources/images/loading.png'.
 ! !
 
 Widget subclass: #CWStartMenu

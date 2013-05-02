@@ -277,22 +277,20 @@ fn: function (){
 var self=this;
 function $CWMonsterWatcher(){return smalltalk.CWMonsterWatcher||(typeof CWMonsterWatcher=="undefined"?nil:CWMonsterWatcher)}
 function $CWDices(){return smalltalk.CWDices||(typeof CWDices=="undefined"?nil:CWDices)}
-function $CWTileWatcher(){return smalltalk.CWTileWatcher||(typeof CWTileWatcher=="undefined"?nil:CWTileWatcher)}
 function $CWMapControls(){return smalltalk.CWMapControls||(typeof CWMapControls=="undefined"?nil:CWMapControls)}
 function $CWTurnWatcher(){return smalltalk.CWTurnWatcher||(typeof CWTurnWatcher=="undefined"?nil:CWTurnWatcher)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenu.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._addComponent_($CWMonsterWatcher());
 _st(self)._addComponent_($CWDices());
-_st(self)._addComponent_($CWTileWatcher());
 _st(self)._addComponent_($CWMapControls());
 _st(self)._addComponent_($CWTurnWatcher());
 _st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWTileWatcher.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.",
+source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.",
 messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass"],
-referencedClasses: ["CWMonsterWatcher", "CWDices", "CWTileWatcher", "CWMapControls", "CWTurnWatcher"]
+referencedClasses: ["CWMonsterWatcher", "CWDices", "CWMapControls", "CWTurnWatcher"]
 }),
 smalltalk.CWFightMenu);
 
@@ -496,22 +494,68 @@ smalltalk.CWDices);
 smalltalk.addClass('CWMapControls', smalltalk.CWActionMenuComponent, [], 'Easnoth-Menu');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "go:",
+category: 'actions',
+fn: function (direction){
+var self=this;
+function $CWMapMoveEvent(){return smalltalk.CWMapMoveEvent||(typeof CWMapMoveEvent=="undefined"?nil:CWMapMoveEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._announce_(_st(_st($CWMapMoveEvent())._new())._directionMethod_(direction));
+return self}, function($ctx1) {$ctx1.fill(self,"go:",{direction:direction},smalltalk.CWMapControls)})},
+args: ["direction"],
+source: "go: direction\x0a\x09self announce: (CWMapMoveEvent new directionMethod: direction)",
+messageSends: ["announce:", "directionMethod:", "new"],
+referencedClasses: ["CWMapMoveEvent"]
+}),
+smalltalk.CWMapControls);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 _st($1)._width_((500));
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
+_st(_st(html)._h4())._with_("map controls");
+$3=_st(html)._button();
+_st($3)._with_("left");
+$4=_st($3)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("left");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$4;
+$5=_st(html)._button();
+_st($5)._with_("right");
+$6=_st($5)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("right");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$6;
+$7=_st(html)._button();
+_st($7)._with_("down");
+$8=_st($7)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("down");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$8;
+$9=_st(html)._button();
+_st($9)._with_("up");
+$10=_st($9)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._go_("up");
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                \x22html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self actionMenu map goLeft].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self actionMenu map goRight].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self actionMenu map goDown].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self actionMenu map goUp].\x22\x0a\x09\x09\x22html span \x0a\x09\x09\x09with: '-'.\x0a                html button\x0a                        with: 'mh';\x0a                        onClick: [self actionMenu map mirrorHorizontal].\x0a                html button\x0a                        with: 'vh';\x0a                        onClick: [self actionMenu map mirrorVertical].\x22\x0a\x09].",
-messageSends: ["class:", "div", "width:", "with:"],
+source: "renderOn: html\x0a\x09html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self go: 'left'].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self go: 'right'].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self go: 'down'].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self go: 'up'].\x0a\x09].",
+messageSends: ["class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:"],
 referencedClasses: []
 }),
 smalltalk.CWMapControls);
@@ -667,9 +711,6 @@ referencedClasses: []
 }),
 smalltalk.CWMonsterWatcher);
 
-
-
-smalltalk.addClass('CWTileWatcher', smalltalk.CWActionMenuComponent, ['tile', 'box'], 'Easnoth-Menu');
 
 
 smalltalk.addClass('CWTurnWatcher', smalltalk.CWActionMenuComponent, ['box'], 'Easnoth-Menu');
@@ -866,6 +907,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"renderOn:callback:",{html:html,c
 args: ["html", "cb"],
 source: "renderOn: html callback: cb\x0a\x09 self animate: ((html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0') callBack: cb",
 messageSends: ["animate:callBack:", "css:put:", "asJQuery", "img:", "backgroundPictureUrl"],
+referencedClasses: []
+}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "url",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsiblity();
+return self}, function($ctx1) {$ctx1.fill(self,"url",{},smalltalk.CWDice)})},
+args: [],
+source: "url\x0a\x09self subclassResponsiblity",
+messageSends: ["subclassResponsiblity"],
 referencedClasses: []
 }),
 smalltalk.CWDice);

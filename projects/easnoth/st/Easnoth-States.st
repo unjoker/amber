@@ -288,7 +288,7 @@ checkForNextTurn: aMonster
 
 monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
-	"Need to fix it for range attack"
+	aMonster root removeSelection. "This reinitialize prevCell for selectAttackableCells calcul"
 	(aMonster selectAttackableCells includes: aCell ) 
 		ifFalse: [ 
 			toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.

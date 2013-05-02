@@ -64,6 +64,22 @@ smalltalk.CWMonsterStrategy);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isHeros",
+category: 'monster strategy API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWMonsterStrategy)})},
+args: [],
+source: "isHeros\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "key",
 category: 'monster strategy API',
 fn: function (){
@@ -112,6 +128,22 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"defaultHP",{},smalltalk.CWHerosStrategy)})},
 args: [],
 source: "defaultHP\x0a\x09^ 2",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWHerosStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isHeros",
+category: 'monster strategy API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWHerosStrategy)})},
+args: [],
+source: "isHeros\x0a\x09^ true",
 messageSends: [],
 referencedClasses: []
 }),
@@ -174,6 +206,22 @@ smalltalk.CWUnitStrategy);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isHeros",
+category: 'monster strategy API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWUnitStrategy)})},
+args: [],
+source: "isHeros\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWUnitStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "key",
 category: 'monster strategy API',
 fn: function (){
@@ -192,6 +240,22 @@ smalltalk.CWUnitStrategy);
 
 smalltalk.addClass('CWMonsterTypeStrategy', smalltalk.CWStrategy, [], 'Easnoth-Monsters');
 smalltalk.CWMonsterTypeStrategy.comment="Implements different strategies if the heros is archer, troop or cavalry"
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRanged",
+category: 'type strategy API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isRanged",{},smalltalk.CWMonsterTypeStrategy)})},
+args: [],
+source: "isRanged\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonsterTypeStrategy);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "key",
@@ -366,6 +430,22 @@ smalltalk.CWCavalryStrategy);
 
 
 smalltalk.addClass('CWRangeStrategy', smalltalk.CWMonsterTypeStrategy, [], 'Easnoth-Monsters');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRanged",
+category: 'type strategy API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isRanged",{},smalltalk.CWRangeStrategy)})},
+args: [],
+source: "isRanged\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWRangeStrategy);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "key",

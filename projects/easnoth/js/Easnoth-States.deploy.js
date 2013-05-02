@@ -669,6 +669,7 @@ var self=this;
 var toMoveCell;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
+_st(_st(aMonster)._root())._removeSelection();
 $1=_st(_st(aMonster)._selectAttackableCells())._includes_(aCell);
 if(smalltalk.assert($1)){
 _st(aMonster)._attackNeighbour_inContext_(_st(aCell)._monster(),gameContext);
@@ -681,7 +682,7 @@ return _st(aMonster)._attackTo_inContext_(aCell,gameContext);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
-messageSends: ["ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attackNeighbour:inContext:", "monster", "includes:", "selectAttackableCells"]}),
+messageSends: ["removeSelection", "root", "ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attackNeighbour:inContext:", "monster", "includes:", "selectAttackableCells"]}),
 smalltalk.CWActive);
 
 smalltalk.addMethod(

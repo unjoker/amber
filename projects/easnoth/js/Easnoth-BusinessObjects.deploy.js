@@ -420,7 +420,46 @@ fn: function (cellLast){
 var self=this;
 var possibleCells,closestCell,shortestPath;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$3,$4;
+$1=_st(_st(self)._monster())._isRanged();
+if(smalltalk.assert($1)){
+$2=_st(self)._cellToMoveBeforeRangeAttack_(cellLast);
+return $2;
+};
+possibleCells=_st(_st(cellLast)._neighbours())._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._isFreeSelected();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+shortestPath=(9999);
+_st(possibleCells)._do_((function(each){
+var pathSize;
+return smalltalk.withContext(function($ctx2) {
+pathSize=_st(_st(self)._pathTo_(each))._size();
+pathSize;
+$3=_st(pathSize).__lt(shortestPath);
+if(smalltalk.assert($3)){
+shortestPath=pathSize;
+shortestPath;
+closestCell=each;
+return closestCell;
+};
+}, function($ctx2) {$ctx2.fillBlock({each:each,pathSize:pathSize},$ctx1)})}));
+$4=closestCell;
+return $4;
+}, function($ctx1) {$ctx1.fill(self,"cellToMoveBeforeAttack:",{cellLast:cellLast,possibleCells:possibleCells,closestCell:closestCell,shortestPath:shortestPath},smalltalk.CWCell)})},
+messageSends: ["ifTrue:", "cellToMoveBeforeRangeAttack:", "isRanged", "monster", "select:", "isFreeSelected", "neighbours", "do:", "size", "pathTo:", "<"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "cellToMoveBeforeRangeAttack:",
+fn: function (cellLast){
+var self=this;
+var possibleCells,closestCell,shortestPath;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+_st(_st(self)._root())._removeSelection();
+_st(self)._movableNeighboursCycle_(_st(_st(_st(self)._monster())._range()).__plus(_st(_st(self)._monster())._currentMove()));
 possibleCells=_st(_st(cellLast)._neighbours())._select_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._isFreeSelected();
@@ -439,10 +478,16 @@ closestCell=each;
 return closestCell;
 };
 }, function($ctx2) {$ctx2.fillBlock({each:each,pathSize:pathSize},$ctx1)})}));
-$2=closestCell;
-return $2;
-}, function($ctx1) {$ctx1.fill(self,"cellToMoveBeforeAttack:",{cellLast:cellLast,possibleCells:possibleCells,closestCell:closestCell,shortestPath:shortestPath},smalltalk.CWCell)})},
-messageSends: ["select:", "isFreeSelected", "neighbours", "do:", "size", "pathTo:", "ifTrue:", "<"]}),
+shortestPath=_st(self)._pathTo_(closestCell);
+$2=_st(_st(shortestPath)._size()).__lt(_st(_st(self)._monster())._range());
+if(smalltalk.assert($2)){
+$3=self;
+return $3;
+};
+$4=_st(shortestPath)._at_(_st(_st(self)._monster())._range());
+return $4;
+}, function($ctx1) {$ctx1.fill(self,"cellToMoveBeforeRangeAttack:",{cellLast:cellLast,possibleCells:possibleCells,closestCell:closestCell,shortestPath:shortestPath},smalltalk.CWCell)})},
+messageSends: ["removeSelection", "root", "movableNeighboursCycle:", "+", "currentMove", "monster", "range", "select:", "isFreeSelected", "neighbours", "do:", "size", "pathTo:", "ifTrue:", "<", "at:"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -662,22 +707,6 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "monstersNeighbours",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._neighbours())._select_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(each)._hasMonster();
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"monstersNeighbours",{},smalltalk.CWCell)})},
-messageSends: ["select:", "hasMonster", "neighbours"]}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "mouseClick:",
 fn: function (gameContext){
 var self=this;
@@ -695,10 +724,7 @@ var self=this;
 var movableCells;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-movableCells=_st(_st(self)._neighbours())._select_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(each)._isFree();
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+movableCells=_st(self)._freeNeighbours();
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 _st(each)._prevCell_(self);
@@ -707,7 +733,7 @@ return _st(each)._addSelector();
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighbours",{movableCells:movableCells},smalltalk.CWCell)})},
-messageSends: ["select:", "isFree", "neighbours", "do:", "prevCell:", "addSelector"]}),
+messageSends: ["freeNeighbours", "do:", "prevCell:", "addSelector"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1879,7 +1905,22 @@ smalltalk.method({
 selector: "attack:inContext:bonus:",
 fn: function (anotherMonster,gameContext,int){
 var self=this;
+var ennemySupport,ennemyHerosSupport,ennemyUnitSupport,support,herosSupport,unitSupport,bonusDices,bonusAttack;
 return smalltalk.withContext(function($ctx1) { 
+ennemySupport=_st(self)._support();
+ennemyHerosSupport=_st(_st(ennemySupport)._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(each)._monster())._isHeros();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})))._size();
+ennemyUnitSupport=_st(_st(ennemySupport)._size()).__minus(ennemyHerosSupport);
+support=_st(anotherMonster)._support();
+herosSupport=_st(_st(support)._select_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(each)._monster())._isHeros();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})})))._size();
+unitSupport=_st(_st(support)._size()).__minus(herosSupport);
+bonusDices=_st(_st(int).__plus(herosSupport)).__minus(ennemyHerosSupport);
+bonusAttack=_st(_st(_st(int).__plus(unitSupport)).__minus(ennemyUnitSupport)).__star((10));
 _st(_st(self)._state())._changeStateAfterAttacking_(self);
 _st(_st(self)._root())._removeSelection();
 _st(self)._updateGOTs();
@@ -1889,9 +1930,9 @@ _st(anotherMonster)._removeHP_(_st(diceRes)._kills());
 _st(self)._selectInContext_(gameContext);
 _st(self)._checkForNextTurn();
 return _st(self)._updateMonstersAndGOTs();
-}, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}),int,_st(int).__star((10)));
-return self}, function($ctx1) {$ctx1.fill(self,"attack:inContext:bonus:",{anotherMonster:anotherMonster,gameContext:gameContext,int:int},smalltalk.CWMonster)})},
-messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "updateGOTs", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs", "*"]}),
+}, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}),bonusDices,bonusAttack);
+return self}, function($ctx1) {$ctx1.fill(self,"attack:inContext:bonus:",{anotherMonster:anotherMonster,gameContext:gameContext,int:int,ennemySupport:ennemySupport,ennemyHerosSupport:ennemyHerosSupport,ennemyUnitSupport:ennemyUnitSupport,support:support,herosSupport:herosSupport,unitSupport:unitSupport,bonusDices:bonusDices,bonusAttack:bonusAttack},smalltalk.CWMonster)})},
+messageSends: ["support", "size", "select:", "isHeros", "monster", "-", "+", "*", "changeStateAfterAttacking:", "state", "removeSelection", "root", "updateGOTs", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2190,6 +2231,19 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isHeros",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@strategy"])._isHeros();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isHeros",{},smalltalk.CWMonster)})},
+messageSends: ["isHeros"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isInactive",
 fn: function (){
 var self=this;
@@ -2199,6 +2253,32 @@ $1=_st(_st(self)._state())._isInactive();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"isInactive",{},smalltalk.CWMonster)})},
 messageSends: ["isInactive", "state"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isRanged",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._isRanged();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isRanged",{},smalltalk.CWMonster)})},
+messageSends: ["isRanged"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isUnit",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._isHeros())._not();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"isUnit",{},smalltalk.CWMonster)})},
+messageSends: ["not", "isHeros"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2352,35 +2432,6 @@ _st(self)._die();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"removeHP:",{anInt:anInt},smalltalk.CWMonster)})},
 messageSends: ["hp:", "-", "hp", "ifTrue:", "die", "<"]}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "rollDicesCallBack:",
-fn: function (aBlock){
-var self=this;
-var kill,dicesRolledEvent;
-function $CWDicesRolledEvent(){return smalltalk.CWDicesRolledEvent||(typeof CWDicesRolledEvent=="undefined"?nil:CWDicesRolledEvent)}
-return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-kill=_st(_st((1))._to_(_st(self)._dices()))._inject_into_((0),(function(acc,index){
-return smalltalk.withContext(function($ctx2) {
-$1=_st(_st((100))._atRandom()).__lt(_st(self)._attack());
-if(smalltalk.assert($1)){
-return _st(acc).__plus((1));
-} else {
-return acc;
-};
-}, function($ctx2) {$ctx2.fillBlock({acc:acc,index:index},$ctx1)})}));
-$2=_st($CWDicesRolledEvent())._new();
-_st($2)._kills_(kill);
-_st($2)._dices_(_st(self)._dices());
-_st($2)._callback_(aBlock);
-$3=_st($2)._yourself();
-dicesRolledEvent=$3;
-_st(self)._announce_(dicesRolledEvent);
-return self}, function($ctx1) {$ctx1.fill(self,"rollDicesCallBack:",{aBlock:aBlock,kill:kill,dicesRolledEvent:dicesRolledEvent},smalltalk.CWMonster)})},
-messageSends: ["inject:into:", "ifTrue:ifFalse:", "+", "<", "attack", "atRandom", "to:", "dices", "kills:", "new", "dices:", "callback:", "yourself", "announce:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2554,6 +2605,19 @@ _st(self)._special_(_st(jsonStats)._special());
 _st(self)._hp_(_st(self)._defaultHp());
 return self}, function($ctx1) {$ctx1.fill(self,"stats:",{jsonStats:jsonStats},smalltalk.CWMonster)})},
 messageSends: ["move:", "move", "range:", "range", "attack:", "attack", "dices:", "dices", "special:", "special", "hp:", "defaultHp"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "support",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._parent())._attackableNeighboursFrom_(_st(self)._side());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"support",{},smalltalk.CWMonster)})},
+messageSends: ["attackableNeighboursFrom:", "side", "parent"]}),
 smalltalk.CWMonster);
 
 

@@ -92,10 +92,10 @@ canvas {
 	background-color: transparent;
 }
 
-#loadBar {
+.loadBar {
 	position:absolute;
-	margin-left:300px;
-	margin-top:200px;
+	top:30%;
+	left:20%;
 }
 /*fight.html*/
 

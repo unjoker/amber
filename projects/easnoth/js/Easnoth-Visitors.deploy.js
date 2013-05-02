@@ -946,6 +946,18 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "down",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@padding"]=_st(self["@padding"]).__plus(_st((0)).__at(_st(self)._moveIncrement()));
+_st(self)._updateMap();
+return self}, function($ctx1) {$ctx1.fill(self,"down",{},smalltalk.CWMapDrawer)})},
+messageSends: ["+", "@", "moveIncrement", "updateMap"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "drawBackTile:",
 fn: function (ctx){
 var self=this;
@@ -969,7 +981,7 @@ return smalltalk.withContext(function($ctx1) {
 ctx=_st(self)._gameContext();
 _st(self)._safeDraw_inContext_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(self)._display_inContext_X_y_(got,ctx,_st(_st(_st(self)._currentPoint())._x()).__minus((14)),_st(_st(_st(self)._currentPoint())._y()).__minus((10)));
+return _st(self)._display_inContext_X_y_(got,ctx,_st(_st(_st(self)._currentPoint())._x()).__minus((15)),_st(_st(_st(self)._currentPoint())._y()).__minus((10)));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
 return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:",{got:got,ctx:ctx},smalltalk.CWMapDrawer)})},
 messageSends: ["gameContext", "safeDraw:inContext:", "display:inContext:X:y:", "-", "x", "currentPoint", "y"]}),
@@ -1086,8 +1098,24 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.CWMapInterpreter.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeLayers();
 _st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
+_st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMapDrawer)})},
-messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding"]}),
+messageSends: ["initialize", "initializeLayers", "padding:", "@", "canvasPadding", "initializeEventHandling"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeEventHandling",
+fn: function (){
+var self=this;
+function $CWMapMoveEvent(){return smalltalk.CWMapMoveEvent||(typeof CWMapMoveEvent=="undefined"?nil:CWMapMoveEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._on_do_($CWMapMoveEvent(),(function(event){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._perform_(_st(event)._directionMethod());
+}, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWMapDrawer)})},
+messageSends: ["on:do:", "perform:", "directionMethod", "announcer"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1118,6 +1146,18 @@ $2=_st($1)._yourself();
 self["@layers"]=$2;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeLayers",{},smalltalk.CWMapDrawer)})},
 messageSends: ["at:put:", "canvasForId:", "backgroundCanvasId", "new", "gameCanvasId", "monsterCanvasId", "yourself"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "left",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@padding"]=_st(self["@padding"]).__plus(_st(_st(_st(self)._moveIncrement())._negated()).__at((0)));
+_st(self)._updateMap();
+return self}, function($ctx1) {$ctx1.fill(self,"left",{},smalltalk.CWMapDrawer)})},
+messageSends: ["+", "@", "negated", "moveIncrement", "updateMap"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1155,6 +1195,19 @@ $1=_st(self)._contextForCanvas_(_st(self)._monsterCanvas());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"monsterContext",{},smalltalk.CWMapDrawer)})},
 messageSends: ["contextForCanvas:", "monsterCanvas"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "moveIncrement",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=(50);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"moveIncrement",{},smalltalk.CWMapDrawer)})},
+messageSends: []}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1244,6 +1297,18 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "right",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@padding"]=_st(self["@padding"]).__plus(_st(_st(self)._moveIncrement()).__at((0)));
+_st(self)._updateMap();
+return self}, function($ctx1) {$ctx1.fill(self,"right",{},smalltalk.CWMapDrawer)})},
+messageSends: ["+", "@", "moveIncrement", "updateMap"]}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "safeDraw:inContext:",
 fn: function (aBlock,ctx){
 var self=this;
@@ -1271,6 +1336,18 @@ $1=(50);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"tileUnit",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "up",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@padding"]=_st(self["@padding"]).__plus(_st((0)).__at(_st(_st(self)._moveIncrement())._negated()));
+_st(self)._updateMap();
+return self}, function($ctx1) {$ctx1.fill(self,"up",{},smalltalk.CWMapDrawer)})},
+messageSends: ["+", "@", "negated", "moveIncrement", "updateMap"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
