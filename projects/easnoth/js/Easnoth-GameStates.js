@@ -1,5 +1,5 @@
-smalltalk.addPackage('Easnoth-States');
-smalltalk.addClass('CWState', smalltalk.Object, [], 'Easnoth-States');
+smalltalk.addPackage('Easnoth-GameStates');
+smalltalk.addClass('CWState', smalltalk.Object, [], 'Easnoth-GameStates');
 
 smalltalk.CWState.klass.iVarNames = ['default'];
 smalltalk.addMethod(
@@ -27,7 +27,7 @@ referencedClasses: []
 smalltalk.CWState.klass);
 
 
-smalltalk.addClass('CWCellState', smalltalk.CWState, [], 'Easnoth-States');
+smalltalk.addClass('CWCellState', smalltalk.CWState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addSelector:",
@@ -182,7 +182,7 @@ referencedClasses: ["CWFree", "CWHasMonster"]
 smalltalk.CWCellState.klass);
 
 
-smalltalk.addClass('CWFree', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWFree', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.CWFree.comment="I am the state of a cell that has no monsters on it and that has no game selector on it."
 smalltalk.addMethod(
 smalltalk.method({
@@ -289,7 +289,7 @@ smalltalk.CWFree);
 
 
 
-smalltalk.addClass('CWFreeSelected', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWFreeSelected', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.CWFreeSelected.comment="I am the state of a cell that has no monsters on it, that has a game selector on it.\x0aThe cell cannot be a wall."
 smalltalk.addMethod(
 smalltalk.method({
@@ -407,7 +407,7 @@ smalltalk.CWFreeSelected);
 
 
 
-smalltalk.addClass('CWHasMonster', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasMonster', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.CWHasMonster.comment="I am the state of a cell that has some monsters on it and that has no game selector on it."
 smalltalk.addMethod(
 smalltalk.method({
@@ -513,7 +513,7 @@ smalltalk.CWHasMonster);
 
 
 
-smalltalk.addClass('CWHasMonsterSelected', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasMonsterSelected', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.CWHasMonsterSelected.comment="I am the state of a cell that has a monsters on it and a game selector.\x0aThe monster has to be on the opposite side of the current playing monster."
 smalltalk.addMethod(
 smalltalk.method({
@@ -633,7 +633,7 @@ smalltalk.CWHasMonsterSelected);
 
 
 
-smalltalk.addClass('CWMonsterState', smalltalk.CWState, [], 'Easnoth-States');
+smalltalk.addClass('CWMonsterState', smalltalk.CWState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "activate:",
@@ -816,7 +816,7 @@ smalltalk.CWMonsterState);
 
 
 
-smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.CWActive.comment="Monster can move and attack"
 smalltalk.addMethod(
 smalltalk.method({
@@ -919,7 +919,7 @@ smalltalk.CWActive);
 
 
 
-smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.CWHasAttacked.comment="Monster can only move"
 smalltalk.addMethod(
 smalltalk.method({
@@ -1009,7 +1009,7 @@ smalltalk.CWHasAttacked);
 
 
 
-smalltalk.addClass('CWHasMoved', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasMoved', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.CWHasMoved.comment="The monster has moved its full moved there. (currentMove = 0)"
 smalltalk.addMethod(
 smalltalk.method({
@@ -1118,7 +1118,7 @@ smalltalk.CWHasMoved);
 
 
 
-smalltalk.addClass('CWInactive', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWInactive', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.CWInactive.comment="Monster cannot do anything :)"
 smalltalk.addMethod(
 smalltalk.method({
@@ -1304,7 +1304,7 @@ smalltalk.CWInactive);
 
 
 
-smalltalk.addClass('CWToPick', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWToPick', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.CWToPick.comment="The player has to choice one of the toPick monster to activate them"
 smalltalk.addMethod(
 smalltalk.method({

@@ -1,7 +1,7 @@
-Smalltalk current createPackage: 'Easnoth-BusinessObjects'!
+Smalltalk current createPackage: 'Easnoth-MapModel'!
 Object subclass: #CWComponent
 	instanceVariableNames: 'parent'
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWComponent commentStamp!
 I represent a business object of the game. The business objects are managed in a tree : you have a root object that has children (and children can also have children).
 
@@ -79,7 +79,7 @@ accept: aVisitor
 
 CWComponent subclass: #CWComposite
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 
 !CWComposite methodsFor: 'accessing'!
 
@@ -111,7 +111,7 @@ accept: aVisitor
 
 CWComposite subclass: #CWCell
 	instanceVariableNames: 'neighboursCache background gameOverTile monster state properties'
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
 
@@ -455,7 +455,7 @@ accept: aVisitor
 
 CWComposite subclass: #CWOneChildClass
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWOneChildClass commentStamp!
 I am a standard composite except that all my children have the same class.!
 
@@ -491,7 +491,7 @@ accept: aVisitor
 
 CWOneChildClass subclass: #CWMap
 	instanceVariableNames: 'rows drawer'
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWMap commentStamp!
 I represent the whole map in the game.!
 
@@ -615,7 +615,7 @@ newWithMapIndex: aMapIndex
 
 CWOneChildClass subclass: #CWRow
 	instanceVariableNames: 'cells'
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWRow commentStamp!
 I represent a row of cells in the map.!
 
@@ -691,7 +691,7 @@ accept: aVisitor
 
 CWComponent subclass: #CWLeaf
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 
 !CWLeaf methodsFor: 'accessing'!
 
@@ -707,7 +707,7 @@ accept: aVisitor
 
 CWLeaf subclass: #CWImageLeaf
 	instanceVariableNames: 'image'
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWImageLeaf commentStamp!
 I represent a leaf of the business objects tree that has an image. Usually only my instances are rendered when the CWDrawer visits the business object graph.!
 
@@ -774,7 +774,7 @@ newImageFrom: aKey
 
 CWImageLeaf subclass: #CWBackground
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWBackground commentStamp!
 I represent an element of the background (tiles, overtiles, ...).!
 
@@ -792,7 +792,7 @@ folderName
 
 CWBackground subclass: #CWOverTile
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 
 !CWOverTile methodsFor: 'visiting'!
 
@@ -808,7 +808,7 @@ folderName
 
 CWOverTile subclass: #CWGameOverTile
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 
 !CWGameOverTile methodsFor: 'visiting'!
 
@@ -818,7 +818,7 @@ accept: aVisitor
 
 CWBackground subclass: #CWTile
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 
 !CWTile methodsFor: 'testing'!
 
@@ -840,7 +840,7 @@ folderName
 
 CWTile subclass: #CWWall
 	instanceVariableNames: ''
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 
 !CWWall methodsFor: 'testing'!
 
@@ -856,7 +856,7 @@ accept: aVisitor
 
 CWImageLeaf subclass: #CWMonster
 	instanceVariableNames: 'currentMove move attack dices hp range state player special strategy typeStrategy'
-	package: 'Easnoth-BusinessObjects'!
+	package: 'Easnoth-MapModel'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
 
@@ -1237,7 +1237,267 @@ emptyMonster
 		special:'none'.
 ! !
 
-!JSObjectProxy methodsFor: '*Easnoth-BusinessObjects'!
+Object subclass: #CWVisitor
+	instanceVariableNames: ''
+	package: 'Easnoth-MapModel'!
+!CWVisitor commentStamp!
+I am an abstract visitor that can visit the whole tree of business objects.!
+
+!CWVisitor methodsFor: 'visiting'!
+
+visitCell: aCell
+	self subclassResponsibility
+!
+
+visitGameOverTile: aGameOverTile
+	self subclassResponsibility
+!
+
+visitHeros: aHeros
+	self subclassResponsibility
+!
+
+visitMap: aMap
+	self subclassResponsibility
+!
+
+visitOverTile: anOverTile
+	self subclassResponsibility
+!
+
+visitRow: aRow
+	self subclassResponsibility
+!
+
+visitTile: aTile
+	self subclassResponsibility
+!
+
+visitUnit: aUnit
+	self subclassResponsibility
+! !
+
+!CWVisitor methodsFor: 'visiting - public'!
+
+visitChildTrees: aBusinessObject
+	aBusinessObject children do: [ :each |
+		self visitTree: each ]
+!
+
+visitChildren: aBusinessObject
+	aBusinessObject children do: [ :each |
+		each accept: self ]
+!
+
+visitTree: aComponent
+	aComponent accept: self.
+	self visitChildTrees: aComponent.
+! !
+
+CWVisitor class instanceVariableNames: 'singleton'!
+
+CWVisitor subclass: #CWJsonWriter
+	instanceVariableNames: 'stream indentLevel otNumber'
+	package: 'Easnoth-MapModel'!
+!CWJsonWriter commentStamp!
+I can export the current map to json data fromat.
+
+CWJsonWriter new exportMap: CWMap default!
+
+!CWJsonWriter methodsFor: 'helper'!
+
+extractKeyFrom: url
+	| imageName |
+	imageName := (url tokenize: '/') last.
+	^ (imageName tokenize: '.') first
+! !
+
+!CWJsonWriter methodsFor: 'initialize-release'!
+
+initialize
+	super initialize.
+	stream := StringStream on: ''.
+	indentLevel := 0.
+! !
+
+!CWJsonWriter methodsFor: 'public'!
+
+exportMap: aMap
+	"returns the string to write down in the json file"
+
+	aMap removeSelection.
+	self visitMap: aMap.
+	^ stream collection asString
+! !
+
+!CWJsonWriter methodsFor: 'stream API'!
+
+cr
+	stream cr.
+	1 to: indentLevel do: [ :each | stream tab ]
+!
+
+crIndentDecr
+	self decreaseIndent.
+	self cr.
+!
+
+crIndentIncr
+	self increaseIndent.
+	self cr.
+!
+
+decreaseIndent
+	indentLevel := indentLevel - 1.
+	indentLevel < 0 ifTrue: [ self error: 'indentation problem' ]
+!
+
+increaseIndent
+	indentLevel := indentLevel + 1
+!
+
+nextPutAll: aString
+	stream nextPutAll: aString
+!
+
+space
+	stream space
+! !
+
+!CWJsonWriter methodsFor: 'stream HL API'!
+
+commaCr
+	self 
+		nextPutAll: ',';
+		cr
+!
+
+endArray
+	self 
+		crIndentDecr;
+		nextPutAll: ']'
+!
+
+endObject
+	self 
+		crIndentDecr;
+		nextPutAll: '}'.
+!
+
+objectFieldName: aName intValue: anInt
+	" ""aName"": anInt "
+
+	self 
+		nextPutAll: '"';
+		nextPutAll: aName;
+		nextPutAll: '": ';
+		nextPutAll: anInt printString
+!
+
+objectFieldName: aName stringValue: aString
+	" ""aName"": ""aString"" "
+
+	self 
+		nextPutAll: '"';
+		nextPutAll: aName;
+		nextPutAll: '": "';
+		nextPutAll: aString;
+		nextPutAll: '"'
+!
+
+startArrayNamed: aString
+	self 
+		nextPutAll: '"';
+		nextPutAll: aString;
+		nextPutAll: '": [';
+		crIndentIncr
+!
+
+startObject
+	self 
+		nextPutAll: '{';
+		crIndentIncr
+!
+
+startObjectNamed: aName
+	self 
+		nextPutAll: '"';
+		nextPutAll: aName;
+		nextPutAll: '": ';
+		startObject
+! !
+
+!CWJsonWriter methodsFor: 'visiting'!
+
+visitCell: aCell
+	otNumber := 0.
+	self 
+		startObject;
+		visitChildren: aCell;
+		endObject.
+!
+
+visitChildren: aBusinessObject
+	aBusinessObject children withIndexDo: [ :child :i |
+			child accept: self.
+			i = aBusinessObject children size 
+				ifFalse: [ self commaCr ] ].
+!
+
+visitGameOverTile: aGameOverTile
+	self error: 'gameOverTile should have been removed before exportation'
+!
+
+visitHeros: aHeros
+	self
+		startObjectNamed: 'heros';
+		visitMonster: aHeros
+!
+
+visitMap: aMap
+	self 
+		startObject;
+		objectFieldName: 'name' stringValue: 'foo';
+		commaCr;
+		startArrayNamed: 'row';
+		visitChildren: aMap;
+		endArray;
+		endObject.
+!
+
+visitMonster: aMonster
+	self
+		objectFieldName: 'name' stringValue: (self extractKeyFrom: aMonster image src);
+		commaCr;
+		objectFieldName: 'side' intValue: aMonster side;
+		endObject
+!
+
+visitOverTile: anOverTile
+	otNumber := otNumber + 1.
+	self objectFieldName: 'overtile', otNumber stringValue: (self extractKeyFrom: anOverTile image src).
+!
+
+visitRow: aRow
+	self 
+		startObject;
+		startArrayNamed: 'cells';
+		visitChildren: aRow;
+		endArray;
+		endObject.
+!
+
+visitTile: aTile
+	self objectFieldName: 'tile' stringValue: (self extractKeyFrom: aTile image src)
+!
+
+visitUnit: aUnit
+	self
+		startObjectNamed: 'unit';
+		visitMonster: aUnit
+! !
+
+!JSObjectProxy methodsFor: '*Easnoth-MapModel'!
 
 keys
 	| col |

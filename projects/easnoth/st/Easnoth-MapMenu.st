@@ -1,7 +1,7 @@
-Smalltalk current createPackage: 'Easnoth-Menu'!
+Smalltalk current createPackage: 'Easnoth-MapMenu'!
 Widget subclass: #CWWidget
 	instanceVariableNames: 'parent'
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWWidget methodsFor: 'accessing'!
 
@@ -40,7 +40,7 @@ isRoot
 
 CWWidget subclass: #CWActionMenu
 	instanceVariableNames: 'components'
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWActionMenu methodsFor: 'accessing'!
 
@@ -88,7 +88,7 @@ isRoot
 
 CWActionMenu subclass: #CWFightMenu
 	instanceVariableNames: ''
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWFightMenu methodsFor: 'accessing'!
 
@@ -109,7 +109,7 @@ initialize
 
 CWWidget subclass: #CWActionMenuComponent
 	instanceVariableNames: ''
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWActionMenuComponent methodsFor: 'accessing'!
 
@@ -119,7 +119,7 @@ children
 
 CWActionMenuComponent subclass: #CWDices
 	instanceVariableNames: 'box'
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 !CWDices commentStamp!
 SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.!
 
@@ -189,7 +189,7 @@ showDicesNoAnimation: monster
 
 CWActionMenuComponent subclass: #CWMapControls
 	instanceVariableNames: ''
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWMapControls methodsFor: 'actions'!
 
@@ -223,7 +223,7 @@ renderOn: html
 
 CWActionMenuComponent subclass: #CWMonsterWatcher
 	instanceVariableNames: 'monster box'
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWMonsterWatcher methodsFor: 'accessing'!
 
@@ -293,7 +293,7 @@ update
 
 CWActionMenuComponent subclass: #CWTurnWatcher
 	instanceVariableNames: 'box'
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWTurnWatcher methodsFor: 'rendering'!
 
@@ -322,7 +322,7 @@ update
 
 CWWidget subclass: #CWDice
 	instanceVariableNames: ''
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWDice methodsFor: 'accessing'!
 
@@ -394,7 +394,7 @@ renderOn: html callback: cb
 
 CWDice subclass: #CWDiceDeath
 	instanceVariableNames: ''
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWDiceDeath methodsFor: 'accessing'!
 
@@ -404,7 +404,7 @@ url
 
 CWDice subclass: #CWDiceMiss
 	instanceVariableNames: ''
-	package: 'Easnoth-Menu'!
+	package: 'Easnoth-MapMenu'!
 
 !CWDiceMiss methodsFor: 'accessing'!
 
