@@ -1,6 +1,33 @@
 smalltalk.addPackage('Easnoth-Visitors');
+smalltalk.addClass('CWLayer', smalltalk.Object, [], 'Easnoth-Visitors');
+
+
+smalltalk.addClass('CWCanvasLayer', smalltalk.CWLayer, [], 'Easnoth-Visitors');
+
+
+smalltalk.addClass('CWImageLayer', smalltalk.CWLayer, [], 'Easnoth-Visitors');
+
+
 smalltalk.addClass('CWMapInterpreterContext', smalltalk.Object, ['rowIndex', 'cellIndex'], 'Easnoth-Visitors');
 smalltalk.CWMapInterpreterContext.comment="general context just to know the coods in the map of cells"
+smalltalk.addMethod(
+smalltalk.method({
+selector: "currentCoods",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@rowIndex"]).__at(self["@cellIndex"]);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"currentCoods",{},smalltalk.CWMapInterpreterContext)})},
+args: [],
+source: "currentCoods\x0a\x09^ rowIndex @ cellIndex",
+messageSends: ["@"],
+referencedClasses: []
+}),
+smalltalk.CWMapInterpreterContext);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "nextCell",
@@ -213,11 +240,11 @@ category: 'visiting',
 fn: function (ot){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._drawIsometric_inContext_(ot,_st(self["@drawer"])._backgroundContext());
+_st(self["@drawer"])._drawBackground_(ot);
 return self}, function($ctx1) {$ctx1.fill(self,"visitOverTile:",{ot:ot},smalltalk.CWGlobalDrawingContext)})},
 args: ["ot"],
-source: "visitOverTile: ot\x0a\x09drawer drawIsometric: ot inContext: drawer backgroundContext.",
-messageSends: ["drawIsometric:inContext:", "backgroundContext"],
+source: "visitOverTile: ot\x0a\x09drawer drawBackground: ot",
+messageSends: ["drawBackground:"],
 referencedClasses: []
 }),
 smalltalk.CWGlobalDrawingContext);
@@ -229,12 +256,12 @@ category: 'visiting',
 fn: function (aTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._drawBackTile_(_st(self["@drawer"])._backgroundContext());
-_st(self["@drawer"])._drawIsometric_inContext_(aTile,_st(self["@drawer"])._backgroundContext());
+_st(self["@drawer"])._drawBackTile();
+_st(self["@drawer"])._drawBackground_(aTile);
 return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.CWGlobalDrawingContext)})},
 args: ["aTile"],
-source: "visitTile: aTile\x0a\x09drawer drawBackTile: drawer backgroundContext.\x0a\x09drawer drawIsometric: aTile inContext: drawer backgroundContext",
-messageSends: ["drawBackTile:", "backgroundContext", "drawIsometric:inContext:"],
+source: "visitTile: aTile\x0a\x09drawer drawBackTile.\x0a\x09drawer drawBackground: aTile",
+messageSends: ["drawBackTile", "drawBackground:"],
 referencedClasses: []
 }),
 smalltalk.CWGlobalDrawingContext);
@@ -1103,6 +1130,25 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "backTileImage",
+category: 'accessing',
+fn: function (){
+var self=this;
+function $CWBackground(){return smalltalk.CWBackground||(typeof CWBackground=="undefined"?nil:CWBackground)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st($CWBackground())._imageCacheAt_("back");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"backTileImage",{},smalltalk.CWMapDrawer)})},
+args: [],
+source: "backTileImage\x0a\x09^ CWBackground imageCacheAt: 'back'",
+messageSends: ["imageCacheAt:"],
+referencedClasses: ["CWBackground"]
+}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "backgroundCanvas",
 category: 'accessing',
 fn: function (){
@@ -1315,21 +1361,38 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawBackTile:",
+selector: "drawBackTile",
 category: 'rendering',
-fn: function (ctx){
+fn: function (){
 var self=this;
-function $CWBackground(){return smalltalk.CWBackground||(typeof CWBackground=="undefined"?nil:CWBackground)}
+var ctx;
 return smalltalk.withContext(function($ctx1) { 
+ctx=_st(self)._backgroundContext();
 _st(self)._safeDraw_inContext_((function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(ctx)._drawImage_x_y_(_st($CWBackground())._imageCacheAt_("back"),_st(_st(_st(self)._currentPoint())._x()).__minus((4)),_st(_st(_st(self)._currentPoint())._y()).__plus((20)));
+return _st(ctx)._drawImage_x_y_(_st(self)._backTileImage(),_st(_st(_st(self)._currentPoint())._x()).__minus((4)),_st(_st(_st(self)._currentPoint())._y()).__plus((20)));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
-return self}, function($ctx1) {$ctx1.fill(self,"drawBackTile:",{ctx:ctx},smalltalk.CWMapDrawer)})},
-args: ["ctx"],
-source: "drawBackTile: ctx\x0a\x09self safeDraw: [ ctx drawImage: (CWBackground imageCacheAt: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx",
-messageSends: ["safeDraw:inContext:", "drawImage:x:y:", "imageCacheAt:", "-", "x", "currentPoint", "+", "y"],
-referencedClasses: ["CWBackground"]
+return self}, function($ctx1) {$ctx1.fill(self,"drawBackTile",{ctx:ctx},smalltalk.CWMapDrawer)})},
+args: [],
+source: "drawBackTile\x0a\x09| ctx |\x0a\x09ctx := self backgroundContext.\x0a\x09self safeDraw: [ ctx drawImage: self backTileImage x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx",
+messageSends: ["backgroundContext", "safeDraw:inContext:", "drawImage:x:y:", "backTileImage", "-", "x", "currentPoint", "+", "y"],
+referencedClasses: []
+}),
+smalltalk.CWMapDrawer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "drawBackground:",
+category: 'rendering',
+fn: function (object){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._drawIsometric_inContext_(object,_st(self)._backgroundContext());
+return self}, function($ctx1) {$ctx1.fill(self,"drawBackground:",{object:object},smalltalk.CWMapDrawer)})},
+args: ["object"],
+source: "drawBackground: object\x0a\x09self drawIsometric: object inContext: self backgroundContext",
+messageSends: ["drawIsometric:inContext:", "backgroundContext"],
+referencedClasses: []
 }),
 smalltalk.CWMapDrawer);
 
@@ -1339,17 +1402,15 @@ selector: "drawGOT:",
 category: 'rendering',
 fn: function (got){
 var self=this;
-var ctx;
 return smalltalk.withContext(function($ctx1) { 
-ctx=_st(self)._gameContext();
-_st(self)._safeDraw_inContext_((function(){
+_st(self)._safeDraw_inContext_((function(context){
 return smalltalk.withContext(function($ctx2) {
-return _st(self)._display_inContext_X_y_(got,ctx,_st(_st(_st(self)._currentPoint())._x()).__minus((15)),_st(_st(_st(self)._currentPoint())._y()).__minus((10)));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
-return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:",{got:got,ctx:ctx},smalltalk.CWMapDrawer)})},
+return _st(self)._display_inContext_X_y_(got,context,_st(_st(_st(self)._currentPoint())._x()).__minus((15)),_st(_st(_st(self)._currentPoint())._y()).__minus((10)));
+}, function($ctx2) {$ctx2.fillBlock({context:context},$ctx1)})}),_st(self)._gameContext());
+return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:",{got:got},smalltalk.CWMapDrawer)})},
 args: ["got"],
-source: "drawGOT: got\x0a\x09| ctx |\x0a\x09ctx := self gameContext.\x0a\x09self safeDraw: [ self display: got inContext: ctx X: self currentPoint x - 15 y: self currentPoint y - 10 ] inContext: ctx",
-messageSends: ["gameContext", "safeDraw:inContext:", "display:inContext:X:y:", "-", "x", "currentPoint", "y"],
+source: "drawGOT: got\x0a\x09self safeDraw: [ :context | self display: got inContext: context X: self currentPoint x - 15 y: self currentPoint y - 10 ] inContext: self gameContext",
+messageSends: ["safeDraw:inContext:", "display:inContext:X:y:", "-", "x", "currentPoint", "y", "gameContext"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);
@@ -1387,19 +1448,19 @@ var self=this;
 function $Number(){return smalltalk.Number||(typeof Number=="undefined"?nil:Number)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-_st(self)._safeDraw_inContext_((function(){
+_st(self)._safeDraw_inContext_((function(context){
 return smalltalk.withContext(function($ctx2) {
-$1=ctx;
+$1=context;
 _st($1)._translate_y_(_st(_st(_st(self)._currentPoint())._x()).__plus((45)),_st(_st(_st(self)._currentPoint())._y()).__minus((7)));
 _st($1)._scale_y_((1),(0.5));
 _st($1)._rotate_(_st(_st($Number())._pi()).__slash((4)));
 $2=_st($1)._scale_y_((1.4),(1.33));
 $2;
-return _st(self)._display_inContext_(object,ctx);
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
+return _st(self)._display_inContext_(object,context);
+}, function($ctx2) {$ctx2.fillBlock({context:context},$ctx1)})}),ctx);
 return self}, function($ctx1) {$ctx1.fill(self,"drawIsometric:inContext:",{object:object,ctx:ctx},smalltalk.CWMapDrawer)})},
 args: ["object", "ctx"],
-source: "drawIsometric: object inContext: ctx\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09self safeDraw: [ ctx \x0a\x09\x09translate: self currentPoint x + 45 y: self currentPoint y - 7;\x0a\x09\x09scale: 1 y: 0.5;\x0a\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09scale: 1.4 y: 1.33.\x0a\x09self display: object inContext: ctx ]\x0a\x09\x09inContext: ctx",
+source: "drawIsometric: object inContext: ctx\x0a\x09\x22draw through isometric transformation\x22\x0a\x0a\x09self safeDraw: [ :context |\x0a\x09\x09context \x0a\x09\x09\x09translate: self currentPoint x + 45 y: self currentPoint y - 7;\x0a\x09\x09\x09scale: 1 y: 0.5;\x0a\x09\x09\x09rotate: Number pi / 4 ;\x0a\x09\x09\x09scale: 1.4 y: 1.33.\x0a\x09self display: object inContext: context ]\x0a\x09\x09inContext: ctx",
 messageSends: ["safeDraw:inContext:", "translate:y:", "+", "x", "currentPoint", "-", "y", "scale:y:", "rotate:", "/", "pi", "display:inContext:"],
 referencedClasses: ["Number"]
 }),
@@ -1751,17 +1812,17 @@ fn: function (heros,ctx,aX,aY){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-_st(self)._safeDraw_inContext_((function(){
+_st(self)._safeDraw_inContext_((function(context){
 return smalltalk.withContext(function($ctx2) {
-$1=ctx;
+$1=context;
 _st($1)._translate_y_(_st(_st(_st(self)._currentPoint())._x()).__plus(aX),(0));
 $2=_st($1)._scale_y_((-1),(1));
 $2;
-return _st(self)._display_inContext_X_y_(heros,ctx,(0),_st(_st(_st(self)._currentPoint())._y()).__minus(aY));
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}),ctx);
+return _st(self)._display_inContext_X_y_(heros,context,(0),_st(_st(_st(self)._currentPoint())._y()).__minus(aY));
+}, function($ctx2) {$ctx2.fillBlock({context:context},$ctx1)})}),ctx);
 return self}, function($ctx1) {$ctx1.fill(self,"reverseDisplay:inContext:xPad:yPad:",{heros:heros,ctx:ctx,aX:aX,aY:aY},smalltalk.CWMapDrawer)})},
 args: ["heros", "ctx", "aX", "aY"],
-source: "reverseDisplay: heros inContext: ctx xPad: aX yPad: aY\x0a\x09\x2287 = 72 (width image + 15\x22\x0a\x0a\x09self safeDraw: [ ctx\x0a\x09\x09translate: self currentPoint x + aX y: 0;\x0a\x09\x09scale: -1 y: 1.\x0a\x09self display: heros inContext: ctx X: 0 y: self currentPoint y - aY ]\x0a\x09\x09inContext: ctx\x0a\x09\x0a\x09",
+source: "reverseDisplay: heros inContext: ctx xPad: aX yPad: aY\x0a\x09\x2287 = 72 (width image + 15\x22\x0a\x0a\x09self safeDraw: [ :context |\x0a\x09\x09context\x0a\x09\x09\x09translate: self currentPoint x + aX y: 0;\x0a\x09\x09\x09scale: -1 y: 1.\x0a\x09\x09self display: heros inContext: context X: 0 y: self currentPoint y - aY ]\x0a\x09\x09inContext: ctx\x0a\x09\x0a\x09",
 messageSends: ["safeDraw:inContext:", "translate:y:", "+", "x", "currentPoint", "scale:y:", "display:inContext:X:y:", "-", "y"],
 referencedClasses: []
 }),
@@ -1794,15 +1855,15 @@ return smalltalk.withContext(function($ctx1) {
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(ctx)._save();
-return _st(aBlock)._value();
+return _st(aBlock)._value_(ctx);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._ensure_((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(ctx)._restore();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"safeDraw:inContext:",{aBlock:aBlock,ctx:ctx},smalltalk.CWMapDrawer)})},
 args: ["aBlock", "ctx"],
-source: "safeDraw: aBlock inContext: ctx\x0a\x09\x22ensure that the drawing context will be restored\x22\x0a\x0a\x09[ ctx save.\x0a\x09aBlock value ]\x0a\x09\x09ensure: [ ctx restore ]",
-messageSends: ["ensure:", "restore", "save", "value"],
+source: "safeDraw: aBlock inContext: ctx\x0a\x09\x22ensure that the drawing context will be restored\x22\x0a\x0a\x09[ ctx save.\x0a\x09aBlock value: ctx ]\x0a\x09\x09ensure: [ ctx restore ]",
+messageSends: ["ensure:", "restore", "save", "value:"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);

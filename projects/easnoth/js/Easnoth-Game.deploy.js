@@ -700,34 +700,10 @@ selector: "iterate",
 fn: function (){
 var self=this;
 var tempArray;
-function $CWAssociationList(){return smalltalk.CWAssociationList||(typeof CWAssociationList=="undefined"?nil:CWAssociationList)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-var $early={};
-try {
-tempArray=_st($CWAssociationList())._new();
-_st(self["@listToStudy"])._keysAndValuesDo_((function(key,value){
-return smalltalk.withContext(function($ctx2) {
-_st(self["@studiedList"])._add_(_st(key).__minus_gt(value));
-return _st(_st(value)._freeNeighbours())._do_((function(each){
-return smalltalk.withContext(function($ctx3) {
-$1=_st(_st(self["@studiedList"])._values())._includes_(each);
-if(! smalltalk.assert($1)){
-_st(tempArray)._add_(_st(value).__minus_gt(each));
-$2=_st(each).__eq(self["@cellLast"]);
-if(smalltalk.assert($2)){
-_st(self["@studiedList"])._add_(_st(value).__minus_gt(each));
-$3=_st(self)._pathAnswer();
-throw $early=[$3];
-};
-};
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1)})}));
 self["@listToStudy"]=tempArray;
-return self}
-catch(e) {if(e===$early)return e[0]; throw e}
-}, function($ctx1) {$ctx1.fill(self,"iterate",{tempArray:tempArray},smalltalk.CWPathFinder)})},
-messageSends: ["new", "keysAndValuesDo:", "add:", "->", "do:", "ifFalse:", "ifTrue:", "pathAnswer", "=", "includes:", "values", "freeNeighbours"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"iterate",{tempArray:tempArray},smalltalk.CWPathFinder)})},
+messageSends: []}),
 smalltalk.CWPathFinder);
 
 smalltalk.addMethod(
@@ -1275,15 +1251,13 @@ relatedTargetCell;
 $1;
 };
 duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
-_st(_st(self["@monsterToPlay"])._root())._removeSelection();
-_st(_st(self["@monsterToPlay"])._parent())._mouseClick_(_st(self)._gameContext());
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
-messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "removeSelection", "root", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"]}),
+messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"]}),
 smalltalk.CWAggressWeakestAI);
 
 smalltalk.addMethod(
@@ -1336,7 +1310,6 @@ var $1;
 var $early={};
 try {
 self["@monsterToPlay"]=_st(_st(self)._team())._at_(_st(_st(_st(self)._team())._size())._atRandom());
-_st(_st(self["@monsterToPlay"])._root())._removeSelection();
 cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle_(_st(self["@monsterToPlay"])._move()))._remove_(_st(self["@monsterToPlay"])._parent());
 _st(cellsToGo)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -1347,7 +1320,7 @@ self["@cellToTarget"]=_st(_st(cellsToGo)._asArray())._atRandom();
 return self}
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"randomMove",{cellsToGo:cellsToGo},smalltalk.CWAggressWeakestAI)})},
-messageSends: ["at:", "atRandom", "size", "team", "removeSelection", "root", "remove:", "parent", "movableNeighboursCycle:", "move", "ifEmpty:", "checkForNextTurn:", "asArray"]}),
+messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle:", "move", "ifEmpty:", "checkForNextTurn:", "asArray"]}),
 smalltalk.CWAggressWeakestAI);
 
 smalltalk.addMethod(

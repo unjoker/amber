@@ -919,37 +919,13 @@ category: 'private',
 fn: function (){
 var self=this;
 var tempArray;
-function $CWAssociationList(){return smalltalk.CWAssociationList||(typeof CWAssociationList=="undefined"?nil:CWAssociationList)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-var $early={};
-try {
-tempArray=_st($CWAssociationList())._new();
-_st(self["@listToStudy"])._keysAndValuesDo_((function(key,value){
-return smalltalk.withContext(function($ctx2) {
-_st(self["@studiedList"])._add_(_st(key).__minus_gt(value));
-return _st(_st(value)._freeNeighbours())._do_((function(each){
-return smalltalk.withContext(function($ctx3) {
-$1=_st(_st(self["@studiedList"])._values())._includes_(each);
-if(! smalltalk.assert($1)){
-_st(tempArray)._add_(_st(value).__minus_gt(each));
-$2=_st(each).__eq(self["@cellLast"]);
-if(smalltalk.assert($2)){
-_st(self["@studiedList"])._add_(_st(value).__minus_gt(each));
-$3=_st(self)._pathAnswer();
-throw $early=[$3];
-};
-};
-}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({key:key,value:value},$ctx1)})}));
 self["@listToStudy"]=tempArray;
-return self}
-catch(e) {if(e===$early)return e[0]; throw e}
-}, function($ctx1) {$ctx1.fill(self,"iterate",{tempArray:tempArray},smalltalk.CWPathFinder)})},
+return self}, function($ctx1) {$ctx1.fill(self,"iterate",{tempArray:tempArray},smalltalk.CWPathFinder)})},
 args: [],
-source: "iterate\x0a\x09\x22Calculs path for toStudyList cells and set the correct value to it\x22\x0a\x0a\x09| tempArray |\x0a\x0a\x09tempArray := CWAssociationList new.\x0a\x09listToStudy keysAndValuesDo: [ :key :value |\x0a\x09\x09studiedList add: (key -> value).\x0a\x09\x09value freeNeighbours do: [ :each |\x0a\x09\x09\x09(studiedList values includes: each) ifFalse: [ \x0a\x09\x09\x09\x09tempArray add: (value -> each).\x0a\x09\x09\x09\x09each = cellLast ifTrue: [ \x0a\x09\x09\x09\x09\x09studiedList add: (value -> each).\x0a\x09\x09\x09\x09\x09^ self pathAnswer ] ] ] ].\x0a\x09\x09 \x0a\x09listToStudy := tempArray.",
-messageSends: ["new", "keysAndValuesDo:", "add:", "->", "do:", "ifFalse:", "ifTrue:", "pathAnswer", "=", "includes:", "values", "freeNeighbours"],
-referencedClasses: ["CWAssociationList"]
+source: "iterate\x0a\x09\x22Calculs path for toStudyList cells and set the correct value to it\x22\x0a\x0a\x09| tempArray |\x0a\x0a\x09\x22tempArray := CWAssociationList new.\x0a\x09listToStudy keysAndValuesDo: [ :key :value |\x0a\x09\x09studiedList add: (key -> value).\x0a\x09\x09value freeNeighbours do: [ :each |\x0a\x09\x09\x09(studiedList values includes: each) ifFalse: [ \x0a\x09\x09\x09\x09tempArray add: (value -> each).\x0a\x09\x09\x09\x09each = cellLast ifTrue: [ \x0a\x09\x09\x09\x09\x09studiedList add: (value -> each).\x0a\x09\x09\x09\x09\x09^ self pathAnswer ] ] ] ].\x22\x0a\x09\x09 \x0a\x09listToStudy := tempArray.",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.CWPathFinder);
 
@@ -1671,8 +1647,6 @@ relatedTargetCell;
 $1;
 };
 duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
-_st(_st(self["@monsterToPlay"])._root())._removeSelection();
-_st(_st(self["@monsterToPlay"])._parent())._mouseClick_(_st(self)._gameContext());
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -1680,8 +1654,8 @@ return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09\x22hack\x22\x0a\x09monsterToPlay root removeSelection.\x0a\x09monsterToPlay parent mouseClick: self gameContext. \x0a\x09\x22end hack : to reset tracks and monsterselected tiles\x22\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
-messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "removeSelection", "root", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
+source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
+messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1747,7 +1721,6 @@ var $1;
 var $early={};
 try {
 self["@monsterToPlay"]=_st(_st(self)._team())._at_(_st(_st(_st(self)._team())._size())._atRandom());
-_st(_st(self["@monsterToPlay"])._root())._removeSelection();
 cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle_(_st(self["@monsterToPlay"])._move()))._remove_(_st(self["@monsterToPlay"])._parent());
 _st(cellsToGo)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -1759,8 +1732,8 @@ return self}
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"randomMove",{cellsToGo:cellsToGo},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "randomMove\x0a\x09\x22Assumes that no monster can attack. Set bestMove to some random move of some random monster\x22\x0a\x09| cellsToGo |\x0a\x09monsterToPlay := self team at: self team size atRandom.\x0a\x09\x22hack for the selected cells for pathfinding ...\x22\x0a\x09monsterToPlay root removeSelection.\x0a\x09\x22end hack\x22\x0a\x09cellsToGo := (monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent.\x0a\x09cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. \x22Case where the monster cannot move (surrounded by allies)\x22\x0a\x09cellToTarget := cellsToGo asArray atRandom.",
-messageSends: ["at:", "atRandom", "size", "team", "removeSelection", "root", "remove:", "parent", "movableNeighboursCycle:", "move", "ifEmpty:", "checkForNextTurn:", "asArray"],
+source: "randomMove\x0a\x09\x22Assumes that no monster can attack. Set bestMove to some random move of some random monster\x22\x0a\x09| cellsToGo |\x0a\x09monsterToPlay := self team at: self team size atRandom.\x0a\x09cellsToGo := (monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent.\x0a\x09cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. \x22Case where the monster cannot move (surrounded by allies)\x22\x0a\x09cellToTarget := cellsToGo asArray atRandom.",
+messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle:", "move", "ifEmpty:", "checkForNextTurn:", "asArray"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);

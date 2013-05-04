@@ -359,7 +359,7 @@ iterate
 
 	| tempArray |
 
-	tempArray := CWAssociationList new.
+	"tempArray := CWAssociationList new.
 	listToStudy keysAndValuesDo: [ :key :value |
 		studiedList add: (key -> value).
 		value freeNeighbours do: [ :each |
@@ -367,7 +367,7 @@ iterate
 				tempArray add: (value -> each).
 				each = cellLast ifTrue: [ 
 					studiedList add: (value -> each).
-					^ self pathAnswer ] ] ] ].
+					^ self pathAnswer ] ] ] ]."
 		 
 	listToStudy := tempArray.
 !
@@ -626,10 +626,6 @@ executeAttack
 	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.
 	relatedTargetCell ifNil: [ "case where the ennemy is neighbour and no free cells around" relatedTargetCell := monsterToPlay parent ].
 	duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.
-	"hack"
-	monsterToPlay root removeSelection.
-	monsterToPlay parent mouseClick: self gameContext. 
-	"end hack : to reset tracks and monsterselected tiles"
 	cellToTarget mouseClick: self gameContext. 
 	[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.
 !
@@ -656,9 +652,6 @@ randomMove
 	"Assumes that no monster can attack. Set bestMove to some random move of some random monster"
 	| cellsToGo |
 	monsterToPlay := self team at: self team size atRandom.
-	"hack for the selected cells for pathfinding ..."
-	monsterToPlay root removeSelection.
-	"end hack"
 	cellsToGo := (monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent.
 	cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. "Case where the monster cannot move (surrounded by allies)"
 	cellToTarget := cellsToGo asArray atRandom.
