@@ -1,19 +1,269 @@
-Smalltalk current createPackage: 'Easnoth-Visitors'!
+Smalltalk current createPackage: 'Easnoth-MapUI'!
+Object subclass: #CWEventDispatcher
+	instanceVariableNames: 'canvas map drawer game suspended'
+	package: 'Easnoth-MapUI'!
+!CWEventDispatcher commentStamp!
+I dispatch event from eventManager canvas to cells.!
+
+!CWEventDispatcher methodsFor: 'accessing'!
+
+announcer
+	^ CWEasnothAnnouncer current
+!
+
+canvas
+	^ canvas
+!
+
+cellAt: i y: j
+	^ (self rowAt: i) childAt: j
+!
+
+cellAt: i y: j ifAbsent: aBlock
+	"need to change the implementation"
+	^ [(self rowAt: i) childAt: j] on: Error do: [ aBlock value ]
+!
+
+eventManagerLayerId
+	^ '#eventManager'
+!
+
+padding
+	^ drawer padding
+!
+
+rowAt: index
+	^ map childAt: index
+! !
+
+!CWEventDispatcher methodsFor: 'calculs'!
+
+currentCell: anEvent
+	|x y cood|
+	
+     x := anEvent pageX - self canvas element offsetLeft.
+     y := anEvent pageY - self canvas element offsetTop.
+
+     cood := self mouseCoodToHexCoodX: x y: y.
+	
+	"if out of map then nil"
+	^ self cellAt: cood x y: cood y ifAbsent: [ nil ]
+!
+
+mouseCoodToHexCoodX: x y: y
+	"function that take mouse cood in pixel and return the coods of the tile selected"
+	
+	"algo is in javascript"
+
+	| xHex yHex array mapDisplayX mapDisplayY|
+                
+	mapDisplayX := self padding x.
+	mapDisplayY := self padding y.
+
+	array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.
+    
+    xHex := array at: 1.
+    yHex := array at: 2.
+    
+	^xHex @ yHex.
+!
+
+mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
+	"function that take mouse cood in pixel and return the coods of the tile selected"
+
+		<function mod(n, mod) {
+			return ((mod+(n%mod))%mod);
+		}
+
+		var cosmaingridx = 0.882947593;
+		var sinmaingridx = 0.469471563;
+		var cosmaingridy = -0.130526192;
+		var sinmaingridy = 0.991444861;
+		
+		var cosothergridx = 0.4539905;
+		var sinothergridx = 0.891006524;
+		var cosothergridy = -0.882947593;
+		var sinothergridy = 0.469471563;
+		
+		var nb = Math.floor(((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)));
+		var nb2 = Math.floor(((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)));
+		
+		var xConstante = 9 + (mod(nb,3));
+		var yConstante = 20 + (mod(nb2,2));
+		if (nb2%2 == 0) {yConstante += mod(nb+1,2);}
+		
+		xHex = Math.floor(((xConstante-nb)/6)+((yConstante-nb2)/2));
+		yHex = Math.floor(((nb-xConstante)/4)+((yConstante-nb2)/4));
+		
+		if (mod(nb,6)==1 && nb2%2==0){
+			xHex++;
+			if (nb2%4==0 && mod(nb,12)!!=7){yHex++;}
+			if (mod(nb2,4)==2 && mod(nb,12)==7){yHex++;}
+		}
+		
+		if (nb%3==0) {		
+			if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {
+				var nb3 = Math.floor(((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)));
+				var nbCheck = 3+2*yHex+(xHex%2);
+				if (nb3 == nbCheck) {yHex--;}
+			}
+			else {
+				var nb4 = Math.floor(((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)));
+				var nbCheck = 7-Math.floor(3*xHex/2)+yHex;
+				if (nb4 == nbCheck) {
+					if (xHex%2 == 0) {yHex--;}
+					xHex++;
+				}
+			}
+		}
+        var a = new Array(2);
+        a[0] = xHex;
+        a[1] = yHex;
+        return a>
+! !
+
+!CWEventDispatcher methodsFor: 'events'!
+
+dispatchMouseClick: event
+	| cc |
+	suspended ifFalse: [
+		cc := self currentCell: event.
+		cc ifNotNil: [ 
+			cc mouseClick: game gameContext ] ]
+! !
+
+!CWEventDispatcher methodsFor: 'initialize-release'!
+
+initialize
+	super initialize. 
+	suspended := false.
+	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
+	"canvas element style zIndex: 2000."
+!
+
+initializeEventHandling
+	self canvas onMouseUp: [:e | 
+		self dispatchMouseClick: e].
+!
+
+initializeForMap: aMap game: aGame
+	game := aGame.
+	map := aMap.
+	drawer := aMap drawer.
+	self initializeEventHandling.
+! !
+
+!CWEventDispatcher methodsFor: 'suspending'!
+
+resume
+	suspended := false
+!
+
+suspend
+	suspended := true
+! !
+
 Object subclass: #CWLayer
 	instanceVariableNames: ''
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
+!CWLayer commentStamp!
+I represent a layer in the map where yu can draw things.!
 
 CWLayer subclass: #CWCanvasLayer
-	instanceVariableNames: ''
-	package: 'Easnoth-Visitors'!
+	instanceVariableNames: 'canvas'
+	package: 'Easnoth-MapUI'!
+!CWCanvasLayer commentStamp!
+I represent a layer which is implement as a unique canvas!
+
+!CWCanvasLayer methodsFor: 'accessing'!
+
+context
+	^ canvas element getContext: '2d'
+! !
+
+!CWCanvasLayer methodsFor: 'factory'!
+
+canvasForId: id
+	"Answers amber canvas from a html id"
+
+	^ TagBrush fromJQuery: id asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)
+! !
+
+!CWCanvasLayer methodsFor: 'initialize-release'!
+
+initializeWithId: id
+	canvas := self canvasForId: id
+! !
+
+!CWCanvasLayer methodsFor: 'rendering'!
+
+clean
+	| elem |
+	elem := canvas element.
+	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
+!
+
+display: object
+	self display: object cood: 0@0
+!
+
+display: object cood: aPoint
+	self context
+		drawImage: object image
+		x: aPoint x
+		y: aPoint y.
+!
+
+drawImage: img x: x y: y
+	self context drawImage: img x: x y: y
+!
+
+drawIsometric: object point: point
+
+	self safeDraw: [ :context |
+		context 
+			translate: point x + 45 y: point y - 7;
+			scale: 1 y: 0.5;
+			rotate: Number pi / 4 ;
+			scale: 1.4 y: 1.33.
+	self display: object ]
+!
+
+reverseDisplay: monster point: point xPad: aX yPad: aY
+
+	[self context
+			translate: point x + aX y: 0;
+			scale: -1 y: 1.
+	self display: monster cood: 0@(point y - aY) ]
+	ensure: ["faster than save and restore"
+	self context
+		scale: -1 y: 1;
+		translate: (point x + aX) negated y: 0]
+!
+
+safeDraw: aBlock
+	"ensure that the drawing context will be restored"
+
+	[ self context save.
+	aBlock value: self context ]
+		ensure: [ self context restore ]
+! !
 
 CWLayer subclass: #CWImageLayer
-	instanceVariableNames: ''
-	package: 'Easnoth-Visitors'!
+	instanceVariableNames: 'array'
+	package: 'Easnoth-MapUI'!
+!CWImageLayer commentStamp!
+I represent a layer that is implemented as a 2 dimentianal array of images.!
+
+!CWImageLayer methodsFor: 'initialize-release'!
+
+initializeForMap: map
+	array := CWTwoDimArray new: map children size @ (map childAt: 1) children size.
+! !
 
 Object subclass: #CWMapInterpreterContext
 	instanceVariableNames: 'rowIndex cellIndex'
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
 !CWMapInterpreterContext commentStamp!
 general context just to know the coods in the map of cells!
 
@@ -51,7 +301,7 @@ default
 
 CWMapInterpreterContext subclass: #CWGlobalDrawingContext
 	instanceVariableNames: 'currentPointCache drawer'
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
 !CWGlobalDrawingContext commentStamp!
 I represent the execution context of the CWMapDrawer.
 With this context, the CWMap drawer will redraw the whole map.!
@@ -124,7 +374,7 @@ visitUnit: aUnit
 
 CWGlobalDrawingContext subclass: #CWMonsterAndGOTDrawingContext
 	instanceVariableNames: ''
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
 !CWMonsterAndGOTDrawingContext commentStamp!
 With this context, the CWMap drawer will redraw only monsters and game over tiles.!
 
@@ -140,7 +390,7 @@ visitTile: aTile
 
 CWMonsterAndGOTDrawingContext subclass: #CWGOTDrawingContext
 	instanceVariableNames: ''
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
 !CWGOTDrawingContext commentStamp!
 With this context, the CWMap drawer will redraw only game over tiles.!
 
@@ -154,9 +404,59 @@ visitUnit: aUnit
 	"do nothing"
 ! !
 
+Object subclass: #CWTwoDimArray
+	instanceVariableNames: 'array'
+	package: 'Easnoth-MapUI'!
+!CWTwoDimArray commentStamp!
+I am an Array with two dimension.
+
+I can be created through new: aPoint, aPoint being my x and y dimensions.
+
+Basic API :
+i:j: -> Answers element at (i,j)
+i:j:put: -> Put element at (i,j)!
+
+!CWTwoDimArray methodsFor: 'accessing'!
+
+i: i j: j
+	^ (array at: i) at: j
+!
+
+i: i j: j put: value
+	^ (array at: i) at: j put: value
+! !
+
+!CWTwoDimArray methodsFor: 'enumerating'!
+
+do: aBlock
+	array do: [ :subArray |
+		subArray do: [ :each |
+			aBlock value: each ] ]
+! !
+
+!CWTwoDimArray methodsFor: 'initialize - release'!
+
+initializeWithSize: aPoint
+	array := Array new: aPoint x.
+	1 to: aPoint x do: [ :index |
+		array at: index put: (Array new: aPoint y) ]
+! !
+
+!CWTwoDimArray class methodsFor: 'instance creation'!
+
+new
+	self shouldNotImplement
+!
+
+new: aPoint
+	^ self new
+		initializeWithSize: aPoint;
+		yourself
+! !
+
 Object subclass: #CWVisitor
 	instanceVariableNames: ''
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapModel'!
 !CWVisitor commentStamp!
 I am an abstract visitor that can visit the whole tree of business objects.!
 
@@ -215,7 +515,11 @@ CWVisitor class instanceVariableNames: 'singleton'!
 
 CWVisitor subclass: #CWJsonWriter
 	instanceVariableNames: 'stream indentLevel otNumber'
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapModel'!
+!CWJsonWriter commentStamp!
+I can export the current map to json data fromat.
+
+CWJsonWriter new exportMap: CWMap default!
 
 !CWJsonWriter methodsFor: 'helper'!
 
@@ -412,7 +716,7 @@ visitUnit: aUnit
 
 CWVisitor subclass: #CWMapInterpreter
 	instanceVariableNames: 'executionContext'
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
 !CWMapInterpreter commentStamp!
 While visiting the map, I modify my execution context which is kind of CWMapInterpreterContext. This way my context knows the coordinates of the leaf I am visiting.!
 
@@ -424,7 +728,7 @@ executionContext
 
 CWMapInterpreter subclass: #CWMapDrawer
 	instanceVariableNames: 'layers padding map'
-	package: 'Easnoth-Visitors'!
+	package: 'Easnoth-MapUI'!
 !CWMapDrawer commentStamp!
 I am a drawer that can draw the business objects through a visit of its tree.
 I am an implementation of the interpreter design pattern so I have a context of execution as instance variable.!
@@ -439,36 +743,24 @@ backTileImage
 	^ CWBackground imageCacheAt: 'back'
 !
 
-backgroundCanvas
+backgroundLayer
 	^ layers at: 1
 !
 
-backgroundContext
-	^ self contextForCanvas: self backgroundCanvas
-!
-
-contextForCanvas: canvas
-	^ canvas element getContext: '2d'
+currentCoods
+	^ self executionContext currentCoods
 !
 
 currentPoint
 	^ self executionContext currentPoint
 !
 
-gameCanvas
+gotLayer
 	^ layers at: 2
 !
 
-gameContext
-	^ self contextForCanvas: self gameCanvas
-!
-
-monsterCanvas
+monsterLayer
 	^ layers at: 3
-!
-
-monsterContext
-	^ self contextForCanvas: self monsterCanvas
 !
 
 padding
@@ -493,7 +785,7 @@ canvasPadding
 	^ 40
 !
 
-gameCanvasId
+gotCanvasId
 	"id of the game canvas for the css"
 
 	^ '#game'
@@ -513,10 +805,10 @@ tileUnit
 
 !CWMapDrawer methodsFor: 'factory'!
 
-canvasForId: id
-	"Answers amber canvas from a html id"
+layerForId: id
+	"Answers a CWLayer from a html id"
 
-	^ TagBrush fromJQuery: id asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)
+	^ CWCanvasLayer new initializeWithId: id
 !
 
 newGOTDrawingContext
@@ -553,10 +845,11 @@ initializeForMap: aMap
 
 initializeLayers
 	layers := Array new
-		at: 1 put: (self canvasForId: self backgroundCanvasId);
-		at: 2 put: (self canvasForId: self gameCanvasId);
-		at: 3 put: (self canvasForId: self monsterCanvasId);
-		yourself
+		at: 1 put: (self layerForId: self backgroundCanvasId);
+		at: 2 put: (self layerForId: self gotCanvasId);
+		at: 3 put: (self layerForId: self monsterCanvasId);
+		"at: 4 put: (self layerForId: self gameCanvasId);"
+		yourself.
 ! !
 
 !CWMapDrawer methodsFor: 'map move'!
@@ -585,129 +878,58 @@ up
 	self updateMap
 ! !
 
-!CWMapDrawer methodsFor: 'private'!
-
-cleanCanvas
-	"should be delegated to context"
-	
-	layers do: [:each |
-		self cleanCanvas: each ]
-!
-
-cleanCanvas: aCanvas
-	"shoudl be called by context method"
-	
-	| elem |
-	elem := aCanvas element.
-	(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height.
-! !
-
 !CWMapDrawer methodsFor: 'public'!
 
 updateGOTs
-	self cleanCanvas: self gameCanvas.
+	self gotLayer clean.
 	executionContext := self newGOTDrawingContext.
 	self visitTree: map.
 !
 
 updateMap
-	self cleanCanvas.
+	layers do: [ :each | each clean ].
 	executionContext := self newGlobalDrawingContext.
 	self visitTree: map.
 !
 
 updateMonstersAndGOTs
-	self cleanCanvas: self gameCanvas.
-	self cleanCanvas: self monsterCanvas.
+	self gotLayer clean.
+	self monsterLayer clean.
 	executionContext := self newMonsterAndGOTDrawingContext.
 	self visitTree: map.
 ! !
 
 !CWMapDrawer methodsFor: 'rendering'!
 
-display: object inContext: ctx
-	self display: object inContext: ctx X: 0 y: 0
-!
-
-display: object inContext: ctx X: x y: y
-	ctx
-		drawImage: object image
-		x: x
-		y: y.
-!
-
 drawBackTile
-	| ctx |
-	ctx := self backgroundContext.
-	self safeDraw: [ ctx drawImage: self backTileImage x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
+	self backgroundLayer drawImage: self backTileImage x: self currentPoint x - 4 y: self currentPoint y + 20
 !
 
 drawBackground: object
-	self drawIsometric: object inContext: self backgroundContext
+	self backgroundLayer drawIsometric: object point: self currentPoint
 !
 
 drawGOT: got
-	self safeDraw: [ :context | self display: got inContext: context X: self currentPoint x - 15 y: self currentPoint y - 10 ] inContext: self gameContext
+	self gotLayer safeDraw: [ :context | self gotLayer display: got cood: (self currentPoint x - 15)@(self currentPoint y - 10) ]
 !
 
 drawHeros: heros
-	"87 = 72 (width image + 15"
-	
-	| ctx |
-	ctx := self monsterContext.
-	(heros side negative) ifTrue: [
-		self reverseDisplay: heros inContext: ctx xPad: 87 yPad: 28
-	] ifFalse: [
-		self display: heros inContext: ctx  X: self currentPoint x + 15 y: self currentPoint y - 28
-	]
-!
-
-drawIsometric: object inContext: ctx
-	"draw through isometric transformation"
-
-	self safeDraw: [ :context |
-		context 
-			translate: self currentPoint x + 45 y: self currentPoint y - 7;
-			scale: 1 y: 0.5;
-			rotate: Number pi / 4 ;
-			scale: 1.4 y: 1.33.
-	self display: object inContext: context ]
-		inContext: ctx
+	(heros side negative) 
+		ifTrue: [ self monsterLayer reverseDisplay: heros point: self currentPoint xPad: 87 yPad: 28 ] 
+		ifFalse: [ self monsterLayer display: heros cood: (self currentPoint x + 15) @ (self currentPoint y - 28) ]
 !
 
 drawUnit: aUnit
-	| xArray yArray ctx |
+	| xArray yArray |
 
 	xArray := #(17 37 -11 9).
 	yArray := #(33 23 26 15).
 
-	ctx := self monsterContext.
 	(1 to: aUnit hp) do: [ :i |
-		(aUnit side negative) ifTrue: [
-				self reverseDisplay: aUnit inContext: ctx xPad: 72 + (xArray at: i) yPad: (yArray at: i)
-			] ifFalse: [
-				self display: aUnit inContext: ctx X: self currentPoint x + (xArray at: i) y: self currentPoint y - (yArray at: i)
-			]
+		(aUnit side negative) 
+			ifTrue: [ self monsterLayer reverseDisplay: aUnit point: self currentPoint xPad: 72 + (xArray at: i) yPad: (yArray at: i) ] 
+			ifFalse: [ self monsterLayer display: aUnit cood: (self currentPoint x + (xArray at: i))@(self currentPoint y - (yArray at: i)) ]
 	]
-!
-
-reverseDisplay: heros inContext: ctx xPad: aX yPad: aY
-	"87 = 72 (width image + 15"
-
-	self safeDraw: [ :context |
-		context
-			translate: self currentPoint x + aX y: 0;
-			scale: -1 y: 1.
-		self display: heros inContext: context X: 0 y: self currentPoint y - aY ]
-		inContext: ctx
-!
-
-safeDraw: aBlock inContext: ctx
-	"ensure that the drawing context will be restored"
-
-	[ ctx save.
-	aBlock value: ctx ]
-		ensure: [ ctx restore ]
 ! !
 
 !CWMapDrawer methodsFor: 'visiting'!

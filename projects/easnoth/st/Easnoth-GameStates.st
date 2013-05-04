@@ -1,7 +1,7 @@
-Smalltalk current createPackage: 'Easnoth-States'!
+Smalltalk current createPackage: 'Easnoth-GameStates'!
 Object subclass: #CWState
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 
 CWState class instanceVariableNames: 'default'!
 
@@ -13,7 +13,7 @@ default
 
 CWState subclass: #CWCellState
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 
 !CWCellState methodsFor: 'cell state API'!
 
@@ -59,7 +59,7 @@ initializeStateFor: aCell
 
 CWCellState subclass: #CWFree
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWFree commentStamp!
 I am the state of a cell that has no monsters on it and that has no game selector on it.!
 
@@ -95,7 +95,7 @@ showActiveMonster: aCell
 
 CWCellState subclass: #CWFreeSelected
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWFreeSelected commentStamp!
 I am the state of a cell that has no monsters on it, that has a game selector on it.
 The cell cannot be a wall.!
@@ -133,7 +133,7 @@ showActiveMonster: aCell
 
 CWCellState subclass: #CWHasMonster
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWHasMonster commentStamp!
 I am the state of a cell that has some monsters on it and that has no game selector on it.!
 
@@ -167,7 +167,7 @@ showActiveMonster: aCell
 
 CWCellState subclass: #CWHasMonsterSelected
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWHasMonsterSelected commentStamp!
 I am the state of a cell that has a monsters on it and a game selector.
 The monster has to be on the opposite side of the current playing monster.!
@@ -206,7 +206,7 @@ showActiveMonster: aCell
 
 CWState subclass: #CWMonsterState
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 
 !CWMonsterState methodsFor: 'monster state API'!
 
@@ -259,7 +259,7 @@ changeStateAfterMoving: aMonster
 
 CWMonsterState subclass: #CWActive
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWActive commentStamp!
 Monster can move and attack!
 
@@ -298,7 +298,7 @@ changeStateAfterMoving: aMonster
 
 CWMonsterState subclass: #CWHasAttacked
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWHasAttacked commentStamp!
 Monster can only move!
 
@@ -331,7 +331,7 @@ changeStateAfterMoving: aMonster
 
 CWMonsterState subclass: #CWHasMoved
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWHasMoved commentStamp!
 The monster has moved its full moved there. (currentMove = 0)!
 
@@ -369,7 +369,7 @@ changeStateAfterMoving: aMonster
 
 CWMonsterState subclass: #CWInactive
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWInactive commentStamp!
 Monster cannot do anything :)!
 
@@ -427,7 +427,7 @@ changeStateAfterMoving: aMonster
 
 CWMonsterState subclass: #CWToPick
 	instanceVariableNames: ''
-	package: 'Easnoth-States'!
+	package: 'Easnoth-GameStates'!
 !CWToPick commentStamp!
 The player has to choice one of the toPick monster to activate them!
 

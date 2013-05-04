@@ -1,7 +1,7 @@
-Smalltalk current createPackage: 'Easnoth-StartMenu'!
+Smalltalk current createPackage: 'Easnoth-Bootstrap'!
 Object subclass: #CWBootstrapper
 	instanceVariableNames: 'objectToLoad objectLoaded loadingBar'
-	package: 'Easnoth-StartMenu'!
+	package: 'Easnoth-Bootstrap'!
 !CWBootstrapper commentStamp!
 Bootstrap the system. Currently work only for games, not for the map editor!
 
@@ -72,7 +72,7 @@ bootstrap: gameSettings
 
 Object subclass: #CWGameSettings
 	instanceVariableNames: 'players mapNumber'
-	package: 'Easnoth-StartMenu'!
+	package: 'Easnoth-Bootstrap'!
 !CWGameSettings commentStamp!
 I represent the game settings. My instance variables are set before the game, in the start menus. Then, the CWBootstrapper handles my data to launch corectly the game.!
 
@@ -113,7 +113,7 @@ printOn: aStream
 
 Widget subclass: #CWLoadingBar
 	instanceVariableNames: 'box'
-	package: 'Easnoth-StartMenu'!
+	package: 'Easnoth-Bootstrap'!
 
 !CWLoadingBar methodsFor: 'rendering'!
 
@@ -129,7 +129,7 @@ renderOn: html
 
 Widget subclass: #CWStartMenu
 	instanceVariableNames: 'box gameSettings'
-	package: 'Easnoth-StartMenu'!
+	package: 'Easnoth-Bootstrap'!
 !CWStartMenu commentStamp!
 Should implement the menu with multiplayer and stuff here!
 

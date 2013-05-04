@@ -1,8 +1,10 @@
-smalltalk.addPackage('Easnoth-StartMenu');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar'], 'Easnoth-StartMenu');
+smalltalk.addPackage('Easnoth-Bootstrap');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar'], 'Easnoth-Bootstrap');
+smalltalk.CWBootstrapper.comment="Bootstrap the system. Currently work only for games, not for the map editor"
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announcer",
+category: 'accessing',
 fn: function (){
 var self=this;
 function $CWEasnothAnnouncer(){return smalltalk.CWEasnothAnnouncer||(typeof CWEasnothAnnouncer=="undefined"?nil:CWEasnothAnnouncer)}
@@ -11,12 +13,17 @@ var $1;
 $1=_st($CWEasnothAnnouncer())._current();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"announcer",{},smalltalk.CWBootstrapper)})},
-messageSends: ["current"]}),
+args: [],
+source: "announcer\x0a\x09^ CWEasnothAnnouncer current",
+messageSends: ["current"],
+referencedClasses: ["CWEasnothAnnouncer"]
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "bootstrap:",
+category: 'initialize-release',
 fn: function (gameSettings){
 var self=this;
 function $CWLoadingBar(){return smalltalk.CWLoadingBar||(typeof CWLoadingBar=="undefined"?nil:CWLoadingBar)}
@@ -25,12 +32,17 @@ return smalltalk.withContext(function($ctx1) {
 self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("body")._asJQuery());
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
-messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"]}),
+args: ["gameSettings"],
+source: "bootstrap: gameSettings\x0a\x09\x22Transcript show: gameSettings; cr.\x22\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings ",
+messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"],
+referencedClasses: ["CWLoadingBar", "CWGame"]
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "checkIfReady",
+category: 'events',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -40,12 +52,17 @@ if(smalltalk.assert($1)){
 _st(self)._startGame();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"checkIfReady",{},smalltalk.CWBootstrapper)})},
-messageSends: ["ifTrue:", "startGame", "="]}),
+args: [],
+source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ self startGame ]",
+messageSends: ["ifTrue:", "startGame", "="],
+referencedClasses: []
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "imagesToPreload",
+category: 'accessing',
 fn: function (){
 var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
@@ -59,12 +76,17 @@ $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"imagesToPreload",{},smalltalk.CWBootstrapper)})},
-messageSends: ["add:", "new", "yourself"]}),
+args: [],
+source: "imagesToPreload\x0a\x09^ Array new\x0a\x09\x09add: 'red';\x0a\x09\x09add: 'green';\x0a\x09\x09add: 'white';\x0a\x09\x09yourself",
+messageSends: ["add:", "new", "yourself"],
+referencedClasses: ["Array"]
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
+category: 'initialize-release',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -74,12 +96,17 @@ self["@objectLoaded"]=(0);
 _st(self)._initializeEventHandling();
 _st(self)._preloadImages();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWBootstrapper)})},
-messageSends: ["initialize", "initializeEventHandling", "preloadImages"]}),
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09objectToLoad := 0.\x0a\x09objectLoaded := 0.\x0a\x09self initializeEventHandling.\x0a\x09self preloadImages",
+messageSends: ["initialize", "initializeEventHandling", "preloadImages"],
+referencedClasses: []
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initializeEventHandling",
+category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
@@ -97,12 +124,17 @@ self["@objectLoaded"];
 return _st(self)._checkIfReady();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWBootstrapper)})},
-messageSends: ["on:do:", "+", "announcer", "checkIfReady"]}),
+args: [],
+source: "initializeEventHandling\x0a\x09self announcer \x0a\x09\x09on: CWWaitForObject \x0a\x09\x09do: [ objectToLoad := objectToLoad + 1 ].\x0a\x09self announcer \x0a\x09\x09on: CWObjectLoaded \x0a\x09\x09\x09do: [ objectLoaded := objectLoaded + 1.\x0a\x09\x09\x09\x09self checkIfReady].",
+messageSends: ["on:do:", "+", "announcer", "checkIfReady"],
+referencedClasses: ["CWWaitForObject", "CWObjectLoaded"]
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "preloadImages",
+category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWGameOverTile(){return smalltalk.CWGameOverTile||(typeof CWGameOverTile=="undefined"?nil:CWGameOverTile)}
@@ -114,12 +146,17 @@ return _st($CWGameOverTile())._newImageFrom_(key);
 }, function($ctx2) {$ctx2.fillBlock({key:key},$ctx1)})}));
 _st($CWBackground())._newImageFrom_("back");
 return self}, function($ctx1) {$ctx1.fill(self,"preloadImages",{},smalltalk.CWBootstrapper)})},
-messageSends: ["do:", "newImageFrom:", "imagesToPreload"]}),
+args: [],
+source: "preloadImages\x0a\x09self imagesToPreload do: [ :key |\x0a\x09\x09CWGameOverTile newImageFrom: key ].\x0a\x09CWBackground newImageFrom: 'back'.",
+messageSends: ["do:", "newImageFrom:", "imagesToPreload"],
+referencedClasses: ["CWGameOverTile", "CWBackground"]
+}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "startGame",
+category: 'events',
 fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
@@ -127,13 +164,18 @@ return smalltalk.withContext(function($ctx1) {
 _st(self["@loadingBar"])._hide();
 _st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWBootstrapper)})},
-messageSends: ["hide", "announce:", "new", "announcer"]}),
+args: [],
+source: "startGame\x0a\x09loadingBar hide.\x0a\x09self announcer announce: CWGameStart new.",
+messageSends: ["hide", "announce:", "new", "announcer"],
+referencedClasses: ["CWGameStart"]
+}),
 smalltalk.CWBootstrapper);
 
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "bootstrap:",
+category: 'instance creation',
 fn: function (gameSettings){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -141,25 +183,36 @@ var $1;
 $1=_st(_st(self)._new())._bootstrap_(gameSettings);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper.klass)})},
-messageSends: ["bootstrap:", "new"]}),
+args: ["gameSettings"],
+source: "bootstrap: gameSettings\x0a\x09^ self new\x0a\x09\x09bootstrap: gameSettings",
+messageSends: ["bootstrap:", "new"],
+referencedClasses: []
+}),
 smalltalk.CWBootstrapper.klass);
 
 
-smalltalk.addClass('CWGameSettings', smalltalk.Object, ['players', 'mapNumber'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWGameSettings', smalltalk.Object, ['players', 'mapNumber'], 'Easnoth-Bootstrap');
+smalltalk.CWGameSettings.comment="I represent the game settings. My instance variables are set before the game, in the start menus. Then, the CWBootstrapper handles my data to launch corectly the game."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addPlayer:",
+category: 'accessing',
 fn: function (aPlayer){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@players"])._add_(aPlayer);
 return self}, function($ctx1) {$ctx1.fill(self,"addPlayer:",{aPlayer:aPlayer},smalltalk.CWGameSettings)})},
-messageSends: ["add:"]}),
+args: ["aPlayer"],
+source: "addPlayer: aPlayer\x0a\x09players add: aPlayer",
+messageSends: ["add:"],
+referencedClasses: []
+}),
 smalltalk.CWGameSettings);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
+category: 'intialize-release',
 fn: function (){
 var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
@@ -167,12 +220,17 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@players"]=_st($Array())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameSettings)})},
-messageSends: ["initialize", "new"]}),
+args: [],
+source: "initialize\x0a\x09super initialize.\x0a\x09players := Array new",
+messageSends: ["initialize", "new"],
+referencedClasses: ["Array"]
+}),
 smalltalk.CWGameSettings);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "mapNumber",
+category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -180,23 +238,33 @@ var $1;
 $1=self["@mapNumber"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"mapNumber",{},smalltalk.CWGameSettings)})},
-messageSends: []}),
+args: [],
+source: "mapNumber\x0a\x09^ mapNumber",
+messageSends: [],
+referencedClasses: []
+}),
 smalltalk.CWGameSettings);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "mapNumber:",
+category: 'accessing',
 fn: function (int){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@mapNumber"]=int;
 return self}, function($ctx1) {$ctx1.fill(self,"mapNumber:",{int:int},smalltalk.CWGameSettings)})},
-messageSends: []}),
+args: ["int"],
+source: "mapNumber: int\x0a\x09mapNumber := int",
+messageSends: [],
+referencedClasses: []
+}),
 smalltalk.CWGameSettings);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "players",
+category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -204,12 +272,17 @@ var $1;
 $1=self["@players"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"players",{},smalltalk.CWGameSettings)})},
-messageSends: []}),
+args: [],
+source: "players\x0a\x09^ players",
+messageSends: [],
+referencedClasses: []
+}),
 smalltalk.CWGameSettings);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "printOn:",
+category: 'intialize-release',
 fn: function (aStream){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -224,26 +297,36 @@ return _st(each)._printOn_(aStream);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 _st(aStream)._nextPutAll_(")");
 return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWGameSettings)})},
-messageSends: ["nextPutAll:", "printString", "do:", "printOn:"]}),
+args: ["aStream"],
+source: "printOn: aStream\x0a\x09aStream \x0a\x09\x09nextPutAll: 'settings(map n.';\x0a\x09\x09nextPutAll: mapNumber printString;\x0a\x09\x09nextPutAll: '; '.\x0a\x09players do: [ :each |\x0a\x09\x09each printOn: aStream ].\x0a\x09aStream nextPutAll: ')'.",
+messageSends: ["nextPutAll:", "printString", "do:", "printOn:"],
+referencedClasses: []
+}),
 smalltalk.CWGameSettings);
 
 
 
-smalltalk.addClass('CWLoadingBar', smalltalk.Widget, ['box'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWLoadingBar', smalltalk.Widget, ['box'], 'Easnoth-Bootstrap');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "hide",
+category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@box"])._hidden();
 return self}, function($ctx1) {$ctx1.fill(self,"hide",{},smalltalk.CWLoadingBar)})},
-messageSends: ["hidden"]}),
+args: [],
+source: "hide\x0a\x09box hidden",
+messageSends: ["hidden"],
+referencedClasses: []
+}),
 smalltalk.CWLoadingBar);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
+category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -253,15 +336,21 @@ _st($1)._class_("loadBar");
 $2=_st($1)._src_("ressources/images/loading.png");
 self["@box"]=$2;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWLoadingBar)})},
-messageSends: ["class:", "img", "src:"]}),
+args: ["html"],
+source: "renderOn: html\x0a\x09box := html img\x0a\x09\x09class: 'loadBar';\x0a\x09\x09src: 'ressources/images/loading.png'.",
+messageSends: ["class:", "img", "src:"],
+referencedClasses: []
+}),
 smalltalk.CWLoadingBar);
 
 
 
-smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'gameSettings'], 'Easnoth-StartMenu');
+smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'gameSettings'], 'Easnoth-Bootstrap');
+smalltalk.CWStartMenu.comment="Should implement the menu with multiplayer and stuff here"
 smalltalk.addMethod(
 smalltalk.method({
 selector: "armySelectBox:on:",
+category: 'rendering',
 fn: function (playerNumber,html){
 var self=this;
 var selectBox;
@@ -282,12 +371,17 @@ _st(_st(html)._option())._with_("dwarves");
 return _st(_st(html)._option())._with_("human-outlaws");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["select", "onChange:", "team:", "val", "asJQuery", "at:", "players", "with:", "option"]}),
+args: ["playerNumber", "html"],
+source: "armySelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select.\x0a\x09selectBox\x0a\x09\x09onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09html option with: 'human-kingdom'.\x0a\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09html option with: 'dwarves'.\x0a\x09\x09\x09html option with: 'human-outlaws' ].",
+messageSends: ["select", "onChange:", "team:", "val", "asJQuery", "at:", "players", "with:", "option"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "choosePlayers",
+category: 'game settings',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -295,12 +389,17 @@ _st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self)._playerMenu();
 return self}, function($ctx1) {$ctx1.fill(self,"choosePlayers",{},smalltalk.CWStartMenu)})},
-messageSends: ["addPlayer:", "defaultPlayer", "playerMenu"]}),
+args: [],
+source: "choosePlayers\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09self playerMenu",
+messageSends: ["addPlayer:", "defaultPlayer", "playerMenu"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "credits",
+category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -357,12 +456,17 @@ return $12;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "span", "a", "href:", "li", "button", "onClick:", "choosePlayers"]}),
+args: [],
+source: "credits\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html span with: 'Core developer : '.\x0a\x09\x09\x09\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Clément Béra';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://clementbera.wordpress.com/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html span with: 'Graphics : '.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Battle for Wesnoth';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.wesnoth.org/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: 'Thanks to :'.\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Amber web framework';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://amber-lang.net/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Nicolas Petton (Amber core developer)';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'www.nicolas-petton.fr/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self choosePlayers ] ] ] ] ",
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "span", "a", "href:", "li", "button", "onClick:", "choosePlayers"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "defaultPlayer",
+category: 'accessing',
 fn: function (){
 var self=this;
 function $CWHuman(){return smalltalk.CWHuman||(typeof CWHuman=="undefined"?nil:CWHuman)}
@@ -371,12 +475,17 @@ var $1;
 $1=_st(_st($CWHuman())._new())._team_("elves");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"defaultPlayer",{},smalltalk.CWStartMenu)})},
-messageSends: ["team:", "new"]}),
+args: [],
+source: "defaultPlayer\x0a\x09^ CWHuman new team: 'elves'",
+messageSends: ["team:", "new"],
+referencedClasses: ["CWHuman"]
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
+category: 'initalize-release',
 fn: function (){
 var self=this;
 function $CWGameSettings(){return smalltalk.CWGameSettings||(typeof CWGameSettings=="undefined"?nil:CWGameSettings)}
@@ -384,12 +493,17 @@ return smalltalk.withContext(function($ctx1) {
 smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
 self["@gameSettings"]=_st($CWGameSettings())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWStartMenu)})},
-messageSends: ["initialize", "new"]}),
+args: [],
+source: "initialize\x0a\x09super initialize. \x0a\x09gameSettings := CWGameSettings new",
+messageSends: ["initialize", "new"],
+referencedClasses: ["CWGameSettings"]
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "menuOn:with:",
+category: 'rendering',
 fn: function (html,dict){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -421,12 +535,17 @@ $7=_st($2)._yourself();
 $1=$7;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"menuOn:with:",{html:html,dict:dict},smalltalk.CWStartMenu)})},
-messageSends: ["class:", "div", "with:", "h1", "ul", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"]}),
+args: ["html", "dict"],
+source: "menuOn: html with: dict\x0a\x09^ html div\x0a\x09\x09class: 'intro';\x0a\x09\x09with: [\x0a\x09\x09\x09html h1\x0a\x09\x09\x09\x09with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09html ul \x0a\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09dict keysAndValuesDo: [ :key :value |\x0a\x09\x09\x09\x09\x09html li\x0a\x09\x09\x09\x09\x09\x09with: [ html a \x0a\x09\x09\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09\x09\x09with: key; \x0a\x09\x09\x09\x09\x09\x09\x09onClick: value ] ] ] ];\x0a\x09\x09yourself",
+messageSends: ["class:", "div", "with:", "h1", "ul", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "playerMenu",
+category: 'rendering',
 fn: function (){
 var self=this;
 var selectBox;
@@ -458,12 +577,17 @@ return $4;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"]}),
+args: [],
+source: "playerMenu\x0a\x09| selectBox |\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: 'Humans or elves are recommended for AI'.\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "playerSelectBox:on:",
+category: 'rendering',
 fn: function (playerNumber,html){
 var self=this;
 var selectBox;
@@ -492,12 +616,17 @@ $6=_st($5)._value_("CWAggressWeakestAI");
 return $6;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerSelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["select", "onChange:", "team", "at:", "players", "at:put:", "new", "val", "asJQuery", "current", "team:", "with:", "option", "value:"]}),
+args: ["playerNumber", "html"],
+source: "playerSelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select. \x0a\x09selectBox \x0a\x09\x09onChange: [ \x0a\x09\x09\x09| oldTeam |\x0a\x09\x09\x09oldTeam := (gameSettings players at: playerNumber) team.\x0a\x09\x09\x09gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.\x0a\x09\x09\x09(gameSettings players at: playerNumber) team: oldTeam ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'human';\x0a\x09\x09\x09\x09value: 'CWHuman'.\x0a\x09\x09\x09html option \x0a\x09\x09\x09\x09with: 'AI type 1';\x0a\x09\x09\x09\x09value: 'CWAggressWeakestAI'].",
+messageSends: ["select", "onChange:", "team", "at:", "players", "at:put:", "new", "val", "asJQuery", "current", "team:", "with:", "option", "value:"],
+referencedClasses: ["Smalltalk"]
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "playerSelection:on:",
+category: 'rendering',
 fn: function (playerNumber,html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -508,23 +637,33 @@ _st(self)._playerSelectBox_on_(playerNumber,html);
 return _st(self)._armySelectBox_on_(playerNumber,html);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerSelection:on:",{playerNumber:playerNumber,html:html},smalltalk.CWStartMenu)})},
-messageSends: ["with:", ",", "li", "playerSelectBox:on:", "armySelectBox:on:"]}),
+args: ["playerNumber", "html"],
+source: "playerSelection: playerNumber on: html\x0a\x09html li with: 'Player ', playerNumber.\x0a\x09html li with: [\x0a\x09\x09self playerSelectBox: playerNumber on: html.\x0a\x09\x09self armySelectBox: playerNumber on: html ].",
+messageSends: ["with:", ",", "li", "playerSelectBox:on:", "armySelectBox:on:"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
+category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 self["@box"]=_st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWStartMenu)})},
-messageSends: ["menuOn:with:", "startingMenuDict"]}),
+args: ["html"],
+source: "renderOn: html\x0a\x09box := self menuOn: html with: self startingMenuDict.",
+messageSends: ["menuOn:with:", "startingMenuDict"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "startBeta",
+category: 'game settings',
 fn: function (){
 var self=this;
 function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
@@ -533,12 +672,17 @@ _st(self["@box"])._hidden();
 _st(self["@gameSettings"])._mapNumber_((7));
 _st($CWBootstrapper())._bootstrap_(self["@gameSettings"]);
 return self}, function($ctx1) {$ctx1.fill(self,"startBeta",{},smalltalk.CWStartMenu)})},
-messageSends: ["hidden", "mapNumber:", "bootstrap:"]}),
+args: [],
+source: "startBeta\x0a\x09box hidden.\x0a\x09gameSettings mapNumber: 7.\x0a\x09CWBootstrapper bootstrap: gameSettings",
+messageSends: ["hidden", "mapNumber:", "bootstrap:"],
+referencedClasses: ["CWBootstrapper"]
+}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "startingMenuDict",
+category: 'accessing',
 fn: function (){
 var self=this;
 function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
@@ -573,13 +717,18 @@ $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
-messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"]}),
+args: [],
+source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09at: 'Network game' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
+messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"],
+referencedClasses: ["Dictionary"]
+}),
 smalltalk.CWStartMenu);
 
 
 smalltalk.addMethod(
 smalltalk.method({
 selector: "start",
+category: 'not yet classified',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -587,7 +736,11 @@ var $1;
 $1=_st(_st(self)._new())._appendToJQuery_(_st("body")._asJQuery());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"start",{},smalltalk.CWStartMenu.klass)})},
-messageSends: ["appendToJQuery:", "asJQuery", "new"]}),
+args: [],
+source: "start\x0a\x09^ self new appendToJQuery: 'body' asJQuery ",
+messageSends: ["appendToJQuery:", "asJQuery", "new"],
+referencedClasses: []
+}),
 smalltalk.CWStartMenu.klass);
 
 

@@ -1,5 +1,5 @@
-smalltalk.addPackage('Easnoth-States');
-smalltalk.addClass('CWState', smalltalk.Object, [], 'Easnoth-States');
+smalltalk.addPackage('Easnoth-GameStates');
+smalltalk.addClass('CWState', smalltalk.Object, [], 'Easnoth-GameStates');
 
 smalltalk.CWState.klass.iVarNames = ['default'];
 smalltalk.addMethod(
@@ -22,7 +22,7 @@ messageSends: ["ifNil:", "new"]}),
 smalltalk.CWState.klass);
 
 
-smalltalk.addClass('CWCellState', smalltalk.CWState, [], 'Easnoth-States');
+smalltalk.addClass('CWCellState', smalltalk.CWState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addSelector:",
@@ -132,7 +132,7 @@ messageSends: ["ifTrue:ifFalse:", "changeState:", "free"]}),
 smalltalk.CWCellState.klass);
 
 
-smalltalk.addClass('CWFree', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWFree', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addSelector:",
@@ -208,7 +208,7 @@ smalltalk.CWFree);
 
 
 
-smalltalk.addClass('CWFreeSelected', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWFreeSelected', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addSelector:",
@@ -290,7 +290,7 @@ smalltalk.CWFreeSelected);
 
 
 
-smalltalk.addClass('CWHasMonster', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasMonster', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addSelector:",
@@ -365,7 +365,7 @@ smalltalk.CWHasMonster);
 
 
 
-smalltalk.addClass('CWHasMonsterSelected', smalltalk.CWCellState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasMonsterSelected', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addSelector:",
@@ -449,7 +449,7 @@ smalltalk.CWHasMonsterSelected);
 
 
 
-smalltalk.addClass('CWMonsterState', smalltalk.CWState, [], 'Easnoth-States');
+smalltalk.addClass('CWMonsterState', smalltalk.CWState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "activate:",
@@ -577,7 +577,7 @@ smalltalk.CWMonsterState);
 
 
 
-smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWActive', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "changeStateAfterAttacking:",
@@ -654,7 +654,7 @@ smalltalk.CWActive);
 
 
 
-smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasAttacked', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "changeStateAfterAttacking:",
@@ -718,7 +718,7 @@ smalltalk.CWHasAttacked);
 
 
 
-smalltalk.addClass('CWHasMoved', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWHasMoved', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "changeStateAfterAttacking:",
@@ -796,7 +796,7 @@ smalltalk.CWHasMoved);
 
 
 
-smalltalk.addClass('CWInactive', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWInactive', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "activate:",
@@ -926,7 +926,7 @@ smalltalk.CWInactive);
 
 
 
-smalltalk.addClass('CWToPick', smalltalk.CWMonsterState, [], 'Easnoth-States');
+smalltalk.addClass('CWToPick', smalltalk.CWMonsterState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "changeStateAfterAttacking:",

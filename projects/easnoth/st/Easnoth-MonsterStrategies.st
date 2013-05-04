@@ -1,7 +1,7 @@
-Smalltalk current createPackage: 'Easnoth-Monsters'!
+Smalltalk current createPackage: 'Easnoth-MonsterStrategies'!
 Object subclass: #CWStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 !CWStrategy commentStamp!
 Just here for the sngleton pattern :)!
 
@@ -15,7 +15,7 @@ default
 
 CWStrategy subclass: #CWMonsterStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 !CWMonsterStrategy commentStamp!
 Implements different strategies if the monster is a heros or a unit!
 
@@ -39,7 +39,7 @@ key
 
 CWMonsterStrategy subclass: #CWHerosStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 
 !CWHerosStrategy methodsFor: 'monster strategy API'!
 
@@ -61,7 +61,7 @@ key
 
 CWMonsterStrategy subclass: #CWUnitStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 
 !CWUnitStrategy methodsFor: 'monster strategy API'!
 
@@ -83,7 +83,7 @@ key
 
 CWStrategy subclass: #CWMonsterTypeStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 !CWMonsterTypeStrategy commentStamp!
 Implements different strategies if the heros is archer, troop or cavalry!
 
@@ -115,7 +115,7 @@ monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
 
 CWMonsterTypeStrategy subclass: #CWCavalryStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 
 !CWCavalryStrategy methodsFor: 'type strategy API'!
 
@@ -141,7 +141,7 @@ monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
 
 CWMonsterTypeStrategy subclass: #CWRangeStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 
 !CWRangeStrategy methodsFor: 'type strategy API'!
 
@@ -171,7 +171,7 @@ monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
 
 CWMonsterTypeStrategy subclass: #CWTroopStrategy
 	instanceVariableNames: ''
-	package: 'Easnoth-Monsters'!
+	package: 'Easnoth-MonsterStrategies'!
 
 !CWTroopStrategy methodsFor: 'type strategy API'!
 

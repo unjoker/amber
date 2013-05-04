@@ -1,202 +1,7 @@
-Smalltalk current createPackage: 'Easnoth-Game'!
-Array subclass: #CWAssociationList
-	instanceVariableNames: ''
-	package: 'Easnoth-Game'!
-
-!CWAssociationList methodsFor: 'collection protocol'!
-
-collect: aBlock
-	| res |
-	res := Array new.
-	self do: [ :each |
-		res add: (aBlock value: each) ].
-	^ res
-!
-
-keyAtValue: aValue
-	self do: [ :each |
-		each value = aValue ifTrue: [ ^ each key ] ]
-!
-
-keys
-	^ self collect: [ :each | each key ]
-!
-
-keysAndValuesDo: aBlock
-	^ self do: [ :assoc | 
-		aBlock value: assoc key value: assoc value ]
-!
-
-values
-	^ self collect: [ :each | each value ]
-! !
-
-Object subclass: #CWEventDispatcher
-	instanceVariableNames: 'canvas map drawer game suspended'
-	package: 'Easnoth-Game'!
-!CWEventDispatcher commentStamp!
-I dispatch event from eventManager canvas to cells.!
-
-!CWEventDispatcher methodsFor: 'accessing'!
-
-announcer
-	^ CWEasnothAnnouncer current
-!
-
-canvas
-	^ canvas
-!
-
-cellAt: i y: j
-	^ (self rowAt: i) childAt: j
-!
-
-cellAt: i y: j ifAbsent: aBlock
-	"need to change the implementation"
-	^ [(self rowAt: i) childAt: j] on: Error do: [ aBlock value ]
-!
-
-eventManagerLayerId
-	^ '#eventManager'
-!
-
-padding
-	^ drawer padding
-!
-
-rowAt: index
-	^ map childAt: index
-! !
-
-!CWEventDispatcher methodsFor: 'calculs'!
-
-currentCell: anEvent
-	|x y cood|
-	
-     x := anEvent pageX - self canvas element offsetLeft.
-     y := anEvent pageY - self canvas element offsetTop.
-
-     cood := self mouseCoodToHexCoodX: x y: y.
-	
-	"if out of map then nil"
-	^ self cellAt: cood x y: cood y ifAbsent: [ nil ]
-!
-
-mouseCoodToHexCoodX: x y: y
-	"function that take mouse cood in pixel and return the coods of the tile selected"
-	
-	"algo is in javascript"
-
-	| xHex yHex array mapDisplayX mapDisplayY|
-                
-	mapDisplayX := self padding x.
-	mapDisplayY := self padding y.
-
-	array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.
-    
-    xHex := array at: 1.
-    yHex := array at: 2.
-    
-	^xHex @ yHex.
-!
-
-mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
-	"function that take mouse cood in pixel and return the coods of the tile selected"
-
-		<function mod(n, mod) {
-			return ((mod+(n%mod))%mod);
-		}
-
-		var cosmaingridx = 0.882947593;
-		var sinmaingridx = 0.469471563;
-		var cosmaingridy = -0.130526192;
-		var sinmaingridy = 0.991444861;
-		
-		var cosothergridx = 0.4539905;
-		var sinothergridx = 0.891006524;
-		var cosothergridy = -0.882947593;
-		var sinothergridy = 0.469471563;
-		
-		var nb = Math.floor(((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)));
-		var nb2 = Math.floor(((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)));
-		
-		var xConstante = 9 + (mod(nb,3));
-		var yConstante = 20 + (mod(nb2,2));
-		if (nb2%2 == 0) {yConstante += mod(nb+1,2);}
-		
-		xHex = Math.floor(((xConstante-nb)/6)+((yConstante-nb2)/2));
-		yHex = Math.floor(((nb-xConstante)/4)+((yConstante-nb2)/4));
-		
-		if (mod(nb,6)==1 && nb2%2==0){
-			xHex++;
-			if (nb2%4==0 && mod(nb,12)!!=7){yHex++;}
-			if (mod(nb2,4)==2 && mod(nb,12)==7){yHex++;}
-		}
-		
-		if (nb%3==0) {		
-			if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {
-				var nb3 = Math.floor(((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)));
-				var nbCheck = 3+2*yHex+(xHex%2);
-				if (nb3 == nbCheck) {yHex--;}
-			}
-			else {
-				var nb4 = Math.floor(((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)));
-				var nbCheck = 7-Math.floor(3*xHex/2)+yHex;
-				if (nb4 == nbCheck) {
-					if (xHex%2 == 0) {yHex--;}
-					xHex++;
-				}
-			}
-		}
-        var a = new Array(2);
-        a[0] = xHex;
-        a[1] = yHex;
-        return a>
-! !
-
-!CWEventDispatcher methodsFor: 'events'!
-
-dispatchMouseClick: event
-	| cc |
-	suspended ifFalse: [
-		cc := self currentCell: event.
-		cc ifNotNil: [ 
-			cc mouseClick: game gameContext ] ]
-! !
-
-!CWEventDispatcher methodsFor: 'initialize-release'!
-
-initialize
-	super initialize. 
-	suspended := false.
-	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
-!
-
-initializeEventHandling
-	self canvas onMouseUp: [:e | 
-		self dispatchMouseClick: e].
-!
-
-initializeForMap: aMap game: aGame
-	game := aGame.
-	map := aMap.
-	drawer := aMap drawer.
-	self initializeEventHandling.
-! !
-
-!CWEventDispatcher methodsFor: 'suspending'!
-
-resume
-	suspended := false
-!
-
-suspend
-	suspended := true
-! !
-
+Smalltalk current createPackage: 'Easnoth-GameAndPlayers'!
 Object subclass: #CWGame
 	instanceVariableNames: 'map context playerPool'
-	package: 'Easnoth-Game'!
+	package: 'Easnoth-GameAndPlayers'!
 !CWGame commentStamp!
 Represent the game. Includes the god game logic (turn system)!
 
@@ -298,7 +103,7 @@ startGame
 
 Object subclass: #CWGameContext
 	instanceVariableNames: 'currentPlayer currentCell'
-	package: 'Easnoth-Game'!
+	package: 'Easnoth-GameAndPlayers'!
 !CWGameContext commentStamp!
 Represents the current context of the game, typcally, which player is playing and what monster is currently about to attack / move!
 
@@ -335,69 +140,9 @@ nextTurn: nextPlayer
 	currentCell := nil
 ! !
 
-Object subclass: #CWPathFinder
-	instanceVariableNames: 'studiedList listToStudy cellLast result'
-	package: 'Easnoth-Game'!
-
-!CWPathFinder methodsFor: 'pathfinding'!
-
-pathFrom: cellStart to: cellEnd
-	"Answers the shortest path from the current cell to the cell clicked"
-
-	self resetList.
-	cellLast := cellEnd.
-	listToStudy add: (nil -> cellStart).
-	[ result isNil ] whileTrue: [ self iterate ].
-	
-	^ result
-! !
-
-!CWPathFinder methodsFor: 'private'!
-
-iterate
-	"Calculs path for toStudyList cells and set the correct value to it"
-
-	| tempArray |
-
-	"tempArray := CWAssociationList new.
-	listToStudy keysAndValuesDo: [ :key :value |
-		studiedList add: (key -> value).
-		value freeNeighbours do: [ :each |
-			(studiedList values includes: each) ifFalse: [ 
-				tempArray add: (value -> each).
-				each = cellLast ifTrue: [ 
-					studiedList add: (value -> each).
-					^ self pathAnswer ] ] ] ]."
-		 
-	listToStudy := tempArray.
-!
-
-pathAnswer
-	| currentCell |
-	result := Array new.
-	currentCell := cellLast.
-	[ currentCell isNil ] whileFalse: [ 
-		result add: currentCell.
-		currentCell := studiedList keyAtValue: currentCell ].
-!
-
-resetList
-	studiedList := CWAssociationList new.
-	listToStudy := CWAssociationList new.
-	result := nil.
-! !
-
-!CWPathFinder class methodsFor: 'not yet classified'!
-
-bench
-	"[ CWPathFinder new pathFrom: ((self childAt: 9) childAt: 5) to: ((self childAt: 1) childAt: 5) ] timeToRun  1430 .
-	[ ((self childAt: 9) childAt: 5) movableNeighboursCycle: 10.
-	((self childAt: 9) childAt: 5) pathTo: ((self childAt: 1) childAt: 5) ] timeToRun 8 "
-! !
-
 Object subclass: #CWPlayer
 	instanceVariableNames: 'side team'
-	package: 'Easnoth-Game'!
+	package: 'Easnoth-GameAndPlayers'!
 !CWPlayer commentStamp!
 I represent a player playing Easnoth.!
 
@@ -546,7 +291,7 @@ printOn: aStream
 
 CWPlayer subclass: #CWAI
 	instanceVariableNames: 'gameContext eventDispatcher'
-	package: 'Easnoth-Game'!
+	package: 'Easnoth-GameAndPlayers'!
 
 !CWAI methodsFor: 'accessing'!
 
@@ -580,7 +325,7 @@ startTurn: aMap
 
 CWAI subclass: #CWAggressWeakestAI
 	instanceVariableNames: 'monsterToPlay cellToTarget'
-	package: 'Easnoth-Game'!
+	package: 'Easnoth-GameAndPlayers'!
 !CWAggressWeakestAI commentStamp!
 For each move, I calcul a score which correspond to :
 - how many damage the attacking monster will do (depends on number of dices + attack percentage )
@@ -675,7 +420,7 @@ startTurn: map
 
 CWPlayer subclass: #CWHuman
 	instanceVariableNames: ''
-	package: 'Easnoth-Game'!
+	package: 'Easnoth-GameAndPlayers'!
 
 !CWHuman methodsFor: 'accessing'!
 
@@ -683,13 +428,7 @@ eventDispatcher: anObject
 	"not used for humans"
 ! !
 
-!Boolean methodsFor: '*Easnoth-Game'!
-
-asBit
-	^ self ifTrue: [ 1 ] ifFalse: [ 0 ]
-! !
-
-!SequenceableCollection methodsFor: '*Easnoth-Game'!
+!SequenceableCollection methodsFor: '*Easnoth-GameAndPlayers'!
 
 at: index ifPresent: aBlock ifAbsent: anotherBlock
 
