@@ -1241,7 +1241,7 @@ Object subclass: #CWVisitor
 	instanceVariableNames: ''
 	package: 'Easnoth-MapModel'!
 !CWVisitor commentStamp!
-I am an abstract visitor that can visit the whole tree of business objects.!
+I am an abstract visitor that can visit the whole tree of map model objects.!
 
 !CWVisitor methodsFor: 'visiting'!
 

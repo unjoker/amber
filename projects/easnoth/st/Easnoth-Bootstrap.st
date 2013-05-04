@@ -16,6 +16,7 @@ imagesToPreload
 		add: 'red';
 		add: 'green';
 		add: 'white';
+		add: 'invis';
 		yourself
 ! !
 
@@ -34,7 +35,6 @@ startGame
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
-	"Transcript show: gameSettings; cr."
 	loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.
 	CWGame new initializeWithSettings: gameSettings
 !
