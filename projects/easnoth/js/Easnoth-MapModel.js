@@ -3654,7 +3654,7 @@ smalltalk.CWMonster.klass);
 
 
 smalltalk.addClass('CWVisitor', smalltalk.Object, [], 'Easnoth-MapModel');
-smalltalk.CWVisitor.comment="I am an abstract visitor that can visit the whole tree of business objects."
+smalltalk.CWVisitor.comment="I am an abstract visitor that can visit the whole tree of map model objects."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "visitCell:",

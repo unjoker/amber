@@ -55,6 +55,7 @@ $2=_st($Array())._new();
 _st($2)._add_("red");
 _st($2)._add_("green");
 _st($2)._add_("white");
+_st($2)._add_("invis");
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
