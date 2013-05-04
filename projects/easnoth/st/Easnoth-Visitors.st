@@ -1,9 +1,27 @@
 Smalltalk current createPackage: 'Easnoth-Visitors'!
+Object subclass: #CWLayer
+	instanceVariableNames: ''
+	package: 'Easnoth-Visitors'!
+
+CWLayer subclass: #CWCanvasLayer
+	instanceVariableNames: ''
+	package: 'Easnoth-Visitors'!
+
+CWLayer subclass: #CWImageLayer
+	instanceVariableNames: ''
+	package: 'Easnoth-Visitors'!
+
 Object subclass: #CWMapInterpreterContext
 	instanceVariableNames: 'rowIndex cellIndex'
 	package: 'Easnoth-Visitors'!
 !CWMapInterpreterContext commentStamp!
 general context just to know the coods in the map of cells!
+
+!CWMapInterpreterContext methodsFor: 'accessing'!
+
+currentCoods
+	^ rowIndex @ cellIndex
+! !
 
 !CWMapInterpreterContext methodsFor: 'context alteration'!
 
@@ -92,12 +110,12 @@ visitHeros: heros
 !
 
 visitOverTile: ot
-	drawer drawIsometric: ot inContext: drawer backgroundContext.
+	drawer drawBackground: ot
 !
 
 visitTile: aTile
-	drawer drawBackTile: drawer backgroundContext.
-	drawer drawIsometric: aTile inContext: drawer backgroundContext
+	drawer drawBackTile.
+	drawer drawBackground: aTile
 !
 
 visitUnit: aUnit
@@ -417,6 +435,10 @@ announcer
 	^ CWEasnothAnnouncer current
 !
 
+backTileImage
+	^ CWBackground imageCacheAt: 'back'
+!
+
 backgroundCanvas
 	^ layers at: 1
 !
@@ -614,14 +636,18 @@ display: object inContext: ctx X: x y: y
 		y: y.
 !
 
-drawBackTile: ctx
-	self safeDraw: [ ctx drawImage: (CWBackground imageCacheAt: 'back') x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
+drawBackTile
+	| ctx |
+	ctx := self backgroundContext.
+	self safeDraw: [ ctx drawImage: self backTileImage x: self currentPoint x - 4 y: self currentPoint y + 20 ] inContext: ctx
+!
+
+drawBackground: object
+	self drawIsometric: object inContext: self backgroundContext
 !
 
 drawGOT: got
-	| ctx |
-	ctx := self gameContext.
-	self safeDraw: [ self display: got inContext: ctx X: self currentPoint x - 15 y: self currentPoint y - 10 ] inContext: ctx
+	self safeDraw: [ :context | self display: got inContext: context X: self currentPoint x - 15 y: self currentPoint y - 10 ] inContext: self gameContext
 !
 
 drawHeros: heros
@@ -639,12 +665,13 @@ drawHeros: heros
 drawIsometric: object inContext: ctx
 	"draw through isometric transformation"
 
-	self safeDraw: [ ctx 
-		translate: self currentPoint x + 45 y: self currentPoint y - 7;
-		scale: 1 y: 0.5;
-		rotate: Number pi / 4 ;
-		scale: 1.4 y: 1.33.
-	self display: object inContext: ctx ]
+	self safeDraw: [ :context |
+		context 
+			translate: self currentPoint x + 45 y: self currentPoint y - 7;
+			scale: 1 y: 0.5;
+			rotate: Number pi / 4 ;
+			scale: 1.4 y: 1.33.
+	self display: object inContext: context ]
 		inContext: ctx
 !
 
@@ -667,10 +694,11 @@ drawUnit: aUnit
 reverseDisplay: heros inContext: ctx xPad: aX yPad: aY
 	"87 = 72 (width image + 15"
 
-	self safeDraw: [ ctx
-		translate: self currentPoint x + aX y: 0;
-		scale: -1 y: 1.
-	self display: heros inContext: ctx X: 0 y: self currentPoint y - aY ]
+	self safeDraw: [ :context |
+		context
+			translate: self currentPoint x + aX y: 0;
+			scale: -1 y: 1.
+		self display: heros inContext: context X: 0 y: self currentPoint y - aY ]
 		inContext: ctx
 !
 
@@ -678,7 +706,7 @@ safeDraw: aBlock inContext: ctx
 	"ensure that the drawing context will be restored"
 
 	[ ctx save.
-	aBlock value ]
+	aBlock value: ctx ]
 		ensure: [ ctx restore ]
 ! !
 

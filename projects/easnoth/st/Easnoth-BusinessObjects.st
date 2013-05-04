@@ -26,7 +26,6 @@ parent: object
 !
 
 root
-	self isRoot ifTrue: [ ^ self ].
 	^ self parent root
 ! !
 
@@ -65,16 +64,11 @@ removeSelection
 showActiveMonsters
 	self children do: [ :child |
 		child showActiveMonsters ]
-! !
-
-!CWComponent methodsFor: 'testing'!
-
-isLeaf
-	^ false
 !
 
-isRoot
-	^ false
+unmark
+	self children do: [ :child |
+		child unmark ]
 ! !
 
 !CWComponent methodsFor: 'visiting'!
@@ -116,7 +110,7 @@ accept: aVisitor
 ! !
 
 CWComposite subclass: #CWCell
-	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell'
+	instanceVariableNames: 'neighboursCache background gameOverTile monster state properties'
 	package: 'Easnoth-BusinessObjects'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
@@ -163,16 +157,46 @@ monster: aMonster
 	monster := aMonster
 !
 
-prevCell
-	^ prevCell
-!
-
-prevCell: aCell
-	prevCell := aCell
-!
-
 side
 	^ self monster side
+! !
+
+!CWCell methodsFor: 'accessing - properties'!
+
+isMarked
+	^ self propertyAt: #mark ifAbsent: [ false ]
+!
+
+mark
+	self propertyAt: #mark put: true
+!
+
+prevCell
+	^ self propertyAt: #prevCell
+!
+
+prevCell: aCell 
+	self propertyAt: #prevCell put: aCell
+!
+
+properties
+	^ properties ifNil: [ properties := Dictionary new ]
+!
+
+propertyAt: key
+	^ self properties at: key
+!
+
+propertyAt: key ifAbsent: aBlock
+	^ self properties at: key ifAbsent: aBlock
+!
+
+propertyAt: key put: value
+	self properties at: key put: value
+!
+
+unmark
+	self propertyAt: #mark put: false
 ! !
 
 !CWCell methodsFor: 'factory'!
@@ -204,6 +228,7 @@ tileClass
 !CWCell methodsFor: 'initialize-release'!
 
 free
+	"used to initialize State, so should not rely on state. see isFree"
 	^ self monster isNil
 !
 
@@ -251,25 +276,23 @@ attackableNeighboursFrom: side
 	^ attackableCells
 !
 
-freeNeighbours
-	^ self neighbours select: [ :each |  each isFree.]
-!
-
 movableNeighbours
 	|movableCells|
 
-	movableCells := self freeNeighbours.
+	movableCells := self neighbours select: [:each | each isFree and: [ each isMarked not ] ].
 	
-	"this add a track for pathfinding..."
+	"this add a track for pathfinding"
 	movableCells do: [ :each |
 			each prevCell: self.
-			each addSelector].
+			each mark].
 			
 	^ movableCells
 !
 
 movableNeighboursCycle: cycleNumber
 	| movableCells tempSet |
+	
+	self root unmark.
 	
 	movableCells := { self } asSet.
 	1 to: cycleNumber do: [ :i |
@@ -303,7 +326,7 @@ cellToMoveBeforeAttack: cellLast
 
 	| possibleCells closestCell shortestPath |
 	self monster isRanged ifTrue: [ ^ self cellToMoveBeforeRangeAttack: cellLast ].
-	possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].
+	possibleCells := cellLast neighbours select: [:each | each isMarked ].
 	shortestPath := 9999.
 	possibleCells do: [ :each | 
 		| pathSize |
@@ -318,9 +341,8 @@ cellToMoveBeforeAttack: cellLast
 cellToMoveBeforeRangeAttack: cellLast
 	| possibleCells closestCell shortestPath |
 	"hacky for now ..."
-	self root removeSelection. "remove the old tracks ..."
 	self movableNeighboursCycle: self monster range + self monster currentMove. "create fake tracks to ennemy"
-	possibleCells := cellLast neighbours select: [:each | each isFreeSelected ].
+	possibleCells := cellLast neighbours select: [:each | each isMarked ].
 	shortestPath := 9999.
 	possibleCells do: [ :each | 
 		| pathSize |
@@ -382,15 +404,12 @@ canBeAttackedBy: side
 !
 
 hasMonster
-	^ self state hasMonster
+	^ self isFree not
 !
 
 isFree
+	"Answers true if cell free or freeselected"
 	^ self state isFree
-!
-
-isFreeSelected
-	^ self state isFreeSelected
 !
 
 mouseClick: gameContext
@@ -486,6 +505,10 @@ drawer
 	^ drawer
 !
 
+root
+	^ self
+!
+
 rows
 	^ rows
 ! !
@@ -557,10 +580,11 @@ updateMonstersAndGOTs
 	drawer updateMonstersAndGOTs
 ! !
 
-!CWMap methodsFor: 'testing'!
+!CWMap methodsFor: 'selection'!
 
-isRoot
-	^ true
+showActiveMonsters
+	self removeSelection.
+	super showActiveMonsters
 ! !
 
 !CWMap methodsFor: 'visiting'!
@@ -673,12 +697,6 @@ CWComponent subclass: #CWLeaf
 
 children
 	^ #()
-! !
-
-!CWLeaf methodsFor: 'testing'!
-
-isLeaf
-	^ true
 ! !
 
 !CWLeaf methodsFor: 'visiting'!
@@ -967,6 +985,12 @@ moveTo: aCell inContext: gameContext callback: callback
 
 !CWMonster methodsFor: 'fighting'!
 
+attack: anotherMonster inContext: gameContext
+	"Dispatch to type strategy for advantages of attacks and goes to attack:InContext:bonus:"
+	
+	^ typeStrategy monster: self attackNeighbour: anotherMonster inContext: gameContext
+!
+
 attack: anotherMonster inContext: gameContext bonus: int
 	"int is for now -1 0 or 1 and represents the advantages / disadvantages of attacks"
 	
@@ -992,12 +1016,6 @@ attack: anotherMonster inContext: gameContext bonus: int
         self selectInContext: gameContext.
 		self checkForNextTurn.
 		self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack
-!
-
-attackNeighbour: anotherMonster inContext: gameContext
-	"Dispatch to type strategy for advantages of attacks and goes to attack:InContext:bonus:"
-	
-	^ typeStrategy monster: self attackNeighbour: anotherMonster inContext: gameContext
 !
 
 die
@@ -1093,7 +1111,6 @@ addSelectorsTo: cells
 
 attackableTargets
 	"Answers the list of monsters this monster can attack, including the ones he needs to move before attack"
-	self root removeSelection. "To remove the selected stuff created by attackableTargets or you will no get the shit out of attackableTagets"
 	^ self parent attackableNeighboursConsideringMoveForMonster: self.
 !
 

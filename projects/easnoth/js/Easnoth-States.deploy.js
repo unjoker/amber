@@ -58,34 +58,12 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "hasMonster",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return false;
-}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWCellState)})},
-messageSends: []}),
-smalltalk.CWCellState);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "isFree",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return false;
 }, function($ctx1) {$ctx1.fill(self,"isFree",{},smalltalk.CWCellState)})},
-messageSends: []}),
-smalltalk.CWCellState);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isFreeSelected",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return false;
-}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWCellState)})},
 messageSends: []}),
 smalltalk.CWCellState);
 
@@ -201,11 +179,10 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(aCell)._root();
-_st($1)._removeSelection();
 _st($1)._showActiveMonsters();
 $2=_st($1)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
-messageSends: ["removeSelection", "root", "showActiveMonsters", "updateGOTs"]}),
+messageSends: ["showActiveMonsters", "root", "updateGOTs"]}),
 smalltalk.CWFree);
 
 smalltalk.addMethod(
@@ -256,12 +233,12 @@ smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "isFreeSelected",
+selector: "isFree",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return true;
-}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWFreeSelected)})},
+}, function($ctx1) {$ctx1.fill(self,"isFree",{},smalltalk.CWFreeSelected)})},
 messageSends: []}),
 smalltalk.CWFreeSelected);
 
@@ -353,17 +330,6 @@ smalltalk.CWHasMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "hasMonster",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return true;
-}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWHasMonster)})},
-messageSends: []}),
-smalltalk.CWHasMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "mouseClick:context:",
 fn: function (aCell,gameContext){
 var self=this;
@@ -433,17 +399,6 @@ $1=_st(_st(_st(aCell)._side()).__eq(side))._not();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"cell:canBeAttackedBy:",{aCell:aCell,side:side},smalltalk.CWHasMonsterSelected)})},
 messageSends: ["not", "=", "side"]}),
-smalltalk.CWHasMonsterSelected);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "hasMonster",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return true;
-}, function($ctx1) {$ctx1.fill(self,"hasMonster",{},smalltalk.CWHasMonsterSelected)})},
-messageSends: []}),
 smalltalk.CWHasMonsterSelected);
 
 smalltalk.addMethod(
@@ -669,10 +624,9 @@ var self=this;
 var toMoveCell;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st(_st(aMonster)._root())._removeSelection();
 $1=_st(_st(aMonster)._selectAttackableCells())._includes_(aCell);
 if(smalltalk.assert($1)){
-_st(aMonster)._attackNeighbour_inContext_(_st(aCell)._monster(),gameContext);
+_st(aMonster)._attack_inContext_(_st(aCell)._monster(),gameContext);
 } else {
 toMoveCell=_st(_st(aMonster)._parent())._cellToMoveBeforeAttack_(aCell);
 toMoveCell;
@@ -682,7 +636,7 @@ return _st(aMonster)._attackTo_inContext_(aCell,gameContext);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 };
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
-messageSends: ["removeSelection", "root", "ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attackNeighbour:inContext:", "monster", "includes:", "selectAttackableCells"]}),
+messageSends: ["ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attack:inContext:", "monster", "includes:", "selectAttackableCells"]}),
 smalltalk.CWActive);
 
 smalltalk.addMethod(
@@ -811,9 +765,9 @@ selector: "monster:attackTo:inContext:",
 fn: function (aMonster,aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(aMonster)._attackNeighbour_inContext_(_st(aCell)._monster(),gameContext);
+_st(aMonster)._attack_inContext_(_st(aCell)._monster(),gameContext);
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext},smalltalk.CWHasMoved)})},
-messageSends: ["attackNeighbour:inContext:", "monster"]}),
+messageSends: ["attack:inContext:", "monster"]}),
 smalltalk.CWHasMoved);
 
 smalltalk.addMethod(
@@ -953,12 +907,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(aMonster)._root();
-_st($1)._removeSelection();
 _st($1)._showActiveMonsters();
 $2=_st($1)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
-messageSends: ["removeSelection", "root", "showActiveMonsters", "updateGOTs", "currentMonster:"]}),
+messageSends: ["showActiveMonsters", "root", "updateGOTs", "currentMonster:"]}),
 smalltalk.CWInactive);
 
 smalltalk.addMethod(

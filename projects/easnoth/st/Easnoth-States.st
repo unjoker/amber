@@ -29,15 +29,7 @@ cell: aCell canBeAttackedBy: side
 	^ false
 !
 
-hasMonster
-	^ false
-!
-
 isFree
-	^ false
-!
-
-isFreeSelected
 	^ false
 !
 
@@ -90,7 +82,6 @@ isFree
 
 mouseClick: aCell context: gameContext
 	aCell root 
-		removeSelection;
 		showActiveMonsters;
 		updateGOTs
 !
@@ -119,7 +110,7 @@ cell: aCell addMonster: aMonster
 	self error: 'cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)'.
 !
 
-isFreeSelected
+isFree
 	^ true
 !
 
@@ -161,10 +152,6 @@ cell: aCell canBeAttackedBy: side
 	^ (aCell side = side) not
 !
 
-hasMonster
-	^ true
-!
-
 mouseClick: aCell context: gameContext
 	aCell monster selectInContext: gameContext
 !
@@ -198,10 +185,6 @@ cell: aCell addMonster: aMonster
 cell: aCell canBeAttackedBy: side
 	"This method should be removed. but seems to have problem then with move + attack. Dont know why."
 	^ (aCell side = side) not
-!
-
-hasMonster 
-	^true
 !
 
 mouseClick: aCell context: gameContext
@@ -288,13 +271,12 @@ checkForNextTurn: aMonster
 
 monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
-	aMonster root removeSelection. "This reinitialize prevCell for selectAttackableCells calcul"
 	(aMonster selectAttackableCells includes: aCell ) 
 		ifFalse: [ 
 			toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.
 			aMonster moveTo: toMoveCell inContext: gameContext callback: [
 				aMonster attackTo: aCell inContext: gameContext ] ] 
-		ifTrue: [ aMonster attackNeighbour: aCell monster inContext: gameContext ]
+		ifTrue: [ aMonster attack: aCell monster inContext: gameContext ]
 !
 
 select: aMonster inContext: gameContext
@@ -362,8 +344,7 @@ checkForNextTurn: aMonster
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
-	"need fx for range attack"
-	aMonster attackNeighbour: aCell monster inContext: gameContext
+	aMonster attack: aCell monster inContext: gameContext
 !
 
 monster: aMonster moveTo: aCell inContext: gameContext
@@ -425,7 +406,6 @@ readyToPick: aMonster
 
 select: aMonster inContext: gameContext
 	aMonster root 
-		removeSelection;
 		showActiveMonsters;
 		updateGOTs.
 	gameContext currentMonster: aMonster.
