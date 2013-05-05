@@ -441,7 +441,7 @@ smalltalk.CWCanvasLayer);
 
 
 
-smalltalk.addClass('CWImageLayer', smalltalk.CWLayer, ['array', 'map'], 'Easnoth-MapUI');
+smalltalk.addClass('CWImageLayer', smalltalk.CWLayer, ['array', 'invis'], 'Easnoth-MapUI');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "clean",
@@ -450,10 +450,10 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@array"])._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
-return _st(each)._src_("ressources/images/overtiles/invis.png");
+return _st(each)._src_(_st(self["@invis"])._src());
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWImageLayer)})},
-messageSends: ["do:", "src:"]}),
+messageSends: ["do:", "src:", "src"]}),
 smalltalk.CWImageLayer);
 
 smalltalk.addMethod(
@@ -475,11 +475,12 @@ selector: "initializeForMap:",
 fn: function (aMap){
 var self=this;
 function $CWTwoDimArray(){return smalltalk.CWTwoDimArray||(typeof CWTwoDimArray=="undefined"?nil:CWTwoDimArray)}
+function $CWGameOverTile(){return smalltalk.CWGameOverTile||(typeof CWGameOverTile=="undefined"?nil:CWGameOverTile)}
 return smalltalk.withContext(function($ctx1) { 
-self["@map"]=aMap;
-self["@array"]=_st($CWTwoDimArray())._new_(_st(_st(_st(self["@map"])._children())._size()).__at(_st(_st(_st(self["@map"])._childAt_((1)))._children())._size()));
+self["@array"]=_st($CWTwoDimArray())._new_(_st(_st(_st(aMap)._children())._size()).__at(_st(_st(_st(aMap)._childAt_((1)))._children())._size()));
+self["@invis"]=_st(_st($CWGameOverTile())._invis())._image();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWImageLayer)})},
-messageSends: ["new:", "@", "size", "children", "childAt:"]}),
+messageSends: ["new:", "@", "size", "children", "childAt:", "image", "invis"]}),
 smalltalk.CWImageLayer);
 
 smalltalk.addMethod(
@@ -492,10 +493,10 @@ function $CWGlobalDrawingContext(){return smalltalk.CWGlobalDrawingContext||(typ
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 tempContext=_st(_st($CWGlobalDrawingContext())._default())._reset();
-_st(_st(self["@map"])._children())._withIndexDo_((function(row,i){
+_st(self["@array"])._rowsWithIndexDo_((function(row,i){
 return smalltalk.withContext(function($ctx2) {
 _st(tempContext)._nextRow();
-return _st(_st(row)._children())._withIndexDo_((function(cell,j){
+return _st(row)._withIndexDo_((function(cell,j){
 return smalltalk.withContext(function($ctx3) {
 _st(tempContext)._nextCell();
 $1=_st(html)._img();
@@ -508,7 +509,7 @@ return _st(self["@array"])._i_j_put_(i,j,tempImage);
 }, function($ctx3) {$ctx3.fillBlock({cell:cell,j:j},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,tempContext:tempContext,tempImage:tempImage},smalltalk.CWImageLayer)})},
-messageSends: ["reset", "default", "withIndexDo:", "nextRow", "nextCell", "width:", "img", "height:", "style:", ",", "-", "x", "currentPoint", "y", "i:j:put:", "children"]}),
+messageSends: ["reset", "default", "rowsWithIndexDo:", "nextRow", "withIndexDo:", "nextCell", "width:", "img", "height:", "style:", ",", "-", "x", "currentPoint", "y", "i:j:put:"]}),
 smalltalk.CWImageLayer);
 
 
@@ -709,7 +710,7 @@ selector: "gotCanvasId",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-return "#game";
+return "#got";
 }, function($ctx1) {$ctx1.fill(self,"gotCanvasId",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
 smalltalk.CWMapDrawer);
@@ -761,16 +762,16 @@ smalltalk.method({
 selector: "initializeForMap:",
 fn: function (aMap){
 var self=this;
-function $CWImageLayer(){return smalltalk.CWImageLayer||(typeof CWImageLayer=="undefined"?nil:CWImageLayer)}
 function $CWGlobalDrawingContext(){return smalltalk.CWGlobalDrawingContext||(typeof CWGlobalDrawingContext=="undefined"?nil:CWGlobalDrawingContext)}
+function $CWImageLayer(){return smalltalk.CWImageLayer||(typeof CWImageLayer=="undefined"?nil:CWImageLayer)}
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=aMap;
 _st(_st(self)._padding())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(self["@map"])._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
-_st(self["@layers"])._at_put_((2),_st(_st($CWImageLayer())._new())._initializeForMap_(aMap));
 _st(_st($CWGlobalDrawingContext())._default())._reset_(self);
-_st(_st(self["@layers"])._at_((2)))._appendToJQuery_(_st("#foo")._asJQuery());
+_st(self["@layers"])._at_put_((2),_st(_st($CWImageLayer())._new())._initializeForMap_(aMap));
+_st(_st(self["@layers"])._at_((2)))._appendToJQuery_(_st(_st(self)._gotCanvasId())._asJQuery());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWMapDrawer)})},
-messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "at:put:", "initializeForMap:", "new", "reset:", "default", "appendToJQuery:", "asJQuery"]}),
+messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "reset:", "default", "at:put:", "initializeForMap:", "new", "appendToJQuery:", "asJQuery", "gotCanvasId"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1396,6 +1397,28 @@ return _st(self["@array"])._at_put_(index,_st($Array())._new_(_st(aPoint)._y()))
 }, function($ctx2) {$ctx2.fillBlock({index:index},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSize:",{aPoint:aPoint},smalltalk.CWTwoDimArray)})},
 messageSends: ["new:", "x", "to:do:", "at:put:", "y"]}),
+smalltalk.CWTwoDimArray);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "rowsDo:",
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@array"])._do_(aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"rowsDo:",{aBlock:aBlock},smalltalk.CWTwoDimArray)})},
+messageSends: ["do:"]}),
+smalltalk.CWTwoDimArray);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "rowsWithIndexDo:",
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@array"])._withIndexDo_(aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"rowsWithIndexDo:",{aBlock:aBlock},smalltalk.CWTwoDimArray)})},
+messageSends: ["withIndexDo:"]}),
 smalltalk.CWTwoDimArray);
 
 

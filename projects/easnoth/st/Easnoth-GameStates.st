@@ -66,7 +66,7 @@ I am the state of a cell that has no monsters on it and that has no game selecto
 !CWFree methodsFor: 'cell state API'!
 
 addSelector: aCell
-	aCell addSelectorColored: 'green'.
+	aCell addGreenSelector.
 	aCell changeState: CWFreeSelected
 !
 
@@ -140,7 +140,7 @@ I am the state of a cell that has some monsters on it and that has no game selec
 !CWHasMonster methodsFor: 'cell state API'!
 
 addSelector: aCell
-	aCell addSelectorColored: 'red'.
+	aCell addRedSelector.
 	aCell changeState: CWHasMonsterSelected
 !
 
@@ -244,7 +244,7 @@ select: aMonster inContext: gameContext
 !
 
 showActiveMonster: aMonster
-	aMonster parent addSelectorColored: 'white'
+	aMonster parent addWhiteSelector
 ! !
 
 !CWMonsterState methodsFor: 'private'!

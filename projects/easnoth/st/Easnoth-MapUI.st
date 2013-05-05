@@ -250,7 +250,7 @@ safeDraw: aBlock
 ! !
 
 CWLayer subclass: #CWImageLayer
-	instanceVariableNames: 'array map'
+	instanceVariableNames: 'array invis'
 	package: 'Easnoth-MapUI'!
 !CWImageLayer commentStamp!
 I represent a layer that is implemented as a 2 dimentianal array of images.
@@ -262,29 +262,29 @@ This is supposed to be much faster than the canvas one, but cannot permit isomet
 !CWImageLayer methodsFor: 'initialize-release'!
 
 initializeForMap: aMap
-	map := aMap.
-	array := CWTwoDimArray new: map children size @ (map childAt: 1) children size.
+	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
+	invis := CWGameOverTile invis image
 ! !
 
 !CWImageLayer methodsFor: 'rendering'!
 
 clean
 	array do: [:each |
-		each src: 'ressources/images/overtiles/invis.png' ]
+		each src: invis src ]
 !
 
 drawGOT: got point: point
 	| image |
 	image := array i: point x j: point y.
-	image src: got image src.
+	image src: got image src
 !
 
 renderOn: html
 	| tempContext tempImage |
 	tempContext := CWGlobalDrawingContext default reset.
-	map children withIndexDo: [ :row :i |
+	array rowsWithIndexDo: [ :row :i |
 		tempContext nextRow.
-		row children withIndexDo: [ :cell :j |
+		row withIndexDo: [ :cell :j |
 			tempContext nextCell.
 			tempImage := html img
 				width: 126;
@@ -359,7 +359,7 @@ canvasPadding
 gotCanvasId
 	"id of the game canvas for the css"
 
-	^ '#game'
+	^ '#got'
 !
 
 monsterCanvasId
@@ -412,9 +412,9 @@ initializeEventHandling
 initializeForMap: aMap
 	map := aMap.
 	self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).
-	layers at: 2 put: (CWImageLayer new initializeForMap: aMap).
 	CWGlobalDrawingContext default reset: self. "hack for render on of CWImageLayer"
-	(layers at: 2) appendToJQuery: '#foo' asJQuery
+	layers at: 2 put: (CWImageLayer new initializeForMap: aMap).
+	(layers at: 2) appendToJQuery: self gotCanvasId asJQuery
 !
 
 initializeLayers
@@ -712,6 +712,14 @@ do: aBlock
 	array do: [ :subArray |
 		subArray do: [ :each |
 			aBlock value: each ] ]
+!
+
+rowsDo: aBlock
+	array do: aBlock
+!
+
+rowsWithIndexDo: aBlock
+	array withIndexDo: aBlock
 ! !
 
 !CWTwoDimArray methodsFor: 'initialize - release'!

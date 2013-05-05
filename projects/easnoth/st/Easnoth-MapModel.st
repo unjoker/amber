@@ -110,7 +110,7 @@ accept: aVisitor
 ! !
 
 CWComposite subclass: #CWCell
-	instanceVariableNames: 'neighboursCache background gameOverTile monster state properties'
+	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell mark'
 	package: 'Easnoth-MapModel'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
@@ -161,42 +161,26 @@ side
 	^ self monster side
 ! !
 
-!CWCell methodsFor: 'accessing - properties'!
+!CWCell methodsFor: 'accessing - pathfinding'!
 
 isMarked
-	^ self propertyAt: #mark ifAbsent: [ false ]
+	^ mark
 !
 
 mark
-	self propertyAt: #mark put: true
+	mark := true
 !
 
 prevCell
-	^ self propertyAt: #prevCell
+	^ prevCell
 !
 
 prevCell: aCell 
-	self propertyAt: #prevCell put: aCell
-!
-
-properties
-	^ properties ifNil: [ properties := Dictionary new ]
-!
-
-propertyAt: key
-	^ self properties at: key
-!
-
-propertyAt: key ifAbsent: aBlock
-	^ self properties at: key ifAbsent: aBlock
-!
-
-propertyAt: key put: value
-	self properties at: key put: value
+	prevCell := aCell
 !
 
 unmark
-	self propertyAt: #mark put: false
+	mark := false
 ! !
 
 !CWCell methodsFor: 'factory'!
@@ -205,16 +189,24 @@ gameOverTileClass
 	^ CWGameOverTile
 !
 
-newGameOverTile
-	 ^ self newChild: self gameOverTileClass
+newGreenGOT
+	 ^ self gameOverTileClass green
 !
 
 newOverTile
 	 ^ self newChild: self overTileClass
 !
 
+newRedGOT
+	 ^ self gameOverTileClass red
+!
+
 newTile
 	 ^ self newChild: self tileClass
+!
+
+newWhiteGOT
+	 ^ self gameOverTileClass white
 !
 
 overTileClass
@@ -230,6 +222,11 @@ tileClass
 free
 	"used to initialize State, so should not rely on state. see isFree"
 	^ self monster isNil
+!
+
+initialize
+	super initialize.
+	mark := false
 !
 
 initializeFromJson: aJsonCell
@@ -279,7 +276,7 @@ attackableNeighboursFrom: side
 movableNeighbours
 	|movableCells|
 
-	movableCells := self neighbours select: [:each | each isFree and: [ each isMarked not ] ].
+	movableCells := self neighbours select: [:each | each isFree & each isMarked not ].
 	
 	"this add a track for pathfinding"
 	movableCells do: [ :each |
@@ -381,8 +378,20 @@ printOn: aStream
 
 !CWCell methodsFor: 'selection'!
 
+addGreenSelector
+	self gameOverTile: self newGreenGOT
+!
+
+addRedSelector
+	self gameOverTile: self newRedGOT
+!
+
 addSelectorColored: aColor
 	self gameOverTile: (self newGameOverTile initializeFromKey: aColor)
+!
+
+addWhiteSelector
+	self gameOverTile: self newWhiteGOT
 !
 
 removeGameOverTile
@@ -809,11 +818,67 @@ folderName
 CWOverTile subclass: #CWGameOverTile
 	instanceVariableNames: ''
 	package: 'Easnoth-MapModel'!
+!CWGameOverTile commentStamp!
+class side I have an image array to crete got faster as they are the most created / gc objects!
 
 !CWGameOverTile methodsFor: 'visiting'!
 
 accept: aVisitor
 	^ aVisitor visitGameOverTile: self
+! !
+
+CWGameOverTile class instanceVariableNames: 'imageArray'!
+
+!CWGameOverTile class methodsFor: 'array'!
+
+createImageArray
+	imageArray := Array new: 4.
+	imageArray 
+		at: self greenIndex put: (self imageCacheAt: 'green');
+		at: self redIndex put: (self imageCacheAt: 'red');
+		at: self whiteIndex put: (self imageCacheAt: 'white');
+		at: self invisIndex put: (self imageCacheAt: 'invis').
+	^ imageArray
+!
+
+imageArray
+	^ imageArray ifNil: [ self createImageArray ]
+! !
+
+!CWGameOverTile class methodsFor: 'index'!
+
+greenIndex
+	^ 1
+!
+
+invisIndex
+	^ 4
+!
+
+redIndex
+	^ 2
+!
+
+whiteIndex
+	^ 3
+! !
+
+!CWGameOverTile class methodsFor: 'instance creation'!
+
+green
+	^ self new image: (self imageArray at: self greenIndex)
+!
+
+invis
+	^ self new image: (self imageArray at: self invisIndex)
+!
+
+red
+	^ self new image: (self imageArray at: self redIndex)
+!
+
+white
+	^ self new image: (self imageArray at: self whiteIndex)
 ! !
 
 CWBackground subclass: #CWTile
