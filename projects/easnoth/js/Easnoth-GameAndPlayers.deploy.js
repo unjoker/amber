@@ -929,6 +929,17 @@ smalltalk.CWHuman);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "at:ifPresent:",
+fn: function (index,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+ if((1 < index) || (index < self.length)) {return aBlock(self[index - 1])}; ;
+return self}, function($ctx1) {$ctx1.fill(self,"at:ifPresent:",{index:index,aBlock:aBlock},smalltalk.SequenceableCollection)})},
+messageSends: []}),
+smalltalk.SequenceableCollection);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "at:ifPresent:ifAbsent:",
 fn: function (index,aBlock,anotherBlock){
 var self=this;

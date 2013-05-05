@@ -430,6 +430,10 @@ eventDispatcher: anObject
 
 !SequenceableCollection methodsFor: '*Easnoth-GameAndPlayers'!
 
+at: index ifPresent: aBlock
+	< if((1 < index) || (index < self.length)) {return aBlock(self[index - 1])}; >
+!
+
 at: index ifPresent: aBlock ifAbsent: anotherBlock
 
 	^(index <= self size and: [ index > 0 ])

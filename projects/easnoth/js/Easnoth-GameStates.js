@@ -192,12 +192,12 @@ fn: function (aCell){
 var self=this;
 function $CWFreeSelected(){return smalltalk.CWFreeSelected||(typeof CWFreeSelected=="undefined"?nil:CWFreeSelected)}
 return smalltalk.withContext(function($ctx1) { 
-_st(aCell)._addSelectorColored_("green");
+_st(aCell)._addGreenSelector();
 _st(aCell)._changeState_($CWFreeSelected());
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWFree)})},
 args: ["aCell"],
-source: "addSelector: aCell\x0a\x09aCell addSelectorColored: 'green'.\x0a\x09aCell changeState: CWFreeSelected",
-messageSends: ["addSelectorColored:", "changeState:"],
+source: "addSelector: aCell\x0a\x09aCell addGreenSelector.\x0a\x09aCell changeState: CWFreeSelected",
+messageSends: ["addGreenSelector", "changeState:"],
 referencedClasses: ["CWFreeSelected"]
 }),
 smalltalk.CWFree);
@@ -417,12 +417,12 @@ fn: function (aCell){
 var self=this;
 function $CWHasMonsterSelected(){return smalltalk.CWHasMonsterSelected||(typeof CWHasMonsterSelected=="undefined"?nil:CWHasMonsterSelected)}
 return smalltalk.withContext(function($ctx1) { 
-_st(aCell)._addSelectorColored_("red");
+_st(aCell)._addRedSelector();
 _st(aCell)._changeState_($CWHasMonsterSelected());
 return self}, function($ctx1) {$ctx1.fill(self,"addSelector:",{aCell:aCell},smalltalk.CWHasMonster)})},
 args: ["aCell"],
-source: "addSelector: aCell\x0a\x09aCell addSelectorColored: 'red'.\x0a\x09aCell changeState: CWHasMonsterSelected",
-messageSends: ["addSelectorColored:", "changeState:"],
+source: "addSelector: aCell\x0a\x09aCell addRedSelector.\x0a\x09aCell changeState: CWHasMonsterSelected",
+messageSends: ["addRedSelector", "changeState:"],
 referencedClasses: ["CWHasMonsterSelected"]
 }),
 smalltalk.CWHasMonster);
@@ -805,11 +805,11 @@ category: 'monster state API',
 fn: function (aMonster){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(aMonster)._parent())._addSelectorColored_("white");
+_st(_st(aMonster)._parent())._addWhiteSelector();
 return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonster:",{aMonster:aMonster},smalltalk.CWMonsterState)})},
 args: ["aMonster"],
-source: "showActiveMonster: aMonster\x0a\x09aMonster parent addSelectorColored: 'white'",
-messageSends: ["addSelectorColored:", "parent"],
+source: "showActiveMonster: aMonster\x0a\x09aMonster parent addWhiteSelector",
+messageSends: ["addWhiteSelector", "parent"],
 referencedClasses: []
 }),
 smalltalk.CWMonsterState);

@@ -1233,6 +1233,22 @@ smalltalk.CWHuman);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "at:ifPresent:",
+category: '*Easnoth-GameAndPlayers',
+fn: function (index,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+ if((1 < index) || (index < self.length)) {return aBlock(self[index - 1])}; ;
+return self}, function($ctx1) {$ctx1.fill(self,"at:ifPresent:",{index:index,aBlock:aBlock},smalltalk.SequenceableCollection)})},
+args: ["index", "aBlock"],
+source: "at: index ifPresent: aBlock\x0a\x09< if((1 < index) || (index < self.length)) {return aBlock(self[index - 1])}; > ",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.SequenceableCollection);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "at:ifPresent:ifAbsent:",
 category: '*Easnoth-GameAndPlayers',
 fn: function (index,aBlock,anotherBlock){
