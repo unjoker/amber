@@ -70,7 +70,8 @@ initializeEventHandling
 	self announcer
 		on: CWEndGameEvent
 		do: [ self announcer reset. 
-			map clean].
+			map clean.
+			CWStartMenu start ].
 !
 
 initializePlayerMonsters
@@ -164,8 +165,8 @@ monstersPositionArray
 	"hack for now. should be stored in database"
 	
 	^ self side = 1
-		ifTrue: [ { 1@4 . 1@6 . 2@6. 3@6 . 4@6 . 1@3 } ]
-		ifFalse: [ { 7@1 . 8@1 . 9@1. 6@1 . 9@3 . 9@4} ]
+		ifTrue: [ { 3@8 . 4@8 . 5@8 . 1@7. 2@7 . 2@8 . 1@4 . 1@5 . 1@6 } ]
+		ifFalse: [ { 6@1 . 7@1 . 8@1. 9@1 . 9@2 . 10@2 . 10@5 . 10@4 . 10@3} ]
 !
 
 side
@@ -279,12 +280,15 @@ initializeWithMap: aMap army: data
 		"initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player"
 		| monsters |
 		monsters := Array new.
-		monsters at: 1 put: (self newTroop: data troop).
-		monsters at: 2 put: (self newTroopHeros: data troopHeros).
-		monsters at: 3 put: (self newRange: data range).
-		monsters at: 4 put: (self newCavalry: data cavalry).
-		monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).
-		monsters at: 6 put: (self newRangeHeros: data rangeHeros).
+		monsters at: 7 put: (self newTroop: data troop).
+		monsters at: 8 put: (self newTroopHeros: data troopHeros).
+		monsters at: 9 put: (self newTroop: data troop).
+		monsters at: 4 put: (self newRange: data range).
+		monsters at: 5 put: (self newRangeHeros: data rangeHeros).
+		monsters at: 6 put: (self newRange: data range).
+		monsters at: 1 put: (self newCavalry: data cavalry).
+		monsters at: 2 put: (self newCavalryHeros: data cavalryHeros).
+		monsters at: 3 put: (self newCavalry: data cavalry).
 		team := monsters.
 ! !
 
@@ -362,7 +366,7 @@ calculBestMove
 	self team do: [ :monster |
 		monster currentMove: monster move.
 		monster attackableTargets do: [ :target |
-			score := monster attackPotential - target monster defensePotential. 
+			score := (monster attackPotentialFor: target monster) - target monster defensePotential. 
 			score > bestScore ifTrue: [ 
 				bestScore := score.
 				monsterToPlay := monster.
@@ -380,7 +384,6 @@ checkForNextTurn: monster
 executeAttack
 	| relatedTargetCell duration |
 	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.
-	relatedTargetCell ifNil: [ "case where the ennemy is neighbour and no free cells around" relatedTargetCell := monsterToPlay parent ].
 	duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.
 	cellToTarget mouseClick: self gameContext. 
 	[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.

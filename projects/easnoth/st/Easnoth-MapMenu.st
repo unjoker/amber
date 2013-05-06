@@ -159,7 +159,7 @@ updateDices: dicesNb kills: kills callBack: cb
 
 	| tmp dices i callback |
 	dices := Array new: dicesNb.
-	i := 1.
+	i := 0.
 	callback := [
 		i := i + 1. 
 		(i = dicesNb) 
@@ -313,8 +313,7 @@ renderOn: html
                         onClick: [Browser open].
 				   html button with: 'menu';
                         onClick: [
-							self announce: CWEndGameEvent new.
-							CWStartMenu start].
+							self announce: CWEndGameEvent new].
 				html br.
 				html iframe
 					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';

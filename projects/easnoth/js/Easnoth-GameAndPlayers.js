@@ -151,6 +151,7 @@ var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -163,13 +164,14 @@ return _st(self)._nextTurn();
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(self)._announcer())._reset();
-return _st(self["@map"])._clean();
+_st(self["@map"])._clean();
+return _st($CWStartMenu())._start();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ].\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09map clean].",
-messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean"],
-referencedClasses: ["CWGameStart", "CWNextTurnEvent", "CWEndGameEvent"]
+source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ].\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09map clean.\x0a\x09\x09\x09CWStartMenu start ].",
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean", "start"],
+referencedClasses: ["CWGameStart", "CWNextTurnEvent", "CWEndGameEvent", "CWStartMenu"]
 }),
 smalltalk.CWGame);
 
@@ -591,17 +593,20 @@ var monsters;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 monsters=_st($Array())._new();
-_st(monsters)._at_put_((1),_st(self)._newTroop_(_st(data)._troop()));
-_st(monsters)._at_put_((2),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
-_st(monsters)._at_put_((3),_st(self)._newRange_(_st(data)._range()));
-_st(monsters)._at_put_((4),_st(self)._newCavalry_(_st(data)._cavalry()));
-_st(monsters)._at_put_((5),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()));
-_st(monsters)._at_put_((6),_st(self)._newRangeHeros_(_st(data)._rangeHeros()));
+_st(monsters)._at_put_((7),_st(self)._newTroop_(_st(data)._troop()));
+_st(monsters)._at_put_((8),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
+_st(monsters)._at_put_((9),_st(self)._newTroop_(_st(data)._troop()));
+_st(monsters)._at_put_((4),_st(self)._newRange_(_st(data)._range()));
+_st(monsters)._at_put_((5),_st(self)._newRangeHeros_(_st(data)._rangeHeros()));
+_st(monsters)._at_put_((6),_st(self)._newRange_(_st(data)._range()));
+_st(monsters)._at_put_((1),_st(self)._newCavalry_(_st(data)._cavalry()));
+_st(monsters)._at_put_((2),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()));
+_st(monsters)._at_put_((3),_st(self)._newCavalry_(_st(data)._cavalry()));
 self["@team"]=monsters;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
 args: ["aMap", "data"],
-source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x09monsters at: 1 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 2 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 3 put: (self newRange: data range).\x0a\x09\x09monsters at: 4 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 5 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09monsters at: 6 put: (self newRangeHeros: data rangeHeros).\x0a\x09\x09team := monsters.",
-messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros", "newRangeHeros:", "rangeHeros"],
+source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x09monsters at: 7 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 8 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 9 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 4 put: (self newRange: data range).\x0a\x09\x09monsters at: 5 put: (self newRangeHeros: data rangeHeros).\x0a\x09\x09monsters at: 6 put: (self newRange: data range).\x0a\x09\x09monsters at: 1 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 2 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09monsters at: 3 put: (self newCavalry: data cavalry).\x0a\x09\x09team := monsters.",
+messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newRangeHeros:", "rangeHeros", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWPlayer);
@@ -616,14 +621,14 @@ return smalltalk.withContext(function($ctx1) {
 var $2,$1;
 $2=_st(_st(self)._side()).__eq((1));
 if(smalltalk.assert($2)){
-$1=[_st((1)).__at((4)),_st((1)).__at((6)),_st((2)).__at((6)),_st((3)).__at((6)),_st((4)).__at((6)),_st((1)).__at((3))];
+$1=[_st((3)).__at((8)),_st((4)).__at((8)),_st((5)).__at((8)),_st((1)).__at((7)),_st((2)).__at((7)),_st((2)).__at((8)),_st((1)).__at((4)),_st((1)).__at((5)),_st((1)).__at((6))];
 } else {
-$1=[_st((7)).__at((1)),_st((8)).__at((1)),_st((9)).__at((1)),_st((6)).__at((1)),_st((9)).__at((3)),_st((9)).__at((4))];
+$1=[_st((6)).__at((1)),_st((7)).__at((1)),_st((8)).__at((1)),_st((9)).__at((1)),_st((9)).__at((2)),_st((10)).__at((2)),_st((10)).__at((5)),_st((10)).__at((4)),_st((10)).__at((3))];
 };
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"monstersPositionArray",{},smalltalk.CWPlayer)})},
 args: [],
-source: "monstersPositionArray\x0a\x09\x22hack for now. should be stored in database\x22\x0a\x09\x0a\x09^ self side = 1\x0a\x09\x09ifTrue: [ { 1@4 . 1@6 . 2@6. 3@6 . 4@6 . 1@3 } ]\x0a\x09\x09ifFalse: [ { 7@1 . 8@1 . 9@1. 6@1 . 9@3 . 9@4} ]",
+source: "monstersPositionArray\x0a\x09\x22hack for now. should be stored in database\x22\x0a\x09\x0a\x09^ self side = 1\x0a\x09\x09ifTrue: [ { 3@8 . 4@8 . 5@8 . 1@7. 2@7 . 2@8 . 1@4 . 1@5 . 1@6 } ]\x0a\x09\x09ifFalse: [ { 6@1 . 7@1 . 8@1. 9@1 . 9@2 . 10@2 . 10@5 . 10@4 . 10@3} ]",
 messageSends: ["ifTrue:ifFalse:", "@", "=", "side"],
 referencedClasses: []
 }),
@@ -1032,7 +1037,7 @@ return smalltalk.withContext(function($ctx2) {
 _st(monster)._currentMove_(_st(monster)._move());
 _st(_st(monster)._attackableTargets())._do_((function(target){
 return smalltalk.withContext(function($ctx3) {
-score=_st(_st(monster)._attackPotential()).__minus(_st(_st(target)._monster())._defensePotential());
+score=_st(_st(monster)._attackPotentialFor_(_st(target)._monster())).__minus(_st(_st(target)._monster())._defensePotential());
 score;
 $1=_st(score).__gt(bestScore);
 if(smalltalk.assert($1)){
@@ -1048,8 +1053,8 @@ return _st(monster)._currentMove_((0));
 }, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"calculBestMove",{score:score,bestScore:bestScore},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "calculBestMove\x0a\x09\x22Calcul the best move for the AI player. see class comment for details\x22 \x0a\x0a\x09| score bestScore |\x0a\x09bestScore := 9999 negated.\x0a\x09self team do: [ :monster |\x0a\x09\x09monster currentMove: monster move.\x0a\x09\x09monster attackableTargets do: [ :target |\x0a\x09\x09\x09score := monster attackPotential - target monster defensePotential. \x0a\x09\x09\x09score > bestScore ifTrue: [ \x0a\x09\x09\x09\x09bestScore := score.\x0a\x09\x09\x09\x09monsterToPlay := monster.\x0a\x09\x09\x09\x09cellToTarget := target ] ].\x0a\x09\x09monster currentMove: 0. ]",
-messageSends: ["negated", "do:", "currentMove:", "move", "-", "defensePotential", "monster", "attackPotential", "ifTrue:", ">", "attackableTargets", "team"],
+source: "calculBestMove\x0a\x09\x22Calcul the best move for the AI player. see class comment for details\x22 \x0a\x0a\x09| score bestScore |\x0a\x09bestScore := 9999 negated.\x0a\x09self team do: [ :monster |\x0a\x09\x09monster currentMove: monster move.\x0a\x09\x09monster attackableTargets do: [ :target |\x0a\x09\x09\x09score := (monster attackPotentialFor: target monster) - target monster defensePotential. \x0a\x09\x09\x09score > bestScore ifTrue: [ \x0a\x09\x09\x09\x09bestScore := score.\x0a\x09\x09\x09\x09monsterToPlay := monster.\x0a\x09\x09\x09\x09cellToTarget := target ] ].\x0a\x09\x09monster currentMove: 0. ]",
+messageSends: ["negated", "do:", "currentMove:", "move", "-", "defensePotential", "monster", "attackPotentialFor:", "ifTrue:", ">", "attackableTargets", "team"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1083,15 +1088,7 @@ fn: function (){
 var self=this;
 var relatedTargetCell,duration;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
 relatedTargetCell=_st(_st(self["@monsterToPlay"])._parent())._cellToMoveBeforeAttack_context_(self["@cellToTarget"],_st(self)._gameContext());
-$1=relatedTargetCell;
-if(($receiver = $1) == nil || $receiver == undefined){
-relatedTargetCell=_st(self["@monsterToPlay"])._parent();
-relatedTargetCell;
-} else {
-$1;
-};
 duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
@@ -1100,8 +1097,8 @@ return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
-messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
+source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
+messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "parent", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);

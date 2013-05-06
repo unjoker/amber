@@ -346,7 +346,7 @@ function $CWDiceMiss(){return smalltalk.CWDiceMiss||(typeof CWDiceMiss=="undefin
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 dices=_st($Array())._new_(dicesNb);
-i=(1);
+i=(0);
 callback=(function(){
 return smalltalk.withContext(function($ctx2) {
 i=_st(i).__plus((1));
@@ -569,7 +569,6 @@ var self=this;
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
 $1=_st(html)._div();
@@ -596,8 +595,7 @@ $7=_st(html)._button();
 _st($7)._with_("menu");
 $8=_st($7)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(self)._announce_(_st($CWEndGameEvent())._new());
-return _st($CWStartMenu())._start();
+return _st(self)._announce_(_st($CWEndGameEvent())._new());
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $8;
 _st(html)._br();
@@ -610,7 +608,7 @@ $10=_st($9)._at_put_("allowTransparency","true");
 return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "start", "br", "src:", "iframe", "at:put:", "style:"]}),
+messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:"]}),
 smalltalk.CWTurnWatcher);
 
 smalltalk.addMethod(

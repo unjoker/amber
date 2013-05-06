@@ -1796,7 +1796,7 @@ return _st(child)._initializeFromJson_(row);
 _st(self)._announce_(_st($CWObjectLoaded())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeFromJson:",{jsonMap:jsonMap,child:child,rows1:rows1},smalltalk.CWMap)})},
 args: ["jsonMap"],
-source: "initializeFromJson: jsonMap\x0a\x09\x22initialize the rows of the map, \x0a\x09the announcement is in case everything was already cached (page refresh for example)\x22\x0a\x09\x0a\x09| child rows1 |\x0a\x09\x0a\x09self announce: CWWaitForObject new.\x0a\x09\x0a\x09rows1 := jsonMap row.\x0a\x09rows := Array new: rows1 size.\x0a\x09\x0a\x09rows1 withIndexDo: [:row :i |\x0a\x09\x09child := self newChild.\x0a\x09\x09self childAt: i put: child.\x0a\x09\x09child initializeFromJson: row ].\x0a\x09\x09\x0a\x09self announce: CWObjectLoaded new.",
+source: "initializeFromJson: jsonMap\x0a\x09\x22initialize the rows of the map, \x0a\x09the announcement is in case everything was already cached (page refresh for example)\x22\x0a\x09\x0a\x09| child rows1 |\x0a\x09\x0a\x09self announce: CWWaitForObject new.\x0a\x09\x0a\x09rows1 := jsonMap row.\x0a\x09rows := Array new: rows1 size.\x0a\x0a\x09rows1 withIndexDo: [:row :i |\x0a\x09\x09child := self newChild.\x0a\x09\x09self childAt: i put: child.\x0a\x09\x09child initializeFromJson: row ].\x0a\x09\x09\x0a\x09self announce: CWObjectLoaded new.",
 messageSends: ["announce:", "new", "row", "new:", "size", "withIndexDo:", "newChild", "childAt:put:", "initializeFromJson:"],
 referencedClasses: ["CWWaitForObject", "Array", "CWObjectLoaded"]
 }),
@@ -3051,6 +3051,26 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "attackPotentialFor:",
+category: 'accessing',
+fn: function (target){
+var self=this;
+var adv;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+adv=_st(self["@typeStrategy"])._bonusVS_(target);
+$1=_st(_st(_st(self["@attack"]).__plus((10))).__star(adv)).__star(_st(self["@dices"]).__plus(adv));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attackPotentialFor:",{target:target,adv:adv},smalltalk.CWMonster)})},
+args: ["target"],
+source: "attackPotentialFor: target\x0a\x09\x22Answers the power of attack of the monster considering target weakness and strength\x22\x0a\x09| adv |\x0a\x09adv := typeStrategy bonusVS: target.\x0a\x09^ (attack + 10 * adv) * (dices + adv)",
+messageSends: ["bonusVS:", "*", "+"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "attackTo:inContext:",
 category: 'state delegation',
 fn: function (aCell,gameContext){
@@ -3079,6 +3099,60 @@ return $1;
 args: [],
 source: "attackableTargets\x0a\x09\x22Answers the list of monsters this monster can attack, including the ones he needs to move before attack\x22\x0a\x09^ self parent attackableNeighboursConsideringMoveForMonster: self.",
 messageSends: ["attackableNeighboursConsideringMoveForMonster:", "parent"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bonusVSCavalry",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._bonusVSCavalry();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"bonusVSCavalry",{},smalltalk.CWMonster)})},
+args: [],
+source: "bonusVSCavalry\x0a\x09^ typeStrategy bonusVSCavalry",
+messageSends: ["bonusVSCavalry"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bonusVSRange",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._bonusVSRange();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"bonusVSRange",{},smalltalk.CWMonster)})},
+args: [],
+source: "bonusVSRange\x0a\x09^ typeStrategy bonusVSRange",
+messageSends: ["bonusVSRange"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bonusVSTroop",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._bonusVSTroop();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"bonusVSTroop",{},smalltalk.CWMonster)})},
+args: [],
+source: "bonusVSTroop\x0a\x09^ typeStrategy bonusVSTroop",
+messageSends: ["bonusVSTroop"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -4762,6 +4836,71 @@ messageSends: ["startObjectNamed:", "visitMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWJsonWriter);
+
+
+
+smalltalk.addClass('CWNoMonsterWriter', smalltalk.CWJsonWriter, [], 'Easnoth-MapModel');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitChildren:",
+category: 'not yet classified',
+fn: function (aBusinessObject){
+var self=this;
+var newSize;
+function $CWCell(){return smalltalk.CWCell||(typeof CWCell=="undefined"?nil:CWCell)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+newSize=_st(_st(aBusinessObject)._children())._size();
+$1=_st(aBusinessObject)._isKindOf_($CWCell());
+if(smalltalk.assert($1)){
+newSize=_st(_st(aBusinessObject)._background())._size();
+newSize;
+};
+_st(_st(aBusinessObject)._children())._withIndexDo_((function(child,i){
+return smalltalk.withContext(function($ctx2) {
+_st(child)._accept_(self);
+$2=_st(i).__eq(newSize);
+if(! smalltalk.assert($2)){
+return _st(self)._commaCr();
+};
+}, function($ctx2) {$ctx2.fillBlock({child:child,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"visitChildren:",{aBusinessObject:aBusinessObject,newSize:newSize},smalltalk.CWNoMonsterWriter)})},
+args: ["aBusinessObject"],
+source: "visitChildren: aBusinessObject\x0a\x09| newSize |\x0a\x09newSize := aBusinessObject children size.\x0a\x09(aBusinessObject isKindOf: CWCell) ifTrue: [ \x0a\x09\x09newSize := aBusinessObject background size ].\x0a\x09aBusinessObject children withIndexDo: [ :child :i |\x0a\x09\x09\x09child accept: self.\x0a\x09\x09\x09i = newSize\x0a\x09\x09\x09\x09ifFalse: [ self commaCr ] ].",
+messageSends: ["size", "children", "ifTrue:", "background", "isKindOf:", "withIndexDo:", "accept:", "ifFalse:", "commaCr", "="],
+referencedClasses: ["CWCell"]
+}),
+smalltalk.CWNoMonsterWriter);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitHeros:",
+category: 'not yet classified',
+fn: function (heros){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWNoMonsterWriter)})},
+args: ["heros"],
+source: "visitHeros: heros\x0a\x09\x22do nothing\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWNoMonsterWriter);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitUnit:",
+category: 'not yet classified',
+fn: function (unit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{unit:unit},smalltalk.CWNoMonsterWriter)})},
+args: ["unit"],
+source: "visitUnit: unit\x0a\x09\x22do nothing\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWNoMonsterWriter);
 
 
 

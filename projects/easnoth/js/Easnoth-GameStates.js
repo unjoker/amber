@@ -1046,17 +1046,12 @@ selector: "checkForNextTurn:",
 category: 'monster state API',
 fn: function (aMonster){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=$Transcript();
-_st($1)._show_("ha");
-$2=_st($1)._cr();
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWHasAttacked)})},
 args: ["aMonster"],
-source: "checkForNextTurn: aMonster\x0a\x09\x22do nothing for now\x22\x0a\x09Transcript show: 'ha'; cr.",
-messageSends: ["show:", "cr"],
-referencedClasses: ["Transcript"]
+source: "checkForNextTurn: aMonster\x0a\x09\x22do nothing for now\x22",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.CWHasAttacked);
 
@@ -1138,27 +1133,18 @@ category: 'monster state public API',
 fn: function (aMonster){
 var self=this;
 var col;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
 col=_st(aMonster)._selectAttackableCells();
-$1=$Transcript();
-_st($1)._show_("hm");
-$2=_st($1)._cr();
 _st(col)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
-$3=$Transcript();
-_st($3)._show_("ss");
-$4=_st($3)._cr();
-$4;
 return _st(aMonster)._announce_(_st($CWNextTurnEvent())._new());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster,col:col},smalltalk.CWHasMoved)})},
 args: ["aMonster"],
-source: "checkForNextTurn: aMonster\x0a\x09| col |\x0a\x09col := \x09aMonster selectAttackableCells.Transcript show: 'hm'; cr.\x0a\x09col ifEmpty: [ Transcript show: 'ss'; cr. aMonster announce: CWNextTurnEvent new ]",
-messageSends: ["selectAttackableCells", "show:", "cr", "ifEmpty:", "announce:", "new"],
-referencedClasses: ["Transcript", "CWNextTurnEvent"]
+source: "checkForNextTurn: aMonster\x0a\x09| col |\x0a\x09col := \x09aMonster selectAttackableCells.\x0a\x09col ifEmpty: [ aMonster announce: CWNextTurnEvent new ]",
+messageSends: ["selectAttackableCells", "ifEmpty:", "announce:", "new"],
+referencedClasses: ["CWNextTurnEvent"]
 }),
 smalltalk.CWHasMoved);
 
@@ -1272,16 +1258,14 @@ selector: "checkForNextTurn:",
 category: 'monster state API',
 fn: function (aMonster){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st($Transcript())._show_("inactive");
 _st(aMonster)._announce_(_st($CWNextTurnEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWInactive)})},
 args: ["aMonster"],
-source: "checkForNextTurn: aMonster\x0a\x09Transcript show: 'inactive'.\x0a\x09aMonster announce: CWNextTurnEvent new",
-messageSends: ["show:", "announce:", "new"],
-referencedClasses: ["Transcript", "CWNextTurnEvent"]
+source: "checkForNextTurn: aMonster\x0a\x09aMonster announce: CWNextTurnEvent new",
+messageSends: ["announce:", "new"],
+referencedClasses: ["CWNextTurnEvent"]
 }),
 smalltalk.CWInactive);
 

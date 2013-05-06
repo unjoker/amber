@@ -463,7 +463,7 @@ function $CWDiceMiss(){return smalltalk.CWDiceMiss||(typeof CWDiceMiss=="undefin
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 dices=_st($Array())._new_(dicesNb);
-i=(1);
+i=(0);
 callback=(function(){
 return smalltalk.withContext(function($ctx2) {
 i=_st(i).__plus((1));
@@ -492,7 +492,7 @@ return _st(dices)._remove_(tmp);
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"updateDices:kills:callBack:",{dicesNb:dicesNb,kills:kills,cb:cb,tmp:tmp,dices:dices,i:i,callback:callback},smalltalk.CWDices)})},
 args: ["dicesNb", "kills", "cb"],
-source: "updateDices: dicesNb kills: kills callBack: cb\x0a\x09\x22animate the dices and display them in random order\x22\x0a\x0a\x09| tmp dices i callback |\x0a\x09dices := Array new: dicesNb.\x0a\x09i := 1.\x0a\x09callback := [\x0a\x09\x09i := i + 1. \x0a\x09\x09(i = dicesNb) \x0a\x09\x09\x09ifTrue: cb].\x0a\x0a\x091 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].\x0a\x09kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].\x0a\x0a    box contents: [:html | \x0a\x09\x09html h4 with: 'Fight result'.\x0a\x09\x091 to: dicesNb do: [\x0a\x09\x09\x09tmp := dices atRandom.\x0a\x09\x09\x09tmp renderOn: html callback: callback.\x0a\x09\x09\x09dices remove: tmp ] ]",
+source: "updateDices: dicesNb kills: kills callBack: cb\x0a\x09\x22animate the dices and display them in random order\x22\x0a\x0a\x09| tmp dices i callback |\x0a\x09dices := Array new: dicesNb.\x0a\x09i := 0.\x0a\x09callback := [\x0a\x09\x09i := i + 1. \x0a\x09\x09(i = dicesNb) \x0a\x09\x09\x09ifTrue: cb].\x0a\x0a\x091 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].\x0a\x09kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].\x0a\x0a    box contents: [:html | \x0a\x09\x09html h4 with: 'Fight result'.\x0a\x09\x091 to: dicesNb do: [\x0a\x09\x09\x09tmp := dices atRandom.\x0a\x09\x09\x09tmp renderOn: html callback: callback.\x0a\x09\x09\x09dices remove: tmp ] ]",
 messageSends: ["new:", "+", "ifTrue:", "=", "to:do:", "at:put:", "parent:", "new", "contents:", "with:", "h4", "atRandom", "renderOn:callback:", "remove:"],
 referencedClasses: ["Array", "CWDiceDeath", "CWDiceMiss"]
 }),
@@ -731,7 +731,6 @@ var self=this;
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
 $1=_st(html)._div();
@@ -758,8 +757,7 @@ $7=_st(html)._button();
 _st($7)._with_("menu");
 $8=_st($7)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(self)._announce_(_st($CWEndGameEvent())._new());
-return _st($CWStartMenu())._start();
+return _st(self)._announce_(_st($CWEndGameEvent())._new());
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $8;
 _st(html)._br();
@@ -773,9 +771,9 @@ return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div class: 'stuff'; with: [\x0a\x09\x09box := html h5.\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x22'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].\x22\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09   html button with: 'menu';\x0a                        onClick: [\x0a\x09\x09\x09\x09\x09\x09\x09self announce: CWEndGameEvent new.\x0a\x09\x09\x09\x09\x09\x09\x09CWStartMenu start].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:90px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09].",
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "start", "br", "src:", "iframe", "at:put:", "style:"],
-referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent", "CWStartMenu"]
+source: "renderOn: html\x0a\x09html div class: 'stuff'; with: [\x0a\x09\x09box := html h5.\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x22'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].\x22\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09   html button with: 'menu';\x0a                        onClick: [\x0a\x09\x09\x09\x09\x09\x09\x09self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:90px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09].",
+messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:"],
+referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent"]
 }),
 smalltalk.CWTurnWatcher);
 
