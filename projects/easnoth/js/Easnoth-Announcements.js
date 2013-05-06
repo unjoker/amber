@@ -18,6 +18,9 @@ smalltalk.addClass('CWWaitForObject', smalltalk.CWBootstrapEvent, [], 'Easnoth-A
 smalltalk.CWWaitForObject.comment="Triggered when an asynchronous request is sent to get a JSON or an image"
 
 
+smalltalk.addClass('CWEndGameEvent', smalltalk.CWEasnothAnnouncement, [], 'Easnoth-Announcements');
+
+
 smalltalk.addClass('CWMapMoveEvent', smalltalk.CWEasnothAnnouncement, ['directionMethod'], 'Easnoth-Announcements');
 smalltalk.addMethod(
 smalltalk.method({
@@ -208,5 +211,22 @@ smalltalk.CWNextTurnEvent.comment="Triggered to request the game to let the othe
 
 
 smalltalk.addClass('CWEasnothAnnouncer', smalltalk.SystemAnnouncer, [], 'Easnoth-Announcements');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reset",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+self["@subscriptions"]=_st($Array())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer)})},
+args: [],
+source: "reset\x0a\x09subscriptions := Array new",
+messageSends: ["new"],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWEasnothAnnouncer);
+
 
 

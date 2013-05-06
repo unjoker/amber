@@ -33,8 +33,17 @@ isFree
 	^ false
 !
 
+lighten: aCell
+	"do nothing"
+!
+
 mouseClick: aCell context: gameContext
 	self subClassResponsbility
+!
+
+mouseMove: cell context: gameContext
+	cell root lighten.
+	cell root updateGOTs.
 !
 
 removeMonster: aCell
@@ -114,8 +123,20 @@ isFree
 	^ true
 !
 
+lighten: aCell
+	aCell lighten
+!
+
 mouseClick: aCell context: gameContext
 	gameContext currentMonster moveTo: aCell inContext: gameContext
+!
+
+mouseMove: cell context: gameContext
+	| path |
+	super mouseMove: cell context: gameContext.
+	path := gameContext currentCell pathTo: cell.
+	path do: [ :c | c darken ].
+	cell root updateGOTs.
 !
 
 removeMonster: aCell
@@ -189,6 +210,12 @@ cell: aCell canBeAttackedBy: side
 
 mouseClick: aCell context: gameContext
 	gameContext currentMonster attackTo: aCell inContext: gameContext
+!
+
+mouseMove: cell context: gameContext
+	| path |
+	super mouseMove: cell context: gameContext.
+	(gameContext currentCell cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext
 !
 
 removeMonster: aCell
@@ -271,12 +298,9 @@ checkForNextTurn: aMonster
 
 monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
-	(aMonster selectAttackableCells includes: aCell ) 
-		ifFalse: [ 
-			toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.
-			aMonster moveTo: toMoveCell inContext: gameContext callback: [
-				aMonster attackTo: aCell inContext: gameContext ] ] 
-		ifTrue: [ aMonster attack: aCell monster inContext: gameContext ]
+	toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell context: gameContext.
+	aMonster moveTo: toMoveCell inContext: gameContext callback: [
+		aMonster attack: aCell monster inContext: gameContext ]
 !
 
 select: aMonster inContext: gameContext
@@ -306,6 +330,7 @@ Monster can only move!
 
 checkForNextTurn: aMonster
 	"do nothing for now"
+	Transcript show: 'ha'; cr.
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -339,8 +364,8 @@ The monster has moved its full moved there. (currentMove = 0)!
 
 checkForNextTurn: aMonster
 	| col |
-	col := 	aMonster selectAttackableCells.
-	col ifEmpty: [ aMonster announce: CWNextTurnEvent new ]
+	col := 	aMonster selectAttackableCells.Transcript show: 'hm'; cr.
+	col ifEmpty: [ Transcript show: 'ss'; cr. aMonster announce: CWNextTurnEvent new ]
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -381,6 +406,7 @@ activate: aMonster
 !
 
 checkForNextTurn: aMonster
+	Transcript show: 'inactive'.
 	aMonster announce: CWNextTurnEvent new
 !
 

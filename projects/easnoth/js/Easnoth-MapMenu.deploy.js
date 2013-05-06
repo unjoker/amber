@@ -203,6 +203,7 @@ function $CWMonsterWatcher(){return smalltalk.CWMonsterWatcher||(typeof CWMonste
 function $CWDices(){return smalltalk.CWDices||(typeof CWDices=="undefined"?nil:CWDices)}
 function $CWMapControls(){return smalltalk.CWMapControls||(typeof CWMapControls=="undefined"?nil:CWMapControls)}
 function $CWTurnWatcher(){return smalltalk.CWTurnWatcher||(typeof CWTurnWatcher=="undefined"?nil:CWTurnWatcher)}
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenu.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._addComponent_($CWMonsterWatcher());
@@ -210,8 +211,12 @@ _st(self)._addComponent_($CWDices());
 _st(self)._addComponent_($CWMapControls());
 _st(self)._addComponent_($CWTurnWatcher());
 _st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
-messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass"]}),
+messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"]}),
 smalltalk.CWFightMenu);
 
 smalltalk.addMethod(
@@ -255,11 +260,15 @@ return smalltalk.withContext(function($ctx1) {
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h4())._with_("Fight result");
-_st(_st($CWDiceDeath())._new())._renderOn_(html);
-return _st(_st($CWDiceMiss())._new())._renderOn_(html);
+_st(_st($CWDiceDeath())._new())._renderOn_callback_(html,(function(){
+return smalltalk.withContext(function($ctx3) {
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return _st(_st($CWDiceMiss())._new())._renderOn_callback_(html,(function(){
+return smalltalk.withContext(function($ctx3) {
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"firstLoad",{},smalltalk.CWDices)})},
-messageSends: ["contents:", "with:", "h4", "renderOn:", "new"]}),
+messageSends: ["contents:", "with:", "h4", "renderOn:callback:", "new"]}),
 smalltalk.CWDices);
 
 smalltalk.addMethod(
@@ -431,7 +440,7 @@ smalltalk.CWMapControls);
 
 
 
-smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'box'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'box', 'imgBox'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "emptyMonster",
@@ -506,7 +515,6 @@ var $1,$2;
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h4())._with_("selected monster");
-_st(html)._img_(_st(_st(_st(self)._monster())._image())._at_("src"));
 $1=_st(html)._table();
 _st($1)._class_("tableStats");
 $2=_st($1)._with_((function(){
@@ -530,7 +538,7 @@ return _st(_st(html)._tr())._with_(_st("special : ").__comma(_st(_st(self)._mons
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special"]}),
+messageSends: ["contents:", "with:", "h4", "class:", "table", ",", "hp", "monster", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special"]}),
 smalltalk.CWMonsterWatcher);
 
 smalltalk.addMethod(
@@ -560,8 +568,10 @@ fn: function (html){
 var self=this;
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
 $1=_st(html)._div();
 _st($1)._class_("stuff");
 $2=_st($1)._with_((function(){
@@ -582,17 +592,25 @@ return smalltalk.withContext(function($ctx3) {
 return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $6;
+$7=_st(html)._button();
+_st($7)._with_("menu");
+$8=_st($7)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(self)._announce_(_st($CWEndGameEvent())._new());
+return _st($CWStartMenu())._start();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$8;
 _st(html)._br();
-$7=_st(html)._iframe();
-_st($7)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=97614502002");
-_st($7)._at_put_("frameborder",(0));
-_st($7)._at_put_("scrolling","no");
-_st($7)._style_("border:none; overflow:hidden; width:450px; height:21px;");
-$8=_st($7)._at_put_("allowTransparency","true");
-return $8;
+$9=_st(html)._iframe();
+_st($9)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
+_st($9)._at_put_("frameborder",(0));
+_st($9)._at_put_("scrolling","no");
+_st($9)._style_("border:none; overflow:hidden; width:90px; height:21px;");
+$10=_st($9)._at_put_("allowTransparency","true");
+return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:"]}),
+messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "start", "br", "src:", "iframe", "at:put:", "style:"]}),
 smalltalk.CWTurnWatcher);
 
 smalltalk.addMethod(
@@ -631,7 +649,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var i = 0;
     function roll() {
-		dice.animate({'border-spacing': -100},
+		dice.animate({'border-spacing': -40},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
                         },
@@ -643,7 +661,7 @@ var i = 0;
                                         roll();
                                 } else {
                                         i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},
                                                 {step: function(now, fx) {
                                                         $(fx.elem).css('background-position', '1px '+now+'px');
                                                         },
@@ -692,11 +710,9 @@ selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._renderOn_callback_(html,(function(){
-return smalltalk.withContext(function($ctx2) {
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background",_st(_st("url(").__comma(_st(self)._url())).__comma(") 1px 40px"));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDice)})},
-messageSends: ["renderOn:callback:"]}),
+messageSends: ["css:put:", ",", "url", "asJQuery", "img:", "backgroundPictureUrl"]}),
 smalltalk.CWDice);
 
 smalltalk.addMethod(
@@ -705,9 +721,9 @@ selector: "renderOn:callback:",
 fn: function (html,cb){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._animate_callBack_(_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background","url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0"),cb);
+_st(self)._animate_callBack_(_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background",_st(_st("url(").__comma(_st(self)._urlRoll())).__comma(") 1px 0")),cb);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:callback:",{html:html,cb:cb},smalltalk.CWDice)})},
-messageSends: ["animate:callBack:", "css:put:", "asJQuery", "img:", "backgroundPictureUrl"]}),
+messageSends: ["animate:callBack:", "css:put:", ",", "urlRoll", "asJQuery", "img:", "backgroundPictureUrl"]}),
 smalltalk.CWDice);
 
 smalltalk.addMethod(
@@ -719,6 +735,19 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._subclassResponsiblity();
 return self}, function($ctx1) {$ctx1.fill(self,"url",{},smalltalk.CWDice)})},
 messageSends: ["subclassResponsiblity"]}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "urlRoll",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._diceRepo()).__comma("diceRoll.png");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"urlRoll",{},smalltalk.CWDice)})},
+messageSends: [",", "diceRepo"]}),
 smalltalk.CWDice);
 
 

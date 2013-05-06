@@ -52,7 +52,6 @@ nextTurn
 
 initialize
 	super initialize.
-	CWFightMenu new.
 	context := CWGameContext new.
 !
 
@@ -67,7 +66,11 @@ initializeEventHandling
 		do: [ self startGame ].
 	self announcer
 		on: CWNextTurnEvent
-		do: [ self nextTurn ]
+		do: [ self nextTurn ].
+	self announcer
+		on: CWEndGameEvent
+		do: [ self announcer reset. 
+			map clean].
 !
 
 initializePlayerMonsters
@@ -97,12 +100,13 @@ startGame
 	map initializeDrawer.
 	eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.
 	self initializeAI: eventDispatcher.
+	CWFightMenu new.
 	map updateMap.
 	self firstTurn.
 ! !
 
 Object subclass: #CWGameContext
-	instanceVariableNames: 'currentPlayer currentCell'
+	instanceVariableNames: 'currentPlayer currentCell relatedCell'
 	package: 'Easnoth-GameAndPlayers'!
 !CWGameContext commentStamp!
 Represents the current context of the game, typcally, which player is playing and what monster is currently about to attack / move!
@@ -131,6 +135,14 @@ currentPlayer
 
 currentPlayerSide
 	^ currentPlayer side
+!
+
+relatedCell
+	^ relatedCell
+!
+
+relatedCell: aCell
+	relatedCell := aCell
 ! !
 
 !CWGameContext methodsFor: 'game logic'!
@@ -183,9 +195,8 @@ announcer
 !
 
 endGame
-	"To change... "
-
-	window alert: 'Someone just won. Guess who ? loser : ' , self printString
+	window alert: 'Someone just won. Guess who ? loser : ' , self printString.
+	self announce: CWEndGameEvent new.
 ! !
 
 !CWPlayer methodsFor: 'factory'!
@@ -368,7 +379,7 @@ checkForNextTurn: monster
 
 executeAttack
 	| relatedTargetCell duration |
-	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.
+	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.
 	relatedTargetCell ifNil: [ "case where the ennemy is neighbour and no free cells around" relatedTargetCell := monsterToPlay parent ].
 	duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.
 	cellToTarget mouseClick: self gameContext. 
@@ -439,5 +450,17 @@ at: index ifPresent: aBlock ifAbsent: anotherBlock
 	^(index <= self size and: [ index > 0 ])
 		ifTrue: [ aBlock value: (self at: index) ]
 		ifFalse: [ anotherBlock value ]
+! !
+
+!Set methodsFor: '*Easnoth-GameAndPlayers'!
+
+remove: anObject ifAbsent: aBlock
+	elements remove: anObject ifAbsent: aBlock
+! !
+
+!UndefinedObject methodsFor: '*Easnoth-GameAndPlayers'!
+
+isMarked
+	^ false
 ! !
 

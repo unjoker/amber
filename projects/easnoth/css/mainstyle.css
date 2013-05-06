@@ -78,6 +78,10 @@ button {
 	background-repeat:no-repeat;
 }
 
+#monster canvas {
+	border: none;
+}
+
 canvas {
     text-align:center;
 	margin:0 auto;

@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Bootstrap');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar'], 'Easnoth-Bootstrap');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted'], 'Easnoth-Bootstrap');
 smalltalk.CWBootstrapper.comment="Bootstrap the system. Currently work only for games, not for the map editor"
 smalltalk.addMethod(
 smalltalk.method({
@@ -31,9 +31,10 @@ function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGa
 return smalltalk.withContext(function($ctx1) { 
 self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("body")._asJQuery());
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
+self["@hasStarted"]=false;
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings",
+source: "bootstrap: gameSettings\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings.\x0a\x09hasStarted := false.",
 messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"],
 referencedClasses: ["CWLoadingBar", "CWGame"]
 }),
@@ -47,14 +48,14 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self["@objectToLoad"]).__eq(self["@objectLoaded"]);
+$1=_st(_st(self["@objectToLoad"]).__eq(self["@objectLoaded"])).__and(_st(self["@hasStarted"])._not());
 if(smalltalk.assert($1)){
 _st(self)._startGame();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"checkIfReady",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "checkIfReady\x0a\x09objectToLoad = objectLoaded\x0a\x09\x09ifTrue: [ self startGame ]",
-messageSends: ["ifTrue:", "startGame", "="],
+source: "checkIfReady\x0a\x09objectToLoad = objectLoaded & hasStarted not\x0a\x09\x09ifTrue: [ self startGame ]",
+messageSends: ["ifTrue:", "startGame", "&", "not", "="],
 referencedClasses: []
 }),
 smalltalk.CWBootstrapper);
@@ -92,13 +93,14 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
+self["@hasStarted"]=true;
 self["@objectToLoad"]=(0);
 self["@objectLoaded"]=(0);
 _st(self)._initializeEventHandling();
 _st(self)._preloadImages();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09objectToLoad := 0.\x0a\x09objectLoaded := 0.\x0a\x09self initializeEventHandling.\x0a\x09self preloadImages",
+source: "initialize\x0a\x09super initialize.\x0a\x09hasStarted := true.\x0a\x09objectToLoad := 0.\x0a\x09objectLoaded := 0.\x0a\x09self initializeEventHandling.\x0a\x09self preloadImages",
 messageSends: ["initialize", "initializeEventHandling", "preloadImages"],
 referencedClasses: []
 }),
@@ -162,11 +164,12 @@ fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 return smalltalk.withContext(function($ctx1) { 
+self["@hasStarted"]=true;
 _st(self["@loadingBar"])._hide();
 _st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "startGame\x0a\x09loadingBar hide.\x0a\x09self announcer announce: CWGameStart new.",
+source: "startGame\x0a\x09hasStarted := true.\x0a\x09loadingBar hide.\x0a\x09self announcer announce: CWGameStart new.",
 messageSends: ["hide", "announce:", "new", "announcer"],
 referencedClasses: ["CWGameStart"]
 }),

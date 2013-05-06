@@ -279,6 +279,7 @@ function $CWMonsterWatcher(){return smalltalk.CWMonsterWatcher||(typeof CWMonste
 function $CWDices(){return smalltalk.CWDices||(typeof CWDices=="undefined"?nil:CWDices)}
 function $CWMapControls(){return smalltalk.CWMapControls||(typeof CWMapControls=="undefined"?nil:CWMapControls)}
 function $CWTurnWatcher(){return smalltalk.CWTurnWatcher||(typeof CWTurnWatcher=="undefined"?nil:CWTurnWatcher)}
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenu.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._addComponent_($CWMonsterWatcher());
@@ -286,11 +287,15 @@ _st(self)._addComponent_($CWDices());
 _st(self)._addComponent_($CWMapControls());
 _st(self)._addComponent_($CWTurnWatcher());
 _st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.",
-messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass"],
-referencedClasses: ["CWMonsterWatcher", "CWDices", "CWMapControls", "CWTurnWatcher"]
+source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self menuClass asJQuery empty ]",
+messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"],
+referencedClasses: ["CWMonsterWatcher", "CWDices", "CWMapControls", "CWTurnWatcher", "CWEndGameEvent"]
 }),
 smalltalk.CWFightMenu);
 
@@ -347,13 +352,17 @@ return smalltalk.withContext(function($ctx1) {
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h4())._with_("Fight result");
-_st(_st($CWDiceDeath())._new())._renderOn_(html);
-return _st(_st($CWDiceMiss())._new())._renderOn_(html);
+_st(_st($CWDiceDeath())._new())._renderOn_callback_(html,(function(){
+return smalltalk.withContext(function($ctx3) {
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return _st(_st($CWDiceMiss())._new())._renderOn_callback_(html,(function(){
+return smalltalk.withContext(function($ctx3) {
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"firstLoad",{},smalltalk.CWDices)})},
 args: [],
-source: "firstLoad\x0a    box contents: [ :html | \x0a\x09html h4 with: 'Fight result'.\x0a           CWDiceDeath new renderOn: html.\x0a           CWDiceMiss new renderOn: html ].",
-messageSends: ["contents:", "with:", "h4", "renderOn:", "new"],
+source: "firstLoad\x0a    box contents: [ :html | \x0a\x09html h4 with: 'Fight result'.\x0a           CWDiceDeath new renderOn: html callback: [ ].\x0a           CWDiceMiss new renderOn: html callback: [ ] ].",
+messageSends: ["contents:", "with:", "h4", "renderOn:callback:", "new"],
 referencedClasses: ["CWDiceDeath", "CWDiceMiss"]
 }),
 smalltalk.CWDices);
@@ -435,7 +444,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return self}, function($ctx1) {$ctx1.fill(self,"showDicesNoAnimation:",{monster:monster},smalltalk.CWDices)})},
 args: ["monster"],
-source: "showDicesNoAnimation: monster\x0a\x09\x22should change the number of dices without animation\x22\x0a\x09\x22self updateDices: monster dices kills: monster kills callBack: [].\x22",
+source: "showDicesNoAnimation: monster\x0a\x09\x22should change the number of dices without animation\x22\x0a\x09\x22monster ifNotNil: [\x0a\x09\x09box contents: [:html | \x0a\x09\x09\x09html h4 with: 'Fight result'.\x0a\x09\x09\x091 to: monster dices do: [\x0a\x09\x09\x09\x09CWDiceDeath new renderOn: html ] ] ]\x22",
 messageSends: [],
 referencedClasses: []
 }),
@@ -483,7 +492,7 @@ return _st(dices)._remove_(tmp);
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"updateDices:kills:callBack:",{dicesNb:dicesNb,kills:kills,cb:cb,tmp:tmp,dices:dices,i:i,callback:callback},smalltalk.CWDices)})},
 args: ["dicesNb", "kills", "cb"],
-source: "updateDices: dicesNb kills: kills callBack: cb\x0a\x09\x22animate the dices and display them in random order\x22\x0a\x0a\x09| tmp dices i callback |\x0a\x0a\x09dices := Array new: dicesNb.\x0a\x09i := 1.\x0a\x09callback := [\x0a\x09\x09i := i + 1. \x0a\x09\x09(i = dicesNb) \x0a\x09\x09\x09ifTrue: cb].\x0a\x0a\x091 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].\x0a\x09kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].\x0a\x0a    box contents: [:html | \x0a\x09\x09html h4 with: 'Fight result'.\x0a\x09\x091 to: dicesNb do: [\x0a\x09\x09\x09tmp := dices atRandom.\x0a\x09\x09\x09tmp renderOn: html callback: callback.\x0a\x09\x09\x09dices remove: tmp ] ]",
+source: "updateDices: dicesNb kills: kills callBack: cb\x0a\x09\x22animate the dices and display them in random order\x22\x0a\x0a\x09| tmp dices i callback |\x0a\x09dices := Array new: dicesNb.\x0a\x09i := 1.\x0a\x09callback := [\x0a\x09\x09i := i + 1. \x0a\x09\x09(i = dicesNb) \x0a\x09\x09\x09ifTrue: cb].\x0a\x0a\x091 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].\x0a\x09kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].\x0a\x0a    box contents: [:html | \x0a\x09\x09html h4 with: 'Fight result'.\x0a\x09\x091 to: dicesNb do: [\x0a\x09\x09\x09tmp := dices atRandom.\x0a\x09\x09\x09tmp renderOn: html callback: callback.\x0a\x09\x09\x09dices remove: tmp ] ]",
 messageSends: ["new:", "+", "ifTrue:", "=", "to:do:", "at:put:", "parent:", "new", "contents:", "with:", "h4", "atRandom", "renderOn:callback:", "remove:"],
 referencedClasses: ["Array", "CWDiceDeath", "CWDiceMiss"]
 }),
@@ -562,7 +571,7 @@ smalltalk.CWMapControls);
 
 
 
-smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'box'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'box', 'imgBox'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "emptyMonster",
@@ -658,7 +667,6 @@ var $1,$2;
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h4())._with_("selected monster");
-_st(html)._img_(_st(_st(_st(self)._monster())._image())._at_("src"));
 $1=_st(html)._table();
 _st($1)._class_("tableStats");
 $2=_st($1)._with_((function(){
@@ -683,8 +691,8 @@ return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
 args: [],
-source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a                html img: (self monster image at: 'src').\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster currentMove, '/', self monster move.\x0a                        \x09\x09html tr with: 'range : ', self monster range.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09html tr with: 'special : ', self monster special.\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09\x22html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'attackPot : ', self monster attackPotential.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'cell : ', self monster parent printString.\x22\x0a        ].",
-messageSends: ["contents:", "with:", "h4", "img:", "at:", "image", "monster", "class:", "table", ",", "hp", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special"],
+source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a\x09\x09\x09\x09\x22html img: (self monster image at: 'src').\x22\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster currentMove, '/', self monster move.\x0a                        \x09\x09html tr with: 'range : ', self monster range.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09html tr with: 'special : ', self monster special.\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09\x22html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'attackPot : ', self monster attackPotential.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'cell : ', self monster parent printString.\x22\x0a        ].",
+messageSends: ["contents:", "with:", "h4", "class:", "table", ",", "hp", "monster", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special"],
 referencedClasses: []
 }),
 smalltalk.CWMonsterWatcher);
@@ -722,8 +730,10 @@ fn: function (html){
 var self=this;
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
 $1=_st(html)._div();
 _st($1)._class_("stuff");
 $2=_st($1)._with_((function(){
@@ -744,20 +754,28 @@ return smalltalk.withContext(function($ctx3) {
 return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $6;
+$7=_st(html)._button();
+_st($7)._with_("menu");
+$8=_st($7)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(self)._announce_(_st($CWEndGameEvent())._new());
+return _st($CWStartMenu())._start();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$8;
 _st(html)._br();
-$7=_st(html)._iframe();
-_st($7)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=97614502002");
-_st($7)._at_put_("frameborder",(0));
-_st($7)._at_put_("scrolling","no");
-_st($7)._style_("border:none; overflow:hidden; width:450px; height:21px;");
-$8=_st($7)._at_put_("allowTransparency","true");
-return $8;
+$9=_st(html)._iframe();
+_st($9)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
+_st($9)._at_put_("frameborder",(0));
+_st($9)._at_put_("scrolling","no");
+_st($9)._style_("border:none; overflow:hidden; width:90px; height:21px;");
+$10=_st($9)._at_put_("allowTransparency","true");
+return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09html div class: 'stuff'; with: [\x0a\x09\x09box := html h5.\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x22'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].\x22\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:450px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09].\x0a\x09\x22self update.\x22",
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:"],
-referencedClasses: ["CWNextTurnEvent", "Browser"]
+source: "renderOn: html\x0a\x09html div class: 'stuff'; with: [\x0a\x09\x09box := html h5.\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x22'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]].\x22\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09   html button with: 'menu';\x0a                        onClick: [\x0a\x09\x09\x09\x09\x09\x09\x09self announce: CWEndGameEvent new.\x0a\x09\x09\x09\x09\x09\x09\x09CWStartMenu start].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:90px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09].",
+messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "start", "br", "src:", "iframe", "at:put:", "style:"],
+referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent", "CWStartMenu"]
 }),
 smalltalk.CWTurnWatcher);
 
@@ -808,7 +826,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var i = 0;
     function roll() {
-		dice.animate({'border-spacing': -100},
+		dice.animate({'border-spacing': -40},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
                         },
@@ -820,7 +838,7 @@ var i = 0;
                                         roll();
                                 } else {
                                         i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},
                                                 {step: function(now, fx) {
                                                         $(fx.elem).css('background-position', '1px '+now+'px');
                                                         },
@@ -837,7 +855,7 @@ var i = 0;
 	roll();;
 return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:random:url:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
 args: ["dice", "animationFinished", "random", "url"],
-source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -100},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
+source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -40},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -884,13 +902,11 @@ category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._renderOn_callback_(html,(function(){
-return smalltalk.withContext(function($ctx2) {
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background",_st(_st("url(").__comma(_st(self)._url())).__comma(") 1px 40px"));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDice)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09self renderOn: html callback: [ ]",
-messageSends: ["renderOn:callback:"],
+source: "renderOn: html\x0a\x09(html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(',self url,') 1px 40px'",
+messageSends: ["css:put:", ",", "url", "asJQuery", "img:", "backgroundPictureUrl"],
 referencedClasses: []
 }),
 smalltalk.CWDice);
@@ -902,11 +918,11 @@ category: 'rendering',
 fn: function (html,cb){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._animate_callBack_(_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background","url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0"),cb);
+_st(self)._animate_callBack_(_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background",_st(_st("url(").__comma(_st(self)._urlRoll())).__comma(") 1px 0")),cb);
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:callback:",{html:html,cb:cb},smalltalk.CWDice)})},
 args: ["html", "cb"],
-source: "renderOn: html callback: cb\x0a\x09 self animate: ((html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(\x22ressources/images/fight/diceRoll.png\x22) 1px 0') callBack: cb",
-messageSends: ["animate:callBack:", "css:put:", "asJQuery", "img:", "backgroundPictureUrl"],
+source: "renderOn: html callback: cb\x0a\x09 self animate: ((html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(', self urlRoll, ') 1px 0') callBack: cb",
+messageSends: ["animate:callBack:", "css:put:", ",", "urlRoll", "asJQuery", "img:", "backgroundPictureUrl"],
 referencedClasses: []
 }),
 smalltalk.CWDice);
@@ -923,6 +939,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"url",{},smalltalk.CWDice)})},
 args: [],
 source: "url\x0a\x09self subclassResponsiblity",
 messageSends: ["subclassResponsiblity"],
+referencedClasses: []
+}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "urlRoll",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._diceRepo()).__comma("diceRoll.png");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"urlRoll",{},smalltalk.CWDice)})},
+args: [],
+source: "urlRoll\x0a\x09^ self diceRepo, 'diceRoll.png'",
+messageSends: [",", "diceRepo"],
 referencedClasses: []
 }),
 smalltalk.CWDice);

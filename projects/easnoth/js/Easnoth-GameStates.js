@@ -94,6 +94,21 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "lighten:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"lighten:",{aCell:aCell},smalltalk.CWCellState)})},
+args: ["aCell"],
+source: "lighten: aCell\x0a\x09\x22do nothing\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "mouseClick:context:",
 category: 'cell state API',
 fn: function (aCell,gameContext){
@@ -104,6 +119,23 @@ return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCel
 args: ["aCell", "gameContext"],
 source: "mouseClick: aCell context: gameContext\x0a\x09self subClassResponsbility",
 messageSends: ["subClassResponsbility"],
+referencedClasses: []
+}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "mouseMove:context:",
+category: 'cell state API',
+fn: function (cell,gameContext){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(cell)._root())._lighten();
+_st(_st(cell)._root())._updateGOTs();
+return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext},smalltalk.CWCellState)})},
+args: ["cell", "gameContext"],
+source: "mouseMove: cell context: gameContext\x0a\x09cell root lighten.\x0a\x09cell root updateGOTs.",
+messageSends: ["lighten", "root", "updateGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWCellState);
@@ -341,6 +373,22 @@ smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "lighten:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(aCell)._lighten();
+return self}, function($ctx1) {$ctx1.fill(self,"lighten:",{aCell:aCell},smalltalk.CWFreeSelected)})},
+args: ["aCell"],
+source: "lighten: aCell\x0a\x09aCell lighten",
+messageSends: ["lighten"],
+referencedClasses: []
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "mouseClick:context:",
 category: 'cell state API',
 fn: function (aCell,gameContext){
@@ -351,6 +399,29 @@ return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCel
 args: ["aCell", "gameContext"],
 source: "mouseClick: aCell context: gameContext\x0a\x09gameContext currentMonster moveTo: aCell inContext: gameContext",
 messageSends: ["moveTo:inContext:", "currentMonster"],
+referencedClasses: []
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "mouseMove:context:",
+category: 'cell state API',
+fn: function (cell,gameContext){
+var self=this;
+var path;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWCellState.fn.prototype._mouseMove_context_.apply(_st(self), [cell,gameContext]);
+path=_st(_st(gameContext)._currentCell())._pathTo_(cell);
+_st(path)._do_((function(c){
+return smalltalk.withContext(function($ctx2) {
+return _st(c)._darken();
+}, function($ctx2) {$ctx2.fillBlock({c:c},$ctx1)})}));
+_st(_st(cell)._root())._updateGOTs();
+return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWFreeSelected)})},
+args: ["cell", "gameContext"],
+source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09path := gameContext currentCell pathTo: cell.\x0a\x09path do: [ :c | c darken ].\x0a\x09cell root updateGOTs.",
+messageSends: ["mouseMove:context:", "pathTo:", "currentCell", "do:", "darken", "updateGOTs", "root"],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
@@ -577,6 +648,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCel
 args: ["aCell", "gameContext"],
 source: "mouseClick: aCell context: gameContext\x0a\x09gameContext currentMonster attackTo: aCell inContext: gameContext",
 messageSends: ["attackTo:inContext:", "currentMonster"],
+referencedClasses: []
+}),
+smalltalk.CWHasMonsterSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "mouseMove:context:",
+category: 'cell state API',
+fn: function (cell,gameContext){
+var self=this;
+var path;
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWCellState.fn.prototype._mouseMove_context_.apply(_st(self), [cell,gameContext]);
+_st(_st(_st(gameContext)._currentCell())._cellToMoveBeforeAttack_context_(cell,gameContext))._mouseMove_(gameContext);
+return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWHasMonsterSelected)})},
+args: ["cell", "gameContext"],
+source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09(gameContext currentCell cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext",
+messageSends: ["mouseMove:context:", "mouseMove:", "cellToMoveBeforeAttack:context:", "currentCell"],
 referencedClasses: []
 }),
 smalltalk.CWHasMonsterSelected);
@@ -879,22 +968,15 @@ fn: function (aMonster,aCell,gameContext){
 var self=this;
 var toMoveCell;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(aMonster)._selectAttackableCells())._includes_(aCell);
-if(smalltalk.assert($1)){
-_st(aMonster)._attack_inContext_(_st(aCell)._monster(),gameContext);
-} else {
-toMoveCell=_st(_st(aMonster)._parent())._cellToMoveBeforeAttack_(aCell);
-toMoveCell;
+toMoveCell=_st(_st(aMonster)._parent())._cellToMoveBeforeAttack_context_(aCell,gameContext);
 _st(aMonster)._moveTo_inContext_callback_(toMoveCell,gameContext,(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(aMonster)._attackTo_inContext_(aCell,gameContext);
+return _st(aMonster)._attack_inContext_(_st(aCell)._monster(),gameContext);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-};
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
 args: ["aMonster", "aCell", "gameContext"],
-source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09(aMonster selectAttackableCells includes: aCell ) \x0a\x09\x09ifFalse: [ \x0a\x09\x09\x09toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell.\x0a\x09\x09\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09\x09\x09aMonster attackTo: aCell inContext: gameContext ] ] \x0a\x09\x09ifTrue: [ aMonster attack: aCell monster inContext: gameContext ]",
-messageSends: ["ifFalse:ifTrue:", "cellToMoveBeforeAttack:", "parent", "moveTo:inContext:callback:", "attackTo:inContext:", "attack:inContext:", "monster", "includes:", "selectAttackableCells"],
+source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell context: gameContext.\x0a\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09aMonster attack: aCell monster inContext: gameContext ]",
+messageSends: ["cellToMoveBeforeAttack:context:", "parent", "moveTo:inContext:callback:", "attack:inContext:", "monster"],
 referencedClasses: []
 }),
 smalltalk.CWActive);
@@ -964,12 +1046,17 @@ selector: "checkForNextTurn:",
 category: 'monster state API',
 fn: function (aMonster){
 var self=this;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=$Transcript();
+_st($1)._show_("ha");
+$2=_st($1)._cr();
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWHasAttacked)})},
 args: ["aMonster"],
-source: "checkForNextTurn: aMonster\x0a\x09\x22do nothing for now\x22",
-messageSends: [],
-referencedClasses: []
+source: "checkForNextTurn: aMonster\x0a\x09\x22do nothing for now\x22\x0a\x09Transcript show: 'ha'; cr.",
+messageSends: ["show:", "cr"],
+referencedClasses: ["Transcript"]
 }),
 smalltalk.CWHasAttacked);
 
@@ -1051,18 +1138,27 @@ category: 'monster state public API',
 fn: function (aMonster){
 var self=this;
 var col;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
 col=_st(aMonster)._selectAttackableCells();
+$1=$Transcript();
+_st($1)._show_("hm");
+$2=_st($1)._cr();
 _st(col)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
+$3=$Transcript();
+_st($3)._show_("ss");
+$4=_st($3)._cr();
+$4;
 return _st(aMonster)._announce_(_st($CWNextTurnEvent())._new());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster,col:col},smalltalk.CWHasMoved)})},
 args: ["aMonster"],
-source: "checkForNextTurn: aMonster\x0a\x09| col |\x0a\x09col := \x09aMonster selectAttackableCells.\x0a\x09col ifEmpty: [ aMonster announce: CWNextTurnEvent new ]",
-messageSends: ["selectAttackableCells", "ifEmpty:", "announce:", "new"],
-referencedClasses: ["CWNextTurnEvent"]
+source: "checkForNextTurn: aMonster\x0a\x09| col |\x0a\x09col := \x09aMonster selectAttackableCells.Transcript show: 'hm'; cr.\x0a\x09col ifEmpty: [ Transcript show: 'ss'; cr. aMonster announce: CWNextTurnEvent new ]",
+messageSends: ["selectAttackableCells", "show:", "cr", "ifEmpty:", "announce:", "new"],
+referencedClasses: ["Transcript", "CWNextTurnEvent"]
 }),
 smalltalk.CWHasMoved);
 
@@ -1176,14 +1272,16 @@ selector: "checkForNextTurn:",
 category: 'monster state API',
 fn: function (aMonster){
 var self=this;
+function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
+_st($Transcript())._show_("inactive");
 _st(aMonster)._announce_(_st($CWNextTurnEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWInactive)})},
 args: ["aMonster"],
-source: "checkForNextTurn: aMonster\x0a\x09aMonster announce: CWNextTurnEvent new",
-messageSends: ["announce:", "new"],
-referencedClasses: ["CWNextTurnEvent"]
+source: "checkForNextTurn: aMonster\x0a\x09Transcript show: 'inactive'.\x0a\x09aMonster announce: CWNextTurnEvent new",
+messageSends: ["show:", "announce:", "new"],
+referencedClasses: ["Transcript", "CWNextTurnEvent"]
 }),
 smalltalk.CWInactive);
 
