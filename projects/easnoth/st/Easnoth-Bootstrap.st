@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Easnoth-Bootstrap'!
 Object subclass: #CWBootstrapper
-	instanceVariableNames: 'objectToLoad objectLoaded loadingBar'
+	instanceVariableNames: 'objectToLoad objectLoaded loadingBar hasStarted'
 	package: 'Easnoth-Bootstrap'!
 !CWBootstrapper commentStamp!
 Bootstrap the system. Currently work only for games, not for the map editor!
@@ -23,11 +23,12 @@ imagesToPreload
 !CWBootstrapper methodsFor: 'events'!
 
 checkIfReady
-	objectToLoad = objectLoaded
+	objectToLoad = objectLoaded & hasStarted not
 		ifTrue: [ self startGame ]
 !
 
 startGame
+	hasStarted := true.
 	loadingBar hide.
 	self announcer announce: CWGameStart new.
 ! !
@@ -36,11 +37,13 @@ startGame
 
 bootstrap: gameSettings
 	loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.
-	CWGame new initializeWithSettings: gameSettings
+	CWGame new initializeWithSettings: gameSettings.
+	hasStarted := false.
 !
 
 initialize
 	super initialize.
+	hasStarted := true.
 	objectToLoad := 0.
 	objectLoaded := 0.
 	self initializeEventHandling.

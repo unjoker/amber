@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Easnoth-MapUI'!
 Object subclass: #CWEventDispatcher
-	instanceVariableNames: 'canvas map drawer game suspended'
+	instanceVariableNames: 'canvas map drawer game suspended currentCell'
 	package: 'Easnoth-MapUI'!
 !CWEventDispatcher commentStamp!
 I dispatch event from eventManager canvas to cells.!
@@ -125,11 +125,20 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 !CWEventDispatcher methodsFor: 'events'!
 
 dispatchMouseClick: event
-	| cc |
 	suspended ifFalse: [
-		cc := self currentCell: event.
-		cc ifNotNil: [ 
-			cc mouseClick: game gameContext ] ]
+		currentCell ifNotNil: [ 
+			currentCell mouseClick: game gameContext ] ]
+!
+
+dispatchMouseMove: event
+	| lastCell |
+	suspended ifFalse: [
+		lastCell := currentCell.
+		currentCell := self currentCell: event.
+		lastCell == currentCell ifFalse: [
+			currentCell ifNotNil: [ 
+				game gameContext relatedCell: lastCell.
+				currentCell mouseMove: game gameContext ] ] ]
 ! !
 
 !CWEventDispatcher methodsFor: 'initialize-release'!
@@ -142,8 +151,19 @@ initialize
 !
 
 initializeEventHandling
-	self canvas onMouseUp: [:e | 
+	self canvas onClick: [:e | 
 		self dispatchMouseClick: e].
+	self canvas onMouseMove: [:e | 
+		self dispatchMouseMove: e].
+	self announcer 
+		on: CWEndGameEvent
+		do: [ 
+			self canvas element asJQuery off: 'mousemove'.
+			map := nil.
+			drawer := nil.
+			game := nil.
+			currentCell := nil.
+			canvas := nil ]
 !
 
 initializeForMap: aMap game: aGame
@@ -168,6 +188,265 @@ Widget subclass: #CWLayer
 	package: 'Easnoth-MapUI'!
 !CWLayer commentStamp!
 I represent a layer in the map where yu can draw things.!
+
+!CWLayer methodsFor: 'not yet classified'!
+
+down: incr
+!
+
+left: incr
+!
+
+right: incr
+!
+
+up: incr
+! !
+
+CWLayer subclass: #CWArrayLayer
+	instanceVariableNames: 'array'
+	package: 'Easnoth-MapUI'!
+!CWArrayLayer commentStamp!
+I represent a layer that is implemented as a 2 dimentianal array of images, canvas or anything.
+
+This is faster than the canvas one (40% faster), but cannot permit isometric transformation or stuff like that. On the other hand it permits to have JQuery animation.!
+
+!CWArrayLayer methodsFor: 'accessing'!
+
+id
+	self subclassResponsibility
+!
+
+leafHeight	
+	self subclassResponsibility
+!
+
+leafWidth
+	self subclassResponsibility
+!
+
+xShift
+	self subclassResponsibility
+!
+
+yShift
+	self subclassResponsibility
+! !
+
+!CWArrayLayer methodsFor: 'factory'!
+
+newLeaf: html
+	self subclassResponsibility
+!
+
+newLeaf: html point: point
+		^ (self newLeaf: html)
+				width: self leafWidth;
+				height: self leafHeight;
+				style: 'position: absolute; top: ', (point y + self yShift), 'px; left: ', (point x + self xShift), 'px;'.
+! !
+
+!CWArrayLayer methodsFor: 'initialize-release'!
+
+initializeForMap: aMap
+	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
+	self appendToJQuery: self id asJQuery
+! !
+
+!CWArrayLayer methodsFor: 'map move'!
+
+down: incr
+	self vertical: incr
+!
+
+horizontal: incr
+	self move: incr way: 'left'
+!
+
+left: incr
+	self horizontal: incr
+!
+
+move: incr way: way
+	| t px |
+	array do: [ :each |
+		t := each asJQuery css: way. 
+		px := (t tokenize: 'px') first.
+		each asJQuery css: way value: (px asNumber + incr) asString , 'px' ]
+!
+
+right: incr
+	self horizontal: incr
+!
+
+up: incr
+	self vertical: incr
+!
+
+vertical: incr
+	self move: incr way: 'top'
+! !
+
+!CWArrayLayer methodsFor: 'rendering'!
+
+clean
+	self subclassResponsibility
+!
+
+renderOn: html
+	| tempContext tempImage |
+	tempContext := CWGlobalDrawingContext default reset.
+	array rowsWithIndexDo: [ :row :i |
+		tempContext nextRow.
+		row withIndexDo: [ :cell :j |
+			tempContext nextCell.
+			tempImage := self newLeaf: html point: tempContext currentPoint.
+			array i: i j: j put: tempImage ] ].
+! !
+
+CWArrayLayer subclass: #CWImageLayer
+	instanceVariableNames: ''
+	package: 'Easnoth-MapUI'!
+
+!CWImageLayer methodsFor: 'factory'!
+
+newLeaf: html 
+	^ html img
+! !
+
+CWImageLayer subclass: #CWGOTLayer
+	instanceVariableNames: 'invis'
+	package: 'Easnoth-MapUI'!
+!CWGOTLayer commentStamp!
+This layer is specific to GOTs!
+
+!CWGOTLayer methodsFor: 'accessing'!
+
+id
+	^ '#got'
+!
+
+leafHeight
+	^ 84
+!
+
+leafWidth
+	^ 126
+!
+
+xShift
+	^ 14 negated
+!
+
+yShift
+	^ 9 negated
+! !
+
+!CWGOTLayer methodsFor: 'initialize-release'!
+
+initialize
+	super initialize.
+	invis := CWGameOverTile invis image
+! !
+
+!CWGOTLayer methodsFor: 'rendering'!
+
+clean
+	array do: [:each |
+		each src: invis src ]
+!
+
+drawGOT: got point: point
+	| image |
+	image := array i: point x j: point y.
+	image src: got image src
+! !
+
+CWArrayLayer subclass: #CWMonsterLayer
+	instanceVariableNames: ''
+	package: 'Easnoth-MapUI'!
+
+!CWMonsterLayer methodsFor: 'accessing'!
+
+contextForPoint: point
+	| canvas |
+	canvas := array i: point x j: point y.
+	^ canvas element getContext: '2d'.
+!
+
+id
+	^ '#monster'
+!
+
+leafHeight
+	^ 150
+!
+
+leafWidth
+	^ 150
+!
+
+xShift
+	^ 4 negated
+!
+
+yShift
+	^ 50 negated
+! !
+
+!CWMonsterLayer methodsFor: 'factory'!
+
+newLeaf: html
+	^ html canvas
+! !
+
+!CWMonsterLayer methodsFor: 'rendering'!
+
+clean
+		array do: [:each | | elem |
+			elem := each element.
+			(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height. ]
+!
+
+display: monster cood: aPoint context: ctx
+	ctx
+		drawImage: monster image
+		x: aPoint x
+		y: aPoint y.
+!
+
+drawHeros: heros point: point
+	| ctx |
+	ctx := self contextForPoint: point.
+	(heros side negative) 
+		ifTrue: [ self reverseDisplay: heros cood: 87@28 context: ctx ] 
+		ifFalse: [ self display: heros cood: 15@28 context: ctx ]
+!
+
+drawUnit: aUnit point: point
+	| xArray yArray ctx |
+	
+	ctx := self contextForPoint: point.
+	xArray := #(9 37 -11 17).
+	yArray := #(15 23 26 33).
+
+	(1 to: aUnit hp) do: [ :i |
+		(aUnit side negative) 
+			ifTrue: [ self reverseDisplay: aUnit cood: 72 + (xArray at: i)@(yArray at: i) context: ctx ] 
+			ifFalse: [ self display: aUnit cood: (xArray at: i)@(yArray at: i) context: ctx ]
+	]
+!
+
+reverseDisplay: monster cood: cood context: ctx
+	[ctx
+			translate: cood x y: 0;
+			scale: -1 y: 1.
+	self display: monster cood: 0@(cood y) context: ctx ]
+	ensure: ["faster than save and restore"
+	ctx
+		scale: -1 y: 1;
+		translate: cood x negated y: 0]
+! !
 
 CWLayer subclass: #CWCanvasLayer
 	instanceVariableNames: 'canvas'
@@ -249,52 +528,8 @@ safeDraw: aBlock
 		ensure: [ self context restore ]
 ! !
 
-CWLayer subclass: #CWImageLayer
-	instanceVariableNames: 'array invis'
-	package: 'Easnoth-MapUI'!
-!CWImageLayer commentStamp!
-I represent a layer that is implemented as a 2 dimentianal array of images.
-
-This is supposed to be much faster than the canvas one, but cannot permit isometric transformation or stuff like that.
-
-(CWImageLayer new initializeForMap: CWMap default) appendToJQuery: '.menuEditor' asJQuery!
-
-!CWImageLayer methodsFor: 'initialize-release'!
-
-initializeForMap: aMap
-	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
-	invis := CWGameOverTile invis image
-! !
-
-!CWImageLayer methodsFor: 'rendering'!
-
-clean
-	array do: [:each |
-		each src: invis src ]
-!
-
-drawGOT: got point: point
-	| image |
-	image := array i: point x j: point y.
-	image src: got image src
-!
-
-renderOn: html
-	| tempContext tempImage |
-	tempContext := CWGlobalDrawingContext default reset.
-	array rowsWithIndexDo: [ :row :i |
-		tempContext nextRow.
-		row withIndexDo: [ :cell :j |
-			tempContext nextCell.
-			tempImage := html img
-				width: 126;
-				height: 84;
-				style: 'position: absolute; top: ', (tempContext currentPoint y - 9), 'px; left: ', (tempContext currentPoint x - 15), 'px;'.
-			array i: i j: j put: tempImage ] ].
-! !
-
 CWVisitor subclass: #CWMapDrawer
-	instanceVariableNames: 'executionContext layers padding map'
+	instanceVariableNames: 'executionContext layers padding map menus'
 	package: 'Easnoth-MapUI'!
 !CWMapDrawer commentStamp!
 I am a drawer that can draw the business objects through a visit of its tree.
@@ -356,12 +591,6 @@ canvasPadding
 	^ 40
 !
 
-gotCanvasId
-	"id of the game canvas for the css"
-
-	^ '#got'
-!
-
 monsterCanvasId
 	"id of the monster canvas for the css"
 
@@ -376,7 +605,7 @@ tileUnit
 
 !CWMapDrawer methodsFor: 'factory'!
 
-layerForId: id
+canvasLayerForId: id
 	"Answers a CWLayer from a html id"
 
 	^ CWCanvasLayer new initializeWithId: id
@@ -386,21 +615,36 @@ newGOTDrawingContext
 	^ CWGOTDrawingContext default reset: self
 !
 
+newGOTLayer
+	^ CWGOTLayer new initializeForMap: map
+!
+
 newGlobalDrawingContext
 	^ CWGlobalDrawingContext default reset: self
 !
 
 newMonsterAndGOTDrawingContext
 	^ CWMonsterAndGOTDrawingContext default reset: self
+!
+
+newMonsterLayer
+	^ CWMonsterLayer new initializeForMap: map
 ! !
 
 !CWMapDrawer methodsFor: 'initialize-release'!
 
 initialize
 	super initialize. 
-	self initializeLayers.
+	self initializeCanvasLayers.
 	self padding: (self canvasPadding @ self canvasPadding).
 	self initializeEventHandling.
+!
+
+initializeCanvasLayers
+	layers := Array new
+		at: 1 put: (self canvasLayerForId: self backgroundCanvasId);
+		"at: 3 put: (self canvasLayerForId: self monsterCanvasId);"
+		yourself.
 !
 
 initializeEventHandling
@@ -412,29 +656,34 @@ initializeEventHandling
 initializeForMap: aMap
 	map := aMap.
 	self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).
-	CWGlobalDrawingContext default reset: self. "hack for render on of CWImageLayer"
-	layers at: 2 put: (CWImageLayer new initializeForMap: aMap).
-	(layers at: 2) appendToJQuery: self gotCanvasId asJQuery
+	self initializeImageLayers.
+	self initializeMenus.
 !
 
-initializeLayers
-	layers := Array new
-		at: 1 put: (self layerForId: self backgroundCanvasId);
-		"at: 2 put: (self layerForId: self gotCanvasId);"
-		at: 3 put: (self layerForId: self monsterCanvasId);
-		"at: 4 put: (self layerForId: self gameCanvasId);"
-		yourself.
+initializeImageLayers
+	CWGlobalDrawingContext default reset: self. "hack for render on of CWImageLayer"
+
+	layers at: 2 put: self newGOTLayer.
+	layers at: 3 put: self newMonsterLayer.
+!
+
+initializeMenus
+	"CWDices new appendToJQuery: 'body' asJQuery."
 ! !
 
 !CWMapDrawer methodsFor: 'map move'!
 
 down
 	padding := padding + (0 @ self moveIncrement).
+	layers do: [ :each |
+		each down: self moveIncrement ].
 	self updateMap
 !
 
 left
 	padding := padding + (self moveIncrement negated @ 0).
+	layers do: [ :each |
+		each left: self moveIncrement negated ].
 	self updateMap
 !
 
@@ -444,15 +693,23 @@ moveIncrement
 
 right
 	padding := padding + (self moveIncrement @ 0).
+	layers do: [ :each |
+		each right: self moveIncrement ].
 	self updateMap
 !
 
 up
 	padding := padding + (0 @ self moveIncrement negated).
+	layers do: [ :each |
+		each up: self moveIncrement negated ].
 	self updateMap
 ! !
 
 !CWMapDrawer methodsFor: 'public'!
+
+clean
+	layers do: [ :each | each clean ].
+!
 
 updateGOTs
 	self gotLayer clean.
@@ -461,7 +718,7 @@ updateGOTs
 !
 
 updateMap
-	layers do: [ :each | each clean ].
+	self clean.
 	executionContext := self newGlobalDrawingContext.
 	self visitTree: map.
 !
@@ -489,13 +746,15 @@ drawGOT: got
 !
 
 drawHeros: heros
-	(heros side negative) 
+	self monsterLayer drawHeros: heros point: self currentCoods
+	"(heros side negative) 
 		ifTrue: [ self monsterLayer reverseDisplay: heros point: self currentPoint xPad: 87 yPad: 28 ] 
-		ifFalse: [ self monsterLayer display: heros cood: (self currentPoint x + 15) @ (self currentPoint y - 28) ]
+		ifFalse: [ self monsterLayer display: heros cood: (self currentPoint x + 15) @ (self currentPoint y - 28) ]"
 !
 
 drawUnit: aUnit
-	| xArray yArray |
+	self monsterLayer drawUnit: aUnit point: self currentCoods
+	"| xArray yArray |
 
 	xArray := #(17 37 -11 9).
 	yArray := #(33 23 26 15).
@@ -504,7 +763,7 @@ drawUnit: aUnit
 		(aUnit side negative) 
 			ifTrue: [ self monsterLayer reverseDisplay: aUnit point: self currentPoint xPad: 72 + (xArray at: i) yPad: (yArray at: i) ] 
 			ifFalse: [ self monsterLayer display: aUnit cood: (self currentPoint x + (xArray at: i))@(self currentPoint y - (yArray at: i)) ]
-	]
+	]"
 ! !
 
 !CWMapDrawer methodsFor: 'visiting'!
@@ -626,7 +885,7 @@ nextCell
 reset: aDrawer
 	super reset.
 	currentPointCache := nil.
-	drawer ifNil: [ drawer := aDrawer ]
+	drawer := aDrawer
 ! !
 
 !CWGlobalDrawingContext methodsFor: 'visiting'!

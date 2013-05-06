@@ -27,6 +27,10 @@ CWBootstrapEvent subclass: #CWWaitForObject
 !CWWaitForObject commentStamp!
 Triggered when an asynchronous request is sent to get a JSON or an image!
 
+CWEasnothAnnouncement subclass: #CWEndGameEvent
+	instanceVariableNames: ''
+	package: 'Easnoth-Announcements'!
+
 CWEasnothAnnouncement subclass: #CWMapMoveEvent
 	instanceVariableNames: 'directionMethod'
 	package: 'Easnoth-Announcements'!
@@ -104,4 +108,10 @@ Triggered to request the game to let the other player play.!
 SystemAnnouncer subclass: #CWEasnothAnnouncer
 	instanceVariableNames: ''
 	package: 'Easnoth-Announcements'!
+
+!CWEasnothAnnouncer methodsFor: 'not yet classified'!
+
+reset
+	subscriptions := Array new
+! !
 

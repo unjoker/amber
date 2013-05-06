@@ -111,17 +111,15 @@ selector: "initialize",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="undefined"?nil:CWFightMenu)}
 function $CWGameContext(){return smalltalk.CWGameContext||(typeof CWGameContext=="undefined"?nil:CWGameContext)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-_st($CWFightMenu())._new();
 self["@context"]=_st($CWGameContext())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGame)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09CWFightMenu new.\x0a\x09context := CWGameContext new.",
+source: "initialize\x0a\x09super initialize.\x0a\x09context := CWGameContext new.",
 messageSends: ["initialize", "new"],
-referencedClasses: ["CWFightMenu", "CWGameContext"]
+referencedClasses: ["CWGameContext"]
 }),
 smalltalk.CWGame);
 
@@ -152,6 +150,7 @@ fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -161,11 +160,16 @@ _st(_st(self)._announcer())._on_do_($CWNextTurnEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._nextTurn();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(self)._announcer())._reset();
+return _st(self["@map"])._clean();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ]",
-messageSends: ["on:do:", "startGame", "announcer", "nextTurn"],
-referencedClasses: ["CWGameStart", "CWNextTurnEvent"]
+source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ].\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09map clean].",
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean"],
+referencedClasses: ["CWGameStart", "CWNextTurnEvent", "CWEndGameEvent"]
 }),
 smalltalk.CWGame);
 
@@ -283,24 +287,26 @@ fn: function (){
 var self=this;
 var eventDispatcher;
 function $CWEventDispatcher(){return smalltalk.CWEventDispatcher||(typeof CWEventDispatcher=="undefined"?nil:CWEventDispatcher)}
+function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="undefined"?nil:CWFightMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._initializePlayerMonsters();
 _st(self["@map"])._initializeDrawer();
 eventDispatcher=_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
 _st(self)._initializeAI_(eventDispatcher);
+_st($CWFightMenu())._new();
 _st(self["@map"])._updateMap();
 _st(self)._firstTurn();
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{eventDispatcher:eventDispatcher},smalltalk.CWGame)})},
 args: [],
-source: "startGame\x0a\x09| eventDispatcher |\x0a\x09self initializePlayerMonsters.\x0a\x09map initializeDrawer.\x0a\x09eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.\x0a\x09self initializeAI: eventDispatcher.\x0a\x09map updateMap.\x0a\x09self firstTurn.",
+source: "startGame\x0a\x09| eventDispatcher |\x0a\x09self initializePlayerMonsters.\x0a\x09map initializeDrawer.\x0a\x09eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.\x0a\x09self initializeAI: eventDispatcher.\x0a\x09CWFightMenu new.\x0a\x09map updateMap.\x0a\x09self firstTurn.",
 messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "firstTurn"],
-referencedClasses: ["CWEventDispatcher"]
+referencedClasses: ["CWEventDispatcher", "CWFightMenu"]
 }),
 smalltalk.CWGame);
 
 
 
-smalltalk.addClass('CWGameContext', smalltalk.Object, ['currentPlayer', 'currentCell'], 'Easnoth-GameAndPlayers');
+smalltalk.addClass('CWGameContext', smalltalk.Object, ['currentPlayer', 'currentCell', 'relatedCell'], 'Easnoth-GameAndPlayers');
 smalltalk.CWGameContext.comment="Represents the current context of the game, typcally, which player is playing and what monster is currently about to attack / move"
 smalltalk.addMethod(
 smalltalk.method({
@@ -423,6 +429,40 @@ referencedClasses: []
 }),
 smalltalk.CWGameContext);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "relatedCell",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@relatedCell"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"relatedCell",{},smalltalk.CWGameContext)})},
+args: [],
+source: "relatedCell\x0a\x09^ relatedCell",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "relatedCell:",
+category: 'accessing',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@relatedCell"]=aCell;
+return self}, function($ctx1) {$ctx1.fill(self,"relatedCell:",{aCell:aCell},smalltalk.CWGameContext)})},
+args: ["aCell"],
+source: "relatedCell: aCell\x0a\x09relatedCell := aCell",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWGameContext);
+
 
 
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-GameAndPlayers');
@@ -489,13 +529,15 @@ selector: "endGame",
 category: 'events',
 fn: function (){
 var self=this;
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(window)._alert_(_st("Someone just won. Guess who ? loser : ").__comma(_st(self)._printString()));
+_st(self)._announce_(_st($CWEndGameEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"endGame",{},smalltalk.CWPlayer)})},
 args: [],
-source: "endGame\x0a\x09\x22To change... \x22\x0a\x0a\x09window alert: 'Someone just won. Guess who ? loser : ' , self printString",
-messageSends: ["alert:", ",", "printString"],
-referencedClasses: []
+source: "endGame\x0a\x09window alert: 'Someone just won. Guess who ? loser : ' , self printString.\x0a\x09self announce: CWEndGameEvent new.",
+messageSends: ["alert:", ",", "printString", "announce:", "new"],
+referencedClasses: ["CWEndGameEvent"]
 }),
 smalltalk.CWPlayer);
 
@@ -1042,7 +1084,7 @@ var self=this;
 var relatedTargetCell,duration;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-relatedTargetCell=_st(_st(self["@monsterToPlay"])._parent())._cellToMoveBeforeAttack_(self["@cellToTarget"]);
+relatedTargetCell=_st(_st(self["@monsterToPlay"])._parent())._cellToMoveBeforeAttack_context_(self["@cellToTarget"],_st(self)._gameContext());
 $1=relatedTargetCell;
 if(($receiver = $1) == nil || $receiver == undefined){
 relatedTargetCell=_st(self["@monsterToPlay"])._parent();
@@ -1058,8 +1100,8 @@ return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
-messageSends: ["cellToMoveBeforeAttack:", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
+source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.\x0a\x09relatedTargetCell ifNil: [ \x22case where the ennemy is neighbour and no free cells around\x22 relatedTargetCell := monsterToPlay parent ].\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
+messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1272,4 +1314,36 @@ messageSends: ["ifTrue:ifFalse:", "value:", "at:", "value", "and:", ">", "<=", "
 referencedClasses: []
 }),
 smalltalk.SequenceableCollection);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "remove:ifAbsent:",
+category: '*Easnoth-GameAndPlayers',
+fn: function (anObject,aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@elements"])._remove_ifAbsent_(anObject,aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"remove:ifAbsent:",{anObject:anObject,aBlock:aBlock},smalltalk.Set)})},
+args: ["anObject", "aBlock"],
+source: "remove: anObject ifAbsent: aBlock\x0a\x09elements remove: anObject ifAbsent: aBlock",
+messageSends: ["remove:ifAbsent:"],
+referencedClasses: []
+}),
+smalltalk.Set);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isMarked",
+category: '*Easnoth-GameAndPlayers',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isMarked",{},smalltalk.UndefinedObject)})},
+args: [],
+source: "isMarked\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.UndefinedObject);
 

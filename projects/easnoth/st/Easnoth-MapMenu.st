@@ -105,6 +105,9 @@ initialize
 	self addComponent: CWMapControls.
 	self addComponent: CWTurnWatcher.
 	self appendToJQuery: self menuClass asJQuery.
+	self announcer
+		on: CWEndGameEvent
+		do: [ self menuClass asJQuery empty ]
 ! !
 
 CWWidget subclass: #CWActionMenuComponent
@@ -128,8 +131,8 @@ SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.!
 firstLoad
     box contents: [ :html | 
 	html h4 with: 'Fight result'.
-           CWDiceDeath new renderOn: html.
-           CWDiceMiss new renderOn: html ].
+           CWDiceDeath new renderOn: html callback: [ ].
+           CWDiceMiss new renderOn: html callback: [ ] ].
 !
 
 initialize
@@ -155,7 +158,6 @@ updateDices: dicesNb kills: kills callBack: cb
 	"animate the dices and display them in random order"
 
 	| tmp dices i callback |
-
 	dices := Array new: dicesNb.
 	i := 1.
 	callback := [
@@ -184,7 +186,11 @@ showDices: aResDices
 
 showDicesNoAnimation: monster
 	"should change the number of dices without animation"
-	"self updateDices: monster dices kills: monster kills callBack: []."
+	"monster ifNotNil: [
+		box contents: [:html | 
+			html h4 with: 'Fight result'.
+			1 to: monster dices do: [
+				CWDiceDeath new renderOn: html ] ] ]"
 ! !
 
 CWActionMenuComponent subclass: #CWMapControls
@@ -222,7 +228,7 @@ renderOn: html
 ! !
 
 CWActionMenuComponent subclass: #CWMonsterWatcher
-	instanceVariableNames: 'monster box'
+	instanceVariableNames: 'monster box imgBox'
 	package: 'Easnoth-MapMenu'!
 
 !CWMonsterWatcher methodsFor: 'accessing'!
@@ -265,7 +271,7 @@ update
 
         box contents: [:html | 
 		html h4 with: 'selected monster'.
-                html img: (self monster image at: 'src').
+				"html img: (self monster image at: 'src')."
                 html table
 			class: 'tableStats';
 			with: [
@@ -305,15 +311,18 @@ renderOn: html
 		"'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]]."
                 html button with: 'class browser';
                         onClick: [Browser open].
+				   html button with: 'menu';
+                        onClick: [
+							self announce: CWEndGameEvent new.
+							CWStartMenu start].
 				html br.
 				html iframe
-					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=21&amp;appId=97614502002';
+					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';
 					at: 'frameborder' put: 0;
 					at: 'scrolling' put: 'no';
-					style:'border:none; overflow:hidden; width:450px; height:21px;';
+					style:'border:none; overflow:hidden; width:90px; height:21px;';
 					at: 'allowTransparency' put: 'true'.
 	].
-	"self update."
 !
 
 update
@@ -336,6 +345,10 @@ diceRepo
 
 url
 	self subclassResponsiblity
+!
+
+urlRoll
+	^ self diceRepo, 'diceRoll.png'
 ! !
 
 !CWDice methodsFor: 'rendering'!
@@ -355,7 +368,7 @@ animate: dice callBack: animationFinished
 animate: dice callBack: animationFinished random: random url: url
 <var i = 0;
     function roll() {
-		dice.animate({'border-spacing': -100},
+		dice.animate({'border-spacing': -40},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
                         },
@@ -367,7 +380,7 @@ animate: dice callBack: animationFinished random: random url: url
                                         roll();
                                 } else {
                                         i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 100px').css('background-repeat','no-repeat').animate({'border-spacing': -100},
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},
                                                 {step: function(now, fx) {
                                                         $(fx.elem).css('background-position', '1px '+now+'px');
                                                         },
@@ -385,11 +398,11 @@ animate: dice callBack: animationFinished random: random url: url
 !
 
 renderOn: html
-	self renderOn: html callback: [ ]
+	(html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(',self url,') 1px 40px'
 !
 
 renderOn: html callback: cb
-	 self animate: ((html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url("ressources/images/fight/diceRoll.png") 1px 0') callBack: cb
+	 self animate: ((html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(', self urlRoll, ') 1px 0') callBack: cb
 ! !
 
 CWDice subclass: #CWDiceDeath

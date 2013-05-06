@@ -56,6 +56,11 @@ desactivateMonsters
 		child desactivateMonsters ]
 !
 
+lighten
+	self children do: [ :child |
+		child lighten ]
+!
+
 removeSelection
 	self children do: [ :child |
 		child removeSelection ]
@@ -317,12 +322,14 @@ selectableNeighboursForMonster: aMonster
 
 !CWCell methodsFor: 'pathfinding'!
 
-cellToMoveBeforeAttack: cellLast
+cellToMoveBeforeAttack: cellLast context: gameContext
 	"Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.
 	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
 
 	| possibleCells closestCell shortestPath |
 	self monster isRanged ifTrue: [ ^ self cellToMoveBeforeRangeAttack: cellLast ].
+	(gameContext relatedCell isMarked ) ifTrue: [ ^ gameContext relatedCell ]. 
+	(cellLast neighbours includes: self) ifTrue: [ ^ self ].
 	possibleCells := cellLast neighbours select: [:each | each isMarked ].
 	shortestPath := 9999.
 	possibleCells do: [ :each | 
@@ -394,6 +401,18 @@ addWhiteSelector
 	self gameOverTile: self newWhiteGOT
 !
 
+darken
+	gameOverTile ifNotNil: [ :got |
+		got darken ]
+!
+
+lighten
+	"should delegate to state but I'm lazy"
+ 	self isFree ifTrue: [
+		gameOverTile ifNotNil: [ :got |
+			got lighten ] ]
+!
+
 removeGameOverTile
 	self gameOverTile: nil
 ! !
@@ -423,6 +442,10 @@ isFree
 
 mouseClick: gameContext
 	self state mouseClick: self context: gameContext.
+!
+
+mouseMove: gameContext
+	self state mouseMove: self context: gameContext.
 !
 
 removeMonster
@@ -577,6 +600,10 @@ printOn: aStream
 
 !CWMap methodsFor: 'rendering'!
 
+clean
+	drawer clean
+!
+
 updateGOTs
 	drawer updateGOTs
 !
@@ -602,18 +629,12 @@ accept: aVisitor
 	^ aVisitor visitMap: self
 ! !
 
-CWMap class instanceVariableNames: 'default'!
-
 !CWMap class methodsFor: 'instance creation'!
-
-default
-	^ default ifNil: [ default := self new ]
-!
 
 newWithMapIndex: aMapIndex
 	| map |
 	
-	map := self default.
+	map := self new.
     jQuery 
 		getJSON: 'ressources/json/maps/map', aMapIndex, '.json' 
 		onSuccess: [:data | 
@@ -821,6 +842,16 @@ CWOverTile subclass: #CWGameOverTile
 !CWGameOverTile commentStamp!
 class side I have an image array to crete got faster as they are the most created / gc objects!
 
+!CWGameOverTile methodsFor: 'coloring'!
+
+darken
+	self image: (self class imageArray at: self class darkGreenIndex)
+!
+
+lighten
+	self image: (self class imageArray at: self class greenIndex)
+! !
+
 !CWGameOverTile methodsFor: 'visiting'!
 
 accept: aVisitor
@@ -832,9 +863,10 @@ CWGameOverTile class instanceVariableNames: 'imageArray'!
 !CWGameOverTile class methodsFor: 'array'!
 
 createImageArray
-	imageArray := Array new: 4.
+	imageArray := Array new: 5.
 	imageArray 
 		at: self greenIndex put: (self imageCacheAt: 'green');
+		at: self darkGreenIndex put: (self imageCacheAt: 'darkGreen');
 		at: self redIndex put: (self imageCacheAt: 'red');
 		at: self whiteIndex put: (self imageCacheAt: 'white');
 		at: self invisIndex put: (self imageCacheAt: 'invis').
@@ -846,6 +878,10 @@ imageArray
 ! !
 
 !CWGameOverTile class methodsFor: 'index'!
+
+darkGreenIndex
+	^ 5
+!
 
 greenIndex
 	^ 1
@@ -1062,25 +1098,21 @@ attack: anotherMonster inContext: gameContext bonus: int
 	| ennemySupport ennemyHerosSupport ennemyUnitSupport support herosSupport unitSupport bonusDices bonusAttack |
 	
 	ennemySupport := self support.
+	ennemySupport := ennemySupport remove: anotherMonster parent ifAbsent: ["range attack"].
 	ennemyHerosSupport := ( ennemySupport select: [ :each | each monster isHeros ] ) size.
 	ennemyUnitSupport := ennemySupport size - ennemyHerosSupport.
 	
 	support := anotherMonster support.
+	support := support remove: self parent ifAbsent: ["range attack"].
 	herosSupport := ( support select: [ :each | each monster isHeros ] ) size.
 	unitSupport := support size - herosSupport.
 	
 	bonusDices := int + herosSupport - ennemyHerosSupport.
 	bonusAttack := ( int + unitSupport - ennemyUnitSupport ) * 10.
 	
-	self state changeStateAfterAttacking: self.
-    self root removeSelection.
-	self updateGOTs.
-
-	self rollDicesCallBack: [ :diceRes |
-		anotherMonster removeHP: diceRes kills.
-        self selectInContext: gameContext.
-		self checkForNextTurn.
-		self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack
+	bonusDices + self dices < 1 ifTrue: [ bonusDices := (self dices - 1) negated "1 dice min" ]. 
+	
+	self resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack
 !
 
 die
@@ -1106,10 +1138,24 @@ removeHP: anInt
            self die ].
 !
 
+resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack
+
+	self state changeStateAfterAttacking: self.
+    self root removeSelection.
+	self updateGOTs.
+
+	self rollDicesCallBack: [ :diceRes |
+		anotherMonster removeHP: diceRes kills.
+        self selectInContext: gameContext.
+		self checkForNextTurn.
+		self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack
+!
+
 rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
 	"roll the dices to attack an ennemy"
 	
 	| kill dicesRolledEvent |
+	
 	kill := (1 to: self dices + bonusDices) inject: 0 into: [ :acc :index | 
 		100 atRandom < (self attack + bonusAttack)
 			ifTrue: [ acc + 1 ] 
@@ -1122,9 +1168,7 @@ rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
 	self announce: dicesRolledEvent
 !
 
-support
-	"Answers the ennemies near you to calculate how they support the attacker / the defender"
-	
+support	
 	^ self parent attackableNeighboursFrom: self side
 ! !
 
