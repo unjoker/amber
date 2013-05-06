@@ -123,10 +123,14 @@ _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(self)._announcer())._reset();
 _st(self["@map"])._clean();
+_st((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self["@map"])._clean();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((2000));
 return _st($CWStartMenu())._start();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
-messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean", "start"]}),
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean", "valueWithTimeout:", "start"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(

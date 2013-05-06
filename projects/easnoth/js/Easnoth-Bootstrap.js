@@ -673,11 +673,11 @@ var self=this;
 function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@box"])._hidden();
-_st(self["@gameSettings"])._mapNumber_((7));
+_st(self["@gameSettings"])._mapNumber_((8));
 _st($CWBootstrapper())._bootstrap_(self["@gameSettings"]);
 return self}, function($ctx1) {$ctx1.fill(self,"startBeta",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startBeta\x0a\x09box hidden.\x0a\x09gameSettings mapNumber: 7.\x0a\x09CWBootstrapper bootstrap: gameSettings",
+source: "startBeta\x0a\x09box hidden.\x0a\x09gameSettings mapNumber: 8.\x0a\x09CWBootstrapper bootstrap: gameSettings",
 messageSends: ["hidden", "mapNumber:", "bootstrap:"],
 referencedClasses: ["CWBootstrapper"]
 }),

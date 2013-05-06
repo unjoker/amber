@@ -163,7 +163,7 @@ choosePlayers
 
 startBeta
 	box hidden.
-	gameSettings mapNumber: 7.
+	gameSettings mapNumber: 8.
 	CWBootstrapper bootstrap: gameSettings
 ! !
 

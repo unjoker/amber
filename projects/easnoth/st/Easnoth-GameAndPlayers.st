@@ -71,6 +71,7 @@ initializeEventHandling
 		on: CWEndGameEvent
 		do: [ self announcer reset. 
 			map clean.
+			[ map clean ] valueWithTimeout: 2000.
 			CWStartMenu start ].
 !
 
