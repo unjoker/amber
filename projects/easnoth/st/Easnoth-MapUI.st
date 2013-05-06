@@ -588,7 +588,7 @@ backgroundCanvasId
 canvasPadding
 	"padding between the border of the web page and the map (left and top)"
 
-	^ 40
+	^ 20
 !
 
 monsterCanvasId

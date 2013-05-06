@@ -744,14 +744,9 @@ smalltalk.method({
 selector: "checkForNextTurn:",
 fn: function (aMonster){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=$Transcript();
-_st($1)._show_("ha");
-$2=_st($1)._cr();
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWHasAttacked)})},
-messageSends: ["show:", "cr"]}),
+messageSends: []}),
 smalltalk.CWHasAttacked);
 
 smalltalk.addMethod(
@@ -810,24 +805,15 @@ selector: "checkForNextTurn:",
 fn: function (aMonster){
 var self=this;
 var col;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
 col=_st(aMonster)._selectAttackableCells();
-$1=$Transcript();
-_st($1)._show_("hm");
-$2=_st($1)._cr();
 _st(col)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
-$3=$Transcript();
-_st($3)._show_("ss");
-$4=_st($3)._cr();
-$4;
 return _st(aMonster)._announce_(_st($CWNextTurnEvent())._new());
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster,col:col},smalltalk.CWHasMoved)})},
-messageSends: ["selectAttackableCells", "show:", "cr", "ifEmpty:", "announce:", "new"]}),
+messageSends: ["selectAttackableCells", "ifEmpty:", "announce:", "new"]}),
 smalltalk.CWHasMoved);
 
 smalltalk.addMethod(
@@ -908,13 +894,11 @@ smalltalk.method({
 selector: "checkForNextTurn:",
 fn: function (aMonster){
 var self=this;
-function $Transcript(){return smalltalk.Transcript||(typeof Transcript=="undefined"?nil:Transcript)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st($Transcript())._show_("inactive");
 _st(aMonster)._announce_(_st($CWNextTurnEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWInactive)})},
-messageSends: ["show:", "announce:", "new"]}),
+messageSends: ["announce:", "new"]}),
 smalltalk.CWInactive);
 
 smalltalk.addMethod(

@@ -14,20 +14,18 @@
 					"tile": "savanna"
 				},
 				{
-					"troop": {
-						"name": "fighter",
-						"side": 1
-					},
 					"tile": "savanna"
 				},
 				{
 					"tile": "savanna"
 				},
 				{
-					"heros": {
-						"name": "shyde",
-						"side": 1
-					},
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
 					"tile": "savanna"
 				}
 			]
@@ -50,10 +48,12 @@
 					"overtile2": "savanna-sw-nw"
 				},
 				{
-					"troop": {
-						"name": "fighter",
-						"side": 1
-					},
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
 					"tile": "savanna"
 				},
 				{
@@ -81,10 +81,12 @@
 					"tile": "savanna"
 				},
 				{
-					"troop": {
-						"name": "fighter",
-						"side": 1
-					},
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
 					"tile": "savanna"
 				}
 			]
@@ -110,16 +112,118 @@
 				},
 				{
 					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
 				}
 			]
 		},
 		{
 			"cells": [
 				{
-					"troop": {
-						"name": "thief",
-						"side": -1
-					},
+					"tile": "road"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "road-n-ne"
+				},
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "savanna-s-sw"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				}
+			]
+		},
+		{
+			"cells": [
+				{
+					"tile": "dirt",
+					"overtile1": "road-s-sw"
+				},
+				{
+					"tile": "road"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "road-n-ne"
+				},
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "savanna-s-sw"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				}
+			]
+		},
+		{
+			"cells": [
+				{
+					"tile": "dirt",
+					"overtile1": "road-s-sw"
+					
+				},
+				{
+					"tile": "road"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "road-n-ne"
+				},
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "savanna-s-sw"
+				},
+				{
+					"tile": "savanna"
+				},
+				{
+					"tile": "savanna"
+				}
+			]
+		},
+		{
+			"cells": [
+				{
+					"tile": "dirt"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "road-s-sw"
+				},
+				{
 					"tile": "road"
 				},
 				{
@@ -144,18 +248,17 @@
 		{
 			"cells": [
 				{
+					"tile": "dirt"
+				},
+				{
 					"tile": "dirt",
 					"overtile1": "road-s-sw"
 				},
 				{
-					"heros": {
-						"name": "specter",
-						"side": -1
-					},
 					"tile": "road"
 				},
 				{
-					"tile": "dirt",
+					"tile": "dirt", 
 					"overtile1": "road-n-ne"
 				},
 				{
@@ -167,38 +270,9 @@
 				{
 					"tile": "dirt",
 					"overtile1": "savanna-s-sw"
-				}
-			]
-		},
-		{
-			"cells": [
-				{
-					"tile": "dirt",
-					"overtile1": "road-s-sw"
 				},
 				{
-					"troop": {
-						"name": "thief",
-						"side": -1
-					},
-					"tile": "road"
-				},
-				{
-					"tile": "dirt",
-					"overtile1": "road-n-ne"
-				},
-				{
-					"tile": "dirt"
-				},
-				{
-					"tile": "dirt"
-				},
-				{
-					"troop": {
-						"name": "fighter",
-						"side": 1
-					},
-					"tile": "dirt"
+					"tile": "savanna"
 				}
 			]
 		},
@@ -208,31 +282,6 @@
 					"tile": "dirt"
 				},
 				{
-					"tile": "dirt",
-					"overtile1": "road-s-sw"
-				},
-				{
-					"troop": {
-						"name": "thief",
-						"side": -1
-					},
-					"tile": "road"
-				},
-				{
-					"tile": "dirt",
-					"overtile1": "road-n-ne"
-				},
-				{
-					"tile": "dirt"
-				},
-				{
-					"tile": "dirt"
-				}
-			]
-		},
-		{
-			"cells": [
-				{
 					"tile": "dirt"
 				},
 				{
@@ -240,14 +289,10 @@
 					"overtile1": "road-s-sw"
 				},
 				{
-					"heros": {
-						"name": "specter",
-						"side": -1
-					},
 					"tile": "road"
 				},
 				{
-					"tile": "dirt",
+					"tile": "dirt", 
 					"overtile1": "road-n-ne"
 				},
 				{
@@ -255,6 +300,10 @@
 				},
 				{
 					"tile": "dirt"
+				},
+				{
+					"tile": "dirt",
+					"overtile1": "savanna-s-sw"
 				}
 			]
 		}

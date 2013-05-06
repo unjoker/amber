@@ -2282,6 +2282,21 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "attackPotentialFor:",
+fn: function (target){
+var self=this;
+var adv;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+adv=_st(self["@typeStrategy"])._bonusVS_(target);
+$1=_st(_st(_st(self["@attack"]).__plus((10))).__star(adv)).__star(_st(self["@dices"]).__plus(adv));
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"attackPotentialFor:",{target:target,adv:adv},smalltalk.CWMonster)})},
+messageSends: ["bonusVS:", "*", "+"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "attackTo:inContext:",
 fn: function (aCell,gameContext){
 var self=this;
@@ -2302,6 +2317,45 @@ $1=_st(_st(self)._parent())._attackableNeighboursConsideringMoveForMonster_(self
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attackableTargets",{},smalltalk.CWMonster)})},
 messageSends: ["attackableNeighboursConsideringMoveForMonster:", "parent"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bonusVSCavalry",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._bonusVSCavalry();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"bonusVSCavalry",{},smalltalk.CWMonster)})},
+messageSends: ["bonusVSCavalry"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bonusVSRange",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._bonusVSRange();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"bonusVSRange",{},smalltalk.CWMonster)})},
+messageSends: ["bonusVSRange"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "bonusVSTroop",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@typeStrategy"])._bonusVSTroop();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"bonusVSTroop",{},smalltalk.CWMonster)})},
+messageSends: ["bonusVSTroop"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -3531,6 +3585,56 @@ $2=_st($1)._visitMonster_(aUnit);
 return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWJsonWriter)})},
 messageSends: ["startObjectNamed:", "visitMonster:"]}),
 smalltalk.CWJsonWriter);
+
+
+
+smalltalk.addClass('CWNoMonsterWriter', smalltalk.CWJsonWriter, [], 'Easnoth-MapModel');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitChildren:",
+fn: function (aBusinessObject){
+var self=this;
+var newSize;
+function $CWCell(){return smalltalk.CWCell||(typeof CWCell=="undefined"?nil:CWCell)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+newSize=_st(_st(aBusinessObject)._children())._size();
+$1=_st(aBusinessObject)._isKindOf_($CWCell());
+if(smalltalk.assert($1)){
+newSize=_st(_st(aBusinessObject)._background())._size();
+newSize;
+};
+_st(_st(aBusinessObject)._children())._withIndexDo_((function(child,i){
+return smalltalk.withContext(function($ctx2) {
+_st(child)._accept_(self);
+$2=_st(i).__eq(newSize);
+if(! smalltalk.assert($2)){
+return _st(self)._commaCr();
+};
+}, function($ctx2) {$ctx2.fillBlock({child:child,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"visitChildren:",{aBusinessObject:aBusinessObject,newSize:newSize},smalltalk.CWNoMonsterWriter)})},
+messageSends: ["size", "children", "ifTrue:", "background", "isKindOf:", "withIndexDo:", "accept:", "ifFalse:", "commaCr", "="]}),
+smalltalk.CWNoMonsterWriter);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitHeros:",
+fn: function (heros){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWNoMonsterWriter)})},
+messageSends: []}),
+smalltalk.CWNoMonsterWriter);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "visitUnit:",
+fn: function (unit){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{unit:unit},smalltalk.CWNoMonsterWriter)})},
+messageSends: []}),
+smalltalk.CWNoMonsterWriter);
 
 
 

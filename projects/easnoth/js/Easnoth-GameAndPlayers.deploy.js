@@ -109,6 +109,7 @@ var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -121,10 +122,11 @@ return _st(self)._nextTurn();
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(self)._announcer())._reset();
-return _st(self["@map"])._clean();
+_st(self["@map"])._clean();
+return _st($CWStartMenu())._start();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
-messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean"]}),
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean", "start"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -437,15 +439,18 @@ var monsters;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 monsters=_st($Array())._new();
-_st(monsters)._at_put_((1),_st(self)._newTroop_(_st(data)._troop()));
-_st(monsters)._at_put_((2),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
-_st(monsters)._at_put_((3),_st(self)._newRange_(_st(data)._range()));
-_st(monsters)._at_put_((4),_st(self)._newCavalry_(_st(data)._cavalry()));
-_st(monsters)._at_put_((5),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()));
-_st(monsters)._at_put_((6),_st(self)._newRangeHeros_(_st(data)._rangeHeros()));
+_st(monsters)._at_put_((7),_st(self)._newTroop_(_st(data)._troop()));
+_st(monsters)._at_put_((8),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
+_st(monsters)._at_put_((9),_st(self)._newTroop_(_st(data)._troop()));
+_st(monsters)._at_put_((4),_st(self)._newRange_(_st(data)._range()));
+_st(monsters)._at_put_((5),_st(self)._newRangeHeros_(_st(data)._rangeHeros()));
+_st(monsters)._at_put_((6),_st(self)._newRange_(_st(data)._range()));
+_st(monsters)._at_put_((1),_st(self)._newCavalry_(_st(data)._cavalry()));
+_st(monsters)._at_put_((2),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()));
+_st(monsters)._at_put_((3),_st(self)._newCavalry_(_st(data)._cavalry()));
 self["@team"]=monsters;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
-messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros", "newRangeHeros:", "rangeHeros"]}),
+messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newRangeHeros:", "rangeHeros", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"]}),
 smalltalk.CWPlayer);
 
 smalltalk.addMethod(
@@ -457,9 +462,9 @@ return smalltalk.withContext(function($ctx1) {
 var $2,$1;
 $2=_st(_st(self)._side()).__eq((1));
 if(smalltalk.assert($2)){
-$1=[_st((1)).__at((4)),_st((1)).__at((6)),_st((2)).__at((6)),_st((3)).__at((6)),_st((4)).__at((6)),_st((1)).__at((3))];
+$1=[_st((3)).__at((8)),_st((4)).__at((8)),_st((5)).__at((8)),_st((1)).__at((7)),_st((2)).__at((7)),_st((2)).__at((8)),_st((1)).__at((4)),_st((1)).__at((5)),_st((1)).__at((6))];
 } else {
-$1=[_st((7)).__at((1)),_st((8)).__at((1)),_st((9)).__at((1)),_st((6)).__at((1)),_st((9)).__at((3)),_st((9)).__at((4))];
+$1=[_st((6)).__at((1)),_st((7)).__at((1)),_st((8)).__at((1)),_st((9)).__at((1)),_st((9)).__at((2)),_st((10)).__at((2)),_st((10)).__at((5)),_st((10)).__at((4)),_st((10)).__at((3))];
 };
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"monstersPositionArray",{},smalltalk.CWPlayer)})},
@@ -767,7 +772,7 @@ return smalltalk.withContext(function($ctx2) {
 _st(monster)._currentMove_(_st(monster)._move());
 _st(_st(monster)._attackableTargets())._do_((function(target){
 return smalltalk.withContext(function($ctx3) {
-score=_st(_st(monster)._attackPotential()).__minus(_st(_st(target)._monster())._defensePotential());
+score=_st(_st(monster)._attackPotentialFor_(_st(target)._monster())).__minus(_st(_st(target)._monster())._defensePotential());
 score;
 $1=_st(score).__gt(bestScore);
 if(smalltalk.assert($1)){
@@ -782,7 +787,7 @@ return self["@cellToTarget"];
 return _st(monster)._currentMove_((0));
 }, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"calculBestMove",{score:score,bestScore:bestScore},smalltalk.CWAggressWeakestAI)})},
-messageSends: ["negated", "do:", "currentMove:", "move", "-", "defensePotential", "monster", "attackPotential", "ifTrue:", ">", "attackableTargets", "team"]}),
+messageSends: ["negated", "do:", "currentMove:", "move", "-", "defensePotential", "monster", "attackPotentialFor:", "ifTrue:", ">", "attackableTargets", "team"]}),
 smalltalk.CWAggressWeakestAI);
 
 smalltalk.addMethod(
@@ -808,15 +813,7 @@ fn: function (){
 var self=this;
 var relatedTargetCell,duration;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
 relatedTargetCell=_st(_st(self["@monsterToPlay"])._parent())._cellToMoveBeforeAttack_context_(self["@cellToTarget"],_st(self)._gameContext());
-$1=relatedTargetCell;
-if(($receiver = $1) == nil || $receiver == undefined){
-relatedTargetCell=_st(self["@monsterToPlay"])._parent();
-relatedTargetCell;
-} else {
-$1;
-};
 duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
@@ -824,7 +821,7 @@ return smalltalk.withContext(function($ctx2) {
 return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
-messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "parent", "ifNil:", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"]}),
+messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "parent", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"]}),
 smalltalk.CWAggressWeakestAI);
 
 smalltalk.addMethod(

@@ -330,7 +330,6 @@ Monster can only move!
 
 checkForNextTurn: aMonster
 	"do nothing for now"
-	Transcript show: 'ha'; cr.
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -364,8 +363,8 @@ The monster has moved its full moved there. (currentMove = 0)!
 
 checkForNextTurn: aMonster
 	| col |
-	col := 	aMonster selectAttackableCells.Transcript show: 'hm'; cr.
-	col ifEmpty: [ Transcript show: 'ss'; cr. aMonster announce: CWNextTurnEvent new ]
+	col := 	aMonster selectAttackableCells.
+	col ifEmpty: [ aMonster announce: CWNextTurnEvent new ]
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -406,7 +405,6 @@ activate: aMonster
 !
 
 checkForNextTurn: aMonster
-	Transcript show: 'inactive'.
 	aMonster announce: CWNextTurnEvent new
 !
 

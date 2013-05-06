@@ -102,15 +102,15 @@ monster: aMonster attackNeighbour: anotherMonster inContext: gameContext
 !
 
 monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext
-	self subclassResponsibility
+	^ aMonster attack: targetMonster inContext: gameContext bonus: self bonusVSCavalry negated
 !
 
 monster: targetMonster isAttackedByRange: aMonster inContext: gameContext
-	self subclassResponsibility
+	^ aMonster attack: targetMonster inContext: gameContext bonus: self bonusVSRange negated
 !
 
 monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
-	self subclassResponsibility
+	^ aMonster attack: targetMonster inContext: gameContext bonus: self bonusVSTroop negated
 ! !
 
 CWMonsterTypeStrategy subclass: #CWCavalryStrategy
@@ -119,24 +119,28 @@ CWMonsterTypeStrategy subclass: #CWCavalryStrategy
 
 !CWCavalryStrategy methodsFor: 'type strategy API'!
 
+bonusVS: target
+	^ target bonusVSCavalry negated
+!
+
+bonusVSCavalry
+	^ 0
+!
+
+bonusVSRange
+	^ 1
+!
+
+bonusVSTroop
+	^ -1
+!
+
 key
 	^ 'cavalry'
 !
 
 monster: aCavalry attackNeighbour: anotherMonster inContext: gameContext
 	^ anotherMonster isAttackedByCavalry: aCavalry inContext: gameContext
-!
-
-monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: 0
-!
-
-monster: targetMonster isAttackedByRange: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: -1
-!
-
-monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: 1
 ! !
 
 CWMonsterTypeStrategy subclass: #CWRangeStrategy
@@ -144,6 +148,22 @@ CWMonsterTypeStrategy subclass: #CWRangeStrategy
 	package: 'Easnoth-MonsterStrategies'!
 
 !CWRangeStrategy methodsFor: 'type strategy API'!
+
+bonusVS: target
+	^ target bonusVSRange negated
+!
+
+bonusVSCavalry
+	^ -1
+!
+
+bonusVSRange
+	^ 0
+!
+
+bonusVSTroop
+	^ 1
+!
 
 isRanged
 	^ true
@@ -155,18 +175,6 @@ key
 
 monster: aRange attackNeighbour: anotherMonster inContext: gameContext
 	^ anotherMonster isAttackedByRange: aRange inContext: gameContext
-!
-
-monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: 1
-!
-
-monster: targetMonster isAttackedByRange: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: 0
-!
-
-monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: -1
 ! !
 
 CWMonsterTypeStrategy subclass: #CWTroopStrategy
@@ -175,23 +183,27 @@ CWMonsterTypeStrategy subclass: #CWTroopStrategy
 
 !CWTroopStrategy methodsFor: 'type strategy API'!
 
+bonusVS: target
+	^ target bonusVSTroop negated
+!
+
+bonusVSCavalry
+	^ 1
+!
+
+bonusVSRange
+	^ -1
+!
+
+bonusVSTroop
+	^ 0
+!
+
 key
 	^ 'troop'
 !
 
 monster: aTroop attackNeighbour: anotherMonster inContext: gameContext
 	^ anotherMonster isAttackedByTroop: aTroop inContext: gameContext
-!
-
-monster: targetMonster isAttackedByCavalry: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: -1
-!
-
-monster: targetMonster isAttackedByRange: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: 1
-!
-
-monster: targetMonster isAttackedByTroop: aMonster inContext: gameContext
-	^ aMonster attack: targetMonster inContext: gameContext bonus: 0
 ! !
 

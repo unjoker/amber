@@ -567,7 +567,7 @@ initializeFromJson: jsonMap
 	
 	rows1 := jsonMap row.
 	rows := Array new: rows1 size.
-	
+
 	rows1 withIndexDo: [:row :i |
 		child := self newChild.
 		self childAt: i put: child.
@@ -974,6 +974,25 @@ attack: int
 attackPotential
 	"Answers the power of attack of the monster"
 	^ attack * dices
+!
+
+attackPotentialFor: target
+	"Answers the power of attack of the monster considering target weakness and strength"
+	| adv |
+	adv := typeStrategy bonusVS: target.
+	^ (attack + 10 * adv) * (dices + adv)
+!
+
+bonusVSCavalry
+	^ typeStrategy bonusVSCavalry
+!
+
+bonusVSRange
+	^ typeStrategy bonusVSRange
+!
+
+bonusVSTroop
+	^ typeStrategy bonusVSTroop
 !
 
 currentMove
@@ -1604,6 +1623,31 @@ visitUnit: aUnit
 	self
 		startObjectNamed: 'unit';
 		visitMonster: aUnit
+! !
+
+CWJsonWriter subclass: #CWNoMonsterWriter
+	instanceVariableNames: ''
+	package: 'Easnoth-MapModel'!
+
+!CWNoMonsterWriter methodsFor: 'not yet classified'!
+
+visitChildren: aBusinessObject
+	| newSize |
+	newSize := aBusinessObject children size.
+	(aBusinessObject isKindOf: CWCell) ifTrue: [ 
+		newSize := aBusinessObject background size ].
+	aBusinessObject children withIndexDo: [ :child :i |
+			child accept: self.
+			i = newSize
+				ifFalse: [ self commaCr ] ].
+!
+
+visitHeros: heros
+	"do nothing"
+!
+
+visitUnit: unit
+	"do nothing"
 ! !
 
 !JSObjectProxy methodsFor: '*Easnoth-MapModel'!
