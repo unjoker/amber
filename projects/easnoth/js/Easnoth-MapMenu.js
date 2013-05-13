@@ -809,7 +809,7 @@ url=_st(self)._url();
 _st(self)._animate_callBack_random_url_(dice,animationFinished,random,url);
 return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
 args: ["dice", "animationFinished"],
-source: "animate: dice callBack: animationFinished\x0a\x09\x22This method calls the jquery animation that is implemented in javascript\x0a\x09To refactor later\x22\x0a\x09\x0a\x09| random url |\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
+source: "animate: dice callBack: animationFinished\x0a\x09\x22This method calls the jquery animation that is implemented in javascript\x0a\x09To refactor later\x22\x0a\x09\x0a\x09\x22dice \x0a\x09animate: #{'border-spacing' -> -40 }\x0a    optons:  #{\x0a\x09\x09'step' -> [ :now ;fx |\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        ].\x0a        'duration' -> 200.\x0a        'easing' -> 'linear' }\x22\x0a\x09\x0a\x09| random url |\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
 messageSends: ["+", "atRandom", "url", "animate:callBack:random:url:"],
 referencedClasses: []
 }),

@@ -356,6 +356,15 @@ animate: dice callBack: animationFinished
 	"This method calls the jquery animation that is implemented in javascript
 	To refactor later"
 	
+	"dice 
+	animate: #{'border-spacing' -> -40 }
+    optons:  #{
+		'step' -> [ :now ;fx |
+                                $(fx.elem).css('background-position', '1px '+now+'px');
+                        ].
+        'duration' -> 200.
+        'easing' -> 'linear' }"
+	
 	| random url |
 
 	random := 2 + 7 atRandom.
