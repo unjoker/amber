@@ -308,7 +308,7 @@ selector: "credits",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$2;
 _st(self["@box"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h1())._with_("Easnoth : Battle Arena");
@@ -318,7 +318,8 @@ $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._span())._with_("Core developer : ");
+_st(_st(html)._strong())._with_("Development : ");
+_st(html)._br();
 $3=_st(html)._a();
 _st($3)._with_("Clément Béra");
 $4=_st($3)._href_("http://clementbera.wordpress.com/");
@@ -326,42 +327,47 @@ return $4;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._span())._with_("Graphics : ");
+_st(_st(html)._strong())._with_("Graphics : ");
+_st(html)._br();
 $5=_st(html)._a();
-_st($5)._with_("Battle for Wesnoth");
-$6=_st($5)._href_("http://www.wesnoth.org/");
-return $6;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-_st(_st(html)._li())._with_("Thanks to :");
-_st(_st(html)._li())._with_((function(){
-return smalltalk.withContext(function($ctx4) {
+_st($5)._with_("Lusy Dolia");
+$6=_st($5)._href_("#");
+$6;
+_st(html)._br();
 $7=_st(html)._a();
-_st($7)._with_("Amber web framework");
-$8=_st($7)._href_("http://amber-lang.net/");
+_st($7)._with_("Battle for Wesnoth");
+$8=_st($7)._href_("http://www.wesnoth.org/");
 return $8;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._strong())._with_("Thanks to : ");
+_st(html)._br();
 $9=_st(html)._a();
-_st($9)._with_("Nicolas Petton (Amber core developer)");
-$10=_st($9)._href_("www.nicolas-petton.fr/");
-return $10;
+_st($9)._with_("Amber web framework");
+$10=_st($9)._href_("http://amber-lang.net/");
+$10;
+_st(html)._br();
+$11=_st(html)._a();
+_st($11)._with_("Nicolas Petton (Amber core developer)");
+$12=_st($11)._href_("www.nicolas-petton.fr/");
+return $12;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 return _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-$11=_st(html)._button();
-_st($11)._with_("> back <");
-$12=_st($11)._onClick_((function(){
+$13=_st(html)._button();
+_st($13)._with_("> back <");
+$14=_st($13)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._choosePlayers();
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $12;
+return $14;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "span", "a", "href:", "li", "button", "onClick:", "choosePlayers"]}),
+messageSends: ["contents:", "with:", "h1", "class:", "ul", "strong", "br", "a", "href:", "li", "button", "onClick:", "choosePlayers"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(

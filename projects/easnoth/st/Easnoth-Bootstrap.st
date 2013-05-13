@@ -196,21 +196,28 @@ credits
 					class: 'menu';
 					with: [
 						html li with: [
-							html span with: 'Core developer : '.
+							html strong with: 'Development : '.
+							html br.
 							html a 
 								with: 'Clément Béra';
 								href: 'http://clementbera.wordpress.com/' ].
 						html li with: [
-							html span with: 'Graphics : '.
+							html strong with: 'Graphics : '.
+							html br.
+							html a
+								with: 'Lusy Dolia';
+								href: '#'.
+							html br.
 							html a
 								with: 'Battle for Wesnoth';
 								href: 'http://www.wesnoth.org/' ].
-						html li with: 'Thanks to :'.
 						html li with: [
+							html strong with: 'Thanks to : '.
+							html br.
 							html a
 								with: 'Amber web framework';
-								href: 'http://amber-lang.net/' ].
-						html li with: [
+								href: 'http://amber-lang.net/'.
+							html br.
 							html a
 								with: 'Nicolas Petton (Amber core developer)';
 								href: 'www.nicolas-petton.fr/' ].
