@@ -9,11 +9,16 @@ function adjust(){
 	pageHeight = window.innerHeight;
 	pageWidth = window.innerWidth;
 	
-	
 	//adapt font according to screen size
 	document.body.style.fontSize = (Math.ceil((pageHeight+pageWidth)/100))+'px';
 	document.body.style.minfontSize = '12px';
 	document.body.style.maxfontSize = '60px';
+	
+	var glob = window.document.getElementById('global');
+	
+	if (pageHeight > 640) {
+		glob.style.marginTop = '' + (pageHeight - 640) / 2 + 'px';
+	}
 	
 }
 
