@@ -22,7 +22,7 @@ var self=this;
 function $CWLoadingBar(){return smalltalk.CWLoadingBar||(typeof CWLoadingBar=="undefined"?nil:CWLoadingBar)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("body")._asJQuery());
+self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("#global")._asJQuery());
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 self["@hasStarted"]=false;
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
@@ -594,7 +594,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._new())._appendToJQuery_(_st("body")._asJQuery());
+$1=_st(_st(self)._new())._appendToJQuery_(_st("#global")._asJQuery());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"start",{},smalltalk.CWStartMenu.klass)})},
 messageSends: ["appendToJQuery:", "asJQuery", "new"]}),

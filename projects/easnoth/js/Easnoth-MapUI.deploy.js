@@ -67,17 +67,27 @@ fn: function (anEvent){
 var self=this;
 var x,y,cood;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-x=_st(_st(anEvent)._pageX()).__minus(_st(_st(_st(self)._canvas())._element())._offsetLeft());
-y=_st(_st(anEvent)._pageY()).__minus(_st(_st(_st(self)._canvas())._element())._offsetTop());
+var $1,$2;
+$1=_st(_st(_st(jQuery)._at_("browser"))._at_("mozilla"))._notNil();
+if(smalltalk.assert($1)){
+x=_st(_st(_st(anEvent)._clientX()).__minus(_st(_st(anEvent)._target())._offsetLeft())).__minus(_st(_st(_st(anEvent)._target())._offsetParent())._offsetLeft());
+x;
+y=_st(_st(_st(anEvent)._clientY()).__minus(_st(_st(anEvent)._target())._offsetTop())).__minus(_st(_st(_st(anEvent)._target())._offsetParent())._offsetTop());
+y;
+} else {
+x=_st(anEvent)._offsetX();
+x;
+y=_st(anEvent)._offsetY();
+y;
+};
 cood=_st(self)._mouseCoodToHexCoodX_y_(x,y);
-$1=_st(self)._cellAt_y_ifAbsent_(_st(cood)._x(),_st(cood)._y(),(function(){
+$2=_st(self)._cellAt_y_ifAbsent_(_st(cood)._x(),_st(cood)._y(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return nil;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return $1;
+return $2;
 }, function($ctx1) {$ctx1.fill(self,"currentCell:",{anEvent:anEvent,x:x,y:y,cood:cood},smalltalk.CWEventDispatcher)})},
-messageSends: ["-", "offsetLeft", "element", "canvas", "pageX", "offsetTop", "pageY", "mouseCoodToHexCoodX:y:", "cellAt:y:ifAbsent:", "x", "y"]}),
+messageSends: ["ifTrue:ifFalse:", "-", "offsetLeft", "offsetParent", "target", "clientX", "offsetTop", "clientY", "offsetX", "offsetY", "notNil", "at:", "mouseCoodToHexCoodX:y:", "cellAt:y:ifAbsent:", "x", "y"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -131,6 +141,31 @@ smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "endGameEvent",
+fn: function (){
+var self=this;
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
+self["@map"]=nil;
+self["@map"];
+self["@drawer"]=nil;
+self["@drawer"];
+self["@game"]=nil;
+self["@game"];
+self["@currentCell"]=nil;
+self["@currentCell"];
+self["@canvas"]=nil;
+return self["@canvas"];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWEventDispatcher)})},
+messageSends: ["on:do:", "off:", "asJQuery", "element", "canvas", "announcer"]}),
+smalltalk.CWEventDispatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "eventManagerLayerId",
 fn: function (){
 var self=this;
@@ -160,7 +195,6 @@ smalltalk.method({
 selector: "initializeEventHandling",
 fn: function (){
 var self=this;
-function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._canvas())._onClick_((function(e){
 return smalltalk.withContext(function($ctx2) {
@@ -170,22 +204,9 @@ _st(_st(self)._canvas())._onMouseMove_((function(e){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._dispatchMouseMove_(e);
 }, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
-self["@map"]=nil;
-self["@map"];
-self["@drawer"]=nil;
-self["@drawer"];
-self["@game"]=nil;
-self["@game"];
-self["@currentCell"]=nil;
-self["@currentCell"];
-self["@canvas"]=nil;
-return self["@canvas"];
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(self)._endGameEvent();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWEventDispatcher)})},
-messageSends: ["onClick:", "dispatchMouseClick:", "canvas", "onMouseMove:", "dispatchMouseMove:", "on:do:", "off:", "asJQuery", "element", "announcer"]}),
+messageSends: ["onClick:", "dispatchMouseClick:", "canvas", "onMouseMove:", "dispatchMouseMove:", "endGameEvent"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -1131,7 +1152,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=(20);
+$1=(50);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.CWMapDrawer)})},
 messageSends: []}),
@@ -1282,7 +1303,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeCanvasLayers();
-_st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
+_st(self)._padding_(_st(_st(self)._canvasPadding()).__at((0)));
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMapDrawer)})},
 messageSends: ["initialize", "initializeCanvasLayers", "padding:", "@", "canvasPadding", "initializeEventHandling"]}),

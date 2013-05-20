@@ -29,12 +29,12 @@ var self=this;
 function $CWLoadingBar(){return smalltalk.CWLoadingBar||(typeof CWLoadingBar=="undefined"?nil:CWLoadingBar)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("body")._asJQuery());
+self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("#global")._asJQuery());
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 self["@hasStarted"]=false;
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings.\x0a\x09hasStarted := false.",
+source: "bootstrap: gameSettings\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: '#global' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings.\x0a\x09hasStarted := false.",
 messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"],
 referencedClasses: ["CWLoadingBar", "CWGame"]
 }),
@@ -743,11 +743,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._new())._appendToJQuery_(_st("body")._asJQuery());
+$1=_st(_st(self)._new())._appendToJQuery_(_st("#global")._asJQuery());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"start",{},smalltalk.CWStartMenu.klass)})},
 args: [],
-source: "start\x0a\x09^ self new appendToJQuery: 'body' asJQuery ",
+source: "start\x0a\x09^ self new appendToJQuery: '#global' asJQuery ",
 messageSends: ["appendToJQuery:", "asJQuery", "new"],
 referencedClasses: []
 }),

@@ -126,7 +126,7 @@ smalltalk.CWWidget);
 
 
 
-smalltalk.addClass('CWActionMenu', smalltalk.CWWidget, ['components'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWActionMenu', smalltalk.CWWidget, ['components', 'boxes'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addComponent:",
@@ -139,6 +139,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"addComponent:",{aClass:aClass},s
 args: ["aClass"],
 source: "addComponent: aClass\x0a\x09self components add: (self newChild: aClass)",
 messageSends: ["add:", "newChild:", "components"],
+referencedClasses: []
+}),
+smalltalk.CWActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "boxes",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@boxes"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"boxes",{},smalltalk.CWActionMenu)})},
+args: [],
+source: "boxes\x0a\x09^ boxes",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWActionMenu);
@@ -199,6 +217,23 @@ smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeBoxesWith:",
+category: 'initialize-release',
+fn: function (html){
+var self=this;
+function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+self["@boxes"]=_st($Dictionary())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeBoxesWith:",{html:html},smalltalk.CWActionMenu)})},
+args: ["html"],
+source: "initializeBoxesWith: html\x0a\x09boxes := Dictionary new.\x0a\x09\x22boxes \x0a\x09\x09at: 'top-left' \x0a\x09\x09put: (html div \x0a\x09\x09\x09style: 'position: absolute;\x0a\x09\x09\x09top: 90px;\x0a\x09\x09\x09left: 30px;\x0a\x09\x09\x09width: 290px;\x0a\x09\x09\x09height: 60px;\x0a\x09\x09\x09background: black;\x0a\x09\x09\x09border: 1px solid white;')\x22",
+messageSends: ["new"],
+referencedClasses: ["Dictionary"]
+}),
+smalltalk.CWActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeWithGame:",
 category: 'initialize-release',
 fn: function (aGame){
@@ -254,21 +289,28 @@ category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@boxes"];
+if(($receiver = $1) == nil || $receiver == undefined){
+_st(self)._initializeBoxesWith_(html);
+} else {
+$1;
+};
 _st(_st(self)._components())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._renderOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWActionMenu)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09self components do: [:each |\x0a\x09\x09each renderOn: html ].",
-messageSends: ["do:", "renderOn:", "components"],
+source: "renderOn: html\x0a\x09boxes ifNil: [ self initializeBoxesWith: html ].\x0a\x09self components do: [:each |\x0a\x09\x09each renderOn: html ].",
+messageSends: ["ifNil:", "initializeBoxesWith:", "do:", "renderOn:", "components"],
 referencedClasses: []
 }),
 smalltalk.CWActionMenu);
 
 
 
-smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, [], 'Easnoth-MapMenu');
+smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, ['boxes'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -408,7 +450,7 @@ self["@box"]=$2;
 _st(self)._firstLoad();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDices)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'dices';\x0a\x09\x09yourself).\x0a\x09self firstLoad",
+source: "renderOn: html\x0a\x09\x22(self parent boxes at: 'top-left') \x0a\x09\x09contents: [ :c |\x0a\x09\x09\x09box := c div \x0a\x09\x09\x09\x09class: 'dices';\x0a\x09\x09\x09\x09yourself\x0a\x09\x09].\x22\x0a\x09box := (html div \x0a\x09\x09class: 'dices';\x0a\x09\x09yourself).\x0a\x09self firstLoad",
 messageSends: ["class:", "div", "yourself", "firstLoad"],
 referencedClasses: []
 }),
@@ -809,7 +851,7 @@ url=_st(self)._url();
 _st(self)._animate_callBack_random_url_(dice,animationFinished,random,url);
 return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
 args: ["dice", "animationFinished"],
-source: "animate: dice callBack: animationFinished\x0a\x09\x22This method calls the jquery animation that is implemented in javascript\x0a\x09To refactor later\x22\x0a\x09\x0a\x09| random url |\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
+source: "animate: dice callBack: animationFinished\x0a\x09\x22This method calls the jquery animation that is implemented in javascript\x0a\x09To refactor later\x22\x0a\x09\x0a\x09\x22dice \x0a\x09animate: #{'border-spacing' -> -40 }\x0a    optons:  #{\x0a\x09\x09'step' -> [ :now ;fx |\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        ].\x0a        'duration' -> 200.\x0a        'easing' -> 'linear' }\x22\x0a\x09\x0a\x09| random url |\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
 messageSends: ["+", "atRandom", "url", "animate:callBack:random:url:"],
 referencedClasses: []
 }),
