@@ -36,7 +36,7 @@ startGame
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
-	loadingBar := CWLoadingBar new appendToJQuery: 'body' asJQuery.
+	loadingBar := CWLoadingBar new appendToJQuery: '#global' asJQuery.
 	CWGame new initializeWithSettings: gameSettings.
 	hasStarted := false.
 !
@@ -293,6 +293,6 @@ renderOn: html
 !CWStartMenu class methodsFor: 'not yet classified'!
 
 start
-	^ self new appendToJQuery: 'body' asJQuery
+	^ self new appendToJQuery: '#global' asJQuery
 ! !
 

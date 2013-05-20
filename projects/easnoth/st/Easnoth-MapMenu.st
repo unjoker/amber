@@ -39,13 +39,17 @@ isRoot
 ! !
 
 CWWidget subclass: #CWActionMenu
-	instanceVariableNames: 'components'
+	instanceVariableNames: 'components boxes'
 	package: 'Easnoth-MapMenu'!
 
 !CWActionMenu methodsFor: 'accessing'!
 
 addComponent: aClass
 	self components add: (self newChild: aClass)
+!
+
+boxes
+	^ boxes
 !
 
 children
@@ -69,6 +73,20 @@ initialize
 	components := Array new
 !
 
+initializeBoxesWith: html
+	boxes := Dictionary new.
+	"boxes 
+		at: 'top-left' 
+		put: (html div 
+			style: 'position: absolute;
+			top: 90px;
+			left: 30px;
+			width: 290px;
+			height: 60px;
+			background: black;
+			border: 1px solid white;')"
+!
+
 initializeWithGame: aGame
 	self subclassResponsibility
 ! !
@@ -76,6 +94,7 @@ initializeWithGame: aGame
 !CWActionMenu methodsFor: 'rendering'!
 
 renderOn: html
+	boxes ifNil: [ self initializeBoxesWith: html ].
 	self components do: [:each |
 		each renderOn: html ].
 ! !
@@ -87,7 +106,7 @@ isRoot
 ! !
 
 CWActionMenu subclass: #CWFightMenu
-	instanceVariableNames: ''
+	instanceVariableNames: 'boxes'
 	package: 'Easnoth-MapMenu'!
 
 !CWFightMenu methodsFor: 'accessing'!
@@ -146,6 +165,12 @@ initialize
 !
 
 renderOn: html
+	"(self parent boxes at: 'top-left') 
+		contents: [ :c |
+			box := c div 
+				class: 'dices';
+				yourself
+		]."
 	box := (html div 
 		class: 'dices';
 		yourself).
@@ -355,6 +380,15 @@ urlRoll
 animate: dice callBack: animationFinished
 	"This method calls the jquery animation that is implemented in javascript
 	To refactor later"
+	
+	"dice 
+	animate: #{'border-spacing' -> -40 }
+    optons:  #{
+		'step' -> [ :now ;fx |
+                                $(fx.elem).css('background-position', '1px '+now+'px');
+                        ].
+        'duration' -> 200.
+        'easing' -> 'linear' }"
 	
 	| random url |
 

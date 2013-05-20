@@ -89,19 +89,29 @@ fn: function (anEvent){
 var self=this;
 var x,y,cood;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-x=_st(_st(anEvent)._pageX()).__minus(_st(_st(_st(self)._canvas())._element())._offsetLeft());
-y=_st(_st(anEvent)._pageY()).__minus(_st(_st(_st(self)._canvas())._element())._offsetTop());
+var $1,$2;
+$1=_st(_st(_st(jQuery)._at_("browser"))._at_("mozilla"))._notNil();
+if(smalltalk.assert($1)){
+x=_st(_st(_st(anEvent)._clientX()).__minus(_st(_st(anEvent)._target())._offsetLeft())).__minus(_st(_st(_st(anEvent)._target())._offsetParent())._offsetLeft());
+x;
+y=_st(_st(_st(anEvent)._clientY()).__minus(_st(_st(anEvent)._target())._offsetTop())).__minus(_st(_st(_st(anEvent)._target())._offsetParent())._offsetTop());
+y;
+} else {
+x=_st(anEvent)._offsetX();
+x;
+y=_st(anEvent)._offsetY();
+y;
+};
 cood=_st(self)._mouseCoodToHexCoodX_y_(x,y);
-$1=_st(self)._cellAt_y_ifAbsent_(_st(cood)._x(),_st(cood)._y(),(function(){
+$2=_st(self)._cellAt_y_ifAbsent_(_st(cood)._x(),_st(cood)._y(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return nil;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return $1;
+return $2;
 }, function($ctx1) {$ctx1.fill(self,"currentCell:",{anEvent:anEvent,x:x,y:y,cood:cood},smalltalk.CWEventDispatcher)})},
 args: ["anEvent"],
-source: "currentCell: anEvent\x0a\x09|x y cood|\x0a\x09\x0a     x := anEvent pageX - self canvas element offsetLeft.\x0a     y := anEvent pageY - self canvas element offsetTop.\x0a\x0a     cood := self mouseCoodToHexCoodX: x y: y.\x0a\x09\x0a\x09\x22if out of map then nil\x22\x0a\x09^ self cellAt: cood x y: cood y ifAbsent: [ nil ]",
-messageSends: ["-", "offsetLeft", "element", "canvas", "pageX", "offsetTop", "pageY", "mouseCoodToHexCoodX:y:", "cellAt:y:ifAbsent:", "x", "y"],
+source: "currentCell: anEvent\x0a\x09|x y cood|\x0a\x09\x0a\x09((jQuery at: #browser) at: #mozilla) notNil\x0a\x09\x09ifTrue: [\x0a\x09\x09\x09x := anEvent clientX - anEvent target offsetLeft - anEvent target offsetParent offsetLeft.\x0a\x09\x09\x09y := anEvent clientY - anEvent target offsetTop - anEvent target offsetParent offsetTop ]\x0a\x09\x09ifFalse: [\x0a\x09\x09\x09x := anEvent offsetX.\x0a\x09\x09\x09y := anEvent offsetY ].\x0a\x09\x09\x0a     cood := self mouseCoodToHexCoodX: x y: y.\x0a\x09\x0a\x09\x22if out of map then nil\x22\x0a\x09^ self cellAt: cood x y: cood y ifAbsent: [ nil ]",
+messageSends: ["ifTrue:ifFalse:", "-", "offsetLeft", "offsetParent", "target", "clientX", "offsetTop", "clientY", "offsetX", "offsetY", "notNil", "at:", "mouseCoodToHexCoodX:y:", "cellAt:y:ifAbsent:", "x", "y"],
 referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
@@ -167,6 +177,36 @@ smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "endGameEvent",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
+self["@map"]=nil;
+self["@map"];
+self["@drawer"]=nil;
+self["@drawer"];
+self["@game"]=nil;
+self["@game"];
+self["@currentCell"]=nil;
+self["@currentCell"];
+self["@canvas"]=nil;
+return self["@canvas"];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWEventDispatcher)})},
+args: [],
+source: "endGameEvent\x0a\x09self announcer \x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ \x0a\x09\x09\x09\x22reinitialize eventHandling for new game\x22\x0a\x09\x09\x09self canvas element asJQuery off: 'mousemove'.\x0a\x09\x09\x09map := nil.\x0a\x09\x09\x09drawer := nil.\x0a\x09\x09\x09game := nil.\x0a\x09\x09\x09currentCell := nil.\x0a\x09\x09\x09canvas := nil ]",
+messageSends: ["on:do:", "off:", "asJQuery", "element", "canvas", "announcer"],
+referencedClasses: ["CWEndGameEvent"]
+}),
+smalltalk.CWEventDispatcher);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "eventManagerLayerId",
 category: 'accessing',
 fn: function (){
@@ -195,7 +235,7 @@ self["@suspended"]=false;
 self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09\x22canvas element style zIndex: 2000.\x22",
+source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).",
 messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"],
 referencedClasses: ["HTMLCanvas", "TagBrush"]
 }),
@@ -207,7 +247,6 @@ selector: "initializeEventHandling",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._canvas())._onClick_((function(e){
 return smalltalk.withContext(function($ctx2) {
@@ -217,25 +256,12 @@ _st(_st(self)._canvas())._onMouseMove_((function(e){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._dispatchMouseMove_(e);
 }, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
-self["@map"]=nil;
-self["@map"];
-self["@drawer"]=nil;
-self["@drawer"];
-self["@game"]=nil;
-self["@game"];
-self["@currentCell"]=nil;
-self["@currentCell"];
-self["@canvas"]=nil;
-return self["@canvas"];
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(self)._endGameEvent();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self canvas onClick: [:e | \x0a\x09\x09self dispatchMouseClick: e].\x0a\x09self canvas onMouseMove: [:e | \x0a\x09\x09self dispatchMouseMove: e].\x0a\x09self announcer \x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ \x0a\x09\x09\x09self canvas element asJQuery off: 'mousemove'.\x0a\x09\x09\x09map := nil.\x0a\x09\x09\x09drawer := nil.\x0a\x09\x09\x09game := nil.\x0a\x09\x09\x09currentCell := nil.\x0a\x09\x09\x09canvas := nil ]",
-messageSends: ["onClick:", "dispatchMouseClick:", "canvas", "onMouseMove:", "dispatchMouseMove:", "on:do:", "off:", "asJQuery", "element", "announcer"],
-referencedClasses: ["CWEndGameEvent"]
+source: "initializeEventHandling\x0a\x09self canvas onClick: [:e | \x0a\x09\x09self dispatchMouseClick: e].\x0a\x09self canvas onMouseMove: [:e | \x0a\x09\x09self dispatchMouseMove: e].\x0a\x09self endGameEvent.",
+messageSends: ["onClick:", "dispatchMouseClick:", "canvas", "onMouseMove:", "dispatchMouseMove:", "endGameEvent"],
+referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
 
@@ -1508,11 +1534,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=(20);
+$1=(50);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"canvasPadding",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "canvasPadding\x0a\x09\x22padding between the border of the web page and the map (left and top)\x22\x0a\x0a\x09^ 20",
+source: "canvasPadding\x0a\x09\x22padding between the border of the web page and the map (left and top)\x22\x0a\x0a\x09^ 50",
 messageSends: [],
 referencedClasses: []
 }),
@@ -1719,11 +1745,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWVisitor.fn.prototype._initialize.apply(_st(self), []);
 _st(self)._initializeCanvasLayers();
-_st(self)._padding_(_st(_st(self)._canvasPadding()).__at(_st(self)._canvasPadding()));
+_st(self)._padding_(_st(_st(self)._canvasPadding()).__at((0)));
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09self initializeCanvasLayers.\x0a\x09self padding: (self canvasPadding @ self canvasPadding).\x0a\x09self initializeEventHandling.",
+source: "initialize\x0a\x09super initialize. \x0a\x09self initializeCanvasLayers.\x0a\x09self padding: (self canvasPadding @ 0).\x0a\x09self initializeEventHandling.",
 messageSends: ["initialize", "initializeCanvasLayers", "padding:", "@", "canvasPadding", "initializeEventHandling"],
 referencedClasses: []
 }),
@@ -1744,7 +1770,7 @@ $2=_st($1)._yourself();
 self["@layers"]=$2;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeCanvasLayers",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "initializeCanvasLayers\x0a\x09layers := Array new\x0a\x09\x09at: 1 put: (self canvasLayerForId: self backgroundCanvasId);\x0a\x09\x09\x22at: 3 put: (self canvasLayerForId: self monsterCanvasId);\x22\x0a\x09\x09yourself.\x0a\x09\x09",
+source: "initializeCanvasLayers\x0a\x09layers := Array new\x0a\x09\x09at: 1 put: (self canvasLayerForId: self backgroundCanvasId);\x0a\x09\x09yourself.\x0a\x09\x09",
 messageSends: ["at:put:", "canvasLayerForId:", "backgroundCanvasId", "new", "yourself"],
 referencedClasses: ["Array"]
 }),

@@ -41,9 +41,14 @@ rowAt: index
 currentCell: anEvent
 	|x y cood|
 	
-     x := anEvent pageX - self canvas element offsetLeft.
-     y := anEvent pageY - self canvas element offsetTop.
-
+	((jQuery at: #browser) at: #mozilla) notNil
+		ifTrue: [
+			x := anEvent clientX - anEvent target offsetLeft - anEvent target offsetParent offsetLeft.
+			y := anEvent clientY - anEvent target offsetTop - anEvent target offsetParent offsetTop ]
+		ifFalse: [
+			x := anEvent offsetX.
+			y := anEvent offsetY ].
+		
      cood := self mouseCoodToHexCoodX: x y: y.
 	
 	"if out of map then nil"
@@ -143,11 +148,23 @@ dispatchMouseMove: event
 
 !CWEventDispatcher methodsFor: 'initialize-release'!
 
+endGameEvent
+	self announcer 
+		on: CWEndGameEvent
+		do: [ 
+			"reinitialize eventHandling for new game"
+			self canvas element asJQuery off: 'mousemove'.
+			map := nil.
+			drawer := nil.
+			game := nil.
+			currentCell := nil.
+			canvas := nil ]
+!
+
 initialize
 	super initialize. 
 	suspended := false.
 	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
-	"canvas element style zIndex: 2000."
 !
 
 initializeEventHandling
@@ -155,15 +172,7 @@ initializeEventHandling
 		self dispatchMouseClick: e].
 	self canvas onMouseMove: [:e | 
 		self dispatchMouseMove: e].
-	self announcer 
-		on: CWEndGameEvent
-		do: [ 
-			self canvas element asJQuery off: 'mousemove'.
-			map := nil.
-			drawer := nil.
-			game := nil.
-			currentCell := nil.
-			canvas := nil ]
+	self endGameEvent.
 !
 
 initializeForMap: aMap game: aGame
@@ -588,7 +597,7 @@ backgroundCanvasId
 canvasPadding
 	"padding between the border of the web page and the map (left and top)"
 
-	^ 20
+	^ 50
 !
 
 monsterCanvasId
@@ -636,14 +645,13 @@ newMonsterLayer
 initialize
 	super initialize. 
 	self initializeCanvasLayers.
-	self padding: (self canvasPadding @ self canvasPadding).
+	self padding: (self canvasPadding @ 0).
 	self initializeEventHandling.
 !
 
 initializeCanvasLayers
 	layers := Array new
 		at: 1 put: (self canvasLayerForId: self backgroundCanvasId);
-		"at: 3 put: (self canvasLayerForId: self monsterCanvasId);"
 		yourself.
 !
 

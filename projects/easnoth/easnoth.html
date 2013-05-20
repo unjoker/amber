@@ -8,7 +8,7 @@
 		<script type="text/javascript">
 			
 			loadAmber({
-			files: ['Easnoth-Announcements.js', 'Easnoth-Bootstrap', 'Easnoth-GameAndPlayers', 'Easnoth-GameStates', 'Easnoth-MapMenu', 'Easnoth-MapModel', 'Easnoth-MapUI', 'Easnoth-MonsterStrategies'],
+			files: ['Easnoth-Export','Easnoth-Announcements.js', 'Easnoth-Bootstrap', 'Easnoth-GameAndPlayers', 'Easnoth-GameStates', 'Easnoth-MapMenu', 'Easnoth-MapModel', 'Easnoth-MapUI', 'Easnoth-MonsterStrategies'],
 			prefix: 'projects/easnoth/js',
             ready: function() {smalltalk.CWStartMenu._start()},
 			deploy: true});
@@ -16,18 +16,14 @@
 		<title>Easnoth : Battle Arena</title>
 	</head>
 	<body class="editor"onload="adjust();"> 
-        <canvas id="background" width="1366" height="768"> 
-               Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
-        </canvas>
-		<div class='layer' id='got'>
+		<div id='global'>
+	        <canvas id="background" width="1136" height="640"> 
+	               Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
+	        </canvas>
+			<div class='layer' id='got'></div>
+			<div class='layer' id='monster'></div>
+	        <canvas id="eventManager" class="layer" width="1136" height="640"></canvas>
+			<div class="menuEditor" id="menuEditor"></div>
 		</div>
-        <canvas id="monster" class="layer" width="1366" height="768">
-            Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
-        </canvas>
-        <canvas id="eventManager" class="layer" width="1366" height="768">
-            Your browser does not support this content. Dowload Chrome, Firefox, IE 9+, Chrome plugin, ...
-        </canvas>
-		<div class="menuEditor" id="menuEditor">
-		</div>
-</body>
+	</body>
 </html>

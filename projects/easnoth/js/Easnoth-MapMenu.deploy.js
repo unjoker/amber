@@ -91,7 +91,7 @@ smalltalk.CWWidget);
 
 
 
-smalltalk.addClass('CWActionMenu', smalltalk.CWWidget, ['components'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWActionMenu', smalltalk.CWWidget, ['components', 'boxes'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addComponent:",
@@ -101,6 +101,19 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self)._components())._add_(_st(self)._newChild_(aClass));
 return self}, function($ctx1) {$ctx1.fill(self,"addComponent:",{aClass:aClass},smalltalk.CWActionMenu)})},
 messageSends: ["add:", "newChild:", "components"]}),
+smalltalk.CWActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "boxes",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@boxes"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"boxes",{},smalltalk.CWActionMenu)})},
+messageSends: []}),
 smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
@@ -144,6 +157,18 @@ smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeBoxesWith:",
+fn: function (html){
+var self=this;
+function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
+return smalltalk.withContext(function($ctx1) { 
+self["@boxes"]=_st($Dictionary())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeBoxesWith:",{html:html},smalltalk.CWActionMenu)})},
+messageSends: ["new"]}),
+smalltalk.CWActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "initializeWithGame:",
 fn: function (aGame){
 var self=this;
@@ -183,17 +208,24 @@ selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@boxes"];
+if(($receiver = $1) == nil || $receiver == undefined){
+_st(self)._initializeBoxesWith_(html);
+} else {
+$1;
+};
 _st(_st(self)._components())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._renderOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWActionMenu)})},
-messageSends: ["do:", "renderOn:", "components"]}),
+messageSends: ["ifNil:", "initializeBoxesWith:", "do:", "renderOn:", "components"]}),
 smalltalk.CWActionMenu);
 
 
 
-smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, [], 'Easnoth-MapMenu');
+smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, ['boxes'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
