@@ -131,7 +131,7 @@ renderOn: html
 ! !
 
 Widget subclass: #CWStartMenu
-	instanceVariableNames: 'box gameSettings'
+	instanceVariableNames: 'box subBox gameSettings'
 	package: 'Easnoth-Bootstrap'!
 !CWStartMenu commentStamp!
 Should implement the menu with multiplayer and stuff here!
@@ -147,8 +147,8 @@ startingMenuDict
 		at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];
 		at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];
 		at: 'Custom game' put: [ self choosePlayers ];
-		at: 'Network game' put: [window alert: 'for future use, click on custom game' ];
-		at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];
+		"at: 'Network game' put: [window alert: 'for future use, click on custom game' ];
+		at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];"
 		at: 'Credits' put: [ self credits ];
 		yourself
 ! !
@@ -190,10 +190,12 @@ armySelectBox: playerNumber on: html
 !
 
 credits
-	box contents: [ :html | 
-				html h1 with: 'Easnoth : Battle Arena'.
+	subBox 
+		contents: [ :html | 
 				html ul 
 					class: 'menu';
+					style: 'font-size: 16px;
+					margin-top: -0.5%';
 					with: [
 						html li with: [
 							html strong with: 'Development : '.
@@ -224,35 +226,31 @@ credits
 						html li with: [
 							html button
 								with: '> back <';
-								onClick: [ self choosePlayers ] ] ] ]
+								onClick: [ self menuOn: html with: self startingMenuDict. ] ] ] ]
 !
 
 menuOn: html with: dict
-	^ html div
-		class: 'intro';
-		with: [
-			html h1
-				with: 'Easnoth : Battle Arena'.
-			html ul 
-				class: 'menu';
-				with: [
-					dict keysAndValuesDo: [ :key :value |
-					html li
-						with: [ html a 
-							href: '#';
-							with: key; 
-							onClick: value ] ] ] ];
+	^ subBox
+				contents: [
+					html ul 
+						class: 'menu';
+						style: 'margin-top: 5%';
+						with: [
+							dict keysAndValuesDo: [ :key :value |
+							html li
+								with: [ html a 
+									href: '#';
+									with: key; 
+								onClick: value ] ] ] ];
 		yourself
 !
 
 playerMenu
 	| selectBox |
-	box contents: [ :html | 
-				html h1 with: 'Easnoth : Battle Arena'.
+	subBox contents: [ :html | 
 				html ul 
 					class: 'menu';
 					with: [
-						html li with: 'Humans or elves are recommended for AI'.
 						1 to: 2 do: [ :n |
 							self playerSelection: n on: html ].
 						html li with: [
@@ -287,7 +285,10 @@ playerSelection: playerNumber on: html
 !
 
 renderOn: html
-	box := self menuOn: html with: self startingMenuDict.
+	box := html div
+		class: 'intro';
+		with: [ subBox := html div class: 'introMenu' ].
+	self menuOn: html with: self startingMenuDict
 ! !
 
 !CWStartMenu class methodsFor: 'not yet classified'!
