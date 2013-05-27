@@ -349,7 +349,7 @@ smalltalk.CWLoadingBar);
 
 
 
-smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'gameSettings'], 'Easnoth-Bootstrap');
+smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'subBox', 'gameSettings'], 'Easnoth-Bootstrap');
 smalltalk.CWStartMenu.comment="Should implement the menu with multiplayer and stuff here"
 smalltalk.addMethod(
 smalltalk.method({
@@ -408,11 +408,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$2;
-_st(self["@box"])._contents_((function(html){
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
 $1=_st(html)._ul();
 _st($1)._class_("menu");
+_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 _st(_st(html)._li())._with_((function(){
@@ -458,7 +458,7 @@ $13=_st(html)._button();
 _st($13)._with_("> back <");
 $14=_st($13)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
-return _st(self)._choosePlayers();
+return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 return $14;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
@@ -467,8 +467,8 @@ return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "credits\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Development : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Clément Béra';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://clementbera.wordpress.com/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Graphics : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Lusy Dolia';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: '#'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Battle for Wesnoth';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.wesnoth.org/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Thanks to : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Amber web framework';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://amber-lang.net/'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Nicolas Petton (Amber core developer)';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'www.nicolas-petton.fr/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self choosePlayers ] ] ] ] ",
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "strong", "br", "a", "href:", "li", "button", "onClick:", "choosePlayers"],
+source: "credits\x0a\x09subBox \x0a\x09\x09contents: [ :html | \x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09style: 'font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Development : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Clément Béra';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://clementbera.wordpress.com/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Graphics : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Lusy Dolia';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: '#'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Battle for Wesnoth';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.wesnoth.org/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Thanks to : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Amber web framework';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://amber-lang.net/'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Nicolas Petton (Amber core developer)';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'www.nicolas-petton.fr/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self menuOn: html with: self startingMenuDict. ] ] ] ] ",
+messageSends: ["contents:", "class:", "ul", "style:", "with:", "strong", "br", "a", "href:", "li", "button", "onClick:", "menuOn:with:", "startingMenuDict"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -518,13 +518,12 @@ fn: function (html,dict){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$5,$6,$4,$7,$1;
-$2=_st(html)._div();
-_st($2)._class_("intro");
-_st($2)._with_((function(){
+$2=self["@subBox"];
+_st($2)._contents_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
 $3=_st(html)._ul();
 _st($3)._class_("menu");
+_st($3)._style_("margin-top: 5%");
 $4=_st($3)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(dict)._keysAndValuesDo_((function(key,value){
@@ -546,8 +545,8 @@ $1=$7;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"menuOn:with:",{html:html,dict:dict},smalltalk.CWStartMenu)})},
 args: ["html", "dict"],
-source: "menuOn: html with: dict\x0a\x09^ html div\x0a\x09\x09class: 'intro';\x0a\x09\x09with: [\x0a\x09\x09\x09html h1\x0a\x09\x09\x09\x09with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09html ul \x0a\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09dict keysAndValuesDo: [ :key :value |\x0a\x09\x09\x09\x09\x09html li\x0a\x09\x09\x09\x09\x09\x09with: [ html a \x0a\x09\x09\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09\x09\x09with: key; \x0a\x09\x09\x09\x09\x09\x09\x09onClick: value ] ] ] ];\x0a\x09\x09yourself",
-messageSends: ["class:", "div", "with:", "h1", "ul", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"],
+source: "menuOn: html with: dict\x0a\x09^ subBox\x0a\x09\x09\x09\x09contents: [\x0a\x09\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09\x09style: 'margin-top: 5%';\x0a\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09dict keysAndValuesDo: [ :key :value |\x0a\x09\x09\x09\x09\x09\x09\x09html li\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [ html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09with: key; \x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: value ] ] ] ];\x0a\x09\x09yourself",
+messageSends: ["contents:", "class:", "ul", "style:", "with:", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -561,14 +560,12 @@ var self=this;
 var selectBox;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$2;
-_st(self["@box"])._contents_((function(html){
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
 $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(_st(html)._li())._with_("Humans or elves are recommended for AI");
 _st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
 return _st(self)._playerSelection_on_(n,html);
@@ -588,8 +585,8 @@ return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: [],
-source: "playerMenu\x0a\x09| selectBox |\x0a\x09box contents: [ :html | \x0a\x09\x09\x09\x09html h1 with: 'Easnoth : Battle Arena'.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: 'Humans or elves are recommended for AI'.\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"],
+source: "playerMenu\x0a\x09| selectBox |\x0a\x09subBox contents: [ :html | \x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'start';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ] ] ",
+messageSends: ["contents:", "class:", "ul", "with:", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -661,11 +658,20 @@ category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@box"]=_st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
+var $1,$2;
+$1=_st(html)._div();
+_st($1)._class_("intro");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+self["@subBox"]=_st(_st(html)._div())._class_("introMenu");
+return self["@subBox"];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+self["@box"]=$2;
+_st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWStartMenu)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := self menuOn: html with: self startingMenuDict.",
-messageSends: ["menuOn:with:", "startingMenuDict"],
+source: "renderOn: html\x0a\x09box := html div\x0a\x09\x09class: 'intro';\x0a\x09\x09with: [ subBox := html div class: 'introMenu' ].\x0a\x09self menuOn: html with: self startingMenuDict",
+messageSends: ["class:", "div", "with:", "menuOn:with:", "startingMenuDict"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -711,14 +717,6 @@ _st($2)._at_put_("Custom game",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._choosePlayers();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st($2)._at_put_("Network game",(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use, click on custom game");
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st($2)._at_put_("Map Editor",(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use, click on custom game");
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._credits();
@@ -728,7 +726,7 @@ $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09at: 'Network game' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
+source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09\x22at: 'Network game' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x22\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
 messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"],
 referencedClasses: ["Dictionary"]
 }),

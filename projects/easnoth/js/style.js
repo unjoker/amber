@@ -4,21 +4,24 @@ function adjust(){
 
 	//page size
 	var pageHeight;
-	var pageWidth;
 	
 	pageHeight = window.innerHeight;
-	pageWidth = window.innerWidth;
 	
 	//adapt font according to screen size
-	document.body.style.fontSize = (Math.ceil((pageHeight+pageWidth)/100))+'px';
-	document.body.style.minfontSize = '12px';
-	document.body.style.maxfontSize = '60px';
+	document.body.style.fontSize = '20px';
 	
 	var glob = window.document.getElementById('global');
-	
+
 	if (pageHeight > 640) {
 		glob.style.marginTop = '' + (pageHeight - 640) / 2 + 'px';
-	}
-	
+		
+		/*var FIREFOX = /Firefox/i.test(navigator.userAgent);
+		var zoom = pageHeight / 640;
+		if (FIREFOX) {
+			glob.style.marginTop = '' + (pageHeight - 640) / 2 + 'px';
+		} else {
+			document.body.style.zoom = zoom;
+		}*/
+	}	
 }
 

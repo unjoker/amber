@@ -262,7 +262,7 @@ smalltalk.CWLoadingBar);
 
 
 
-smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'gameSettings'], 'Easnoth-Bootstrap');
+smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'subBox', 'gameSettings'], 'Easnoth-Bootstrap');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "armySelectBox:on:",
@@ -309,11 +309,11 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$2;
-_st(self["@box"])._contents_((function(html){
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
 $1=_st(html)._ul();
 _st($1)._class_("menu");
+_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 _st(_st(html)._li())._with_((function(){
@@ -359,7 +359,7 @@ $13=_st(html)._button();
 _st($13)._with_("> back <");
 $14=_st($13)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
-return _st(self)._choosePlayers();
+return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 return $14;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
@@ -367,7 +367,7 @@ return $14;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "strong", "br", "a", "href:", "li", "button", "onClick:", "choosePlayers"]}),
+messageSends: ["contents:", "class:", "ul", "style:", "with:", "strong", "br", "a", "href:", "li", "button", "onClick:", "menuOn:with:", "startingMenuDict"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -404,13 +404,12 @@ fn: function (html,dict){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$5,$6,$4,$7,$1;
-$2=_st(html)._div();
-_st($2)._class_("intro");
-_st($2)._with_((function(){
+$2=self["@subBox"];
+_st($2)._contents_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
 $3=_st(html)._ul();
 _st($3)._class_("menu");
+_st($3)._style_("margin-top: 5%");
 $4=_st($3)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(dict)._keysAndValuesDo_((function(key,value){
@@ -431,7 +430,7 @@ $7=_st($2)._yourself();
 $1=$7;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"menuOn:with:",{html:html,dict:dict},smalltalk.CWStartMenu)})},
-messageSends: ["class:", "div", "with:", "h1", "ul", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"]}),
+messageSends: ["contents:", "class:", "ul", "style:", "with:", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -442,14 +441,12 @@ var self=this;
 var selectBox;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$3,$4,$2;
-_st(self["@box"])._contents_((function(html){
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h1())._with_("Easnoth : Battle Arena");
 $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(_st(html)._li())._with_("Humans or elves are recommended for AI");
 _st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
 return _st(self)._playerSelection_on_(n,html);
@@ -468,7 +465,7 @@ return $4;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "with:", "h1", "class:", "ul", "li", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"]}),
+messageSends: ["contents:", "class:", "ul", "with:", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -527,9 +524,18 @@ selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@box"]=_st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
+var $1,$2;
+$1=_st(html)._div();
+_st($1)._class_("intro");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+self["@subBox"]=_st(_st(html)._div())._class_("introMenu");
+return self["@subBox"];
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+self["@box"]=$2;
+_st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWStartMenu)})},
-messageSends: ["menuOn:with:", "startingMenuDict"]}),
+messageSends: ["class:", "div", "with:", "menuOn:with:", "startingMenuDict"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -566,14 +572,6 @@ return _st(window)._alert_("for future use, click on custom game");
 _st($2)._at_put_("Custom game",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._choosePlayers();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st($2)._at_put_("Network game",(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use, click on custom game");
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st($2)._at_put_("Map Editor",(function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use, click on custom game");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
