@@ -90,6 +90,7 @@ isFree
 !
 
 mouseClick: aCell context: gameContext
+	gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].
 	aCell root 
 		showActiveMonsters;
 		updateGOTs
@@ -250,6 +251,10 @@ desactivate: aMonster
 	aMonster currentMove: 0
 !
 
+hasPlayed: aMonster
+	^ true
+!
+
 isInactive
 	^ false
 !
@@ -294,6 +299,10 @@ Monster can move and attack!
 
 checkForNextTurn: aMonster
 	"do nothing for now"
+!
+
+hasPlayed: aMonster
+	^ (aMonster currentMove = aMonster move) not
 !
 
 monster: aMonster attackTo: aCell inContext: gameContext
@@ -429,6 +438,7 @@ readyToPick: aMonster
 !
 
 select: aMonster inContext: gameContext
+	gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].
 	aMonster root 
 		showActiveMonsters;
 		updateGOTs.

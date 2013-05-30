@@ -3337,6 +3337,24 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasPlayed",
+category: 'state delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._hasPlayed_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasPlayed",{},smalltalk.CWMonster)})},
+args: [],
+source: "hasPlayed\x0a\x09^ self state hasPlayed: self",
+messageSends: ["hasPlayed:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "hp",
 category: 'accessing',
 fn: function (){

@@ -331,7 +331,7 @@ _st(_st(html)._strong())._with_("Graphics : ");
 _st(html)._br();
 $5=_st(html)._a();
 _st($5)._with_("Lusy Dolia");
-$6=_st($5)._href_("#");
+$6=_st($5)._href_("https://www.facebook.com/lusy.dolya");
 $6;
 _st(html)._br();
 $7=_st(html)._a();

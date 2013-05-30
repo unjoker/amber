@@ -2483,6 +2483,19 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasPlayed",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._state())._hasPlayed_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasPlayed",{},smalltalk.CWMonster)})},
+messageSends: ["hasPlayed:", "state"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "hp",
 fn: function (){
 var self=this;

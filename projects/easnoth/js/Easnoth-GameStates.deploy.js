@@ -199,12 +199,17 @@ selector: "mouseClick:context:",
 fn: function (aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(aCell)._root();
-_st($1)._showActiveMonsters();
-$2=_st($1)._updateGOTs();
+var $1,$2,$3,$4;
+$1=_st(gameContext)._shouldRestartTurn();
+if(smalltalk.assert($1)){
+$2=_st(gameContext)._restartTurn();
+return $2;
+};
+$3=_st(aCell)._root();
+_st($3)._showActiveMonsters();
+$4=_st($3)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
-messageSends: ["showActiveMonsters", "root", "updateGOTs"]}),
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs"]}),
 smalltalk.CWFree);
 
 smalltalk.addMethod(
@@ -573,6 +578,17 @@ smalltalk.CWMonsterState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasPlayed:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"hasPlayed:",{aMonster:aMonster},smalltalk.CWMonsterState)})},
+messageSends: []}),
+smalltalk.CWMonsterState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isInactive",
 fn: function (){
 var self=this;
@@ -678,6 +694,19 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMonster},smalltalk.CWActive)})},
 messageSends: []}),
+smalltalk.CWActive);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hasPlayed:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(aMonster)._currentMove()).__eq(_st(aMonster)._move()))._not();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasPlayed:",{aMonster:aMonster},smalltalk.CWActive)})},
+messageSends: ["not", "=", "move", "currentMove"]}),
 smalltalk.CWActive);
 
 smalltalk.addMethod(
@@ -962,13 +991,18 @@ selector: "select:inContext:",
 fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(aMonster)._root();
-_st($1)._showActiveMonsters();
-$2=_st($1)._updateGOTs();
+var $1,$2,$3,$4;
+$1=_st(gameContext)._shouldRestartTurn();
+if(smalltalk.assert($1)){
+$2=_st(gameContext)._restartTurn();
+return $2;
+};
+$3=_st(aMonster)._root();
+_st($3)._showActiveMonsters();
+$4=_st($3)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
-messageSends: ["showActiveMonsters", "root", "updateGOTs", "currentMonster:"]}),
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs", "currentMonster:"]}),
 smalltalk.CWInactive);
 
 smalltalk.addMethod(
