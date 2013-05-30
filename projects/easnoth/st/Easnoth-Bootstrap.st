@@ -144,7 +144,7 @@ defaultPlayer
 
 startingMenuDict
 	^ Dictionary new
-		at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];
+		at: 'Tutorial' put: [ self tutorial ];
 		at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];
 		at: 'Custom game' put: [ self choosePlayers ];
 		"at: 'Network game' put: [window alert: 'for future use, click on custom game' ];
@@ -289,6 +289,22 @@ renderOn: html
 		class: 'intro';
 		with: [ subBox := html div class: 'introMenu' ].
 	self menuOn: html with: self startingMenuDict
+!
+
+tutorial
+	box asJQuery css: 'background-image' value: 'url(ressources/images/coverempty.jpg)'.
+	subBox 
+		contents: [ :html | 
+				html ul 
+					class: 'menu';
+					style: 'font-size: 16px;
+					margin-top: -0.5%';
+					with: [
+							html button
+								with: '> back <';
+								onClick: [ 
+								box asJQuery css: 'background-image' value: 'url(ressources/images/covergame.jpg)'.
+								self menuOn: html with: self startingMenuDict. ] ] ]
 ! !
 
 !CWStartMenu class methodsFor: 'not yet classified'!

@@ -563,7 +563,7 @@ var $2,$3,$1;
 $2=_st($Dictionary())._new();
 _st($2)._at_put_("Tutorial",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use, click on custom game");
+return _st(self)._tutorial();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Campaign",(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -581,7 +581,37 @@ $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
-messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"]}),
+messageSends: ["at:put:", "tutorial", "new", "alert:", "choosePlayers", "credits", "yourself"]}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "tutorial",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$2;
+_st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/coverempty.jpg)");
+_st(self["@subBox"])._contents_((function(html){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(html)._ul();
+_st($1)._class_("menu");
+_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+$3=_st(html)._button();
+_st($3)._with_("> back <");
+$4=_st($3)._onClick_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/covergame.jpg)");
+return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+return $4;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"tutorial",{},smalltalk.CWStartMenu)})},
+messageSends: ["css:value:", "asJQuery", "contents:", "class:", "ul", "style:", "with:", "button", "onClick:", "menuOn:with:", "startingMenuDict"]}),
 smalltalk.CWStartMenu);
 
 
