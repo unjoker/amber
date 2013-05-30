@@ -276,14 +276,19 @@ category: 'cell state API',
 fn: function (aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(aCell)._root();
-_st($1)._showActiveMonsters();
-$2=_st($1)._updateGOTs();
+var $1,$2,$3,$4;
+$1=_st(gameContext)._shouldRestartTurn();
+if(smalltalk.assert($1)){
+$2=_st(gameContext)._restartTurn();
+return $2;
+};
+$3=_st(aCell)._root();
+_st($3)._showActiveMonsters();
+$4=_st($3)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
 args: ["aCell", "gameContext"],
-source: "mouseClick: aCell context: gameContext\x0a\x09aCell root \x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs",
-messageSends: ["showActiveMonsters", "root", "updateGOTs"],
+source: "mouseClick: aCell context: gameContext\x0a\x09gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].\x0a\x09aCell root \x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs",
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWFree);
@@ -807,6 +812,22 @@ smalltalk.CWMonsterState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "hasPlayed:",
+category: 'monster state API',
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"hasPlayed:",{aMonster:aMonster},smalltalk.CWMonsterState)})},
+args: ["aMonster"],
+source: "hasPlayed: aMonster\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonsterState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isInactive",
 category: 'monster state API',
 fn: function (){
@@ -956,6 +977,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn:",{aMonster:aMo
 args: ["aMonster"],
 source: "checkForNextTurn: aMonster\x0a\x09\x22do nothing for now\x22",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWActive);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hasPlayed:",
+category: 'monster state API',
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(aMonster)._currentMove()).__eq(_st(aMonster)._move()))._not();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasPlayed:",{aMonster:aMonster},smalltalk.CWActive)})},
+args: ["aMonster"],
+source: "hasPlayed: aMonster\x0a\x09^ (aMonster currentMove = aMonster move) not",
+messageSends: ["not", "=", "move", "currentMove"],
 referencedClasses: []
 }),
 smalltalk.CWActive);
@@ -1356,15 +1395,20 @@ category: 'monster state API',
 fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(aMonster)._root();
-_st($1)._showActiveMonsters();
-$2=_st($1)._updateGOTs();
+var $1,$2,$3,$4;
+$1=_st(gameContext)._shouldRestartTurn();
+if(smalltalk.assert($1)){
+$2=_st(gameContext)._restartTurn();
+return $2;
+};
+$3=_st(aMonster)._root();
+_st($3)._showActiveMonsters();
+$4=_st($3)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster root \x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs.\x0a\x09gameContext currentMonster: aMonster.",
-messageSends: ["showActiveMonsters", "root", "updateGOTs", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].\x0a\x09aMonster root \x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs.\x0a\x09gameContext currentMonster: aMonster.",
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWInactive);

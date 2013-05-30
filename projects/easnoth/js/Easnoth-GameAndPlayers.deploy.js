@@ -347,6 +347,43 @@ return self}, function($ctx1) {$ctx1.fill(self,"relatedCell:",{aCell:aCell},smal
 messageSends: []}),
 smalltalk.CWGameContext);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "restartTurn",
+fn: function (){
+var self=this;
+var map;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+map=_st(_st(self)._currentCell())._root();
+$1=_st(self)._currentPlayer();
+_st($1)._endTurn_(map);
+$2=_st($1)._startTurn_(map);
+return self}, function($ctx1) {$ctx1.fill(self,"restartTurn",{map:map},smalltalk.CWGameContext)})},
+messageSends: ["root", "currentCell", "endTurn:", "currentPlayer", "startTurn:"]}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "shouldRestartTurn",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(self)._currentMonster();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var monster;
+monster=$receiver;
+$2=_st(_st(monster)._hasPlayed())._not();
+return $2;
+};
+return false;
+}, function($ctx1) {$ctx1.fill(self,"shouldRestartTurn",{},smalltalk.CWGameContext)})},
+messageSends: ["ifNotNil:", "not", "hasPlayed", "currentMonster"]}),
+smalltalk.CWGameContext);
+
 
 
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-GameAndPlayers');

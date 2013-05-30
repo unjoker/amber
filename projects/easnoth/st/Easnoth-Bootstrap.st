@@ -208,7 +208,7 @@ credits
 							html br.
 							html a
 								with: 'Lusy Dolia';
-								href: '#'.
+								href: 'https://www.facebook.com/lusy.dolya'.
 							html br.
 							html a
 								with: 'Battle for Wesnoth';

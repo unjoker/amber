@@ -469,6 +469,53 @@ referencedClasses: []
 }),
 smalltalk.CWGameContext);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "restartTurn",
+category: 'game logic',
+fn: function (){
+var self=this;
+var map;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+map=_st(_st(self)._currentCell())._root();
+$1=_st(self)._currentPlayer();
+_st($1)._endTurn_(map);
+$2=_st($1)._startTurn_(map);
+return self}, function($ctx1) {$ctx1.fill(self,"restartTurn",{map:map},smalltalk.CWGameContext)})},
+args: [],
+source: "restartTurn\x0a\x09| map |\x0a\x09map := self currentCell root.\x0a\x09self currentPlayer\x0a\x09\x09endTurn: map;\x0a\x09\x09startTurn: map.",
+messageSends: ["root", "currentCell", "endTurn:", "currentPlayer", "startTurn:"],
+referencedClasses: []
+}),
+smalltalk.CWGameContext);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "shouldRestartTurn",
+category: 'game logic',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(self)._currentMonster();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var monster;
+monster=$receiver;
+$2=_st(_st(monster)._hasPlayed())._not();
+return $2;
+};
+return false;
+}, function($ctx1) {$ctx1.fill(self,"shouldRestartTurn",{},smalltalk.CWGameContext)})},
+args: [],
+source: "shouldRestartTurn\x0a\x09self currentMonster ifNotNil: [ :monster | ^ monster hasPlayed not ].\x0a\x09^ false",
+messageSends: ["ifNotNil:", "not", "hasPlayed", "currentMonster"],
+referencedClasses: []
+}),
+smalltalk.CWGameContext);
+
 
 
 smalltalk.addClass('CWPlayer', smalltalk.Object, ['side', 'team'], 'Easnoth-GameAndPlayers');

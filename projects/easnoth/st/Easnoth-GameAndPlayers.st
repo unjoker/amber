@@ -152,6 +152,19 @@ relatedCell: aCell
 nextTurn: nextPlayer
 	currentPlayer := nextPlayer.
 	currentCell := nil
+!
+
+restartTurn
+	| map |
+	map := self currentCell root.
+	self currentPlayer
+		endTurn: map;
+		startTurn: map.
+!
+
+shouldRestartTurn
+	self currentMonster ifNotNil: [ :monster | ^ monster hasPlayed not ].
+	^ false
 ! !
 
 Object subclass: #CWPlayer

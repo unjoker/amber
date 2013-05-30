@@ -1277,6 +1277,10 @@ desactivateMonsters
 	self state desactivate: self
 !
 
+hasPlayed
+	^ self state hasPlayed: self
+!
+
 isInactive
 	^ self state isInactive
 !
