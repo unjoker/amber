@@ -707,7 +707,7 @@ var $2,$3,$1;
 $2=_st($Dictionary())._new();
 _st($2)._at_put_("Tutorial",(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(window)._alert_("for future use, click on custom game");
+return _st(self)._tutorial();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Campaign",(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -726,9 +726,44 @@ $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09\x22at: 'Network game' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x22\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
-messageSends: ["at:put:", "alert:", "new", "choosePlayers", "credits", "yourself"],
+source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [ self tutorial ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09\x22at: 'Network game' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x22\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
+messageSends: ["at:put:", "tutorial", "new", "alert:", "choosePlayers", "credits", "yourself"],
 referencedClasses: ["Dictionary"]
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "tutorial",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$2;
+_st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/coverempty.jpg)");
+_st(self["@subBox"])._contents_((function(html){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(html)._ul();
+_st($1)._class_("menu");
+_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+$3=_st(html)._button();
+_st($3)._with_("> back <");
+$4=_st($3)._onClick_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/covergame.jpg)");
+return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+return $4;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"tutorial",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "tutorial\x0a\x09box asJQuery css: 'background-image' value: 'url(ressources/images/coverempty.jpg)'.\x0a\x09subBox \x0a\x09\x09contents: [ :html | \x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09style: 'font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ \x0a\x09\x09\x09\x09\x09\x09\x09\x09box asJQuery css: 'background-image' value: 'url(ressources/images/covergame.jpg)'.\x0a\x09\x09\x09\x09\x09\x09\x09\x09self menuOn: html with: self startingMenuDict. ] ] ] ",
+messageSends: ["css:value:", "asJQuery", "contents:", "class:", "ul", "style:", "with:", "button", "onClick:", "menuOn:with:", "startingMenuDict"],
+referencedClasses: []
 }),
 smalltalk.CWStartMenu);
 
