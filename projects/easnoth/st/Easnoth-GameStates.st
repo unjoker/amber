@@ -29,6 +29,10 @@ cell: aCell canBeAttackedBy: side
 	^ false
 !
 
+darken: cell
+	"do nothing"
+!
+
 isFree
 	^ false
 !
@@ -118,6 +122,10 @@ addSelector: aCell
 
 cell: aCell addMonster: aMonster
 	self error: 'cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)'.
+!
+
+darken: aCell
+	aCell gameOverTile darken
 !
 
 isFree

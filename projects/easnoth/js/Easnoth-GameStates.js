@@ -78,6 +78,21 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "darken:",
+category: 'cell state API',
+fn: function (cell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"darken:",{cell:cell},smalltalk.CWCellState)})},
+args: ["cell"],
+source: "darken: cell\x0a\x09\x22do nothing\x22",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isFree",
 category: 'cell state API',
 fn: function (){
@@ -356,6 +371,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"cell:addMonster:",{aCell:aCell,a
 args: ["aCell", "aMonster"],
 source: "cell: aCell addMonster: aMonster\x0a\x09self error: 'cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)'.",
 messageSends: ["error:"],
+referencedClasses: []
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "darken:",
+category: 'cell state API',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aCell)._gameOverTile())._darken();
+return self}, function($ctx1) {$ctx1.fill(self,"darken:",{aCell:aCell},smalltalk.CWFreeSelected)})},
+args: ["aCell"],
+source: "darken: aCell\x0a\x09aCell gameOverTile darken",
+messageSends: ["darken", "gameOverTile"],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
