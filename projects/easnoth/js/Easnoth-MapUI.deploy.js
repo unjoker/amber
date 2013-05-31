@@ -636,8 +636,12 @@ selector: "clean",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self["@array"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._src_(_st(self["@invis"])._src());
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWGOTLayer)})},
-messageSends: []}),
+messageSends: ["do:", "src:", "src"]}),
 smalltalk.CWGOTLayer);
 
 smalltalk.addMethod(
@@ -1572,11 +1576,10 @@ selector: "updateGOTs",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._gotLayer())._clean();
 self["@executionContext"]=_st(self)._newGOTDrawingContext();
 _st(self)._visitTree_(self["@map"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMapDrawer)})},
-messageSends: ["clean", "gotLayer", "newGOTDrawingContext", "visitTree:"]}),
+messageSends: ["newGOTDrawingContext", "visitTree:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1598,12 +1601,11 @@ selector: "updateMonstersAndGOTs",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._gotLayer())._clean();
 _st(_st(self)._monsterLayer())._clean();
 self["@executionContext"]=_st(self)._newMonsterAndGOTDrawingContext();
 _st(self)._visitTree_(self["@map"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMapDrawer)})},
-messageSends: ["clean", "gotLayer", "monsterLayer", "newMonsterAndGOTDrawingContext", "visitTree:"]}),
+messageSends: ["clean", "monsterLayer", "newMonsterAndGOTDrawingContext", "visitTree:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
