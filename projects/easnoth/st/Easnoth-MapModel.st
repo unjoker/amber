@@ -264,6 +264,19 @@ attackableNeighboursForMonster: aMonster
 	^ attackableCells asSet
 !
 
+attackableNeighboursForMonsterNoUnmark: aMonster
+	
+	| attackableCells tempCells |
+	
+	attackableCells := Array new.
+	tempCells := self movableNeighboursCycleNoUnmark: aMonster range - 1.
+	
+	tempCells do: [ :each |
+		attackableCells addAll: (each attackableNeighboursFrom: aMonster side) ].
+
+	^ attackableCells asSet
+!
+
 attackableNeighboursFrom: side
 	|attackableCells|
 	attackableCells := self neighbours select: [ :each | 
@@ -288,6 +301,21 @@ movableNeighboursCycle: cycleNumber
 	| movableCells tempSet |
 	
 	self root unmark.
+	
+	tempSet := Array new.
+	
+	movableCells := { self } asSet.
+	1 to: cycleNumber do: [ :i |
+		tempSet reset.
+		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
+		movableCells addAll: tempSet].
+	
+	^ movableCells
+!
+
+movableNeighboursCycleNoUnmark: cycleNumber
+	| movableCells tempSet |
+	
 	tempSet := Array new.
 	
 	movableCells := { self } asSet.
@@ -303,13 +331,45 @@ neighbours
 	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
 !
 
+selectableNeighboursForMonster2: aMonster
+	"try to optimize here"
+	| movableCells newMovableCells attackableCells tempSet cycleNumber |
+	
+	self root unmark.
+	self mark.
+	
+	tempSet := Array new.
+	attackableCells := Array new.
+	movableCells := Array new.
+	cycleNumber := aMonster range + aMonster currentMove.
+	
+	newMovableCells := { self }.
+	1 to: cycleNumber do: [ :i |
+		tempSet reset.
+		newMovableCells do: [ :each | 
+			each neighbours do: [ :neigh | 
+				neigh isMarked 
+					ifFalse: [
+						neigh mark.
+						neigh prevCell: each.
+						neigh isFree ifTrue: [ tempSet add: neigh ].
+						(neigh canBeAttackedBy: aMonster side) ifTrue: [ attackableCells add: neigh ]] ] ].
+		i = 1 | (i - 1 > aMonster currentMove) ifFalse: [
+			movableCells addAll: newMovableCells].
+		newMovableCells reset.
+		newMovableCells addAll: tempSet].
+	
+	 movableCells addAll: attackableCells.
+	 ^ movableCells
+!
+
 selectableNeighboursForMonster: aMonster
 	| selectableCells tempSet |
 
 	selectableCells := self movableNeighboursCycle: aMonster currentMove.
 
 	 tempSet := Array new.
-	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonster: aMonster) ].
+	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonsterNoUnmark: aMonster) ].
 	 selectableCells addAll: tempSet.
 	 ^ selectableCells remove: self
 ! !
@@ -338,8 +398,7 @@ cellToMoveBeforeAttack: cellLast context: gameContext
 
 cellToMoveBeforeRangeAttack: cellLast
 	| possibleCells closestCell shortestPath |
-	"hacky for now ..."
-	self movableNeighboursCycle: self monster range + self monster currentMove. "create fake tracks to ennemy"
+	
 	possibleCells := cellLast neighbours select: [:each | each isMarked ].
 	shortestPath := 9999.
 	possibleCells do: [ :each | 
@@ -1233,12 +1292,9 @@ printOn: aStream
 !CWMonster methodsFor: 'selection'!
 
 addSelectorsTo: cells
-	
+
 	self root removeSelection.
 	cells do: [:each | each addSelector ].
-	
-	"HACKY, to recalcul prevCell, need true pathfinding for this to be fine"
-	self parent movableNeighboursCycle: self currentMove.
 	
 	^ cells
 !
@@ -1249,7 +1305,7 @@ attackableTargets
 !
 
 selectActionCells
-	^ self addSelectorsTo: (self parent selectableNeighboursForMonster: self).
+	^ self addSelectorsTo: (self parent selectableNeighboursForMonster2: self).
 !
 
 selectAttackableCells
