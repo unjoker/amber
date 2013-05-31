@@ -361,7 +361,8 @@ initialize
 !CWGOTLayer methodsFor: 'rendering'!
 
 clean
-	"do nothing"
+	array do: [:each |
+	    each src: invis src ]
 !
 
 drawGOT: got point: point
@@ -719,7 +720,6 @@ clean
 !
 
 updateGOTs
-	self gotLayer clean.
 	executionContext := self newGOTDrawingContext.
 	self visitTree: map.
 !
@@ -731,7 +731,6 @@ updateMap
 !
 
 updateMonstersAndGOTs
-	self gotLayer clean.
 	self monsterLayer clean.
 	executionContext := self newMonsterAndGOTDrawingContext.
 	self visitTree: map.

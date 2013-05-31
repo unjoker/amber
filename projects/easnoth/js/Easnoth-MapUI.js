@@ -841,10 +841,14 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self["@array"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._src_(_st(self["@invis"])._src());
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWGOTLayer)})},
 args: [],
-source: "clean\x0a\x09\x22do nothing\x22",
-messageSends: [],
+source: "clean\x0a\x09array do: [:each |\x0a\x09    each src: invis src ]",
+messageSends: ["do:", "src:", "src"],
 referencedClasses: []
 }),
 smalltalk.CWGOTLayer);
@@ -2114,13 +2118,12 @@ category: 'public',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._gotLayer())._clean();
 self["@executionContext"]=_st(self)._newGOTDrawingContext();
 _st(self)._visitTree_(self["@map"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "updateGOTs\x0a\x09self gotLayer clean.\x0a\x09executionContext := self newGOTDrawingContext.\x0a\x09self visitTree: map.",
-messageSends: ["clean", "gotLayer", "newGOTDrawingContext", "visitTree:"],
+source: "updateGOTs\x0a\x09executionContext := self newGOTDrawingContext.\x0a\x09self visitTree: map.",
+messageSends: ["newGOTDrawingContext", "visitTree:"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);
@@ -2150,14 +2153,13 @@ category: 'public',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._gotLayer())._clean();
 _st(_st(self)._monsterLayer())._clean();
 self["@executionContext"]=_st(self)._newMonsterAndGOTDrawingContext();
 _st(self)._visitTree_(self["@map"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "updateMonstersAndGOTs\x0a\x09self gotLayer clean.\x0a\x09self monsterLayer clean.\x0a\x09executionContext := self newMonsterAndGOTDrawingContext.\x0a\x09self visitTree: map.",
-messageSends: ["clean", "gotLayer", "monsterLayer", "newMonsterAndGOTDrawingContext", "visitTree:"],
+source: "updateMonstersAndGOTs\x0a\x09self monsterLayer clean.\x0a\x09executionContext := self newMonsterAndGOTDrawingContext.\x0a\x09self visitTree: map.",
+messageSends: ["clean", "monsterLayer", "newMonsterAndGOTDrawingContext", "visitTree:"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);

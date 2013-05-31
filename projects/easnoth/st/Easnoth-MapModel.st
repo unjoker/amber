@@ -291,7 +291,7 @@ movableNeighboursCycle: cycleNumber
 	
 	movableCells := { self } asSet.
 	1 to: cycleNumber do: [ :i |
-		tempSet := Set new.
+		tempSet := Array new.
 		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
 		movableCells addAll: tempSet].
 	
@@ -682,7 +682,7 @@ neighboursOf: aCell
 	"Here we give a Set to simplify game logic later (no twice the cell in the set)"
 
 	| cellIndex neighbours |
-	neighbours := Set new.
+	neighbours := Array new.
 	cellIndex := self cells indexOf: aCell.
 	cellIndex = 1 
 		ifFalse: [ self childAt: cellIndex - 1 ifPresent: [ :child | neighbours add: child ] ].

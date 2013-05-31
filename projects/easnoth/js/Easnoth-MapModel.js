@@ -1096,14 +1096,14 @@ category: 'neighbourhood',
 fn: function (cycleNumber){
 var self=this;
 var movableCells,tempSet;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 _st(_st(self)._root())._unmark();
 movableCells=_st([self])._asSet();
 _st((1))._to_do_(cycleNumber,(function(i){
 return smalltalk.withContext(function($ctx2) {
-tempSet=_st($Set())._new();
+tempSet=_st($Array())._new();
 tempSet;
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx3) {
@@ -1115,9 +1115,9 @@ $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighboursCycle:",{cycleNumber:cycleNumber,movableCells:movableCells,tempSet:tempSet},smalltalk.CWCell)})},
 args: ["cycleNumber"],
-source: "movableNeighboursCycle: cycleNumber\x0a\x09| movableCells tempSet |\x0a\x09\x0a\x09self root unmark.\x0a\x09\x0a\x09movableCells := { self } asSet.\x0a\x091 to: cycleNumber do: [ :i |\x0a\x09\x09tempSet := Set new.\x0a\x09\x09movableCells do: [ :each | tempSet addAll: each movableNeighbours ].\x0a\x09\x09movableCells addAll: tempSet].\x0a\x09\x0a\x09^ movableCells",
+source: "movableNeighboursCycle: cycleNumber\x0a\x09| movableCells tempSet |\x0a\x09\x0a\x09self root unmark.\x0a\x09\x0a\x09movableCells := { self } asSet.\x0a\x091 to: cycleNumber do: [ :i |\x0a\x09\x09tempSet := Array new.\x0a\x09\x09movableCells do: [ :each | tempSet addAll: each movableNeighbours ].\x0a\x09\x09movableCells addAll: tempSet].\x0a\x09\x0a\x09^ movableCells",
 messageSends: ["unmark", "root", "asSet", "to:do:", "new", "do:", "addAll:", "movableNeighbours"],
-referencedClasses: ["Set"]
+referencedClasses: ["Array"]
 }),
 smalltalk.CWCell);
 
@@ -2060,10 +2060,10 @@ category: 'neighbours',
 fn: function (aCell){
 var self=this;
 var cellIndex,neighbours;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3;
-neighbours=_st($Set())._new();
+neighbours=_st($Array())._new();
 cellIndex=_st(_st(self)._cells())._indexOf_(aCell);
 $1=_st(cellIndex).__eq((1));
 if(! smalltalk.assert($1)){
@@ -2084,9 +2084,9 @@ $3=neighbours;
 return $3;
 }, function($ctx1) {$ctx1.fill(self,"neighboursOf:",{aCell:aCell,cellIndex:cellIndex,neighbours:neighbours},smalltalk.CWRow)})},
 args: ["aCell"],
-source: "neighboursOf: aCell\x0a\x09\x22Here we give a Set to simplify game logic later (no twice the cell in the set)\x22\x0a\x0a\x09| cellIndex neighbours |\x0a\x09neighbours := Set new.\x0a\x09cellIndex := self cells indexOf: aCell.\x0a\x09cellIndex = 1 \x0a\x09\x09ifFalse: [ self childAt: cellIndex - 1 ifPresent: [ :child | neighbours add: child ] ].\x0a\x09cellIndex = self cells size \x0a\x09\x09ifFalse: [ self childAt: cellIndex + 1  ifPresent: [ :child | neighbours add: child ] ].\x0a\x09neighbours addAll: (self parent neighboursOf: self cellIndex: cellIndex).\x0a\x09^ neighbours",
+source: "neighboursOf: aCell\x0a\x09\x22Here we give a Set to simplify game logic later (no twice the cell in the set)\x22\x0a\x0a\x09| cellIndex neighbours |\x0a\x09neighbours := Array new.\x0a\x09cellIndex := self cells indexOf: aCell.\x0a\x09cellIndex = 1 \x0a\x09\x09ifFalse: [ self childAt: cellIndex - 1 ifPresent: [ :child | neighbours add: child ] ].\x0a\x09cellIndex = self cells size \x0a\x09\x09ifFalse: [ self childAt: cellIndex + 1  ifPresent: [ :child | neighbours add: child ] ].\x0a\x09neighbours addAll: (self parent neighboursOf: self cellIndex: cellIndex).\x0a\x09^ neighbours",
 messageSends: ["new", "indexOf:", "cells", "ifFalse:", "childAt:ifPresent:", "-", "add:", "=", "+", "size", "addAll:", "neighboursOf:cellIndex:", "parent"],
-referencedClasses: ["Set"]
+referencedClasses: ["Array"]
 }),
 smalltalk.CWRow);
 

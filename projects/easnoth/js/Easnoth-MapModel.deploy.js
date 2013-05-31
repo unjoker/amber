@@ -818,14 +818,14 @@ selector: "movableNeighboursCycle:",
 fn: function (cycleNumber){
 var self=this;
 var movableCells,tempSet;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 _st(_st(self)._root())._unmark();
 movableCells=_st([self])._asSet();
 _st((1))._to_do_(cycleNumber,(function(i){
 return smalltalk.withContext(function($ctx2) {
-tempSet=_st($Set())._new();
+tempSet=_st($Array())._new();
 tempSet;
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx3) {
@@ -1539,10 +1539,10 @@ selector: "neighboursOf:",
 fn: function (aCell){
 var self=this;
 var cellIndex,neighbours;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3;
-neighbours=_st($Set())._new();
+neighbours=_st($Array())._new();
 cellIndex=_st(_st(self)._cells())._indexOf_(aCell);
 $1=_st(cellIndex).__eq((1));
 if(! smalltalk.assert($1)){
