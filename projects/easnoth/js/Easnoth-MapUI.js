@@ -1764,14 +1764,14 @@ var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-$1=_st($Array())._new();
+$1=_st($Array())._new_((3));
 _st($1)._at_put_((1),_st(self)._canvasLayerForId_(_st(self)._backgroundCanvasId()));
 $2=_st($1)._yourself();
 self["@layers"]=$2;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeCanvasLayers",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "initializeCanvasLayers\x0a\x09layers := Array new\x0a\x09\x09at: 1 put: (self canvasLayerForId: self backgroundCanvasId);\x0a\x09\x09yourself.\x0a\x09\x09",
-messageSends: ["at:put:", "canvasLayerForId:", "backgroundCanvasId", "new", "yourself"],
+source: "initializeCanvasLayers\x0a\x09layers := (Array new: 3)\x0a\x09\x09at: 1 put: (self canvasLayerForId: self backgroundCanvasId);\x0a\x09\x09yourself.\x0a\x09\x09",
+messageSends: ["at:put:", "canvasLayerForId:", "backgroundCanvasId", "new:", "yourself"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWMapDrawer);

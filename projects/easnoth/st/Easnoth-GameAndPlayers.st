@@ -293,7 +293,7 @@ initializeWithMap: aMap
 initializeWithMap: aMap army: data
 		"initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player"
 		| monsters |
-		monsters := Array new.
+		monsters := Array new: 9.
 		monsters at: 7 put: (self newTroop: data troop).
 		monsters at: 8 put: (self newTroopHeros: data troopHeros).
 		monsters at: 9 put: (self newTroop: data troop).

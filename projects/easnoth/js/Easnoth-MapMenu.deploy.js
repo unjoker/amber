@@ -144,19 +144,6 @@ smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-fn: function (){
-var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWWidget.fn.prototype._initialize.apply(_st(self), []);
-self["@components"]=_st($Array())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWActionMenu)})},
-messageSends: ["initialize", "new"]}),
-smalltalk.CWActionMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initializeBoxesWith:",
 fn: function (html){
 var self=this;
@@ -231,6 +218,7 @@ smalltalk.method({
 selector: "initialize",
 fn: function (){
 var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 function $CWMonsterWatcher(){return smalltalk.CWMonsterWatcher||(typeof CWMonsterWatcher=="undefined"?nil:CWMonsterWatcher)}
 function $CWDices(){return smalltalk.CWDices||(typeof CWDices=="undefined"?nil:CWDices)}
 function $CWMapControls(){return smalltalk.CWMapControls||(typeof CWMapControls=="undefined"?nil:CWMapControls)}
@@ -238,6 +226,7 @@ function $CWTurnWatcher(){return smalltalk.CWTurnWatcher||(typeof CWTurnWatcher=
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenu.fn.prototype._initialize.apply(_st(self), []);
+self["@components"]=_st($Array())._new();
 _st(self)._addComponent_($CWMonsterWatcher());
 _st(self)._addComponent_($CWDices());
 _st(self)._addComponent_($CWMapControls());
@@ -248,7 +237,7 @@ return smalltalk.withContext(function($ctx2) {
 return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
-messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"]}),
+messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"]}),
 smalltalk.CWFightMenu);
 
 smalltalk.addMethod(

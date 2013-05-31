@@ -68,11 +68,6 @@ newChild: aClass
 
 !CWActionMenu methodsFor: 'initialize-release'!
 
-initialize
-	super initialize.
-	components := Array new
-!
-
 initializeBoxesWith: html
 	boxes := Dictionary new.
 	"boxes 
@@ -119,6 +114,7 @@ menuClass
 
 initialize
 	super initialize.
+	components := Array new.
 	self addComponent: CWMonsterWatcher.
 	self addComponent: CWDices.
 	self addComponent: CWMapControls.

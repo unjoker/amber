@@ -479,7 +479,7 @@ var self=this;
 var monsters;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-monsters=_st($Array())._new();
+monsters=_st($Array())._new_((9));
 _st(monsters)._at_put_((7),_st(self)._newTroop_(_st(data)._troop()));
 _st(monsters)._at_put_((8),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
 _st(monsters)._at_put_((9),_st(self)._newTroop_(_st(data)._troop()));
@@ -491,7 +491,7 @@ _st(monsters)._at_put_((2),_st(self)._newCavalryHeros_(_st(data)._cavalryHeros()
 _st(monsters)._at_put_((3),_st(self)._newCavalry_(_st(data)._cavalry()));
 self["@team"]=monsters;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
-messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newRangeHeros:", "rangeHeros", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"]}),
+messageSends: ["new:", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newRangeHeros:", "rangeHeros", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"]}),
 smalltalk.CWPlayer);
 
 smalltalk.addMethod(

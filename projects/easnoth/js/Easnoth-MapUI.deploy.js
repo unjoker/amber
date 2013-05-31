@@ -1317,12 +1317,12 @@ var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-$1=_st($Array())._new();
+$1=_st($Array())._new_((3));
 _st($1)._at_put_((1),_st(self)._canvasLayerForId_(_st(self)._backgroundCanvasId()));
 $2=_st($1)._yourself();
 self["@layers"]=$2;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeCanvasLayers",{},smalltalk.CWMapDrawer)})},
-messageSends: ["at:put:", "canvasLayerForId:", "backgroundCanvasId", "new", "yourself"]}),
+messageSends: ["at:put:", "canvasLayerForId:", "backgroundCanvasId", "new:", "yourself"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
