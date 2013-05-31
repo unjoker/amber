@@ -1365,6 +1365,22 @@ smalltalk.SequenceableCollection);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "reset",
+category: '*Easnoth-GameAndPlayers',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self.length = 0;;
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.Array)})},
+args: [],
+source: "reset\x0a\x09<self.length = 0;>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Array);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "remove:ifAbsent:",
 category: '*Easnoth-GameAndPlayers',
 fn: function (anObject,aBlock){

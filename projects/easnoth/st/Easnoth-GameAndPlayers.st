@@ -469,6 +469,12 @@ at: index ifPresent: aBlock ifAbsent: anotherBlock
 		ifFalse: [ anotherBlock value ]
 ! !
 
+!Array methodsFor: '*Easnoth-GameAndPlayers'!
+
+reset
+	<self.length = 0;>
+! !
+
 !Set methodsFor: '*Easnoth-GameAndPlayers'!
 
 remove: anObject ifAbsent: aBlock

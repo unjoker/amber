@@ -255,13 +255,13 @@ attackableNeighboursForMonster: aMonster
 	
 	| attackableCells tempCells |
 	
-	attackableCells := Set new.
+	attackableCells := Array new.
 	tempCells := self movableNeighboursCycle: aMonster range - 1.
 	
 	tempCells do: [ :each |
 		attackableCells addAll: (each attackableNeighboursFrom: aMonster side) ].
 
-	^ attackableCells
+	^ attackableCells asSet
 !
 
 attackableNeighboursFrom: side
@@ -288,10 +288,11 @@ movableNeighboursCycle: cycleNumber
 	| movableCells tempSet |
 	
 	self root unmark.
+	tempSet := Array new.
 	
 	movableCells := { self } asSet.
 	1 to: cycleNumber do: [ :i |
-		tempSet := Array new.
+		tempSet reset.
 		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
 		movableCells addAll: tempSet].
 	
@@ -307,7 +308,7 @@ selectableNeighboursForMonster: aMonster
 
 	selectableCells := self movableNeighboursCycle: aMonster currentMove.
 
-	 tempSet := Set new.
+	 tempSet := Array new.
 	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonster: aMonster) ].
 	 selectableCells addAll: tempSet.
 	 ^ selectableCells remove: self
@@ -391,7 +392,7 @@ addWhiteSelector
 !
 
 darken
-	gameOverTile darken
+	self state darken: self
 !
 
 lighten

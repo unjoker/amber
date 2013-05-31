@@ -58,6 +58,16 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "darken:",
+fn: function (cell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self}, function($ctx1) {$ctx1.fill(self,"darken:",{cell:cell},smalltalk.CWCellState)})},
+messageSends: []}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isFree",
 fn: function (){
 var self=this;
@@ -256,6 +266,17 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._error_("cannot add a monster to a cell that has already a *green* selector (case not specified in state machine)");
 return self}, function($ctx1) {$ctx1.fill(self,"cell:addMonster:",{aCell:aCell,aMonster:aMonster},smalltalk.CWFreeSelected)})},
 messageSends: ["error:"]}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "darken:",
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(aCell)._gameOverTile())._darken();
+return self}, function($ctx1) {$ctx1.fill(self,"darken:",{aCell:aCell},smalltalk.CWFreeSelected)})},
+messageSends: ["darken", "gameOverTile"]}),
 smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(

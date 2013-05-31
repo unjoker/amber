@@ -346,19 +346,19 @@ selector: "attackableNeighboursForMonster:",
 fn: function (aMonster){
 var self=this;
 var attackableCells,tempCells;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-attackableCells=_st($Set())._new();
+attackableCells=_st($Array())._new();
 tempCells=_st(self)._movableNeighboursCycle_(_st(_st(aMonster)._range()).__minus((1)));
 _st(tempCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(attackableCells)._addAll_(_st(each)._attackableNeighboursFrom_(_st(aMonster)._side()));
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-$1=attackableCells;
+$1=_st(attackableCells)._asSet();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"attackableNeighboursForMonster:",{aMonster:aMonster,attackableCells:attackableCells,tempCells:tempCells},smalltalk.CWCell)})},
-messageSends: ["new", "movableNeighboursCycle:", "-", "range", "do:", "addAll:", "attackableNeighboursFrom:", "side"]}),
+messageSends: ["new", "movableNeighboursCycle:", "-", "range", "do:", "addAll:", "attackableNeighboursFrom:", "side", "asSet"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -574,9 +574,9 @@ selector: "darken",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@gameOverTile"])._darken();
+_st(_st(self)._state())._darken_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"darken",{},smalltalk.CWCell)})},
-messageSends: ["darken"]}),
+messageSends: ["darken:", "state"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -822,11 +822,11 @@ function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 _st(_st(self)._root())._unmark();
+tempSet=_st($Array())._new();
 movableCells=_st([self])._asSet();
 _st((1))._to_do_(cycleNumber,(function(i){
 return smalltalk.withContext(function($ctx2) {
-tempSet=_st($Array())._new();
-tempSet;
+_st(tempSet)._reset();
 _st(movableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx3) {
 return _st(tempSet)._addAll_(_st(each)._movableNeighbours());
@@ -836,7 +836,7 @@ return _st(movableCells)._addAll_(tempSet);
 $1=movableCells;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"movableNeighboursCycle:",{cycleNumber:cycleNumber,movableCells:movableCells,tempSet:tempSet},smalltalk.CWCell)})},
-messageSends: ["unmark", "root", "asSet", "to:do:", "new", "do:", "addAll:", "movableNeighbours"]}),
+messageSends: ["unmark", "root", "new", "asSet", "to:do:", "reset", "do:", "addAll:", "movableNeighbours"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1012,11 +1012,11 @@ selector: "selectableNeighboursForMonster:",
 fn: function (aMonster){
 var self=this;
 var selectableCells,tempSet;
-function $Set(){return smalltalk.Set||(typeof Set=="undefined"?nil:Set)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 selectableCells=_st(self)._movableNeighboursCycle_(_st(aMonster)._currentMove());
-tempSet=_st($Set())._new();
+tempSet=_st($Array())._new();
 _st(selectableCells)._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(tempSet)._addAll_(_st(each)._attackableNeighboursForMonster_(aMonster));

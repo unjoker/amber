@@ -1031,6 +1031,17 @@ smalltalk.SequenceableCollection);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "reset",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self.length = 0;;
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.Array)})},
+messageSends: []}),
+smalltalk.Array);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "remove:ifAbsent:",
 fn: function (anObject,aBlock){
 var self=this;
