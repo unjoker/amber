@@ -52,16 +52,17 @@ var self=this;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
-$2=_st($Array())._new();
-_st($2)._add_("red");
-_st($2)._add_("green");
-_st($2)._add_("white");
-_st($2)._add_("invis");
+$2=_st($Array())._new_((5));
+_st($2)._at_put_((1),"red");
+_st($2)._at_put_((2),"green");
+_st($2)._at_put_((3),"white");
+_st($2)._at_put_((4),"invis");
+_st($2)._at_put_((5),"darkGreen");
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"imagesToPreload",{},smalltalk.CWBootstrapper)})},
-messageSends: ["add:", "new", "yourself"]}),
+messageSends: ["at:put:", "new:", "yourself"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(

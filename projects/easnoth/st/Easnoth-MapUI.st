@@ -650,7 +650,7 @@ initialize
 !
 
 initializeCanvasLayers
-	layers := Array new
+	layers := (Array new: 3)
 		at: 1 put: (self canvasLayerForId: self backgroundCanvasId);
 		yourself.
 !

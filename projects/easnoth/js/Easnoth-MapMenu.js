@@ -199,24 +199,6 @@ smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "initialize",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
-return smalltalk.withContext(function($ctx1) { 
-smalltalk.CWWidget.fn.prototype._initialize.apply(_st(self), []);
-self["@components"]=_st($Array())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWActionMenu)})},
-args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09components := Array new",
-messageSends: ["initialize", "new"],
-referencedClasses: ["Array"]
-}),
-smalltalk.CWActionMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "initializeBoxesWith:",
 category: 'initialize-release',
 fn: function (html){
@@ -317,6 +299,7 @@ selector: "initialize",
 category: 'initialize-release',
 fn: function (){
 var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 function $CWMonsterWatcher(){return smalltalk.CWMonsterWatcher||(typeof CWMonsterWatcher=="undefined"?nil:CWMonsterWatcher)}
 function $CWDices(){return smalltalk.CWDices||(typeof CWDices=="undefined"?nil:CWDices)}
 function $CWMapControls(){return smalltalk.CWMapControls||(typeof CWMapControls=="undefined"?nil:CWMapControls)}
@@ -324,6 +307,7 @@ function $CWTurnWatcher(){return smalltalk.CWTurnWatcher||(typeof CWTurnWatcher=
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenu.fn.prototype._initialize.apply(_st(self), []);
+self["@components"]=_st($Array())._new();
 _st(self)._addComponent_($CWMonsterWatcher());
 _st(self)._addComponent_($CWDices());
 _st(self)._addComponent_($CWMapControls());
@@ -335,9 +319,9 @@ return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self menuClass asJQuery empty ]",
-messageSends: ["initialize", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"],
-referencedClasses: ["CWMonsterWatcher", "CWDices", "CWMapControls", "CWTurnWatcher", "CWEndGameEvent"]
+source: "initialize\x0a\x09super initialize.\x0a\x09components := Array new.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self menuClass asJQuery empty ]",
+messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"],
+referencedClasses: ["Array", "CWMonsterWatcher", "CWDices", "CWMapControls", "CWTurnWatcher", "CWEndGameEvent"]
 }),
 smalltalk.CWFightMenu);
 

@@ -643,7 +643,7 @@ var self=this;
 var monsters;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-monsters=_st($Array())._new();
+monsters=_st($Array())._new_((9));
 _st(monsters)._at_put_((7),_st(self)._newTroop_(_st(data)._troop()));
 _st(monsters)._at_put_((8),_st(self)._newTroopHeros_(_st(data)._troopHeros()));
 _st(monsters)._at_put_((9),_st(self)._newTroop_(_st(data)._troop()));
@@ -656,8 +656,8 @@ _st(monsters)._at_put_((3),_st(self)._newCavalry_(_st(data)._cavalry()));
 self["@team"]=monsters;
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithMap:army:",{aMap:aMap,data:data,monsters:monsters},smalltalk.CWPlayer)})},
 args: ["aMap", "data"],
-source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new.\x0a\x09\x09monsters at: 7 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 8 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 9 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 4 put: (self newRange: data range).\x0a\x09\x09monsters at: 5 put: (self newRangeHeros: data rangeHeros).\x0a\x09\x09monsters at: 6 put: (self newRange: data range).\x0a\x09\x09monsters at: 1 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 2 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09monsters at: 3 put: (self newCavalry: data cavalry).\x0a\x09\x09team := monsters.",
-messageSends: ["new", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newRangeHeros:", "rangeHeros", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"],
+source: "initializeWithMap: aMap army: data\x0a\x09\x09\x22initialize the monsters of the player. Assumes the team instance variable is the string from the gameSettings and change it to the monsters of the player\x22\x0a\x09\x09| monsters |\x0a\x09\x09monsters := Array new: 9.\x0a\x09\x09monsters at: 7 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 8 put: (self newTroopHeros: data troopHeros).\x0a\x09\x09monsters at: 9 put: (self newTroop: data troop).\x0a\x09\x09monsters at: 4 put: (self newRange: data range).\x0a\x09\x09monsters at: 5 put: (self newRangeHeros: data rangeHeros).\x0a\x09\x09monsters at: 6 put: (self newRange: data range).\x0a\x09\x09monsters at: 1 put: (self newCavalry: data cavalry).\x0a\x09\x09monsters at: 2 put: (self newCavalryHeros: data cavalryHeros).\x0a\x09\x09monsters at: 3 put: (self newCavalry: data cavalry).\x0a\x09\x09team := monsters.",
+messageSends: ["new:", "at:put:", "newTroop:", "troop", "newTroopHeros:", "troopHeros", "newRange:", "range", "newRangeHeros:", "rangeHeros", "newCavalry:", "cavalry", "newCavalryHeros:", "cavalryHeros"],
 referencedClasses: ["Array"]
 }),
 smalltalk.CWPlayer);

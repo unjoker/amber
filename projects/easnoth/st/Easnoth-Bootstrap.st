@@ -12,11 +12,12 @@ announcer
 !
 
 imagesToPreload
-	^ Array new
-		add: 'red';
-		add: 'green';
-		add: 'white';
-		add: 'invis';
+	^ (Array new: 5)
+		at: 1 put: 'red';
+		at: 2 put: 'green';
+		at: 3 put: 'white';
+		at: 4 put: 'invis';
+		at: 5 put: 'darkGreen';
 		yourself
 ! !
 
