@@ -90,15 +90,15 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 		var cosothergridy = -0.882947593;
 		var sinothergridy = 0.469471563;
 		
-		var nb = Math.floor(((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)));
-		var nb2 = Math.floor(((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)));
+		var nb = ((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)) | 0;
+		var nb2 = ((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)) | 0;
 		
 		var xConstante = 9 + (mod(nb,3));
 		var yConstante = 20 + (mod(nb2,2));
 		if (nb2%2 == 0) {yConstante += mod(nb+1,2);}
 		
-		xHex = Math.floor(((xConstante-nb)/6)+((yConstante-nb2)/2));
-		yHex = Math.floor(((nb-xConstante)/4)+((yConstante-nb2)/4));
+		xHex = ((xConstante-nb)/6)+((yConstante-nb2)/2) | 0;
+		yHex = ((nb-xConstante)/4)+((yConstante-nb2)/4) | 0;
 		
 		if (mod(nb,6)==1 && nb2%2==0){
 			xHex++;
@@ -108,13 +108,13 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 		
 		if (nb%3==0) {		
 			if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {
-				var nb3 = Math.floor(((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)));
+				var nb3 = ((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)) | 0;
 				var nbCheck = 3+2*yHex+(xHex%2);
 				if (nb3 == nbCheck) {yHex--;}
 			}
 			else {
-				var nb4 = Math.floor(((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)));
-				var nbCheck = 7-Math.floor(3*xHex/2)+yHex;
+				var nb4 = ((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)) | 0;
+				var nbCheck = 7-((3*xHex/2) | 0)+yHex;
 				if (nb4 == nbCheck) {
 					if (xHex%2 == 0) {yHex--;}
 					xHex++;
@@ -872,11 +872,11 @@ calculCanvasCoods
 	sin135 := 0.233445364. "???->I used Approximation"
 	sin75 := 0.965925826. "5*Pi/12"
 
-	temp := ((cellIndex + ((rowIndex + 1)/2)) truncated) * (sin15 + sin75).
+	temp := ((cellIndex + ((rowIndex + 1)/2)) | 0) * (sin15 + sin75).
 	xpos := (rowIndex * (sin45 + sin75) - (temp)) * tileUnit + padding x.
 	ypos := (temp / 2 + (rowIndex * sin135)) * tileUnit + padding y.
 	
-	^ xpos rounded @ ypos rounded
+	^ xpos | 0 @ (ypos | 0)
 ! !
 
 !CWGlobalDrawingContext methodsFor: 'context alteration'!
