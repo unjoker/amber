@@ -194,24 +194,16 @@ gameOverTileClass
 	^ CWGameOverTile
 !
 
-newGreenGOT
-	 ^ self gameOverTileClass green
+newGOT
+	 ^ self gameOverTileClass invis
 !
 
 newOverTile
 	 ^ self newChild: self overTileClass
 !
 
-newRedGOT
-	 ^ self gameOverTileClass red
-!
-
 newTile
 	 ^ self newChild: self tileClass
-!
-
-newWhiteGOT
-	 ^ self gameOverTileClass white
 !
 
 overTileClass
@@ -231,7 +223,8 @@ free
 
 initialize
 	super initialize.
-	mark := false
+	mark := false.
+	gameOverTile := self newGOT.
 !
 
 initializeFromJson: aJsonCell
@@ -386,35 +379,27 @@ printOn: aStream
 !CWCell methodsFor: 'selection'!
 
 addGreenSelector
-	self gameOverTile: self newGreenGOT
+	self gameOverTile green
 !
 
 addRedSelector
-	self gameOverTile: self newRedGOT
-!
-
-addSelectorColored: aColor
-	self gameOverTile: (self newGameOverTile initializeFromKey: aColor)
+	self gameOverTile red
 !
 
 addWhiteSelector
-	self gameOverTile: self newWhiteGOT
+	self gameOverTile white
 !
 
 darken
-	gameOverTile ifNotNil: [ :got |
-		got darken ]
+	gameOverTile darken
 !
 
 lighten
-	"should delegate to state but I'm lazy"
- 	self isFree ifTrue: [
-		gameOverTile ifNotNil: [ :got |
-			got lighten ] ]
+	self state lighten: self
 !
 
 removeGameOverTile
-	self gameOverTile: nil
+	self gameOverTile invis
 ! !
 
 !CWCell methodsFor: 'state delegation'!
@@ -848,8 +833,24 @@ darken
 	self image: (self class imageArray at: self class darkGreenIndex)
 !
 
-lighten
+green
 	self image: (self class imageArray at: self class greenIndex)
+!
+
+invis
+	self image: (self class imageArray at: self class invisIndex)
+!
+
+lighten
+	self green
+!
+
+red
+	self image: (self class imageArray at: self class redIndex)
+!
+
+white
+	self image: (self class imageArray at: self class whiteIndex)
 ! !
 
 !CWGameOverTile methodsFor: 'visiting'!

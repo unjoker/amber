@@ -636,12 +636,8 @@ selector: "clean",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@array"])._do_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(each)._src_(_st(self["@invis"])._src());
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWGOTLayer)})},
-messageSends: ["do:", "src:", "src"]}),
+messageSends: []}),
 smalltalk.CWGOTLayer);
 
 smalltalk.addMethod(

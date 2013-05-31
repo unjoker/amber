@@ -361,8 +361,7 @@ initialize
 !CWGOTLayer methodsFor: 'rendering'!
 
 clean
-	array do: [:each |
-		each src: invis src ]
+	"do nothing"
 !
 
 drawGOT: got point: point

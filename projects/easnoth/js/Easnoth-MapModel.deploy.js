@@ -273,9 +273,9 @@ selector: "addGreenSelector",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(_st(self)._newGreenGOT());
+_st(_st(self)._gameOverTile())._green();
 return self}, function($ctx1) {$ctx1.fill(self,"addGreenSelector",{},smalltalk.CWCell)})},
-messageSends: ["gameOverTile:", "newGreenGOT"]}),
+messageSends: ["green", "gameOverTile"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -295,9 +295,9 @@ selector: "addRedSelector",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(_st(self)._newRedGOT());
+_st(_st(self)._gameOverTile())._red();
 return self}, function($ctx1) {$ctx1.fill(self,"addRedSelector",{},smalltalk.CWCell)})},
-messageSends: ["gameOverTile:", "newRedGOT"]}),
+messageSends: ["red", "gameOverTile"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -313,24 +313,13 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "addSelectorColored:",
-fn: function (aColor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(_st(_st(self)._newGameOverTile())._initializeFromKey_(aColor));
-return self}, function($ctx1) {$ctx1.fill(self,"addSelectorColored:",{aColor:aColor},smalltalk.CWCell)})},
-messageSends: ["gameOverTile:", "initializeFromKey:", "newGameOverTile"]}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "addWhiteSelector",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(_st(self)._newWhiteGOT());
+_st(_st(self)._gameOverTile())._white();
 return self}, function($ctx1) {$ctx1.fill(self,"addWhiteSelector",{},smalltalk.CWCell)})},
-messageSends: ["gameOverTile:", "newWhiteGOT"]}),
+messageSends: ["white", "gameOverTile"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -585,17 +574,9 @@ selector: "darken",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@gameOverTile"];
-if(($receiver = $1) == nil || $receiver == undefined){
-$1;
-} else {
-var got;
-got=$receiver;
-_st(got)._darken();
-};
+_st(self["@gameOverTile"])._darken();
 return self}, function($ctx1) {$ctx1.fill(self,"darken",{},smalltalk.CWCell)})},
-messageSends: ["ifNotNil:", "darken"]}),
+messageSends: ["darken"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -670,8 +651,9 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWComposite.fn.prototype._initialize.apply(_st(self), []);
 self["@mark"]=false;
+self["@gameOverTile"]=_st(self)._newGOT();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWCell)})},
-messageSends: ["initialize"]}),
+messageSends: ["initialize", "newGOT"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -745,20 +727,9 @@ selector: "lighten",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-$1=_st(self)._isFree();
-if(smalltalk.assert($1)){
-$2=self["@gameOverTile"];
-if(($receiver = $2) == nil || $receiver == undefined){
-$2;
-} else {
-var got;
-got=$receiver;
-_st(got)._lighten();
-};
-};
+_st(_st(self)._state())._lighten_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"lighten",{},smalltalk.CWCell)})},
-messageSends: ["ifTrue:", "ifNotNil:", "lighten", "isFree"]}),
+messageSends: ["lighten:", "state"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -889,15 +860,15 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newGreenGOT",
+selector: "newGOT",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._gameOverTileClass())._green();
+$1=_st(_st(self)._gameOverTileClass())._invis();
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"newGreenGOT",{},smalltalk.CWCell)})},
-messageSends: ["green", "gameOverTileClass"]}),
+}, function($ctx1) {$ctx1.fill(self,"newGOT",{},smalltalk.CWCell)})},
+messageSends: ["invis", "gameOverTileClass"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -915,19 +886,6 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newRedGOT",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._gameOverTileClass())._red();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newRedGOT",{},smalltalk.CWCell)})},
-messageSends: ["red", "gameOverTileClass"]}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "newTile",
 fn: function (){
 var self=this;
@@ -937,19 +895,6 @@ $1=_st(self)._newChild_(_st(self)._tileClass());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newTile",{},smalltalk.CWCell)})},
 messageSends: ["newChild:", "tileClass"]}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newWhiteGOT",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._gameOverTileClass())._white();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newWhiteGOT",{},smalltalk.CWCell)})},
-messageSends: ["white", "gameOverTileClass"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1034,9 +979,9 @@ selector: "removeGameOverTile",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._gameOverTile_(nil);
+_st(_st(self)._gameOverTile())._invis();
 return self}, function($ctx1) {$ctx1.fill(self,"removeGameOverTile",{},smalltalk.CWCell)})},
-messageSends: ["gameOverTile:"]}),
+messageSends: ["invis", "gameOverTile"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1876,13 +1821,57 @@ smalltalk.CWGameOverTile);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "lighten",
+selector: "green",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._image_(_st(_st(_st(self)._class())._imageArray())._at_(_st(_st(self)._class())._greenIndex()));
-return self}, function($ctx1) {$ctx1.fill(self,"lighten",{},smalltalk.CWGameOverTile)})},
+return self}, function($ctx1) {$ctx1.fill(self,"green",{},smalltalk.CWGameOverTile)})},
 messageSends: ["image:", "at:", "greenIndex", "class", "imageArray"]}),
+smalltalk.CWGameOverTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "invis",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._image_(_st(_st(_st(self)._class())._imageArray())._at_(_st(_st(self)._class())._invisIndex()));
+return self}, function($ctx1) {$ctx1.fill(self,"invis",{},smalltalk.CWGameOverTile)})},
+messageSends: ["image:", "at:", "invisIndex", "class", "imageArray"]}),
+smalltalk.CWGameOverTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "lighten",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._green();
+return self}, function($ctx1) {$ctx1.fill(self,"lighten",{},smalltalk.CWGameOverTile)})},
+messageSends: ["green"]}),
+smalltalk.CWGameOverTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "red",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._image_(_st(_st(_st(self)._class())._imageArray())._at_(_st(_st(self)._class())._redIndex()));
+return self}, function($ctx1) {$ctx1.fill(self,"red",{},smalltalk.CWGameOverTile)})},
+messageSends: ["image:", "at:", "redIndex", "class", "imageArray"]}),
+smalltalk.CWGameOverTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "white",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._image_(_st(_st(_st(self)._class())._imageArray())._at_(_st(_st(self)._class())._whiteIndex()));
+return self}, function($ctx1) {$ctx1.fill(self,"white",{},smalltalk.CWGameOverTile)})},
+messageSends: ["image:", "at:", "whiteIndex", "class", "imageArray"]}),
 smalltalk.CWGameOverTile);
 
 

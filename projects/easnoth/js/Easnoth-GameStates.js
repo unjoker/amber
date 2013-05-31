@@ -383,11 +383,11 @@ category: 'cell state API',
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(aCell)._lighten();
+_st(_st(aCell)._gameOverTile())._lighten();
 return self}, function($ctx1) {$ctx1.fill(self,"lighten:",{aCell:aCell},smalltalk.CWFreeSelected)})},
 args: ["aCell"],
-source: "lighten: aCell\x0a\x09aCell lighten",
-messageSends: ["lighten"],
+source: "lighten: aCell\x0a\x09aCell gameOverTile lighten",
+messageSends: ["lighten", "gameOverTile"],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);

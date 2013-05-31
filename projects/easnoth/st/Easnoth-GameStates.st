@@ -125,7 +125,7 @@ isFree
 !
 
 lighten: aCell
-	aCell lighten
+	aCell gameOverTile lighten
 !
 
 mouseClick: aCell context: gameContext
