@@ -275,9 +275,9 @@ selector: "lighten:",
 fn: function (aCell){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(aCell)._lighten();
+_st(_st(aCell)._gameOverTile())._lighten();
 return self}, function($ctx1) {$ctx1.fill(self,"lighten:",{aCell:aCell},smalltalk.CWFreeSelected)})},
-messageSends: ["lighten"]}),
+messageSends: ["lighten", "gameOverTile"]}),
 smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(

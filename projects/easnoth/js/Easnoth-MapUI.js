@@ -841,14 +841,10 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@array"])._do_((function(each){
-return smalltalk.withContext(function($ctx2) {
-return _st(each)._src_(_st(self["@invis"])._src());
-}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWGOTLayer)})},
 args: [],
-source: "clean\x0a\x09array do: [:each |\x0a\x09\x09each src: invis src ]",
-messageSends: ["do:", "src:", "src"],
+source: "clean\x0a\x09\x22do nothing\x22",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWGOTLayer);
