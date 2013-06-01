@@ -61,6 +61,11 @@ lighten
 		child lighten ]
 !
 
+prefillCaches
+	self children do: [ :child |
+		child prefillCaches ]
+!
+
 removeSelection
 	self children do: [ :child |
 		child removeSelection ]
@@ -139,8 +144,7 @@ children
 	children := Array new.
 	self monster ifNotNil: [ :var |
 		children add: var ].
-	self gameOverTile ifNotNil: [ :var2 |
-		children add: var2 ].
+	children add: self gameOverTile.
 	^ children
 		addAll: self background;
 		yourself
@@ -195,7 +199,7 @@ gameOverTileClass
 !
 
 newGOT
-	 ^ self gameOverTileClass invis
+	 ^ self gameOverTileClass new
 !
 
 newOverTile
@@ -239,6 +243,10 @@ initializeFromJson: aJsonCell
 	ots := aJsonCell keys select: [ :each | each match: 'overtile' ].
 	ots do: [ :each |
 		self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].
+!
+
+prefillCaches
+	self neighbours.
 ! !
 
 !CWCell methodsFor: 'neighbourhood'!
@@ -599,6 +607,7 @@ childBasicClass
 !CWMap methodsFor: 'initialize-release'!
 
 initializeDrawer
+	self prefillCaches.
 	drawer := CWMapDrawer new initializeForMap: self
 !
 
@@ -881,11 +890,59 @@ folderName
 	^ 'overtiles'
 ! !
 
-CWOverTile subclass: #CWGameOverTile
+CWBackground subclass: #CWTile
 	instanceVariableNames: ''
+	package: 'Easnoth-MapModel'!
+
+!CWTile methodsFor: 'testing'!
+
+isWall
+	^ false
+! !
+
+!CWTile methodsFor: 'visiting'!
+
+accept: aVisitor
+	^ aVisitor visitTile: self
+! !
+
+!CWTile class methodsFor: 'accessing'!
+
+folderName
+	^ 'tiles'
+! !
+
+CWTile subclass: #CWWall
+	instanceVariableNames: ''
+	package: 'Easnoth-MapModel'!
+
+!CWWall methodsFor: 'testing'!
+
+isWall
+	^ true
+! !
+
+!CWWall methodsFor: 'visiting'!
+
+accept: aVisitor
+	^ aVisitor visitWall: self
+! !
+
+CWImageLeaf subclass: #CWGameOverTile
+	instanceVariableNames: 'htmlImage'
 	package: 'Easnoth-MapModel'!
 !CWGameOverTile commentStamp!
 class side I have an image array to crete got faster as they are the most created / gc objects!
+
+!CWGameOverTile methodsFor: 'accessing'!
+
+htmlImage: aHTMLElem
+	htmlImage := aHTMLElem
+!
+
+image: anImage
+	htmlImage src: anImage src
+! !
 
 !CWGameOverTile methodsFor: 'coloring'!
 
@@ -920,6 +977,12 @@ accept: aVisitor
 ! !
 
 CWGameOverTile class instanceVariableNames: 'imageArray'!
+
+!CWGameOverTile class methodsFor: 'accessing'!
+
+folderName
+	^ 'gots'
+! !
 
 !CWGameOverTile class methodsFor: 'array'!
 
@@ -976,44 +1039,6 @@ red
 
 white
 	^ self new image: (self imageArray at: self whiteIndex)
-! !
-
-CWBackground subclass: #CWTile
-	instanceVariableNames: ''
-	package: 'Easnoth-MapModel'!
-
-!CWTile methodsFor: 'testing'!
-
-isWall
-	^ false
-! !
-
-!CWTile methodsFor: 'visiting'!
-
-accept: aVisitor
-	^ aVisitor visitTile: self
-! !
-
-!CWTile class methodsFor: 'accessing'!
-
-folderName
-	^ 'tiles'
-! !
-
-CWTile subclass: #CWWall
-	instanceVariableNames: ''
-	package: 'Easnoth-MapModel'!
-
-!CWWall methodsFor: 'testing'!
-
-isWall
-	^ true
-! !
-
-!CWWall methodsFor: 'visiting'!
-
-accept: aVisitor
-	^ aVisitor visitWall: self
 ! !
 
 CWImageLeaf subclass: #CWMonster

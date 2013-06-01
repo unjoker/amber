@@ -101,6 +101,20 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "prefillCaches",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._prefillCaches();
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"prefillCaches",{},smalltalk.CWComponent)})},
+messageSends: ["do:", "prefillCaches", "children"]}),
+smalltalk.CWComponent);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "removeSelection",
 fn: function (){
 var self=this;
@@ -561,7 +575,7 @@ var self=this;
 var children;
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$4,$5,$3;
+var $1,$3,$4,$2;
 children=_st($Array())._new();
 $1=_st(self)._monster();
 if(($receiver = $1) == nil || $receiver == undefined){
@@ -571,19 +585,12 @@ var var_;
 var_=$receiver;
 _st(children)._add_(var_);
 };
-$2=_st(self)._gameOverTile();
-if(($receiver = $2) == nil || $receiver == undefined){
-$2;
-} else {
-var var2;
-var2=$receiver;
-_st(children)._add_(var2);
-};
-$4=children;
-_st($4)._addAll_(_st(self)._background());
-$5=_st($4)._yourself();
-$3=$5;
-return $3;
+_st(children)._add_(_st(self)._gameOverTile());
+$3=children;
+_st($3)._addAll_(_st(self)._background());
+$4=_st($3)._yourself();
+$2=$4;
+return $2;
 }, function($ctx1) {$ctx1.fill(self,"children",{children:children},smalltalk.CWCell)})},
 messageSends: ["new", "ifNotNil:", "add:", "monster", "gameOverTile", "addAll:", "background", "yourself"]}),
 smalltalk.CWCell);
@@ -911,10 +918,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st(self)._gameOverTileClass())._invis();
+$1=_st(_st(self)._gameOverTileClass())._new();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newGOT",{},smalltalk.CWCell)})},
-messageSends: ["invis", "gameOverTileClass"]}),
+messageSends: ["new", "gameOverTileClass"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -978,6 +985,17 @@ $1=path;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"pathTo:",{cellLast:cellLast,path:path},smalltalk.CWCell)})},
 messageSends: ["with:", "whileFalse:", "add:", "prevCell", "last", "="]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "prefillCaches",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._neighbours();
+return self}, function($ctx1) {$ctx1.fill(self,"prefillCaches",{},smalltalk.CWCell)})},
+messageSends: ["neighbours"]}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -1356,9 +1374,10 @@ fn: function (){
 var self=this;
 function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="undefined"?nil:CWMapDrawer)}
 return smalltalk.withContext(function($ctx1) { 
+_st(self)._prefillCaches();
 self["@drawer"]=_st(_st($CWMapDrawer())._new())._initializeForMap_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"initializeDrawer",{},smalltalk.CWMap)})},
-messageSends: ["initializeForMap:", "new"]}),
+messageSends: ["prefillCaches", "initializeForMap:", "new"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -1892,7 +1911,72 @@ messageSends: []}),
 smalltalk.CWOverTile.klass);
 
 
-smalltalk.addClass('CWGameOverTile', smalltalk.CWOverTile, [], 'Easnoth-MapModel');
+smalltalk.addClass('CWTile', smalltalk.CWBackground, [], 'Easnoth-MapModel');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aVisitor)._visitTile_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWTile)})},
+messageSends: ["visitTile:"]}),
+smalltalk.CWTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isWall",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWTile)})},
+messageSends: []}),
+smalltalk.CWTile);
+
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "folderName",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "tiles";
+}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWTile.klass)})},
+messageSends: []}),
+smalltalk.CWTile.klass);
+
+
+smalltalk.addClass('CWWall', smalltalk.CWTile, [], 'Easnoth-MapModel');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "accept:",
+fn: function (aVisitor){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(aVisitor)._visitWall_(self);
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWWall)})},
+messageSends: ["visitWall:"]}),
+smalltalk.CWWall);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "isWall",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWWall)})},
+messageSends: []}),
+smalltalk.CWWall);
+
+
+
+smalltalk.addClass('CWGameOverTile', smalltalk.CWImageLeaf, ['htmlImage'], 'Easnoth-MapModel');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -1926,6 +2010,28 @@ return smalltalk.withContext(function($ctx1) {
 _st(self)._image_(_st(_st(_st(self)._class())._imageArray())._at_(_st(_st(self)._class())._greenIndex()));
 return self}, function($ctx1) {$ctx1.fill(self,"green",{},smalltalk.CWGameOverTile)})},
 messageSends: ["image:", "at:", "greenIndex", "class", "imageArray"]}),
+smalltalk.CWGameOverTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "htmlImage:",
+fn: function (aHTMLElem){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@htmlImage"]=aHTMLElem;
+return self}, function($ctx1) {$ctx1.fill(self,"htmlImage:",{aHTMLElem:aHTMLElem},smalltalk.CWGameOverTile)})},
+messageSends: []}),
+smalltalk.CWGameOverTile);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "image:",
+fn: function (anImage){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@htmlImage"])._src_(_st(anImage)._src());
+return self}, function($ctx1) {$ctx1.fill(self,"image:",{anImage:anImage},smalltalk.CWGameOverTile)})},
+messageSends: ["src:", "src"]}),
 smalltalk.CWGameOverTile);
 
 smalltalk.addMethod(
@@ -2005,6 +2111,17 @@ var $1;
 $1=(5);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"darkGreenIndex",{},smalltalk.CWGameOverTile.klass)})},
+messageSends: []}),
+smalltalk.CWGameOverTile.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "folderName",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "gots";
+}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWGameOverTile.klass)})},
 messageSends: []}),
 smalltalk.CWGameOverTile.klass);
 
@@ -2129,71 +2246,6 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"whiteIndex",{},smalltalk.CWGameOverTile.klass)})},
 messageSends: []}),
 smalltalk.CWGameOverTile.klass);
-
-
-smalltalk.addClass('CWTile', smalltalk.CWBackground, [], 'Easnoth-MapModel');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitTile_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWTile)})},
-messageSends: ["visitTile:"]}),
-smalltalk.CWTile);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isWall",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return false;
-}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWTile)})},
-messageSends: []}),
-smalltalk.CWTile);
-
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "folderName",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return "tiles";
-}, function($ctx1) {$ctx1.fill(self,"folderName",{},smalltalk.CWTile.klass)})},
-messageSends: []}),
-smalltalk.CWTile.klass);
-
-
-smalltalk.addClass('CWWall', smalltalk.CWTile, [], 'Easnoth-MapModel');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "accept:",
-fn: function (aVisitor){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aVisitor)._visitWall_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"accept:",{aVisitor:aVisitor},smalltalk.CWWall)})},
-messageSends: ["visitWall:"]}),
-smalltalk.CWWall);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isWall",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return true;
-}, function($ctx1) {$ctx1.fill(self,"isWall",{},smalltalk.CWWall)})},
-messageSends: []}),
-smalltalk.CWWall);
-
 
 
 smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy'], 'Easnoth-MapModel');
