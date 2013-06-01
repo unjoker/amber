@@ -343,6 +343,18 @@ leafWidth
 	^ 126
 !
 
+renderOn: html map: map
+	| tempContext tempImage |
+	tempContext := CWGlobalDrawingContext default reset.
+	map children withIndexDo: [ :row :i |
+		tempContext nextRow.
+		row children withIndexDo: [ :cell :j |
+			tempContext nextCell.
+			tempImage := self newLeaf: html point: tempContext currentPoint.
+			cell gameOverTile htmlImage: tempImage.
+			array i: i j: j put: tempImage ] ].
+!
+
 xShift
 	^ 14 negated
 !
@@ -353,9 +365,10 @@ yShift
 
 !CWGOTLayer methodsFor: 'initialize-release'!
 
-initialize
-	super initialize.
-	invis := CWGameOverTile invis image
+initializeForMap: aMap
+	invis := CWGameOverTile imageArray at: CWGameOverTile invisIndex.
+	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
+	self renderOn: (HTMLCanvas onJQuery: self id asJQuery) map: aMap
 ! !
 
 !CWGOTLayer methodsFor: 'rendering'!
@@ -368,7 +381,7 @@ clean
 drawGOT: got point: point
 	| image |
 	image := array i: point x j: point y.
-	image src: got image src
+	"image src: got image src"
 ! !
 
 CWArrayLayer subclass: #CWMonsterLayer
@@ -721,7 +734,7 @@ clean
 
 updateGOTs
 	executionContext := self newGOTDrawingContext.
-	self visitTree: map.
+	"self visitTree: map."
 !
 
 updateMap

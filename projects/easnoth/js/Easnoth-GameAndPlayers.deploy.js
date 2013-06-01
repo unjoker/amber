@@ -1053,6 +1053,17 @@ smalltalk.Set);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "truncated",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self | 0;
+return self}, function($ctx1) {$ctx1.fill(self,"truncated",{},smalltalk.Number)})},
+messageSends: []}),
+smalltalk.Number);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isMarked",
 fn: function (){
 var self=this;

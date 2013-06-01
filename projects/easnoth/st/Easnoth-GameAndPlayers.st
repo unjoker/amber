@@ -481,6 +481,12 @@ remove: anObject ifAbsent: aBlock
 	elements remove: anObject ifAbsent: aBlock
 ! !
 
+!Number methodsFor: '*Easnoth-GameAndPlayers'!
+
+truncated
+	<return self | 0>
+! !
+
 !UndefinedObject methodsFor: '*Easnoth-GameAndPlayers'!
 
 isMarked

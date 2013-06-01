@@ -1397,6 +1397,22 @@ smalltalk.Set);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "truncated",
+category: '*Easnoth-GameAndPlayers',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return self | 0;
+return self}, function($ctx1) {$ctx1.fill(self,"truncated",{},smalltalk.Number)})},
+args: [],
+source: "truncated\x0a\x09<return self | 0>",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.Number);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "isMarked",
 category: '*Easnoth-GameAndPlayers',
 fn: function (){
