@@ -163,7 +163,7 @@ restartTurn
 !
 
 shouldRestartTurn
-	self currentMonster ifNotNil: [ :monster | ^ monster hasPlayed not ].
+	self currentCell ifNotNil: [ :monster | ^ monster hasPlayed not ].
 	^ false
 ! !
 

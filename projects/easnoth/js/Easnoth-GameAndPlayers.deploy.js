@@ -370,7 +370,7 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-$1=_st(self)._currentMonster();
+$1=_st(self)._currentCell();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
 } else {
@@ -381,7 +381,7 @@ return $2;
 };
 return false;
 }, function($ctx1) {$ctx1.fill(self,"shouldRestartTurn",{},smalltalk.CWGameContext)})},
-messageSends: ["ifNotNil:", "not", "hasPlayed", "currentMonster"]}),
+messageSends: ["ifNotNil:", "not", "hasPlayed", "currentCell"]}),
 smalltalk.CWGameContext);
 
 
