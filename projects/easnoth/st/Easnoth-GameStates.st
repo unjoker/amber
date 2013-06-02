@@ -47,7 +47,6 @@ mouseClick: aCell context: gameContext
 
 mouseMove: cell context: gameContext
 	cell root lighten.
-	cell root updateGOTs.
 !
 
 removeMonster: aCell
@@ -95,9 +94,7 @@ isFree
 
 mouseClick: aCell context: gameContext
 	gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].
-	aCell root 
-		showActiveMonsters;
-		updateGOTs
+	aCell root showActiveMonsters
 !
 
 removeMonster: aCell
@@ -145,7 +142,6 @@ mouseMove: cell context: gameContext
 	super mouseMove: cell context: gameContext.
 	path := gameContext currentCell pathTo: cell.
 	path do: [ :c | c darken ].
-	cell root updateGOTs.
 !
 
 removeMonster: aCell
@@ -323,7 +319,6 @@ monster: aMonster attackTo: aCell inContext: gameContext
 select: aMonster inContext: gameContext
 	aMonster selectActionCells.
 	gameContext currentMonster: aMonster.
-	aMonster updateGOTs.
 ! !
 
 !CWActive methodsFor: 'private'!
@@ -355,7 +350,6 @@ monster: aMonster attackTo: aCell inContext: gameContext
 
 select: aMonster inContext: gameContext
 	aMonster selectMovableCells.
-	aMonster updateGOTs.
 	gameContext currentMonster: aMonster
 ! !
 
@@ -394,7 +388,6 @@ monster: aMonster moveTo: aCell inContext: gameContext
 
 select: aMonster inContext: gameContext
 	aMonster selectAttackableCells.
-	aMonster updateGOTs.
 	gameContext currentMonster: aMonster
 ! !
 
@@ -447,9 +440,7 @@ readyToPick: aMonster
 
 select: aMonster inContext: gameContext
 	gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].
-	aMonster root 
-		showActiveMonsters;
-		updateGOTs.
+	aMonster root showActiveMonsters.
 	gameContext currentMonster: aMonster.
 !
 

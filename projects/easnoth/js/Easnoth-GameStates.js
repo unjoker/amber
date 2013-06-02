@@ -146,11 +146,10 @@ fn: function (cell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(cell)._root())._lighten();
-_st(_st(cell)._root())._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext},smalltalk.CWCellState)})},
 args: ["cell", "gameContext"],
-source: "mouseMove: cell context: gameContext\x0a\x09cell root lighten.\x0a\x09cell root updateGOTs.",
-messageSends: ["lighten", "root", "updateGOTs"],
+source: "mouseMove: cell context: gameContext\x0a\x09cell root lighten.",
+messageSends: ["lighten", "root"],
 referencedClasses: []
 }),
 smalltalk.CWCellState);
@@ -291,19 +290,17 @@ category: 'cell state API',
 fn: function (aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2;
 $1=_st(gameContext)._shouldRestartTurn();
 if(smalltalk.assert($1)){
 $2=_st(gameContext)._restartTurn();
 return $2;
 };
-$3=_st(aCell)._root();
-_st($3)._showActiveMonsters();
-$4=_st($3)._updateGOTs();
+_st(_st(aCell)._root())._showActiveMonsters();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
 args: ["aCell", "gameContext"],
-source: "mouseClick: aCell context: gameContext\x0a\x09gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].\x0a\x09aCell root \x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs",
-messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs"],
+source: "mouseClick: aCell context: gameContext\x0a\x09gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].\x0a\x09aCell root showActiveMonsters",
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root"],
 referencedClasses: []
 }),
 smalltalk.CWFree);
@@ -453,11 +450,10 @@ _st(path)._do_((function(c){
 return smalltalk.withContext(function($ctx2) {
 return _st(c)._darken();
 }, function($ctx2) {$ctx2.fillBlock({c:c},$ctx1)})}));
-_st(_st(cell)._root())._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWFreeSelected)})},
 args: ["cell", "gameContext"],
-source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09path := gameContext currentCell pathTo: cell.\x0a\x09path do: [ :c | c darken ].\x0a\x09cell root updateGOTs.",
-messageSends: ["mouseMove:context:", "pathTo:", "currentCell", "do:", "darken", "updateGOTs", "root"],
+source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09path := gameContext currentCell pathTo: cell.\x0a\x09path do: [ :c | c darken ].",
+messageSends: ["mouseMove:context:", "pathTo:", "currentCell", "do:", "darken"],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
@@ -1060,11 +1056,10 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._selectActionCells();
 _st(gameContext)._currentMonster_(aMonster);
-_st(aMonster)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWActive)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster selectActionCells.\x0a\x09gameContext currentMonster: aMonster.\x0a\x09aMonster updateGOTs.",
-messageSends: ["selectActionCells", "currentMonster:", "updateGOTs"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster selectActionCells.\x0a\x09gameContext currentMonster: aMonster.",
+messageSends: ["selectActionCells", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWActive);
@@ -1149,12 +1144,11 @@ fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._selectMovableCells();
-_st(aMonster)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWHasAttacked)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster selectMovableCells.\x0a\x09aMonster updateGOTs.\x0a\x09gameContext currentMonster: aMonster",
-messageSends: ["selectMovableCells", "updateGOTs", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster selectMovableCells.\x0a\x09gameContext currentMonster: aMonster",
+messageSends: ["selectMovableCells", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWHasAttacked);
@@ -1258,12 +1252,11 @@ fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._selectAttackableCells();
-_st(aMonster)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWHasMoved)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09aMonster selectAttackableCells.\x0a\x09aMonster updateGOTs.\x0a\x09gameContext currentMonster: aMonster",
-messageSends: ["selectAttackableCells", "updateGOTs", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09aMonster selectAttackableCells.\x0a\x09gameContext currentMonster: aMonster",
+messageSends: ["selectAttackableCells", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWHasMoved);
@@ -1426,20 +1419,18 @@ category: 'monster state API',
 fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2;
 $1=_st(gameContext)._shouldRestartTurn();
 if(smalltalk.assert($1)){
 $2=_st(gameContext)._restartTurn();
 return $2;
 };
-$3=_st(aMonster)._root();
-_st($3)._showActiveMonsters();
-$4=_st($3)._updateGOTs();
+_st(_st(aMonster)._root())._showActiveMonsters();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
 args: ["aMonster", "gameContext"],
-source: "select: aMonster inContext: gameContext\x0a\x09gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].\x0a\x09aMonster root \x0a\x09\x09showActiveMonsters;\x0a\x09\x09updateGOTs.\x0a\x09gameContext currentMonster: aMonster.",
-messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs", "currentMonster:"],
+source: "select: aMonster inContext: gameContext\x0a\x09gameContext shouldRestartTurn ifTrue: [ ^ gameContext restartTurn ].\x0a\x09aMonster root showActiveMonsters.\x0a\x09gameContext currentMonster: aMonster.",
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "currentMonster:"],
 referencedClasses: []
 }),
 smalltalk.CWInactive);

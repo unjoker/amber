@@ -104,6 +104,7 @@ startGame
 	self initializeAI: eventDispatcher.
 	CWFightMenu new.
 	map updateMap.
+	map removeSelection. "initialize got to invis image"
 	self firstTurn.
 ! !
 
@@ -264,7 +265,6 @@ startTurn: map
 	self team do: [ :each |
 		each readyToBePicked.
 		each parent showActiveMonsters ].
-	map updateGOTs.
 ! !
 
 !CWPlayer methodsFor: 'initialize-release'!

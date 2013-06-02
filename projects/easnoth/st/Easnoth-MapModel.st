@@ -37,10 +37,6 @@ announce: anEvent
 
 !CWComponent methodsFor: 'rendering'!
 
-updateGOTs
-	self root updateGOTs
-!
-
 updateMap
 	self root updateMap
 !
@@ -595,10 +591,6 @@ clean
 	drawer clean
 !
 
-updateGOTs
-	drawer updateGOTs
-!
-
 updateMap
 	drawer updateMap
 !
@@ -1099,7 +1091,6 @@ animationMoveFrom: cell1 to: cellLast callback: callback
 	moveNumber := path size - 1.
  
 	cell1 root removeSelection.
-	cell1 updateGOTs.
 
 	1 to: moveNumber do: [ :j |
 		[ (path at: path size - j) addMonster: self.
@@ -1188,7 +1179,6 @@ resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonu
 
 	self state changeStateAfterAttacking: self.
     self root removeSelection.
-	self updateGOTs.
 
 	self rollDicesCallBack: [ :diceRes |
 		anotherMonster removeHP: diceRes kills.

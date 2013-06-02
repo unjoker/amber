@@ -1599,26 +1599,16 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateGOTs",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@executionContext"]=_st(self)._newGOTDrawingContext();
-return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMapDrawer)})},
-messageSends: ["newGOTDrawingContext"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "updateMap",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._clean();
+_st(_st(self)._monsterLayer())._clean();
+_st(_st(self)._backgroundLayer())._clean();
 self["@executionContext"]=_st(self)._newGlobalDrawingContext();
 _st(self)._visitTree_(self["@map"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateMap",{},smalltalk.CWMapDrawer)})},
-messageSends: ["clean", "newGlobalDrawingContext", "visitTree:"]}),
+messageSends: ["clean", "monsterLayer", "backgroundLayer", "newGlobalDrawingContext", "visitTree:"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(

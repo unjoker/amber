@@ -236,22 +236,6 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateGOTs",
-category: 'rendering',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._root())._updateGOTs();
-return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWComponent)})},
-args: [],
-source: "updateGOTs\x0a\x09self root updateGOTs",
-messageSends: ["updateGOTs", "root"],
-referencedClasses: []
-}),
-smalltalk.CWComponent);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "updateMap",
 category: 'rendering',
 fn: function (){
@@ -1870,22 +1854,6 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateGOTs",
-category: 'rendering',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._updateGOTs();
-return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMap)})},
-args: [],
-source: "updateGOTs\x0a\x09drawer updateGOTs",
-messageSends: ["updateGOTs"],
-referencedClasses: []
-}),
-smalltalk.CWMap);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "updateMap",
 category: 'rendering',
 fn: function (){
@@ -2972,7 +2940,6 @@ return smalltalk.withContext(function($ctx1) {
 path=_st(cell1)._pathTo_(cellLast);
 moveNumber=_st(_st(path)._size()).__minus((1));
 _st(_st(cell1)._root())._removeSelection();
-_st(cell1)._updateGOTs();
 _st((1))._to_do_(moveNumber,(function(j){
 return smalltalk.withContext(function($ctx2) {
 return _st((function(){
@@ -2987,8 +2954,8 @@ return _st(self)._announceUpdate();
 _st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
 return self}, function($ctx1) {$ctx1.fill(self,"animationMoveFrom:to:callback:",{cell1:cell1,cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonster)})},
 args: ["cell1", "cellLast", "callback"],
-source: "animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := cell1 pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a \x0a\x09cell1 root removeSelection.\x0a\x09cell1 updateGOTs.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) addMonster: self.\x0a        (path at: path size + 1 - j) removeMonster.\x0a\x09\x09cell1 root updateMonstersAndGOTs.\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
-messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "updateGOTs", "to:do:", "valueWithTimeout:", "*", "addMonster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove", "announceUpdate"],
+source: "animationMoveFrom: cell1 to: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := cell1 pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a \x0a\x09cell1 root removeSelection.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) addMonster: self.\x0a        (path at: path size + 1 - j) removeMonster.\x0a\x09\x09cell1 root updateMonstersAndGOTs.\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
+messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "addMonster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove", "announceUpdate"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3863,7 +3830,6 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._state())._changeStateAfterAttacking_(self);
 _st(_st(self)._root())._removeSelection();
-_st(self)._updateGOTs();
 _st(self)._rollDicesCallBack_bonusDices_bonusAttack_((function(diceRes){
 return smalltalk.withContext(function($ctx2) {
 _st(anotherMonster)._removeHP_(_st(diceRes)._kills());
@@ -3873,8 +3839,8 @@ return _st(self)._updateMonstersAndGOTs();
 }, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}),bonusDices,bonusAttack);
 return self}, function($ctx1) {$ctx1.fill(self,"resolveAttack:inContext:bonusDices:bonusAttack:",{anotherMonster:anotherMonster,gameContext:gameContext,bonusDices:bonusDices,bonusAttack:bonusAttack},smalltalk.CWMonster)})},
 args: ["anotherMonster", "gameContext", "bonusDices", "bonusAttack"],
-source: "resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack\x0a\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x09self updateGOTs.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self selectInContext: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack",
-messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "updateGOTs", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs"],
+source: "resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack\x0a\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self selectInContext: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack",
+messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
