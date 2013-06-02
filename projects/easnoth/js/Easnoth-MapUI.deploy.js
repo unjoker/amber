@@ -185,6 +185,7 @@ function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?ni
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@suspended"]=false;
+self["@activeCheck"]=false;
 self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEventDispatcher)})},
 messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"]}),
@@ -228,18 +229,14 @@ smalltalk.method({
 selector: "mouseCoodToHexCoodX:y:",
 fn: function (x,y){
 var self=this;
-var xHex,yHex,array,mapDisplayX,mapDisplayY;
+var array;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-mapDisplayX=_st(_st(self)._padding())._x();
-mapDisplayY=_st(_st(self)._padding())._y();
-array=_st(self)._mouseCoodToHexCoodX_y_mapX_mapY_(x,y,mapDisplayX,mapDisplayY);
-xHex=_st(array)._at_((1));
-yHex=_st(array)._at_((2));
-$1=_st(xHex).__at(yHex);
+array=_st(self)._mouseCoodToHexCoodX_y_mapX_mapY_(x,y,_st(_st(self)._padding())._x(),_st(_st(self)._padding())._y());
+$1=_st(_st(array)._at_((1))).__at(_st(array)._at_((2)));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"mouseCoodToHexCoodX:y:",{x:x,y:y,xHex:xHex,yHex:yHex,array:array,mapDisplayX:mapDisplayX,mapDisplayY:mapDisplayY},smalltalk.CWEventDispatcher)})},
-messageSends: ["x", "padding", "y", "mouseCoodToHexCoodX:y:mapX:mapY:", "at:", "@"]}),
+}, function($ctx1) {$ctx1.fill(self,"mouseCoodToHexCoodX:y:",{x:x,y:y,array:array},smalltalk.CWEventDispatcher)})},
+messageSends: ["mouseCoodToHexCoodX:y:mapX:mapY:", "x", "padding", "y", "@", "at:"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -1460,20 +1457,6 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "newGOTDrawingContext",
-fn: function (){
-var self=this;
-function $CWGOTDrawingContext(){return smalltalk.CWGOTDrawingContext||(typeof CWGOTDrawingContext=="undefined"?nil:CWGOTDrawingContext)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st($CWGOTDrawingContext())._default())._reset_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newGOTDrawingContext",{},smalltalk.CWMapDrawer)})},
-messageSends: ["reset:", "default"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "newGOTLayer",
 fn: function (){
 var self=this;
@@ -1930,29 +1913,6 @@ return smalltalk.withContext(function($ctx1) {
 return self}, function($ctx1) {$ctx1.fill(self,"visitTile:",{aTile:aTile},smalltalk.CWMonsterAndGOTDrawingContext)})},
 messageSends: []}),
 smalltalk.CWMonsterAndGOTDrawingContext);
-
-
-
-smalltalk.addClass('CWGOTDrawingContext', smalltalk.CWMonsterAndGOTDrawingContext, [], 'Easnoth-MapUI');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "visitHeros:",
-fn: function (heros){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWGOTDrawingContext)})},
-messageSends: []}),
-smalltalk.CWGOTDrawingContext);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "visitUnit:",
-fn: function (aUnit){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWGOTDrawingContext)})},
-messageSends: []}),
-smalltalk.CWGOTDrawingContext);
 
 
 

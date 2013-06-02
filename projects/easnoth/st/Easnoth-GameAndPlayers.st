@@ -164,7 +164,7 @@ restartTurn
 !
 
 shouldRestartTurn
-	self currentCell ifNotNil: [ ^ self currentMonster hasPlayed not ].
+	self currentCell ifNotNil: [ self currentMonster ifNotNil: [ :m | ^ m hasPlayed not ] ].
 	^ false
 ! !
 
@@ -379,7 +379,7 @@ calculBestMove
 	bestScore := 9999 negated.
 	self team do: [ :monster |
 		monster currentMove: monster move.
-		monster attackableTargets do: [ :target |
+		monster attackableNeighbours do: [ :target |
 			score := (monster attackPotentialFor: target monster) - target monster defensePotential. 
 			score > bestScore ifTrue: [ 
 				bestScore := score.
@@ -397,8 +397,8 @@ checkForNextTurn: monster
 
 executeAttack
 	| relatedTargetCell duration |
-	relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.
-	duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.
+	relatedTargetCell := monsterToPlay cellToMoveBeforeAttack: cellToTarget context: self gameContext.
+	duration := (monsterToPlay pathTo: relatedTargetCell) size - 1 * 300.
 	cellToTarget mouseClick: self gameContext. 
 	[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.
 !
@@ -408,7 +408,9 @@ executeBestMove
 
 	| duration relatedTargetCell hasAttack |
 	monsterToPlay parent mouseClick: self gameContext.
-	[ cellToTarget hasMonster 
+	cellToTarget ifNil: [1halt].
+	[ 
+	cellToTarget hasMonster 
 			ifTrue: [ self executeAttack ]
 			ifFalse: [ self executeMove ].
 	] valueWithTimeout: self time.
@@ -416,7 +418,7 @@ executeBestMove
 
 executeMove
 	| duration |
-	duration := (monsterToPlay parent pathTo: cellToTarget) size - 1 * 300.
+	duration := (monsterToPlay pathTo: cellToTarget) size - 1 * 300.
 	cellToTarget mouseClick: self gameContext. 
 	[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + self time.
 !
@@ -424,10 +426,14 @@ executeMove
 randomMove
 	"Assumes that no monster can attack. Set bestMove to some random move of some random monster"
 	| cellsToGo |
-	monsterToPlay := self team at: self team size atRandom.
-	cellsToGo := (monsterToPlay parent movableNeighboursCycle2: monsterToPlay) remove: monsterToPlay parent.
+	monsterToPlay := self team atRandom.
+	
+	monsterToPlay currentMove: monsterToPlay move.
+	cellsToGo := monsterToPlay movableNeighbours.
+	monsterToPlay currentMove: 0.
+	
 	cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. "Case where the monster cannot move (surrounded by allies)"
-	cellToTarget := cellsToGo asArray atRandom.
+	cellToTarget := cellsToGo atRandom.
 !
 
 reinitialize
@@ -439,10 +445,10 @@ startTurn: map
 	self team isEmpty ifTrue: [^ self].
 	super startTurn: map.
 	[
-	self reinitialize.
-	self calculBestMove.
-	monsterToPlay ifNil: [ self randomMove ].
-	self executeBestMove
+		self reinitialize.
+		self calculBestMove.
+		monsterToPlay ifNil: [ self randomMove ].
+		self executeBestMove
 	] valueWithTimeout: self time
 ! !
 
@@ -485,11 +491,5 @@ remove: anObject ifAbsent: aBlock
 
 truncated
 	<return self | 0>
-! !
-
-!UndefinedObject methodsFor: '*Easnoth-GameAndPlayers'!
-
-isMarked
-	^ false
 ! !
 

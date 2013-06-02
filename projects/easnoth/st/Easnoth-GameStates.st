@@ -37,6 +37,10 @@ isFree
 	^ false
 !
 
+isFreeSelected
+	^ false
+!
+
 lighten: aCell
 	"do nothing"
 !
@@ -129,6 +133,10 @@ isFree
 	^ true
 !
 
+isFreeSelected
+	^ true
+!
+
 lighten: aCell
 	aCell gameOverTile lighten
 !
@@ -140,7 +148,7 @@ mouseClick: aCell context: gameContext
 mouseMove: cell context: gameContext
 	| path |
 	super mouseMove: cell context: gameContext.
-	path := gameContext currentCell pathTo: cell.
+	path := gameContext currentMonster pathTo: cell.
 	path do: [ :c | c darken ].
 !
 
@@ -220,7 +228,7 @@ mouseClick: aCell context: gameContext
 mouseMove: cell context: gameContext
 	| path |
 	super mouseMove: cell context: gameContext.
-	(gameContext currentCell cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext
+	(gameContext currentMonster cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext
 !
 
 removeMonster: aCell
@@ -311,7 +319,7 @@ hasPlayed: aMonster
 
 monster: aMonster attackTo: aCell inContext: gameContext
 	| toMoveCell |
-	toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell context: gameContext.
+	toMoveCell := aMonster cellToMoveBeforeAttack: aCell context: gameContext.
 	aMonster moveTo: toMoveCell inContext: gameContext callback: [
 		aMonster attack: aCell monster inContext: gameContext ]
 !

@@ -3,7 +3,9 @@ Object subclass: #CWEventDispatcher
 	instanceVariableNames: 'canvas map drawer game suspended currentCell'
 	package: 'Easnoth-MapUI'!
 !CWEventDispatcher commentStamp!
-I dispatch event from eventManager canvas to cells.!
+I dispatch event from eventManager canvas to cells. 
+
+activeCheck permits to limit the number of mousemove events.!
 
 !CWEventDispatcher methodsFor: 'accessing'!
 
@@ -57,20 +59,13 @@ currentCell: anEvent
 
 mouseCoodToHexCoodX: x y: y
 	"function that take mouse cood in pixel and return the coods of the tile selected"
-	
-	"algo is in javascript"
+	"algo is in javascript as Nicolas Petton refused to inline arthmetics"
 
-	| xHex yHex array mapDisplayX mapDisplayY|
+	| array |
                 
-	mapDisplayX := self padding x.
-	mapDisplayY := self padding y.
-
-	array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.
+	array:= self mouseCoodToHexCoodX: x y: y mapX: self padding x mapY: self padding y.
     
-    xHex := array at: 1.
-    yHex := array at: 2.
-    
-	^xHex @ yHex.
+	^ (array at: 1) @ (array at: 2).
 !
 
 mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
@@ -164,6 +159,7 @@ endGameEvent
 initialize
 	super initialize. 
 	suspended := false.
+	activeCheck := false.
 	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
 !
 
@@ -633,10 +629,6 @@ canvasLayerForId: id
 	^ CWCanvasLayer new initializeWithId: id
 !
 
-newGOTDrawingContext
-	^ CWGOTDrawingContext default reset: self
-!
-
 newGOTLayer
 	^ CWGOTLayer new initializeForMap: map
 !
@@ -757,28 +749,14 @@ drawBackground: object
 
 drawGOT: got
 	self gotLayer drawGOT: got point: self currentCoods
-	"self gotLayer safeDraw: [ :context | self gotLayer display: got cood: (self currentPoint x - 15)@(self currentPoint y - 10) ]"
 !
 
 drawHeros: heros
 	self monsterLayer drawHeros: heros point: self currentCoods
-	"(heros side negative) 
-		ifTrue: [ self monsterLayer reverseDisplay: heros point: self currentPoint xPad: 87 yPad: 28 ] 
-		ifFalse: [ self monsterLayer display: heros cood: (self currentPoint x + 15) @ (self currentPoint y - 28) ]"
 !
 
 drawUnit: aUnit
 	self monsterLayer drawUnit: aUnit point: self currentCoods
-	"| xArray yArray |
-
-	xArray := #(17 37 -11 9).
-	yArray := #(33 23 26 15).
-
-	(1 to: aUnit hp) do: [ :i |
-		(aUnit side negative) 
-			ifTrue: [ self monsterLayer reverseDisplay: aUnit point: self currentPoint xPad: 72 + (xArray at: i) yPad: (yArray at: i) ] 
-			ifFalse: [ self monsterLayer display: aUnit cood: (self currentPoint x + (xArray at: i))@(self currentPoint y - (yArray at: i)) ]
-	]"
 ! !
 
 !CWMapDrawer methodsFor: 'visiting'!
@@ -939,22 +917,6 @@ visitOverTile: ot
 !
 
 visitTile: aTile
-	"do nothing"
-! !
-
-CWMonsterAndGOTDrawingContext subclass: #CWGOTDrawingContext
-	instanceVariableNames: ''
-	package: 'Easnoth-MapUI'!
-!CWGOTDrawingContext commentStamp!
-With this context, the CWMap drawer will redraw only game over tiles.!
-
-!CWGOTDrawingContext methodsFor: 'visiting'!
-
-visitHeros: heros
-	"do nothing"
-!
-
-visitUnit: aUnit
 	"do nothing"
 ! !
 
