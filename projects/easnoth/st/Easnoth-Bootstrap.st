@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Easnoth-Bootstrap'!
 Object subclass: #CWBootstrapper
-	instanceVariableNames: 'objectToLoad objectLoaded loadingBar hasStarted'
+	instanceVariableNames: 'objectToLoad objectLoaded loadingBar hasStarted sidePanels'
 	package: 'Easnoth-Bootstrap'!
 !CWBootstrapper commentStamp!
 Bootstrap the system. Currently work only for games, not for the map editor!
@@ -47,6 +47,7 @@ initialize
 	hasStarted := true.
 	objectToLoad := 0.
 	objectLoaded := 0.
+	self initializeSidePanels.
 	self initializeEventHandling.
 	self preloadImages
 !
@@ -57,14 +58,48 @@ initializeEventHandling
 		do: [ objectToLoad := objectToLoad + 1 ].
 	self announcer 
 		on: CWObjectLoaded 
-			do: [ objectLoaded := objectLoaded + 1.
+		do: [ objectLoaded := objectLoaded + 1.
 				self checkIfReady].
+	self announcer
+		on: CWMapMoveEvent
+		do: [ self updateSidePanels ].
+	self onWindowResize: [ self updateSidePanels ].
+!
+
+initializeSidePanels
+	| html global |
+	html := HTMLCanvas onJQuery: 'body' asJQuery.
+	global := '#global' asJQuery.
+	sidePanels := Array new.
+	sidePanels add: (html div class: 'sidePanel').
+	sidePanels add: (html div class: 'sidePanel').
+	sidePanels add: (html div class: 'sidePanel').
+	sidePanels add: (html div class: 'sidePanel').
+	self updateSidePanels.
+!
+
+onWindowResize: aBlock
+	<jQuery(window).resize(aBlock)>
 !
 
 preloadImages
 	self imagesToPreload do: [ :key |
 		CWGameOverTile newImageFrom: key ].
 	CWBackground newImageFrom: 'back'.
+!
+
+updateSidePanels
+	| global |
+	global := '#global' asJQuery.
+	global css: 'margin-top' put: ((window innerHeight - 640) / 2) asString, 'px'.
+	(sidePanels at: 1)
+		style: 'position: absolute; top: 0; left: 0; height: ', window innerHeight, 'px; width:', (global css: 'margin-left').
+	(sidePanels at: 2)
+		style: 'position: absolute; top: 0; right: 0; height: ', window innerHeight, 'px; width:', (global css: 'margin-right').
+	(sidePanels at: 3)
+		style: 'position: absolute; top: 0; left: 0; height: ', (global css: 'margin-top'), '; width:', window innerWidth, 'px'.
+	(sidePanels at: 4)
+		style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', window innerWidth, 'px'.
 ! !
 
 !CWBootstrapper class methodsFor: 'instance creation'!

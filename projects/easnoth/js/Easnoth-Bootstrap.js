@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Bootstrap');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted'], 'Easnoth-Bootstrap');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted', 'sidePanels'], 'Easnoth-Bootstrap');
 smalltalk.CWBootstrapper.comment="Bootstrap the system. Currently work only for games, not for the map editor"
 smalltalk.addMethod(
 smalltalk.method({
@@ -97,12 +97,13 @@ smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@hasStarted"]=true;
 self["@objectToLoad"]=(0);
 self["@objectLoaded"]=(0);
+_st(self)._initializeSidePanels();
 _st(self)._initializeEventHandling();
 _st(self)._preloadImages();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09hasStarted := true.\x0a\x09objectToLoad := 0.\x0a\x09objectLoaded := 0.\x0a\x09self initializeEventHandling.\x0a\x09self preloadImages",
-messageSends: ["initialize", "initializeEventHandling", "preloadImages"],
+source: "initialize\x0a\x09super initialize.\x0a\x09hasStarted := true.\x0a\x09objectToLoad := 0.\x0a\x09objectLoaded := 0.\x0a\x09self initializeSidePanels.\x0a\x09self initializeEventHandling.\x0a\x09self preloadImages",
+messageSends: ["initialize", "initializeSidePanels", "initializeEventHandling", "preloadImages"],
 referencedClasses: []
 }),
 smalltalk.CWBootstrapper);
@@ -115,6 +116,7 @@ fn: function (){
 var self=this;
 function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
 function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
+function $CWMapMoveEvent(){return smalltalk.CWMapMoveEvent||(typeof CWMapMoveEvent=="undefined"?nil:CWMapMoveEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWWaitForObject(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -127,11 +129,61 @@ self["@objectLoaded"]=_st(self["@objectLoaded"]).__plus((1));
 self["@objectLoaded"];
 return _st(self)._checkIfReady();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWMapMoveEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._updateSidePanels();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(self)._onWindowResize_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._updateSidePanels();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer \x0a\x09\x09on: CWWaitForObject \x0a\x09\x09do: [ objectToLoad := objectToLoad + 1 ].\x0a\x09self announcer \x0a\x09\x09on: CWObjectLoaded \x0a\x09\x09\x09do: [ objectLoaded := objectLoaded + 1.\x0a\x09\x09\x09\x09self checkIfReady].",
-messageSends: ["on:do:", "+", "announcer", "checkIfReady"],
-referencedClasses: ["CWWaitForObject", "CWObjectLoaded"]
+source: "initializeEventHandling\x0a\x09self announcer \x0a\x09\x09on: CWWaitForObject \x0a\x09\x09do: [ objectToLoad := objectToLoad + 1 ].\x0a\x09self announcer \x0a\x09\x09on: CWObjectLoaded \x0a\x09\x09do: [ objectLoaded := objectLoaded + 1.\x0a\x09\x09\x09\x09self checkIfReady].\x0a\x09self announcer\x0a\x09\x09on: CWMapMoveEvent\x0a\x09\x09do: [ self updateSidePanels ].\x0a\x09self onWindowResize: [ self updateSidePanels ].",
+messageSends: ["on:do:", "+", "announcer", "checkIfReady", "updateSidePanels", "onWindowResize:"],
+referencedClasses: ["CWWaitForObject", "CWObjectLoaded", "CWMapMoveEvent"]
+}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeSidePanels",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+var html,global;
+function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+html=_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery());
+global=_st("#global")._asJQuery();
+self["@sidePanels"]=_st($Array())._new();
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self)._updateSidePanels();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeSidePanels",{html:html,global:global},smalltalk.CWBootstrapper)})},
+args: [],
+source: "initializeSidePanels\x0a\x09| html global |\x0a\x09html := HTMLCanvas onJQuery: 'body' asJQuery.\x0a\x09global := '#global' asJQuery.\x0a\x09sidePanels := Array new.\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09self updateSidePanels.",
+messageSends: ["onJQuery:", "asJQuery", "new", "add:", "class:", "div", "updateSidePanels"],
+referencedClasses: ["HTMLCanvas", "Array"]
+}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onWindowResize:",
+category: 'initialize-release',
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+jQuery(window).resize(aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"onWindowResize:",{aBlock:aBlock},smalltalk.CWBootstrapper)})},
+args: ["aBlock"],
+source: "onWindowResize: aBlock\x0a\x09<jQuery(window).resize(aBlock)>",
+messageSends: [],
+referencedClasses: []
 }),
 smalltalk.CWBootstrapper);
 
@@ -173,6 +225,28 @@ args: [],
 source: "startGame\x0a\x09hasStarted := true.\x0a\x09loadingBar hide.\x0a\x09self announcer announce: CWGameStart new.",
 messageSends: ["hide", "announce:", "new", "announcer"],
 referencedClasses: ["CWGameStart"]
+}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateSidePanels",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+var global;
+return smalltalk.withContext(function($ctx1) { 
+global=_st("#global")._asJQuery();
+_st(global)._css_put_("margin-top",_st(_st(_st(_st(_st(window)._innerHeight()).__minus((640))).__slash((2)))._asString()).__comma("px"));
+_st(_st(self["@sidePanels"])._at_((1)))._style_(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(window)._innerHeight())).__comma("px; width:")).__comma(_st(global)._css_("margin-left")));
+_st(_st(self["@sidePanels"])._at_((2)))._style_(_st(_st(_st("position: absolute; top: 0; right: 0; height: ").__comma(_st(window)._innerHeight())).__comma("px; width:")).__comma(_st(global)._css_("margin-right")));
+_st(_st(self["@sidePanels"])._at_((3)))._style_(_st(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(global)._css_("margin-top"))).__comma("; width:")).__comma(_st(window)._innerWidth())).__comma("px"));
+_st(_st(self["@sidePanels"])._at_((4)))._style_(_st(_st(_st(_st("position: absolute; bottom: 0; left: 0; height: ").__comma(_st(global)._css_("margin-bottom"))).__comma("; width:")).__comma(_st(window)._innerWidth())).__comma("px"));
+return self}, function($ctx1) {$ctx1.fill(self,"updateSidePanels",{global:global},smalltalk.CWBootstrapper)})},
+args: [],
+source: "updateSidePanels\x0a\x09| global |\x0a\x09global := '#global' asJQuery.\x0a\x09global css: 'margin-top' put: ((window innerHeight - 640) / 2) asString, 'px'.\x0a\x09(sidePanels at: 1)\x0a\x09\x09style: 'position: absolute; top: 0; left: 0; height: ', window innerHeight, 'px; width:', (global css: 'margin-left').\x0a\x09(sidePanels at: 2)\x0a\x09\x09style: 'position: absolute; top: 0; right: 0; height: ', window innerHeight, 'px; width:', (global css: 'margin-right').\x0a\x09(sidePanels at: 3)\x0a\x09\x09style: 'position: absolute; top: 0; left: 0; height: ', (global css: 'margin-top'), '; width:', window innerWidth, 'px'.\x0a\x09(sidePanels at: 4)\x0a\x09\x09style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', window innerWidth, 'px'.",
+messageSends: ["asJQuery", "css:put:", ",", "asString", "/", "-", "innerHeight", "style:", "css:", "at:", "innerWidth"],
+referencedClasses: []
 }),
 smalltalk.CWBootstrapper);
 
