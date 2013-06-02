@@ -163,7 +163,7 @@ restartTurn
 !
 
 shouldRestartTurn
-	self currentCell ifNotNil: [ :monster | ^ monster hasPlayed not ].
+	self currentCell ifNotNil: [ ^ self currentMonster hasPlayed not ].
 	^ false
 ! !
 
@@ -425,7 +425,7 @@ randomMove
 	"Assumes that no monster can attack. Set bestMove to some random move of some random monster"
 	| cellsToGo |
 	monsterToPlay := self team at: self team size atRandom.
-	cellsToGo := (monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent.
+	cellsToGo := (monsterToPlay parent movableNeighboursCycle2: monsterToPlay) remove: monsterToPlay parent.
 	cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. "Case where the monster cannot move (surrounded by allies)"
 	cellToTarget := cellsToGo asArray atRandom.
 !
