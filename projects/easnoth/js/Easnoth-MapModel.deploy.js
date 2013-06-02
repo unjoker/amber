@@ -987,7 +987,7 @@ smalltalk.CWOneChildClass);
 
 
 
-smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer'], 'Easnoth-MapModel');
+smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer', 'cellsCache'], 'Easnoth-MapModel');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -1037,6 +1037,20 @@ return smalltalk.withContext(function($ctx1) {
 _st(self["@drawer"])._clean();
 return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWMap)})},
 messageSends: ["clean"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "desactivateMonsters",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._desactivateMonsters();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltalk.CWMap)})},
+messageSends: ["do:", "desactivateMonsters"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -1092,6 +1106,20 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "lighten",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._lighten();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"lighten",{},smalltalk.CWMap)})},
+messageSends: ["do:", "lighten"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "neighboursOf:cellIndex:",
 fn: function (row,cellIndex){
 var self=this;
@@ -1117,6 +1145,26 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "prefillCaches",
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+self["@cellsCache"]=_st($Array())._new();
+_st(_st(self)._children())._do_((function(row){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(row)._children())._do_((function(cell){
+return smalltalk.withContext(function($ctx3) {
+_st(self["@cellsCache"])._add_(cell);
+return _st(cell)._prefillCaches();
+}, function($ctx3) {$ctx3.fillBlock({cell:cell},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({row:row},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"prefillCaches",{},smalltalk.CWMap)})},
+messageSends: ["new", "do:", "add:", "prefillCaches", "children"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "printOn:",
 fn: function (aStream){
 var self=this;
@@ -1128,6 +1176,20 @@ _st($1)._nextPutAll_(_st(_st(self["@rows"])._size())._printString());
 $2=_st($1)._nextPutAll_(" rows)");
 return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smalltalk.CWMap)})},
 messageSends: ["nextPutAll:", "printString", "size"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelection",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._removeSelection();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWMap)})},
+messageSends: ["do:", "removeSelection"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -1163,9 +1225,26 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._removeSelection();
-smalltalk.CWOneChildClass.fn.prototype._showActiveMonsters.apply(_st(self), []);
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._showActiveMonsters();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonsters",{},smalltalk.CWMap)})},
-messageSends: ["removeSelection", "showActiveMonsters"]}),
+messageSends: ["removeSelection", "do:", "showActiveMonsters"]}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "unmark",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._unmark();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"unmark",{},smalltalk.CWMap)})},
+messageSends: ["do:", "unmark"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -1703,9 +1782,9 @@ selector: "image:",
 fn: function (anImage){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@htmlImage"])._src_(_st(anImage)._src());
+_st(_st(self["@htmlImage"])._asJQuery())._attr_put_("src",_st(anImage)._src());
 return self}, function($ctx1) {$ctx1.fill(self,"image:",{anImage:anImage},smalltalk.CWGameOverTile)})},
-messageSends: ["src:", "src"]}),
+messageSends: ["attr:put:", "src", "asJQuery"]}),
 smalltalk.CWGameOverTile);
 
 smalltalk.addMethod(

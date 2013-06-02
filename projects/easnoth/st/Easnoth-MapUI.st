@@ -371,7 +371,7 @@ initializeForMap: aMap
 
 clean
 	array do: [:each |
-	    each src: invis src ]
+	    each asJQuery attr: 'src' put: invis src ]
 !
 
 drawGOT: got point: point

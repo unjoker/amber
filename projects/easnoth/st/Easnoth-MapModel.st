@@ -404,7 +404,7 @@ accept: aVisitor
 ! !
 
 CWOneChildClass subclass: #CWMap
-	instanceVariableNames: 'rows drawer'
+	instanceVariableNames: 'rows drawer cellsCache'
 	package: 'Easnoth-MapModel'!
 !CWMap commentStamp!
 I represent the whole map in the game.!
@@ -457,6 +457,15 @@ initializeFromJson: jsonMap
 		child initializeFromJson: row ].
 		
 	self announce: CWObjectLoaded new.
+!
+
+prefillCaches
+	"just for speed ... If you play only on chrome remove that crap"
+	cellsCache := Array new.
+	self children do: [ :row |
+		row children do: [ :cell |
+			cellsCache add: cell.
+			cell prefillCaches ] ].
 ! !
 
 !CWMap methodsFor: 'neighbours'!
@@ -497,9 +506,35 @@ updateMonstersAndGOTs
 
 !CWMap methodsFor: 'selection'!
 
+desactivateMonsters
+	"just for speed ... If you play only on chrome remove that crap"
+	cellsCache do: [ :each |
+		each desactivateMonsters ]
+!
+
+lighten
+	"just for speed ... If you play only on chrome remove that crap"
+	cellsCache do: [ :each |
+		each lighten ]
+!
+
+removeSelection
+	"just for speed ... If you play only on chrome remove that crap"
+	cellsCache do: [ :each |
+		each removeSelection ]
+!
+
 showActiveMonsters
 	self removeSelection.
-	super showActiveMonsters
+	"just for speed ... If you play only on chrome put super showActiveMonsters"
+	cellsCache do: [ :each |
+		each showActiveMonsters ]
+!
+
+unmark
+	"just for speed ... If you play only on chrome remove that crap"
+	cellsCache do: [ :each |
+		each unmark ]
 ! !
 
 !CWMap methodsFor: 'visiting'!
@@ -766,7 +801,7 @@ htmlImage: aHTMLElem
 !
 
 image: anImage
-	htmlImage src: anImage src
+	htmlImage asJQuery attr: 'src' put: anImage src
 ! !
 
 !CWGameOverTile methodsFor: 'coloring'!
