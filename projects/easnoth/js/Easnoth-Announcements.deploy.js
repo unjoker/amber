@@ -158,11 +158,10 @@ smalltalk.method({
 selector: "reset",
 fn: function (){
 var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-self["@subscriptions"]=_st($Array())._new();
+_st(self["@subscriptions"])._reset();
 return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["new"]}),
+messageSends: ["reset"]}),
 smalltalk.CWEasnothAnnouncer);
 
 

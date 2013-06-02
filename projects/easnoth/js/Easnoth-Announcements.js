@@ -217,14 +217,13 @@ selector: "reset",
 category: 'not yet classified',
 fn: function (){
 var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
-self["@subscriptions"]=_st($Array())._new();
+_st(self["@subscriptions"])._reset();
 return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer)})},
 args: [],
-source: "reset\x0a\x09subscriptions := Array new",
-messageSends: ["new"],
-referencedClasses: ["Array"]
+source: "reset\x0a\x09subscriptions reset",
+messageSends: ["reset"],
+referencedClasses: []
 }),
 smalltalk.CWEasnothAnnouncer);
 
