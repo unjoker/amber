@@ -109,6 +109,22 @@ smalltalk.CWCellState);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isFreeSelected",
+category: 'cell state API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return false;
+}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWCellState)})},
+args: [],
+source: "isFreeSelected\x0a\x09^ false",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCellState);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "lighten:",
 category: 'cell state API',
 fn: function (aCell){
@@ -406,6 +422,22 @@ smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "isFreeSelected",
+category: 'cell state API',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return true;
+}, function($ctx1) {$ctx1.fill(self,"isFreeSelected",{},smalltalk.CWFreeSelected)})},
+args: [],
+source: "isFreeSelected\x0a\x09^ true",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWFreeSelected);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "lighten:",
 category: 'cell state API',
 fn: function (aCell){
@@ -445,15 +477,15 @@ var self=this;
 var path;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWCellState.fn.prototype._mouseMove_context_.apply(_st(self), [cell,gameContext]);
-path=_st(_st(gameContext)._currentCell())._pathTo_(cell);
+path=_st(_st(gameContext)._currentMonster())._pathTo_(cell);
 _st(path)._do_((function(c){
 return smalltalk.withContext(function($ctx2) {
 return _st(c)._darken();
 }, function($ctx2) {$ctx2.fillBlock({c:c},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWFreeSelected)})},
 args: ["cell", "gameContext"],
-source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09path := gameContext currentCell pathTo: cell.\x0a\x09path do: [ :c | c darken ].",
-messageSends: ["mouseMove:context:", "pathTo:", "currentCell", "do:", "darken"],
+source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09path := gameContext currentMonster pathTo: cell.\x0a\x09path do: [ :c | c darken ].",
+messageSends: ["mouseMove:context:", "pathTo:", "currentMonster", "do:", "darken"],
 referencedClasses: []
 }),
 smalltalk.CWFreeSelected);
@@ -693,11 +725,11 @@ var self=this;
 var path;
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWCellState.fn.prototype._mouseMove_context_.apply(_st(self), [cell,gameContext]);
-_st(_st(_st(gameContext)._currentCell())._cellToMoveBeforeAttack_context_(cell,gameContext))._mouseMove_(gameContext);
+_st(_st(_st(gameContext)._currentMonster())._cellToMoveBeforeAttack_context_(cell,gameContext))._mouseMove_(gameContext);
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWHasMonsterSelected)})},
 args: ["cell", "gameContext"],
-source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09(gameContext currentCell cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext",
-messageSends: ["mouseMove:context:", "mouseMove:", "cellToMoveBeforeAttack:context:", "currentCell"],
+source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09(gameContext currentMonster cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext",
+messageSends: ["mouseMove:context:", "mouseMove:", "cellToMoveBeforeAttack:context:", "currentMonster"],
 referencedClasses: []
 }),
 smalltalk.CWHasMonsterSelected);
@@ -1034,15 +1066,15 @@ fn: function (aMonster,aCell,gameContext){
 var self=this;
 var toMoveCell;
 return smalltalk.withContext(function($ctx1) { 
-toMoveCell=_st(_st(aMonster)._parent())._cellToMoveBeforeAttack_context_(aCell,gameContext);
+toMoveCell=_st(aMonster)._cellToMoveBeforeAttack_context_(aCell,gameContext);
 _st(aMonster)._moveTo_inContext_callback_(toMoveCell,gameContext,(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(aMonster)._attack_inContext_(_st(aCell)._monster(),gameContext);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"monster:attackTo:inContext:",{aMonster:aMonster,aCell:aCell,gameContext:gameContext,toMoveCell:toMoveCell},smalltalk.CWActive)})},
 args: ["aMonster", "aCell", "gameContext"],
-source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09toMoveCell := aMonster parent cellToMoveBeforeAttack: aCell context: gameContext.\x0a\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09aMonster attack: aCell monster inContext: gameContext ]",
-messageSends: ["cellToMoveBeforeAttack:context:", "parent", "moveTo:inContext:callback:", "attack:inContext:", "monster"],
+source: "monster: aMonster attackTo: aCell inContext: gameContext\x0a\x09| toMoveCell |\x0a\x09toMoveCell := aMonster cellToMoveBeforeAttack: aCell context: gameContext.\x0a\x09aMonster moveTo: toMoveCell inContext: gameContext callback: [\x0a\x09\x09aMonster attack: aCell monster inContext: gameContext ]",
+messageSends: ["cellToMoveBeforeAttack:context:", "moveTo:inContext:callback:", "attack:inContext:", "monster"],
 referencedClasses: []
 }),
 smalltalk.CWActive);

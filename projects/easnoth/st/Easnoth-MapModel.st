@@ -176,6 +176,10 @@ mark
 	mark := true
 !
 
+neighbours
+	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
+!
+
 prevCell
 	^ prevCell
 !
@@ -252,119 +256,6 @@ prefillCaches
 	self neighbours.
 ! !
 
-!CWCell methodsFor: 'neighbourhood'!
-
-attackableNeighboursForMonster2: aMonster
-	| moveAttack |
-	moveAttack := self monsterSelection: aMonster.
-	^ moveAttack second
-!
-
-monsterSelection: aMonster
-	"this used to be divided into several methods, but it is now in 1 to be faster..."
-	| movableCells newMovableCells attackableCells tempSet cycleNumber |
-	
-	self root unmark.
-	self mark.
-	
-	tempSet := Array new.
-	attackableCells := Array new.
-	movableCells := Array new.
-	cycleNumber := aMonster range + aMonster currentMove.
-	
-	newMovableCells := { self }.
-	1 to: cycleNumber do: [ :i |
-		tempSet reset.
-		newMovableCells do: [ :each | 
-			each neighbours do: [ :neigh | 
-				neigh isMarked 
-					ifFalse: [
-						neigh mark.
-						neigh prevCell: each.
-						neigh isFree ifTrue: [ tempSet add: neigh ].
-						(neigh canBeAttackedBy: aMonster side) ifTrue: [ attackableCells add: neigh ]] ] ].
-		i = 1 | (i - 1 > aMonster currentMove) ifFalse: [
-			movableCells addAll: newMovableCells].
-		newMovableCells reset.
-		newMovableCells addAll: tempSet].
-	
-	 ^ { movableCells . attackableCells }
-!
-
-movableNeighboursCycle2: aMonster
-	| moveAttack |
-	moveAttack := self monsterSelection: aMonster.
-	^ moveAttack first
-!
-
-neighbours
-	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
-!
-
-selectableNeighboursForMonster2: aMonster
-	| moveAttack |
-	moveAttack := self monsterSelection: aMonster.
-	moveAttack first addAll: moveAttack second.
-	^ moveAttack first
-!
-
-supportFrom: side
-	|attackableCells|
-	attackableCells := self neighbours select: [ :each | 
-					each canBeAttackedBy: side ].
-	^ attackableCells
-! !
-
-!CWCell methodsFor: 'pathfinding'!
-
-cellToMoveBeforeAttack: cellLast context: gameContext
-	"Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.
-	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
-
-	| possibleCells closestCell shortestPath |
-	self monster isRanged ifTrue: [ ^ self cellToMoveBeforeRangeAttack: cellLast ].
-	(gameContext relatedCell isMarked ) ifTrue: [ ^ gameContext relatedCell ]. 
-	(cellLast neighbours includes: self) ifTrue: [ ^ self ].
-	possibleCells := cellLast neighbours select: [:each | each isMarked ].
-	shortestPath := 9999.
-	possibleCells do: [ :each | 
-		| pathSize |
-		pathSize := (self pathTo: each) size.
-		pathSize < shortestPath 
-			ifTrue: [ 
-				shortestPath := pathSize.
-				closestCell := each ] ].
-	^ closestCell
-!
-
-cellToMoveBeforeRangeAttack: cellLast
-	| possibleCells closestCell shortestPath |
-	
-	possibleCells := cellLast neighbours select: [:each | each isMarked ].
-	shortestPath := 9999.
-	possibleCells do: [ :each | 
-		| pathSize |
-		pathSize := (self pathTo: each) size.
-		pathSize < shortestPath 
-			ifTrue: [ 
-				shortestPath := pathSize.
-				closestCell := each ] ].
-	
-	shortestPath := self pathTo: closestCell. "shortest fake track to ennemy"
-	shortestPath size < self monster range ifTrue: [ ^ self ]. "for AI move calculs only"
-	^ shortestPath at: self monster range. "in fake track, get furthest from ennemy cell where you can attack him"
-!
-
-pathTo: cellLast
-	"Assumes that some cells are selected and that the player clicked on a selected cell.
-	Answers the shortest path from the current cell to the cell clicked"
-
-	| path |
-	path := Array with: cellLast.
-	[ self = path last ] whileFalse: [ path add: path last prevCell ].
-	^ path
-! !
-
 !CWCell methodsFor: 'printing'!
 
 printOn: aStream
@@ -424,6 +315,11 @@ hasMonster
 isFree
 	"Answers true if cell free or freeselected"
 	^ self state isFree
+!
+
+isFreeSelected
+	"Answers true if cell free or freeselected"
+	^ self state isFreeSelected
 !
 
 mouseClick: gameContext
@@ -1081,42 +977,6 @@ special: aString
 	special := aString
 ! !
 
-!CWMonster methodsFor: 'animation'!
-
-animationMoveFrom: cell1 to: cellLast callback: callback
-	
-	| path moveNumber |
-	
-	path := cell1 pathTo: cellLast.
-	moveNumber := path size - 1.
- 
-	cell1 root removeSelection.
-
-	1 to: moveNumber do: [ :j |
-		[ (path at: path size - j) addMonster: self.
-        (path at: path size + 1 - j) removeMonster.
-		cell1 root updateMonstersAndGOTs.
-		self currentMove: self currentMove - 1.
-		self announceUpdate ] valueWithTimeout: 300 * j ].
-	
-	callback valueWithTimeout: 300 * moveNumber
-!
-
-announceUpdate
-	self announce: (CWMonsterUpdateEvent new monster: self)
-!
-
-moveTo: aCell inContext: gameContext callback: callback
-	"triggers the animation for the monster move"
-	
-	self animationMoveFrom: gameContext currentCell to: aCell callback: [	
-		self state changeStateAfterMoving: self.
-		self selectInContext: gameContext.
-		self checkForNextTurn.
-		callback value.
-	].
-! !
-
 !CWMonster methodsFor: 'fighting'!
 
 attack: anotherMonster inContext: gameContext
@@ -1205,7 +1065,7 @@ rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
 !
 
 support	
-	^ self parent supportFrom: self side
+	^ self parent neighbours select: [ :each | each canBeAttackedBy: self side ]
 ! !
 
 !CWMonster methodsFor: 'initialize-release'!
@@ -1233,6 +1093,70 @@ stats: jsonStats
 	self hp: self defaultHp.
 ! !
 
+!CWMonster methodsFor: 'move'!
+
+animationMoveTo: cellLast callback: callback
+	
+	| path moveNumber |
+	
+	path := self pathTo: cellLast.
+	moveNumber := path size - 1.
+	cellLast root removeSelection.
+
+	1 to: moveNumber do: [ :j |
+		[ (path at: path size - j) addMonster: self.
+        (path at: path size + 1 - j) removeMonster.
+		cellLast root updateMonstersAndGOTs.
+		self currentMove: self currentMove - 1.
+		self announceUpdate ] valueWithTimeout: 300 * j ].
+	
+	callback valueWithTimeout: 300 * moveNumber
+!
+
+announceUpdate
+	self announce: (CWMonsterUpdateEvent new monster: self)
+!
+
+cellToMoveBeforeAttack: cellLast context: gameContext
+	"Assumes that a monster is at self and want to attack cellLast's monster, which is not a neighbour.
+	Answers the closest cell from cell1 that the current monster can reach to attack cellLast's monster"
+	
+	self isRanged ifTrue: [ ^ self cellToMoveBeforeRangeAttack: cellLast ].
+	(gameContext relatedCell ifNotNil: [ :it | it isFreeSelected ] ifNil: [ false ] ) ifTrue: [ ^ gameContext relatedCell ]. 
+	(cellLast neighbours includes: self parent) ifTrue: [ ^ self parent ].
+
+	^ (self pathTo: cellLast) at: 2
+!
+
+cellToMoveBeforeRangeAttack: cellLast
+	| shortestPath |
+	
+	shortestPath := self pathTo: cellLast. "shortest fake track to ennemy"
+	shortestPath size < (self range + 1) ifTrue: [ ^ self parent ]. "for AI move calculs only"
+	^ shortestPath at: self range + 1. "in fake track, get furthest from ennemy cell where you can attack him"
+!
+
+moveTo: aCell inContext: gameContext callback: callback
+	"triggers the animation for the monster move"
+	
+	self animationMoveTo: aCell callback: [	
+		self state changeStateAfterMoving: self.
+		self selectInContext: gameContext.
+		self checkForNextTurn.
+		callback value.
+	].
+!
+
+pathTo: cellLast
+	"Assumes that some cells are selected and that the player clicked on a selected cell.
+	Answers the shortest path from the current cell to the cell clicked"
+
+	| path |
+	path := Array with: cellLast.
+	[ self parent = path last ] whileFalse: [ path add: path last prevCell ].
+	^ path
+! !
+
 !CWMonster methodsFor: 'printing'!
 
 printOn: aStream
@@ -1251,21 +1175,63 @@ addSelectorsTo: cells
 	^ cells
 !
 
-attackableTargets
-	"Answers the list of monsters this monster can attack, including the ones he needs to move before attack"
-	^ self parent attackableNeighboursForMonster2: self
+attackableNeighbours
+	^ self monsterSelection second
+!
+
+monsterSelection
+	"this used to be divided into several methods, but it is now in 1 to be faster...
+	Answers the cells the monster can attack or move"
+	| movableCells newMovableCells attackableCells tempSet cycleNumber |
+	
+	self root unmark.
+	self parent mark.
+	
+	tempSet := Array new.
+	attackableCells := Array new.
+	movableCells := Array new.
+	cycleNumber := self range + self currentMove.
+	
+	newMovableCells := { self parent }.
+	1 to: cycleNumber do: [ :i |
+		tempSet reset.
+		newMovableCells do: [ :each | 
+			each neighbours do: [ :neigh | 
+				neigh isMarked 
+					ifFalse: [
+						neigh mark.
+						neigh prevCell: each.
+						neigh isFree ifTrue: [ tempSet add: neigh ].
+						(neigh canBeAttackedBy: self side) ifTrue: [ attackableCells add: neigh ]] ] ].
+		i = 1 | (i - 1 > self currentMove) ifFalse: [
+			movableCells addAll: newMovableCells].
+		newMovableCells reset.
+		newMovableCells addAll: tempSet].
+	
+	 ^ { movableCells . attackableCells }
+!
+
+movableNeighbours
+	^ self monsterSelection first
 !
 
 selectActionCells
-	^ self addSelectorsTo: (self parent selectableNeighboursForMonster2: self).
+	^ self addSelectorsTo: self selectableNeighbours
 !
 
 selectAttackableCells
-	^ self addSelectorsTo: (self parent attackableNeighboursForMonster2: self)
+	^ self addSelectorsTo: self attackableNeighbours
 !
 
 selectMovableCells
-	^ self addSelectorsTo: (self parent movableNeighboursCycle2: self )
+	^ self addSelectorsTo: self movableNeighbours
+!
+
+selectableNeighbours
+	| moveAttack |
+	moveAttack := self monsterSelection.
+	moveAttack first addAll: moveAttack second.
+	^ moveAttack first
 ! !
 
 !CWMonster methodsFor: 'state delegation'!

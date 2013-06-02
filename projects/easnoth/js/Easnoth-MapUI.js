@@ -1,6 +1,6 @@
 smalltalk.addPackage('Easnoth-MapUI');
 smalltalk.addClass('CWEventDispatcher', smalltalk.Object, ['canvas', 'map', 'drawer', 'game', 'suspended', 'currentCell'], 'Easnoth-MapUI');
-smalltalk.CWEventDispatcher.comment="I dispatch event from eventManager canvas to cells. "
+smalltalk.CWEventDispatcher.comment="I dispatch event from eventManager canvas to cells. \x0a\x0aactiveCheck permits to limit the number of mousemove events."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announcer",
@@ -232,10 +232,11 @@ function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?ni
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@suspended"]=false;
+self["@activeCheck"]=false;
 self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).",
+source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09activeCheck := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).",
 messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"],
 referencedClasses: ["HTMLCanvas", "TagBrush"]
 }),
@@ -290,20 +291,16 @@ selector: "mouseCoodToHexCoodX:y:",
 category: 'calculs',
 fn: function (x,y){
 var self=this;
-var xHex,yHex,array,mapDisplayX,mapDisplayY;
+var array;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-mapDisplayX=_st(_st(self)._padding())._x();
-mapDisplayY=_st(_st(self)._padding())._y();
-array=_st(self)._mouseCoodToHexCoodX_y_mapX_mapY_(x,y,mapDisplayX,mapDisplayY);
-xHex=_st(array)._at_((1));
-yHex=_st(array)._at_((2));
-$1=_st(xHex).__at(yHex);
+array=_st(self)._mouseCoodToHexCoodX_y_mapX_mapY_(x,y,_st(_st(self)._padding())._x(),_st(_st(self)._padding())._y());
+$1=_st(_st(array)._at_((1))).__at(_st(array)._at_((2)));
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"mouseCoodToHexCoodX:y:",{x:x,y:y,xHex:xHex,yHex:yHex,array:array,mapDisplayX:mapDisplayX,mapDisplayY:mapDisplayY},smalltalk.CWEventDispatcher)})},
+}, function($ctx1) {$ctx1.fill(self,"mouseCoodToHexCoodX:y:",{x:x,y:y,array:array},smalltalk.CWEventDispatcher)})},
 args: ["x", "y"],
-source: "mouseCoodToHexCoodX: x y: y\x0a\x09\x22function that take mouse cood in pixel and return the coods of the tile selected\x22\x0a\x09\x0a\x09\x22algo is in javascript\x22\x0a\x0a\x09| xHex yHex array mapDisplayX mapDisplayY|\x0a                \x0a\x09mapDisplayX := self padding x.\x0a\x09mapDisplayY := self padding y.\x0a\x0a\x09array:= self mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY.\x0a    \x0a    xHex := array at: 1.\x0a    yHex := array at: 2.\x0a    \x0a\x09^xHex @ yHex.",
-messageSends: ["x", "padding", "y", "mouseCoodToHexCoodX:y:mapX:mapY:", "at:", "@"],
+source: "mouseCoodToHexCoodX: x y: y\x0a\x09\x22function that take mouse cood in pixel and return the coods of the tile selected\x22\x0a\x09\x22algo is in javascript as Nicolas Petton refused to inline arthmetics\x22\x0a\x0a\x09| array |\x0a                \x0a\x09array:= self mouseCoodToHexCoodX: x y: y mapX: self padding x mapY: self padding y.\x0a    \x0a\x09^ (array at: 1) @ (array at: 2).",
+messageSends: ["mouseCoodToHexCoodX:y:mapX:mapY:", "x", "padding", "y", "@", "at:"],
 referencedClasses: []
 }),
 smalltalk.CWEventDispatcher);
@@ -1694,7 +1691,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self)._gotLayer())._drawGOT_point_(got,_st(self)._currentCoods());
 return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:",{got:got},smalltalk.CWMapDrawer)})},
 args: ["got"],
-source: "drawGOT: got\x0a\x09self gotLayer drawGOT: got point: self currentCoods\x0a\x09\x22self gotLayer safeDraw: [ :context | self gotLayer display: got cood: (self currentPoint x - 15)@(self currentPoint y - 10) ]\x22",
+source: "drawGOT: got\x0a\x09self gotLayer drawGOT: got point: self currentCoods",
 messageSends: ["drawGOT:point:", "currentCoods", "gotLayer"],
 referencedClasses: []
 }),
@@ -1710,7 +1707,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self)._monsterLayer())._drawHeros_point_(heros,_st(self)._currentCoods());
 return self}, function($ctx1) {$ctx1.fill(self,"drawHeros:",{heros:heros},smalltalk.CWMapDrawer)})},
 args: ["heros"],
-source: "drawHeros: heros\x0a\x09self monsterLayer drawHeros: heros point: self currentCoods\x0a\x09\x22(heros side negative) \x0a\x09\x09ifTrue: [ self monsterLayer reverseDisplay: heros point: self currentPoint xPad: 87 yPad: 28 ] \x0a\x09\x09ifFalse: [ self monsterLayer display: heros cood: (self currentPoint x + 15) @ (self currentPoint y - 28) ]\x22",
+source: "drawHeros: heros\x0a\x09self monsterLayer drawHeros: heros point: self currentCoods",
 messageSends: ["drawHeros:point:", "currentCoods", "monsterLayer"],
 referencedClasses: []
 }),
@@ -1726,7 +1723,7 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self)._monsterLayer())._drawUnit_point_(aUnit,_st(self)._currentCoods());
 return self}, function($ctx1) {$ctx1.fill(self,"drawUnit:",{aUnit:aUnit},smalltalk.CWMapDrawer)})},
 args: ["aUnit"],
-source: "drawUnit: aUnit\x0a\x09self monsterLayer drawUnit: aUnit point: self currentCoods\x0a\x09\x22| xArray yArray |\x0a\x0a\x09xArray := #(17 37 -11 9).\x0a\x09yArray := #(33 23 26 15).\x0a\x0a\x09(1 to: aUnit hp) do: [ :i |\x0a\x09\x09(aUnit side negative) \x0a\x09\x09\x09ifTrue: [ self monsterLayer reverseDisplay: aUnit point: self currentPoint xPad: 72 + (xArray at: i) yPad: (yArray at: i) ] \x0a\x09\x09\x09ifFalse: [ self monsterLayer display: aUnit cood: (self currentPoint x + (xArray at: i))@(self currentPoint y - (yArray at: i)) ]\x0a\x09]\x22",
+source: "drawUnit: aUnit\x0a\x09self monsterLayer drawUnit: aUnit point: self currentCoods",
 messageSends: ["drawUnit:point:", "currentCoods", "monsterLayer"],
 referencedClasses: []
 }),
@@ -1951,25 +1948,6 @@ args: [],
 source: "moveIncrement\x0a\x09^ 50",
 messageSends: [],
 referencedClasses: []
-}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newGOTDrawingContext",
-category: 'factory',
-fn: function (){
-var self=this;
-function $CWGOTDrawingContext(){return smalltalk.CWGOTDrawingContext||(typeof CWGOTDrawingContext=="undefined"?nil:CWGOTDrawingContext)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st($CWGOTDrawingContext())._default())._reset_(self);
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newGOTDrawingContext",{},smalltalk.CWMapDrawer)})},
-args: [],
-source: "newGOTDrawingContext\x0a\x09^ CWGOTDrawingContext default reset: self",
-messageSends: ["reset:", "default"],
-referencedClasses: ["CWGOTDrawingContext"]
 }),
 smalltalk.CWMapDrawer);
 
@@ -2609,40 +2587,6 @@ messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMonsterAndGOTDrawingContext);
-
-
-
-smalltalk.addClass('CWGOTDrawingContext', smalltalk.CWMonsterAndGOTDrawingContext, [], 'Easnoth-MapUI');
-smalltalk.CWGOTDrawingContext.comment="With this context, the CWMap drawer will redraw only game over tiles."
-smalltalk.addMethod(
-smalltalk.method({
-selector: "visitHeros:",
-category: 'visiting',
-fn: function (heros){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitHeros:",{heros:heros},smalltalk.CWGOTDrawingContext)})},
-args: ["heros"],
-source: "visitHeros: heros\x0a\x09\x22do nothing\x22",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWGOTDrawingContext);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "visitUnit:",
-category: 'visiting',
-fn: function (aUnit){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"visitUnit:",{aUnit:aUnit},smalltalk.CWGOTDrawingContext)})},
-args: ["aUnit"],
-source: "visitUnit: aUnit\x0a\x09\x22do nothing\x22",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWGOTDrawingContext);
 
 
 

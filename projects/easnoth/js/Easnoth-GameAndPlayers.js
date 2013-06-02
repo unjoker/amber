@@ -498,18 +498,25 @@ category: 'game logic',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$3;
 $1=_st(self)._currentCell();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
 } else {
-$2=_st(_st(_st(self)._currentMonster())._hasPlayed())._not();
-return $2;
+$2=_st(self)._currentMonster();
+if(($receiver = $2) == nil || $receiver == undefined){
+$2;
+} else {
+var m;
+m=$receiver;
+$3=_st(_st(m)._hasPlayed())._not();
+return $3;
+};
 };
 return false;
 }, function($ctx1) {$ctx1.fill(self,"shouldRestartTurn",{},smalltalk.CWGameContext)})},
 args: [],
-source: "shouldRestartTurn\x0a\x09self currentCell ifNotNil: [ ^ self currentMonster hasPlayed not ].\x0a\x09^ false",
+source: "shouldRestartTurn\x0a\x09self currentCell ifNotNil: [ self currentMonster ifNotNil: [ :m | ^ m hasPlayed not ] ].\x0a\x09^ false",
 messageSends: ["ifNotNil:", "not", "hasPlayed", "currentMonster", "currentCell"],
 referencedClasses: []
 }),
@@ -1084,7 +1091,7 @@ bestScore=_st((9999))._negated();
 _st(_st(self)._team())._do_((function(monster){
 return smalltalk.withContext(function($ctx2) {
 _st(monster)._currentMove_(_st(monster)._move());
-_st(_st(monster)._attackableTargets())._do_((function(target){
+_st(_st(monster)._attackableNeighbours())._do_((function(target){
 return smalltalk.withContext(function($ctx3) {
 score=_st(_st(monster)._attackPotentialFor_(_st(target)._monster())).__minus(_st(_st(target)._monster())._defensePotential());
 score;
@@ -1102,8 +1109,8 @@ return _st(monster)._currentMove_((0));
 }, function($ctx2) {$ctx2.fillBlock({monster:monster},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"calculBestMove",{score:score,bestScore:bestScore},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "calculBestMove\x0a\x09\x22Calcul the best move for the AI player. see class comment for details\x22 \x0a\x0a\x09| score bestScore |\x0a\x09bestScore := 9999 negated.\x0a\x09self team do: [ :monster |\x0a\x09\x09monster currentMove: monster move.\x0a\x09\x09monster attackableTargets do: [ :target |\x0a\x09\x09\x09score := (monster attackPotentialFor: target monster) - target monster defensePotential. \x0a\x09\x09\x09score > bestScore ifTrue: [ \x0a\x09\x09\x09\x09bestScore := score.\x0a\x09\x09\x09\x09monsterToPlay := monster.\x0a\x09\x09\x09\x09cellToTarget := target ] ].\x0a\x09\x09monster currentMove: 0. ]",
-messageSends: ["negated", "do:", "currentMove:", "move", "-", "defensePotential", "monster", "attackPotentialFor:", "ifTrue:", ">", "attackableTargets", "team"],
+source: "calculBestMove\x0a\x09\x22Calcul the best move for the AI player. see class comment for details\x22 \x0a\x0a\x09| score bestScore |\x0a\x09bestScore := 9999 negated.\x0a\x09self team do: [ :monster |\x0a\x09\x09monster currentMove: monster move.\x0a\x09\x09monster attackableNeighbours do: [ :target |\x0a\x09\x09\x09score := (monster attackPotentialFor: target monster) - target monster defensePotential. \x0a\x09\x09\x09score > bestScore ifTrue: [ \x0a\x09\x09\x09\x09bestScore := score.\x0a\x09\x09\x09\x09monsterToPlay := monster.\x0a\x09\x09\x09\x09cellToTarget := target ] ].\x0a\x09\x09monster currentMove: 0. ]",
+messageSends: ["negated", "do:", "currentMove:", "move", "-", "defensePotential", "monster", "attackPotentialFor:", "ifTrue:", ">", "attackableNeighbours", "team"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1137,8 +1144,8 @@ fn: function (){
 var self=this;
 var relatedTargetCell,duration;
 return smalltalk.withContext(function($ctx1) { 
-relatedTargetCell=_st(_st(self["@monsterToPlay"])._parent())._cellToMoveBeforeAttack_context_(self["@cellToTarget"],_st(self)._gameContext());
-duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
+relatedTargetCell=_st(self["@monsterToPlay"])._cellToMoveBeforeAttack_context_(self["@cellToTarget"],_st(self)._gameContext());
+duration=_st(_st(_st(_st(self["@monsterToPlay"])._pathTo_(relatedTargetCell))._size()).__minus((1))).__star((300));
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -1146,8 +1153,8 @@ return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(_st(duration).__plus((2000))).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeAttack",{relatedTargetCell:relatedTargetCell,duration:duration},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay parent cellToMoveBeforeAttack: cellToTarget context: self gameContext.\x0a\x09duration := (monsterToPlay parent pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
-messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "parent", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
+source: "executeAttack\x0a\x09| relatedTargetCell duration |\x0a\x09relatedTargetCell := monsterToPlay cellToMoveBeforeAttack: cellToTarget context: self gameContext.\x0a\x09duration := (monsterToPlay pathTo: relatedTargetCell) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + 2000 + self time.",
+messageSends: ["cellToMoveBeforeAttack:context:", "gameContext", "*", "-", "size", "pathTo:", "mouseClick:", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1160,12 +1167,18 @@ fn: function (){
 var self=this;
 var duration,relatedTargetCell,hasAttack;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
+var $1,$2;
 _st(_st(self["@monsterToPlay"])._parent())._mouseClick_(_st(self)._gameContext());
+$1=self["@cellToTarget"];
+if(($receiver = $1) == nil || $receiver == undefined){
+_st((1))._halt();
+} else {
+$1;
+};
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
-$1=_st(self["@cellToTarget"])._hasMonster();
-if(smalltalk.assert($1)){
+$2=_st(self["@cellToTarget"])._hasMonster();
+if(smalltalk.assert($2)){
 return _st(self)._executeAttack();
 } else {
 return _st(self)._executeMove();
@@ -1173,8 +1186,8 @@ return _st(self)._executeMove();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(self)._time());
 return self}, function($ctx1) {$ctx1.fill(self,"executeBestMove",{duration:duration,relatedTargetCell:relatedTargetCell,hasAttack:hasAttack},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeBestMove\x0a\x09\x22Assumes that the bestMove instance variable is now set to an Array(a Monster to play . aCell to move / attack). Executes this best move\x22\x0a\x0a\x09| duration relatedTargetCell hasAttack |\x0a\x09monsterToPlay parent mouseClick: self gameContext.\x0a\x09[ cellToTarget hasMonster \x0a\x09\x09\x09ifTrue: [ self executeAttack ]\x0a\x09\x09\x09ifFalse: [ self executeMove ].\x0a\x09] valueWithTimeout: self time.",
-messageSends: ["mouseClick:", "gameContext", "parent", "valueWithTimeout:", "time", "ifTrue:ifFalse:", "executeAttack", "executeMove", "hasMonster"],
+source: "executeBestMove\x0a\x09\x22Assumes that the bestMove instance variable is now set to an Array(a Monster to play . aCell to move / attack). Executes this best move\x22\x0a\x0a\x09| duration relatedTargetCell hasAttack |\x0a\x09monsterToPlay parent mouseClick: self gameContext.\x0a\x09cellToTarget ifNil: [1halt].\x0a\x09[ \x0a\x09cellToTarget hasMonster \x0a\x09\x09\x09ifTrue: [ self executeAttack ]\x0a\x09\x09\x09ifFalse: [ self executeMove ].\x0a\x09] valueWithTimeout: self time.",
+messageSends: ["mouseClick:", "gameContext", "parent", "ifNil:", "halt", "valueWithTimeout:", "time", "ifTrue:ifFalse:", "executeAttack", "executeMove", "hasMonster"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1187,7 +1200,7 @@ fn: function (){
 var self=this;
 var duration;
 return smalltalk.withContext(function($ctx1) { 
-duration=_st(_st(_st(_st(_st(self["@monsterToPlay"])._parent())._pathTo_(self["@cellToTarget"]))._size()).__minus((1))).__star((300));
+duration=_st(_st(_st(_st(self["@monsterToPlay"])._pathTo_(self["@cellToTarget"]))._size()).__minus((1))).__star((300));
 _st(self["@cellToTarget"])._mouseClick_(_st(self)._gameContext());
 _st((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -1195,8 +1208,8 @@ return _st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(duration).__plus(_st(self)._time()));
 return self}, function($ctx1) {$ctx1.fill(self,"executeMove",{duration:duration},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "executeMove\x0a\x09| duration |\x0a\x09duration := (monsterToPlay parent pathTo: cellToTarget) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + self time.",
-messageSends: ["*", "-", "size", "pathTo:", "parent", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
+source: "executeMove\x0a\x09| duration |\x0a\x09duration := (monsterToPlay pathTo: cellToTarget) size - 1 * 300.\x0a\x09cellToTarget mouseClick: self gameContext. \x0a\x09[ self checkForNextTurn: monsterToPlay ] valueWithTimeout: duration + self time.",
+messageSends: ["*", "-", "size", "pathTo:", "mouseClick:", "gameContext", "valueWithTimeout:", "+", "time", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1212,20 +1225,22 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 var $early={};
 try {
-self["@monsterToPlay"]=_st(_st(self)._team())._at_(_st(_st(_st(self)._team())._size())._atRandom());
-cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle2_(self["@monsterToPlay"]))._remove_(_st(self["@monsterToPlay"])._parent());
+self["@monsterToPlay"]=_st(_st(self)._team())._atRandom();
+_st(self["@monsterToPlay"])._currentMove_(_st(self["@monsterToPlay"])._move());
+cellsToGo=_st(self["@monsterToPlay"])._movableNeighbours();
+_st(self["@monsterToPlay"])._currentMove_((0));
 _st(cellsToGo)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(self)._checkForNextTurn_(self["@monsterToPlay"]);
 throw $early=[$1];
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-self["@cellToTarget"]=_st(_st(cellsToGo)._asArray())._atRandom();
+self["@cellToTarget"]=_st(cellsToGo)._atRandom();
 return self}
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"randomMove",{cellsToGo:cellsToGo},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "randomMove\x0a\x09\x22Assumes that no monster can attack. Set bestMove to some random move of some random monster\x22\x0a\x09| cellsToGo |\x0a\x09monsterToPlay := self team at: self team size atRandom.\x0a\x09cellsToGo := (monsterToPlay parent movableNeighboursCycle2: monsterToPlay) remove: monsterToPlay parent.\x0a\x09cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. \x22Case where the monster cannot move (surrounded by allies)\x22\x0a\x09cellToTarget := cellsToGo asArray atRandom.",
-messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle2:", "ifEmpty:", "checkForNextTurn:", "asArray"],
+source: "randomMove\x0a\x09\x22Assumes that no monster can attack. Set bestMove to some random move of some random monster\x22\x0a\x09| cellsToGo |\x0a\x09monsterToPlay := self team atRandom.\x0a\x09\x0a\x09monsterToPlay currentMove: monsterToPlay move.\x0a\x09cellsToGo := monsterToPlay movableNeighbours.\x0a\x09monsterToPlay currentMove: 0.\x0a\x09\x0a\x09cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. \x22Case where the monster cannot move (surrounded by allies)\x22\x0a\x09cellToTarget := cellsToGo atRandom.",
+messageSends: ["atRandom", "team", "currentMove:", "move", "movableNeighbours", "ifEmpty:", "checkForNextTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);
@@ -1275,7 +1290,7 @@ return _st(self)._executeBestMove();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st(self)._time());
 return self}, function($ctx1) {$ctx1.fill(self,"startTurn:",{map:map},smalltalk.CWAggressWeakestAI)})},
 args: ["map"],
-source: "startTurn: map\x0a\x09self team isEmpty ifTrue: [^ self].\x0a\x09super startTurn: map.\x0a\x09[\x0a\x09self reinitialize.\x0a\x09self calculBestMove.\x0a\x09monsterToPlay ifNil: [ self randomMove ].\x0a\x09self executeBestMove\x0a\x09] valueWithTimeout: self time",
+source: "startTurn: map\x0a\x09self team isEmpty ifTrue: [^ self].\x0a\x09super startTurn: map.\x0a\x09[\x0a\x09\x09self reinitialize.\x0a\x09\x09self calculBestMove.\x0a\x09\x09monsterToPlay ifNil: [ self randomMove ].\x0a\x09\x09self executeBestMove\x0a\x09] valueWithTimeout: self time",
 messageSends: ["ifTrue:", "isEmpty", "team", "startTurn:", "valueWithTimeout:", "time", "reinitialize", "calculBestMove", "ifNil:", "randomMove", "executeBestMove"],
 referencedClasses: []
 }),
@@ -1408,20 +1423,4 @@ messageSends: [],
 referencedClasses: []
 }),
 smalltalk.Number);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "isMarked",
-category: '*Easnoth-GameAndPlayers',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return false;
-}, function($ctx1) {$ctx1.fill(self,"isMarked",{},smalltalk.UndefinedObject)})},
-args: [],
-source: "isMarked\x0a\x09^ false",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.UndefinedObject);
 
