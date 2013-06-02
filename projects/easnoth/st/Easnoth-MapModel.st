@@ -218,6 +218,13 @@ tileClass
 	^ CWTile
 ! !
 
+!CWCell methodsFor: 'forwarding optimization'!
+
+desactivateMonsters
+	"you can remove this method, but it makes the game faster."
+	self monster ifNotNil: [ :m | m desactivateMonsters ]
+! !
+
 !CWCell methodsFor: 'initialize-release'!
 
 free
@@ -251,96 +258,14 @@ prefillCaches
 
 !CWCell methodsFor: 'neighbourhood'!
 
-attackableNeighboursConsideringMoveForMonster: aMonster
-	"for AI. Answers the collection of attackable ennemies considering the move of the monster"
-	
-	| selectableCells |
-	selectableCells := self selectableNeighboursForMonster: aMonster.
-	^ selectableCells select: [ :each | each hasMonster ]
+attackableNeighboursForMonster2: aMonster
+	| moveAttack |
+	moveAttack := self monsterSelection: aMonster.
+	^ moveAttack second
 !
 
-attackableNeighboursForMonster: aMonster
-	
-	| attackableCells tempCells |
-	
-	attackableCells := Array new.
-	tempCells := self movableNeighboursCycle: aMonster range - 1.
-	
-	tempCells do: [ :each |
-		attackableCells addAll: (each attackableNeighboursFrom: aMonster side) ].
-
-	^ attackableCells asSet
-!
-
-attackableNeighboursForMonsterNoUnmark: aMonster
-	
-	| attackableCells tempCells |
-	
-	attackableCells := Array new.
-	tempCells := self movableNeighboursCycleNoUnmark: aMonster range - 1.
-	
-	tempCells do: [ :each |
-		attackableCells addAll: (each attackableNeighboursFrom: aMonster side) ].
-
-	^ attackableCells asSet
-!
-
-attackableNeighboursFrom: side
-	|attackableCells|
-	attackableCells := self neighbours select: [ :each | 
-					each canBeAttackedBy: side ].
-	^ attackableCells
-!
-
-movableNeighbours
-	|movableCells|
-
-	movableCells := self neighbours select: [:each | each isFree & each isMarked not ].
-	
-	"this add a track for pathfinding"
-	movableCells do: [ :each |
-			each prevCell: self.
-			each mark].
-			
-	^ movableCells
-!
-
-movableNeighboursCycle: cycleNumber
-	| movableCells tempSet |
-	
-	self root unmark.
-	
-	tempSet := Array new.
-	
-	movableCells := { self } asSet.
-	1 to: cycleNumber do: [ :i |
-		tempSet reset.
-		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
-		movableCells addAll: tempSet].
-	
-	^ movableCells
-!
-
-movableNeighboursCycleNoUnmark: cycleNumber
-	| movableCells tempSet |
-	
-	tempSet := Array new.
-	
-	movableCells := { self } asSet.
-	1 to: cycleNumber do: [ :i |
-		tempSet reset.
-		movableCells do: [ :each | tempSet addAll: each movableNeighbours ].
-		movableCells addAll: tempSet].
-	
-	^ movableCells
-!
-
-neighbours
-	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
-!
-
-selectableNeighboursForMonster2: aMonster
-	"try to optimize here"
+monsterSelection: aMonster
+	"this used to be divided into several methods, but it is now in 1 to be faster..."
 	| movableCells newMovableCells attackableCells tempSet cycleNumber |
 	
 	self root unmark.
@@ -367,19 +292,31 @@ selectableNeighboursForMonster2: aMonster
 		newMovableCells reset.
 		newMovableCells addAll: tempSet].
 	
-	 movableCells addAll: attackableCells.
-	 ^ movableCells
+	 ^ { movableCells . attackableCells }
 !
 
-selectableNeighboursForMonster: aMonster
-	| selectableCells tempSet |
+movableNeighboursCycle2: aMonster
+	| moveAttack |
+	moveAttack := self monsterSelection: aMonster.
+	^ moveAttack first
+!
 
-	selectableCells := self movableNeighboursCycle: aMonster currentMove.
+neighbours
+	^ neighboursCache ifNil: [ neighboursCache := self parent neighboursOf: self ]
+!
 
-	 tempSet := Array new.
-	 selectableCells do: [ :each | tempSet addAll: (each attackableNeighboursForMonsterNoUnmark: aMonster) ].
-	 selectableCells addAll: tempSet.
-	 ^ selectableCells remove: self
+selectableNeighboursForMonster2: aMonster
+	| moveAttack |
+	moveAttack := self monsterSelection: aMonster.
+	moveAttack first addAll: moveAttack second.
+	^ moveAttack first
+!
+
+supportFrom: side
+	|attackableCells|
+	attackableCells := self neighbours select: [ :each | 
+					each canBeAttackedBy: side ].
+	^ attackableCells
 ! !
 
 !CWCell methodsFor: 'pathfinding'!
@@ -1278,7 +1215,7 @@ rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
 !
 
 support	
-	^ self parent attackableNeighboursFrom: self side
+	^ self parent supportFrom: self side
 ! !
 
 !CWMonster methodsFor: 'initialize-release'!
@@ -1326,7 +1263,7 @@ addSelectorsTo: cells
 
 attackableTargets
 	"Answers the list of monsters this monster can attack, including the ones he needs to move before attack"
-	^ self parent attackableNeighboursConsideringMoveForMonster: self.
+	^ self parent attackableNeighboursForMonster2: self
 !
 
 selectActionCells
@@ -1334,11 +1271,11 @@ selectActionCells
 !
 
 selectAttackableCells
-	^ self addSelectorsTo: (self parent attackableNeighboursForMonster: self)
+	^ self addSelectorsTo: (self parent attackableNeighboursForMonster2: self)
 !
 
 selectMovableCells
-	^ self addSelectorsTo: ((self parent movableNeighboursCycle: self currentMove) remove: self parent; yourself )
+	^ self addSelectorsTo: (self parent movableNeighboursCycle2: self )
 ! !
 
 !CWMonster methodsFor: 'state delegation'!

@@ -502,16 +502,14 @@ $1=_st(self)._currentCell();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
 } else {
-var monster;
-monster=$receiver;
-$2=_st(_st(monster)._hasPlayed())._not();
+$2=_st(_st(_st(self)._currentMonster())._hasPlayed())._not();
 return $2;
 };
 return false;
 }, function($ctx1) {$ctx1.fill(self,"shouldRestartTurn",{},smalltalk.CWGameContext)})},
 args: [],
-source: "shouldRestartTurn\x0a\x09self currentCell ifNotNil: [ :monster | ^ monster hasPlayed not ].\x0a\x09^ false",
-messageSends: ["ifNotNil:", "not", "hasPlayed", "currentCell"],
+source: "shouldRestartTurn\x0a\x09self currentCell ifNotNil: [ ^ self currentMonster hasPlayed not ].\x0a\x09^ false",
+messageSends: ["ifNotNil:", "not", "hasPlayed", "currentMonster", "currentCell"],
 referencedClasses: []
 }),
 smalltalk.CWGameContext);
@@ -1215,7 +1213,7 @@ var $1;
 var $early={};
 try {
 self["@monsterToPlay"]=_st(_st(self)._team())._at_(_st(_st(_st(self)._team())._size())._atRandom());
-cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle_(_st(self["@monsterToPlay"])._move()))._remove_(_st(self["@monsterToPlay"])._parent());
+cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle2_(self["@monsterToPlay"]))._remove_(_st(self["@monsterToPlay"])._parent());
 _st(cellsToGo)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(self)._checkForNextTurn_(self["@monsterToPlay"]);
@@ -1226,8 +1224,8 @@ return self}
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"randomMove",{cellsToGo:cellsToGo},smalltalk.CWAggressWeakestAI)})},
 args: [],
-source: "randomMove\x0a\x09\x22Assumes that no monster can attack. Set bestMove to some random move of some random monster\x22\x0a\x09| cellsToGo |\x0a\x09monsterToPlay := self team at: self team size atRandom.\x0a\x09cellsToGo := (monsterToPlay parent movableNeighboursCycle: monsterToPlay move) remove: monsterToPlay parent.\x0a\x09cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. \x22Case where the monster cannot move (surrounded by allies)\x22\x0a\x09cellToTarget := cellsToGo asArray atRandom.",
-messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle:", "move", "ifEmpty:", "checkForNextTurn:", "asArray"],
+source: "randomMove\x0a\x09\x22Assumes that no monster can attack. Set bestMove to some random move of some random monster\x22\x0a\x09| cellsToGo |\x0a\x09monsterToPlay := self team at: self team size atRandom.\x0a\x09cellsToGo := (monsterToPlay parent movableNeighboursCycle2: monsterToPlay) remove: monsterToPlay parent.\x0a\x09cellsToGo ifEmpty: [ ^ self checkForNextTurn: monsterToPlay ]. \x22Case where the monster cannot move (surrounded by allies)\x22\x0a\x09cellToTarget := cellsToGo asArray atRandom.",
+messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle2:", "ifEmpty:", "checkForNextTurn:", "asArray"],
 referencedClasses: []
 }),
 smalltalk.CWAggressWeakestAI);

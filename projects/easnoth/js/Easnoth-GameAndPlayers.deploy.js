@@ -374,14 +374,12 @@ $1=_st(self)._currentCell();
 if(($receiver = $1) == nil || $receiver == undefined){
 $1;
 } else {
-var monster;
-monster=$receiver;
-$2=_st(_st(monster)._hasPlayed())._not();
+$2=_st(_st(_st(self)._currentMonster())._hasPlayed())._not();
 return $2;
 };
 return false;
 }, function($ctx1) {$ctx1.fill(self,"shouldRestartTurn",{},smalltalk.CWGameContext)})},
-messageSends: ["ifNotNil:", "not", "hasPlayed", "currentCell"]}),
+messageSends: ["ifNotNil:", "not", "hasPlayed", "currentMonster", "currentCell"]}),
 smalltalk.CWGameContext);
 
 
@@ -915,7 +913,7 @@ var $1;
 var $early={};
 try {
 self["@monsterToPlay"]=_st(_st(self)._team())._at_(_st(_st(_st(self)._team())._size())._atRandom());
-cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle_(_st(self["@monsterToPlay"])._move()))._remove_(_st(self["@monsterToPlay"])._parent());
+cellsToGo=_st(_st(_st(self["@monsterToPlay"])._parent())._movableNeighboursCycle2_(self["@monsterToPlay"]))._remove_(_st(self["@monsterToPlay"])._parent());
 _st(cellsToGo)._ifEmpty_((function(){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(self)._checkForNextTurn_(self["@monsterToPlay"]);
@@ -925,7 +923,7 @@ self["@cellToTarget"]=_st(_st(cellsToGo)._asArray())._atRandom();
 return self}
 catch(e) {if(e===$early)return e[0]; throw e}
 }, function($ctx1) {$ctx1.fill(self,"randomMove",{cellsToGo:cellsToGo},smalltalk.CWAggressWeakestAI)})},
-messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle:", "move", "ifEmpty:", "checkForNextTurn:", "asArray"]}),
+messageSends: ["at:", "atRandom", "size", "team", "remove:", "parent", "movableNeighboursCycle2:", "ifEmpty:", "checkForNextTurn:", "asArray"]}),
 smalltalk.CWAggressWeakestAI);
 
 smalltalk.addMethod(
