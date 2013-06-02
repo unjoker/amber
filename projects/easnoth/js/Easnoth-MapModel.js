@@ -1365,7 +1365,7 @@ smalltalk.CWOneChildClass);
 
 
 
-smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer'], 'Easnoth-MapModel');
+smalltalk.addClass('CWMap', smalltalk.CWOneChildClass, ['rows', 'drawer', 'cellsCache'], 'Easnoth-MapModel');
 smalltalk.CWMap.comment="I represent the whole map in the game. "
 smalltalk.addMethod(
 smalltalk.method({
@@ -1440,6 +1440,25 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "desactivateMonsters",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._desactivateMonsters();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltalk.CWMap)})},
+args: [],
+source: "desactivateMonsters\x0a\x09\x22just for speed ... If you play only on chrome remove that crap\x22\x0a\x09cellsCache do: [ :each |\x0a\x09\x09each desactivateMonsters ]",
+messageSends: ["do:", "desactivateMonsters"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "drawer",
 category: 'accessing',
 fn: function (){
@@ -1506,6 +1525,25 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "lighten",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._lighten();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"lighten",{},smalltalk.CWMap)})},
+args: [],
+source: "lighten\x0a\x09\x22just for speed ... If you play only on chrome remove that crap\x22\x0a\x09cellsCache do: [ :each |\x0a\x09\x09each lighten ]",
+messageSends: ["do:", "lighten"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "neighboursOf:cellIndex:",
 category: 'neighbours',
 fn: function (row,cellIndex){
@@ -1536,6 +1574,31 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "prefillCaches",
+category: 'initialize-release',
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+self["@cellsCache"]=_st($Array())._new();
+_st(_st(self)._children())._do_((function(row){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(row)._children())._do_((function(cell){
+return smalltalk.withContext(function($ctx3) {
+_st(self["@cellsCache"])._add_(cell);
+return _st(cell)._prefillCaches();
+}, function($ctx3) {$ctx3.fillBlock({cell:cell},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({row:row},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"prefillCaches",{},smalltalk.CWMap)})},
+args: [],
+source: "prefillCaches\x0a\x09\x22just for speed ... If you play only on chrome remove that crap\x22\x0a\x09cellsCache := Array new.\x0a\x09self children do: [ :row |\x0a\x09\x09row children do: [ :cell |\x0a\x09\x09\x09cellsCache add: cell.\x0a\x09\x09\x09cell prefillCaches ] ].\x0a\x09\x09",
+messageSends: ["new", "do:", "add:", "prefillCaches", "children"],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "printOn:",
 category: 'printing',
 fn: function (aStream){
@@ -1550,6 +1613,25 @@ return self}, function($ctx1) {$ctx1.fill(self,"printOn:",{aStream:aStream},smal
 args: ["aStream"],
 source: "printOn: aStream\x0a\x09aStream\x0a\x09\x09nextPutAll: 'a Map (';\x0a\x09\x09nextPutAll: rows size printString;\x0a\x09\x09nextPutAll: ' rows)'",
 messageSends: ["nextPutAll:", "printString", "size"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "removeSelection",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._removeSelection();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"removeSelection",{},smalltalk.CWMap)})},
+args: [],
+source: "removeSelection\x0a\x09\x22just for speed ... If you play only on chrome remove that crap\x22\x0a\x09cellsCache do: [ :each |\x0a\x09\x09each removeSelection ]",
+messageSends: ["do:", "removeSelection"],
 referencedClasses: []
 }),
 smalltalk.CWMap);
@@ -1598,11 +1680,33 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._removeSelection();
-smalltalk.CWOneChildClass.fn.prototype._showActiveMonsters.apply(_st(self), []);
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._showActiveMonsters();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"showActiveMonsters",{},smalltalk.CWMap)})},
 args: [],
-source: "showActiveMonsters\x0a\x09self removeSelection.\x0a\x09super showActiveMonsters",
-messageSends: ["removeSelection", "showActiveMonsters"],
+source: "showActiveMonsters\x0a\x09self removeSelection.\x0a\x09\x22just for speed ... If you play only on chrome put super showActiveMonsters\x22\x0a\x09cellsCache do: [ :each |\x0a\x09\x09each showActiveMonsters ]",
+messageSends: ["removeSelection", "do:", "showActiveMonsters"],
+referencedClasses: []
+}),
+smalltalk.CWMap);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "unmark",
+category: 'selection',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._unmark();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"unmark",{},smalltalk.CWMap)})},
+args: [],
+source: "unmark\x0a\x09\x22just for speed ... If you play only on chrome remove that crap\x22\x0a\x09cellsCache do: [ :each |\x0a\x09\x09each unmark ]",
+messageSends: ["do:", "unmark"],
 referencedClasses: []
 }),
 smalltalk.CWMap);
@@ -2322,11 +2426,11 @@ category: 'accessing',
 fn: function (anImage){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@htmlImage"])._src_(_st(anImage)._src());
+_st(_st(self["@htmlImage"])._asJQuery())._attr_put_("src",_st(anImage)._src());
 return self}, function($ctx1) {$ctx1.fill(self,"image:",{anImage:anImage},smalltalk.CWGameOverTile)})},
 args: ["anImage"],
-source: "image: anImage\x0a\x09htmlImage src: anImage src",
-messageSends: ["src:", "src"],
+source: "image: anImage\x0a\x09htmlImage asJQuery attr: 'src' put: anImage src",
+messageSends: ["attr:put:", "src", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.CWGameOverTile);
