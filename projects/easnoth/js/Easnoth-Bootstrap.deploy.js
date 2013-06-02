@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Bootstrap');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted'], 'Easnoth-Bootstrap');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted', 'sidePanels'], 'Easnoth-Bootstrap');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announcer",
@@ -75,10 +75,11 @@ smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@hasStarted"]=true;
 self["@objectToLoad"]=(0);
 self["@objectLoaded"]=(0);
+_st(self)._initializeSidePanels();
 _st(self)._initializeEventHandling();
 _st(self)._preloadImages();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWBootstrapper)})},
-messageSends: ["initialize", "initializeEventHandling", "preloadImages"]}),
+messageSends: ["initialize", "initializeSidePanels", "initializeEventHandling", "preloadImages"]}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -88,6 +89,7 @@ fn: function (){
 var self=this;
 function $CWWaitForObject(){return smalltalk.CWWaitForObject||(typeof CWWaitForObject=="undefined"?nil:CWWaitForObject)}
 function $CWObjectLoaded(){return smalltalk.CWObjectLoaded||(typeof CWObjectLoaded=="undefined"?nil:CWObjectLoaded)}
+function $CWMapMoveEvent(){return smalltalk.CWMapMoveEvent||(typeof CWMapMoveEvent=="undefined"?nil:CWMapMoveEvent)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWWaitForObject(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -100,8 +102,48 @@ self["@objectLoaded"]=_st(self["@objectLoaded"]).__plus((1));
 self["@objectLoaded"];
 return _st(self)._checkIfReady();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(_st(self)._announcer())._on_do_($CWMapMoveEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._updateSidePanels();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(self)._onWindowResize_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._updateSidePanels();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWBootstrapper)})},
-messageSends: ["on:do:", "+", "announcer", "checkIfReady"]}),
+messageSends: ["on:do:", "+", "announcer", "checkIfReady", "updateSidePanels", "onWindowResize:"]}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initializeSidePanels",
+fn: function (){
+var self=this;
+var html,global;
+function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+html=_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery());
+global=_st("#global")._asJQuery();
+self["@sidePanels"]=_st($Array())._new();
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(self)._updateSidePanels();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeSidePanels",{html:html,global:global},smalltalk.CWBootstrapper)})},
+messageSends: ["onJQuery:", "asJQuery", "new", "add:", "class:", "div", "updateSidePanels"]}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "onWindowResize:",
+fn: function (aBlock){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+jQuery(window).resize(aBlock);
+return self}, function($ctx1) {$ctx1.fill(self,"onWindowResize:",{aBlock:aBlock},smalltalk.CWBootstrapper)})},
+messageSends: []}),
 smalltalk.CWBootstrapper);
 
 smalltalk.addMethod(
@@ -133,6 +175,23 @@ _st(self["@loadingBar"])._hide();
 _st(_st(self)._announcer())._announce_(_st($CWGameStart())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{},smalltalk.CWBootstrapper)})},
 messageSends: ["hide", "announce:", "new", "announcer"]}),
+smalltalk.CWBootstrapper);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateSidePanels",
+fn: function (){
+var self=this;
+var global;
+return smalltalk.withContext(function($ctx1) { 
+global=_st("#global")._asJQuery();
+_st(global)._css_put_("margin-top",_st(_st(_st(_st(_st(window)._innerHeight()).__minus((640))).__slash((2)))._asString()).__comma("px"));
+_st(_st(self["@sidePanels"])._at_((1)))._style_(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(window)._innerHeight())).__comma("px; width:")).__comma(_st(global)._css_("margin-left")));
+_st(_st(self["@sidePanels"])._at_((2)))._style_(_st(_st(_st("position: absolute; top: 0; right: 0; height: ").__comma(_st(window)._innerHeight())).__comma("px; width:")).__comma(_st(global)._css_("margin-right")));
+_st(_st(self["@sidePanels"])._at_((3)))._style_(_st(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(global)._css_("margin-top"))).__comma("; width:")).__comma(_st(window)._innerWidth())).__comma("px"));
+_st(_st(self["@sidePanels"])._at_((4)))._style_(_st(_st(_st(_st("position: absolute; bottom: 0; left: 0; height: ").__comma(_st(global)._css_("margin-bottom"))).__comma("; width:")).__comma(_st(window)._innerWidth())).__comma("px"));
+return self}, function($ctx1) {$ctx1.fill(self,"updateSidePanels",{global:global},smalltalk.CWBootstrapper)})},
+messageSends: ["asJQuery", "css:put:", ",", "asString", "/", "-", "innerHeight", "style:", "css:", "at:", "innerWidth"]}),
 smalltalk.CWBootstrapper);
 
 
