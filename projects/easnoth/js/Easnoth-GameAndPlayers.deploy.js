@@ -229,9 +229,10 @@ eventDispatcher=_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(se
 _st(self)._initializeAI_(eventDispatcher);
 _st($CWFightMenu())._new();
 _st(self["@map"])._updateMap();
+_st(self["@map"])._removeSelection();
 _st(self)._firstTurn();
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{eventDispatcher:eventDispatcher},smalltalk.CWGame)})},
-messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "firstTurn"]}),
+messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "removeSelection", "firstTurn"]}),
 smalltalk.CWGame);
 
 
@@ -690,9 +691,8 @@ return smalltalk.withContext(function($ctx2) {
 _st(each)._readyToBePicked();
 return _st(_st(each)._parent())._showActiveMonsters();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-_st(map)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"startTurn:",{map:map},smalltalk.CWPlayer)})},
-messageSends: ["ifTrue:", "endGame", "isEmpty", "team", "do:", "readyToBePicked", "showActiveMonsters", "parent", "updateGOTs"]}),
+messageSends: ["ifTrue:", "endGame", "isEmpty", "team", "do:", "readyToBePicked", "showActiveMonsters", "parent"]}),
 smalltalk.CWPlayer);
 
 smalltalk.addMethod(

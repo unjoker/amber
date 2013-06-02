@@ -301,11 +301,12 @@ eventDispatcher=_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(se
 _st(self)._initializeAI_(eventDispatcher);
 _st($CWFightMenu())._new();
 _st(self["@map"])._updateMap();
+_st(self["@map"])._removeSelection();
 _st(self)._firstTurn();
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{eventDispatcher:eventDispatcher},smalltalk.CWGame)})},
 args: [],
-source: "startGame\x0a\x09| eventDispatcher |\x0a\x09self initializePlayerMonsters.\x0a\x09map initializeDrawer.\x0a\x09eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.\x0a\x09self initializeAI: eventDispatcher.\x0a\x09CWFightMenu new.\x0a\x09map updateMap.\x0a\x09self firstTurn.",
-messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "firstTurn"],
+source: "startGame\x0a\x09| eventDispatcher |\x0a\x09self initializePlayerMonsters.\x0a\x09map initializeDrawer.\x0a\x09eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.\x0a\x09self initializeAI: eventDispatcher.\x0a\x09CWFightMenu new.\x0a\x09map updateMap.\x0a\x09map removeSelection. \x22initialize got to invis image\x22\x0a\x09self firstTurn.",
+messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "removeSelection", "firstTurn"],
 referencedClasses: ["CWEventDispatcher", "CWFightMenu"]
 }),
 smalltalk.CWGame);
@@ -919,11 +920,10 @@ return smalltalk.withContext(function($ctx2) {
 _st(each)._readyToBePicked();
 return _st(_st(each)._parent())._showActiveMonsters();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
-_st(map)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"startTurn:",{map:map},smalltalk.CWPlayer)})},
 args: ["map"],
-source: "startTurn: map\x0a\x09self team isEmpty ifTrue: [ ^ self endGame ].\x0a\x09self team do: [ :each |\x0a\x09\x09each readyToBePicked.\x0a\x09\x09each parent showActiveMonsters ].\x0a\x09map updateGOTs.",
-messageSends: ["ifTrue:", "endGame", "isEmpty", "team", "do:", "readyToBePicked", "showActiveMonsters", "parent", "updateGOTs"],
+source: "startTurn: map\x0a\x09self team isEmpty ifTrue: [ ^ self endGame ].\x0a\x09self team do: [ :each |\x0a\x09\x09each readyToBePicked.\x0a\x09\x09each parent showActiveMonsters ].",
+messageSends: ["ifTrue:", "endGame", "isEmpty", "team", "do:", "readyToBePicked", "showActiveMonsters", "parent"],
 referencedClasses: []
 }),
 smalltalk.CWPlayer);

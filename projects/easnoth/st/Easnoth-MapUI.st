@@ -732,13 +732,9 @@ clean
 	layers do: [ :each | each clean ].
 !
 
-updateGOTs
-	executionContext := self newGOTDrawingContext.
-	"self visitTree: map."
-!
-
 updateMap
-	self clean.
+	self monsterLayer clean.
+	self backgroundLayer clean.
 	executionContext := self newGlobalDrawingContext.
 	self visitTree: map.
 !

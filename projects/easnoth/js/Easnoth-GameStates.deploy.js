@@ -105,9 +105,8 @@ fn: function (cell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(cell)._root())._lighten();
-_st(_st(cell)._root())._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext},smalltalk.CWCellState)})},
-messageSends: ["lighten", "root", "updateGOTs"]}),
+messageSends: ["lighten", "root"]}),
 smalltalk.CWCellState);
 
 smalltalk.addMethod(
@@ -209,17 +208,15 @@ selector: "mouseClick:context:",
 fn: function (aCell,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2;
 $1=_st(gameContext)._shouldRestartTurn();
 if(smalltalk.assert($1)){
 $2=_st(gameContext)._restartTurn();
 return $2;
 };
-$3=_st(aCell)._root();
-_st($3)._showActiveMonsters();
-$4=_st($3)._updateGOTs();
+_st(_st(aCell)._root())._showActiveMonsters();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseClick:context:",{aCell:aCell,gameContext:gameContext},smalltalk.CWFree)})},
-messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs"]}),
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root"]}),
 smalltalk.CWFree);
 
 smalltalk.addMethod(
@@ -325,9 +322,8 @@ _st(path)._do_((function(c){
 return smalltalk.withContext(function($ctx2) {
 return _st(c)._darken();
 }, function($ctx2) {$ctx2.fillBlock({c:c},$ctx1)})}));
-_st(_st(cell)._root())._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWFreeSelected)})},
-messageSends: ["mouseMove:context:", "pathTo:", "currentCell", "do:", "darken", "updateGOTs", "root"]}),
+messageSends: ["mouseMove:context:", "pathTo:", "currentCell", "do:", "darken"]}),
 smalltalk.CWFreeSelected);
 
 smalltalk.addMethod(
@@ -754,9 +750,8 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._selectActionCells();
 _st(gameContext)._currentMonster_(aMonster);
-_st(aMonster)._updateGOTs();
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWActive)})},
-messageSends: ["selectActionCells", "currentMonster:", "updateGOTs"]}),
+messageSends: ["selectActionCells", "currentMonster:"]}),
 smalltalk.CWActive);
 
 
@@ -817,10 +812,9 @@ fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._selectMovableCells();
-_st(aMonster)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWHasAttacked)})},
-messageSends: ["selectMovableCells", "updateGOTs", "currentMonster:"]}),
+messageSends: ["selectMovableCells", "currentMonster:"]}),
 smalltalk.CWHasAttacked);
 
 
@@ -895,10 +889,9 @@ fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(aMonster)._selectAttackableCells();
-_st(aMonster)._updateGOTs();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWHasMoved)})},
-messageSends: ["selectAttackableCells", "updateGOTs", "currentMonster:"]}),
+messageSends: ["selectAttackableCells", "currentMonster:"]}),
 smalltalk.CWHasMoved);
 
 
@@ -1012,18 +1005,16 @@ selector: "select:inContext:",
 fn: function (aMonster,gameContext){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2;
 $1=_st(gameContext)._shouldRestartTurn();
 if(smalltalk.assert($1)){
 $2=_st(gameContext)._restartTurn();
 return $2;
 };
-$3=_st(aMonster)._root();
-_st($3)._showActiveMonsters();
-$4=_st($3)._updateGOTs();
+_st(_st(aMonster)._root())._showActiveMonsters();
 _st(gameContext)._currentMonster_(aMonster);
 return self}, function($ctx1) {$ctx1.fill(self,"select:inContext:",{aMonster:aMonster,gameContext:gameContext},smalltalk.CWInactive)})},
-messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "updateGOTs", "currentMonster:"]}),
+messageSends: ["ifTrue:", "restartTurn", "shouldRestartTurn", "showActiveMonsters", "root", "currentMonster:"]}),
 smalltalk.CWInactive);
 
 smalltalk.addMethod(

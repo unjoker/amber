@@ -2145,34 +2145,19 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateGOTs",
-category: 'public',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@executionContext"]=_st(self)._newGOTDrawingContext();
-return self}, function($ctx1) {$ctx1.fill(self,"updateGOTs",{},smalltalk.CWMapDrawer)})},
-args: [],
-source: "updateGOTs\x0a\x09executionContext := self newGOTDrawingContext.\x0a\x09\x22self visitTree: map.\x22",
-messageSends: ["newGOTDrawingContext"],
-referencedClasses: []
-}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "updateMap",
 category: 'public',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._clean();
+_st(_st(self)._monsterLayer())._clean();
+_st(_st(self)._backgroundLayer())._clean();
 self["@executionContext"]=_st(self)._newGlobalDrawingContext();
 _st(self)._visitTree_(self["@map"]);
 return self}, function($ctx1) {$ctx1.fill(self,"updateMap",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "updateMap\x0a\x09self clean.\x0a\x09executionContext := self newGlobalDrawingContext.\x0a\x09self visitTree: map.",
-messageSends: ["clean", "newGlobalDrawingContext", "visitTree:"],
+source: "updateMap\x0a\x09self monsterLayer clean.\x0a\x09self backgroundLayer clean.\x0a\x09executionContext := self newGlobalDrawingContext.\x0a\x09self visitTree: map.",
+messageSends: ["clean", "monsterLayer", "backgroundLayer", "newGlobalDrawingContext", "visitTree:"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);
