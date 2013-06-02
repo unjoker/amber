@@ -112,6 +112,6 @@ SystemAnnouncer subclass: #CWEasnothAnnouncer
 !CWEasnothAnnouncer methodsFor: 'not yet classified'!
 
 reset
-	subscriptions := Array new
+	subscriptions reset
 ! !
 
