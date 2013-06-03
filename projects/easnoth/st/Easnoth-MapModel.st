@@ -39,10 +39,6 @@ announce: anEvent
 
 updateMap
 	self root updateMap
-!
-
-updateMonstersAndGOTs
-	self root updateMonstersAndGOTs
 ! !
 
 !CWComponent methodsFor: 'selection'!
@@ -75,6 +71,11 @@ showActiveMonsters
 unmark
 	self children do: [ :child |
 		child unmark ]
+!
+
+updateUI
+	self children do: [ :child |
+		child updateUI ]
 ! !
 
 !CWComponent methodsFor: 'visiting'!
@@ -116,7 +117,7 @@ accept: aVisitor
 ! !
 
 CWComposite subclass: #CWCell
-	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell mark'
+	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell mark firstCoods'
 	package: 'Easnoth-MapModel'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
@@ -144,6 +145,14 @@ children
 	^ children
 		addAll: self background;
 		yourself
+!
+
+firstCoods
+	^ firstCoods
+!
+
+firstCoods: aPoint
+	firstCoods := aPoint
 !
 
 gameOverTile
@@ -223,6 +232,11 @@ tileClass
 desactivateMonsters
 	"you can remove this method, but it makes the game faster."
 	self monster ifNotNil: [ :m | m desactivateMonsters ]
+!
+
+updateUI
+	"you can remove this method, but it makes the game faster."
+	self monster ifNotNil: [ :m | m updateUI ]
 ! !
 
 !CWCell methodsFor: 'initialize-release'!
@@ -437,7 +451,8 @@ childBasicClass
 
 initializeDrawer
 	self prefillCaches.
-	drawer := CWMapDrawer new initializeForMap: self
+	drawer := CWMapDrawer new initializeForMap: self.
+	self updateUI.
 !
 
 initializeFromJson: jsonMap
@@ -498,10 +513,6 @@ clean
 
 updateMap
 	drawer updateMap
-!
-
-updateMonstersAndGOTs
-	drawer updateMonstersAndGOTs
 ! !
 
 !CWMap methodsFor: 'selection'!
@@ -535,6 +546,12 @@ unmark
 	"just for speed ... If you play only on chrome remove that crap"
 	cellsCache do: [ :each |
 		each unmark ]
+!
+
+updateUI
+	"just for speed ... If you play only on chrome remove that crap"
+	cellsCache do: [ :each |
+		each updateUI ]
 ! !
 
 !CWMap methodsFor: 'visiting'!
@@ -950,7 +967,7 @@ canvas: aCanvas
 !
 
 context
-	^ canvas getContext: '2d'
+	^ canvas element getContext: '2d'
 !
 
 currentMove
@@ -1078,8 +1095,9 @@ isAttackedByTroop: aMonster inContext: gameContext
 
 removeHP: anInt
      self hp: self hp - anInt.
-     self hp < 1 ifTrue: [
-           self die ].
+     self hp < 1 
+		ifTrue: [ self die. self cleanUI ]
+		ifFalse: [ self updateUI ]
 !
 
 resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack
@@ -1090,8 +1108,7 @@ resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonu
 	self rollDicesCallBack: [ :diceRes |
 		anotherMonster removeHP: diceRes kills.
         self selectInContext: gameContext.
-		self checkForNextTurn.
-		self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack
+		self checkForNextTurn ] bonusDices: bonusDices bonusAttack: bonusAttack
 !
 
 rollDicesCallBack: aBlock bonusDices: bonusDices bonusAttack: bonusAttack
@@ -1151,9 +1168,19 @@ animationMoveTo: cellLast callback: callback
 	cellLast root removeSelection.
 
 	1 to: moveNumber do: [ :j |
-		[ (path at: path size - j) addMonster: self.
-        (path at: path size + 1 - j) removeMonster.
-		cellLast root updateMonstersAndGOTs.
+		[ | cell1 cell2 |
+		cell1 := path at: path size + 1 - j.
+		cell2 := path at: path size - j.
+		cell2 addMonster: self.
+        cell1 removeMonster.
+		
+		self canvas asJQuery
+			animate: #{ 
+			   'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .
+			   'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }
+       		duration: 300
+     		easing: 'linear'
+			"complete: [ window alert: 'foo' ]".
 		self currentMove: self currentMove - 1.
 		self announceUpdate ] valueWithTimeout: 300 * j ].
 	
