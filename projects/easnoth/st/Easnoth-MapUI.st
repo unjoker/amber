@@ -630,7 +630,7 @@ newGOTLayer
 !
 
 newGlobalDrawingContext
-	^ CWGlobalDrawingContext default reset: self
+	^ CWGlobalDrawingContext new reset: self
 !
 
 newMonsterLayer
@@ -811,14 +811,6 @@ nextRow
 reset
 	rowIndex := 0.
 	cellIndex := 0
-! !
-
-CWMapInterpreterContext class instanceVariableNames: 'default'!
-
-!CWMapInterpreterContext class methodsFor: 'instance creation'!
-
-default
-	^ default ifNil: [ default := self new ]
 ! !
 
 CWMapInterpreterContext subclass: #CWGlobalDrawingContext

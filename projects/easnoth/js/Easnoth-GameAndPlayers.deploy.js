@@ -126,7 +126,7 @@ _st(self["@map"])._clean();
 _st((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self["@map"])._clean();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((2000));
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((500));
 return _st($CWStartMenu())._start();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
@@ -174,13 +174,15 @@ selector: "initializeWithSettings:",
 fn: function (gameSettings){
 var self=this;
 function $CWMap(){return smalltalk.CWMap||(typeof CWMap=="undefined"?nil:CWMap)}
+function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="undefined"?nil:CWFightMenu)}
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=_st($CWMap())._newWithMapIndex_(_st(gameSettings)._mapNumber());
+_st($CWFightMenu())._new();
 self["@playerPool"]=_st(gameSettings)._players();
 _st(self)._initializePlayers();
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSettings:",{gameSettings:gameSettings},smalltalk.CWGame)})},
-messageSends: ["newWithMapIndex:", "mapNumber", "players", "initializePlayers", "initializeEventHandling"]}),
+messageSends: ["newWithMapIndex:", "mapNumber", "new", "players", "initializePlayers", "initializeEventHandling"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -221,13 +223,11 @@ fn: function (){
 var self=this;
 var eventDispatcher;
 function $CWEventDispatcher(){return smalltalk.CWEventDispatcher||(typeof CWEventDispatcher=="undefined"?nil:CWEventDispatcher)}
-function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="undefined"?nil:CWFightMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._initializePlayerMonsters();
 _st(self["@map"])._initializeDrawer();
 eventDispatcher=_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
 _st(self)._initializeAI_(eventDispatcher);
-_st($CWFightMenu())._new();
 _st(self["@map"])._updateMap();
 _st(self["@map"])._removeSelection();
 _st(self)._firstTurn();

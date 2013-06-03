@@ -160,9 +160,21 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@subscriptions"])._reset();
+_st(_st(self)._class())._reset();
 return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer)})},
-messageSends: ["reset"]}),
+messageSends: ["reset", "class"]}),
 smalltalk.CWEasnothAnnouncer);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reset",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@current"]=nil;
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer.klass)})},
+messageSends: []}),
+smalltalk.CWEasnothAnnouncer.klass);
 
 

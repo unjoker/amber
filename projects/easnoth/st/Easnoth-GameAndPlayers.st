@@ -71,7 +71,7 @@ initializeEventHandling
 		on: CWEndGameEvent
 		do: [ self announcer reset. 
 			map clean.
-			[ map clean ] valueWithTimeout: 2000.
+			[ map clean ] valueWithTimeout: 500.
 			CWStartMenu start ].
 !
 
@@ -91,6 +91,7 @@ initializePlayers
 
 initializeWithSettings: gameSettings
 	map := CWMap newWithMapIndex: gameSettings mapNumber.
+	CWFightMenu new.
 	playerPool := gameSettings players.
 	self initializePlayers.
 	self initializeEventHandling.
@@ -102,7 +103,6 @@ startGame
 	map initializeDrawer.
 	eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.
 	self initializeAI: eventDispatcher.
-	CWFightMenu new.
 	map updateMap.
 	map removeSelection. "initialize got to invis image"
 	self firstTurn.

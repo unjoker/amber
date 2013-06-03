@@ -219,13 +219,30 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@subscriptions"])._reset();
+_st(_st(self)._class())._reset();
 return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer)})},
 args: [],
-source: "reset\x0a\x09subscriptions reset",
-messageSends: ["reset"],
+source: "reset\x0a\x09subscriptions reset.\x0a\x09self class reset",
+messageSends: ["reset", "class"],
 referencedClasses: []
 }),
 smalltalk.CWEasnothAnnouncer);
 
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reset",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@current"]=nil;
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWEasnothAnnouncer.klass)})},
+args: [],
+source: "reset\x0a\x09current := nil",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWEasnothAnnouncer.klass);
 
 
