@@ -148,8 +148,9 @@ endGameEvent
 		on: CWEndGameEvent
 		do: [ 
 			"reinitialize eventHandling for new game"
-			self canvas element asJQuery off: 'mousemove'.
 			map := nil.
+			self canvas element asJQuery off: 'mousemove'.
+			self canvas element asJQuery off: 'click'.
 			drawer := nil.
 			game := nil.
 			currentCell := nil.

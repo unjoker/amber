@@ -267,7 +267,7 @@ credits
 							html br.
 							html a
 								with: 'Nicolas Petton (Amber core developer)';
-								href: 'www.nicolas-petton.fr/' ].
+								href: 'http://www.nicolas-petton.fr/' ].
 						html li with: [
 							html button
 								with: '> back <';

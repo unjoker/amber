@@ -148,9 +148,10 @@ function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEve
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
 self["@map"]=nil;
 self["@map"];
+_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
+_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("click");
 self["@drawer"]=nil;
 self["@drawer"];
 self["@game"]=nil;

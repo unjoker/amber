@@ -411,7 +411,7 @@ $10;
 _st(html)._br();
 $11=_st(html)._a();
 _st($11)._with_("Nicolas Petton (Amber core developer)");
-$12=_st($11)._href_("www.nicolas-petton.fr/");
+$12=_st($11)._href_("http://www.nicolas-petton.fr/");
 return $12;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 return _st(_st(html)._li())._with_((function(){
