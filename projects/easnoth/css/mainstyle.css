@@ -41,9 +41,9 @@ button {
 /*intro.html*/
 
 .styledSelectGreen {
-background-image: url(../ressources/images/green_list_background.png);
+   background-image: url(../ressources/images/green_list_background.png);
    background-repeat: no-repeat;
-   background-color:#888888;
+   background-color:transparent;
    width: 134px;
    font-size: 16px;
    line-height: 1;
@@ -58,6 +58,10 @@ background-image: url(../ressources/images/green_list_background.png);
    -webkit-appearance: none;
    }
    
+.styledSelectGreen option {
+   color:#aead7a;
+}
+  
 .styledSelectRed {
   	  background-image: url(../ressources/images/brown_list_background.png);
       background-repeat: no-repeat;
