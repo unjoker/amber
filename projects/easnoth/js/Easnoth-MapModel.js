@@ -2729,7 +2729,7 @@ referencedClasses: []
 smalltalk.CWGameOverTile.klass);
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy'], 'Easnoth-MapModel');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy', 'canvas'], 'Easnoth-MapModel');
 smalltalk.CWMonster.comment="I represent people on the map. My instances variables are the stats of the guy I represent."
 smalltalk.addMethod(
 smalltalk.method({
@@ -3041,6 +3041,40 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "canvas",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@canvas"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canvas",{},smalltalk.CWMonster)})},
+args: [],
+source: "canvas\x0a\x09^ canvas",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canvas:",
+category: 'accessing',
+fn: function (aCanvas){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@canvas"]=aCanvas;
+return self}, function($ctx1) {$ctx1.fill(self,"canvas:",{aCanvas:aCanvas},smalltalk.CWMonster)})},
+args: ["aCanvas"],
+source: "canvas: aCanvas\x0a\x09canvas := aCanvas",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "cellToMoveBeforeAttack:context:",
 category: 'move',
 fn: function (cellLast,gameContext){
@@ -3138,6 +3172,42 @@ return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.C
 args: [],
 source: "checkForNextTurn\x0a\x09self currentMove > 0 ifTrue: [ ^ self ].\x0a\x09self state checkForNextTurn: self",
 messageSends: ["ifTrue:", ">", "currentMove", "checkForNextTurn:", "state"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "cleanUI",
+category: 'rendering',
+fn: function (){
+var self=this;
+var elem;
+return smalltalk.withContext(function($ctx1) { 
+elem=_st(_st(self)._canvas())._element();
+_st(_st(self)._context())._clearRect_y_width_height_((0),(0),_st(elem)._width(),_st(elem)._height());
+return self}, function($ctx1) {$ctx1.fill(self,"cleanUI",{elem:elem},smalltalk.CWMonster)})},
+args: [],
+source: "cleanUI\x0a\x09| elem |\x0a\x09elem := self canvas element.\x0a\x09self context clearRect: 0 y: 0 width: elem width height: elem height.",
+messageSends: ["element", "canvas", "clearRect:y:width:height:", "width", "height", "context"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "context",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@canvas"])._getContext_("2d");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"context",{},smalltalk.CWMonster)})},
+args: [],
+source: "context\x0a\x09^ canvas getContext: '2d'",
+messageSends: ["getContext:"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3296,6 +3366,22 @@ return self}, function($ctx1) {$ctx1.fill(self,"die",{},smalltalk.CWMonster)})},
 args: [],
 source: "die\x0a\x09self parent removeMonster.\x0a\x09self player removeMonster: self.",
 messageSends: ["removeMonster", "parent", "removeMonster:", "player"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "display:cood:",
+category: 'rendering',
+fn: function (monster,aPoint){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._context())._drawImage_x_y_(_st(monster)._image(),_st(aPoint)._x(),_st(aPoint)._y());
+return self}, function($ctx1) {$ctx1.fill(self,"display:cood:",{monster:monster,aPoint:aPoint},smalltalk.CWMonster)})},
+args: ["monster", "aPoint"],
+source: "display: monster cood: aPoint\x0a\x09self context\x0a\x09\x09drawImage: monster image\x0a\x09\x09x: aPoint x\x0a\x09\x09y: aPoint y.",
+messageSends: ["drawImage:x:y:", "image", "x", "y", "context"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3873,6 +3959,36 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "reverseDisplay:cood:",
+category: 'rendering',
+fn: function (monster,cood){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(self)._context();
+_st($1)._translate_y_(_st(cood)._x(),(0));
+$2=_st($1)._scale_y_((-1),(1));
+$2;
+return _st(self)._display_cood_(monster,_st((0)).__at(_st(cood)._y()));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._ensure_((function(){
+return smalltalk.withContext(function($ctx2) {
+$3=_st(self)._context();
+_st($3)._scale_y_((-1),(1));
+$4=_st($3)._translate_y_(_st(_st(cood)._x())._negated(),(0));
+return $4;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"reverseDisplay:cood:",{monster:monster,cood:cood},smalltalk.CWMonster)})},
+args: ["monster", "cood"],
+source: "reverseDisplay: monster cood: cood\x0a\x09[self context\x0a\x09\x09\x09translate: cood x y: 0;\x0a\x09\x09\x09scale: -1 y: 1.\x0a\x09self display: monster cood: 0@(cood y) ]\x0a\x09ensure: [\x22faster than save and restore\x22\x0a\x09self context\x0a\x09\x09scale: -1 y: 1;\x0a\x09\x09translate: cood x negated y: 0]",
+messageSends: ["ensure:", "scale:y:", "context", "translate:y:", "negated", "x", "display:cood:", "@", "y"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "rollDicesCallBack:bonusDices:bonusAttack:",
 category: 'fighting',
 fn: function (aBlock,bonusDices,bonusAttack){
@@ -4139,6 +4255,23 @@ return $1;
 args: [],
 source: "support\x09\x0a\x09^ self parent neighbours select: [ :each | each canBeAttackedBy: self side ]",
 messageSends: ["select:", "canBeAttackedBy:", "side", "neighbours", "parent"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI",
+category: 'strategy delegation',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanUI();
+_st(self["@strategy"])._updateUI_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWMonster)})},
+args: [],
+source: "updateUI\x0a\x09self cleanUI.\x0a\x09strategy updateUI: self",
+messageSends: ["cleanUI", "updateUI:"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);

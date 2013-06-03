@@ -85,15 +85,15 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 		var cosothergridy = -0.882947593;
 		var sinothergridy = 0.469471563;
 		
-		var nb = ((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)) | 0;
-		var nb2 = ((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)) | 0;
+		var nb = Math.floor(((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)));
+		var nb2 = Math.floor(((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)));
 		
 		var xConstante = 9 + (mod(nb,3));
 		var yConstante = 20 + (mod(nb2,2));
 		if (nb2%2 == 0) {yConstante += mod(nb+1,2);}
 		
-		xHex = ((xConstante-nb)/6)+((yConstante-nb2)/2) | 0;
-		yHex = ((nb-xConstante)/4)+((yConstante-nb2)/4) | 0;
+		xHex = Math.floor(((xConstante-nb)/6)+((yConstante-nb2)/2));
+		yHex = Math.floor(((nb-xConstante)/4)+((yConstante-nb2)/4));
 		
 		if (mod(nb,6)==1 && nb2%2==0){
 			xHex++;
@@ -103,13 +103,13 @@ mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY
 		
 		if (nb%3==0) {		
 			if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {
-				var nb3 = ((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)) | 0;
+				var nb3 = Math.floor(((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)));
 				var nbCheck = 3+2*yHex+(xHex%2);
 				if (nb3 == nbCheck) {yHex--;}
 			}
 			else {
-				var nb4 = ((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)) | 0;
-				var nbCheck = 7-((3*xHex/2) | 0)+yHex;
+				var nb4 = Math.floor(((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)));
+				var nbCheck = 7-(Math.floor(3*xHex/2))+yHex;
 				if (nb4 == nbCheck) {
 					if (xHex%2 == 0) {yHex--;}
 					xHex++;
@@ -254,8 +254,7 @@ newLeaf: html point: point
 !CWArrayLayer methodsFor: 'initialize-release'!
 
 initializeForMap: aMap
-	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
-	self appendToJQuery: self id asJQuery
+	self subclassResponsibility
 ! !
 
 !CWArrayLayer methodsFor: 'map move'!
@@ -299,27 +298,10 @@ clean
 !
 
 renderOn: html
-	| tempContext tempImage |
-	tempContext := CWGlobalDrawingContext default reset.
-	array rowsWithIndexDo: [ :row :i |
-		tempContext nextRow.
-		row withIndexDo: [ :cell :j |
-			tempContext nextCell.
-			tempImage := self newLeaf: html point: tempContext currentPoint.
-			array i: i j: j put: tempImage ] ].
+	self subclassResponsibility
 ! !
 
-CWArrayLayer subclass: #CWImageLayer
-	instanceVariableNames: ''
-	package: 'Easnoth-MapUI'!
-
-!CWImageLayer methodsFor: 'factory'!
-
-newLeaf: html 
-	^ html img
-! !
-
-CWImageLayer subclass: #CWGOTLayer
+CWArrayLayer subclass: #CWGOTLayer
 	instanceVariableNames: 'invis'
 	package: 'Easnoth-MapUI'!
 !CWGOTLayer commentStamp!
@@ -365,6 +347,10 @@ initializeForMap: aMap
 	invis := CWGameOverTile imageArray at: CWGameOverTile invisIndex.
 	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
 	self renderOn: (HTMLCanvas onJQuery: self id asJQuery) map: aMap
+!
+
+newLeaf: html 
+	^ html img
 ! !
 
 !CWGOTLayer methodsFor: 'rendering'!
@@ -372,12 +358,6 @@ initializeForMap: aMap
 clean
 	array do: [:each |
 	    each asJQuery attr: 'src' put: invis src ]
-!
-
-drawGOT: got point: point
-	| image |
-	image := array i: point x j: point y.
-	"image src: got image src"
 ! !
 
 CWArrayLayer subclass: #CWMonsterLayer
@@ -418,6 +398,13 @@ newLeaf: html
 	^ html canvas
 ! !
 
+!CWMonsterLayer methodsFor: 'initialize-release'!
+
+initializeForMap: aMap
+	array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.
+	self renderOn: (HTMLCanvas onJQuery: self id asJQuery) map: aMap
+! !
+
 !CWMonsterLayer methodsFor: 'rendering'!
 
 clean
@@ -455,6 +442,18 @@ drawUnit: aUnit point: point
 	]
 !
 
+renderOn: html map: map
+	| tempContext tempCanvas |
+	tempContext := CWGlobalDrawingContext default reset.
+	map children withIndexDo: [ :row :i |
+		tempContext nextRow.
+		row children withIndexDo: [ :cell :j |
+			tempContext nextCell.
+			tempCanvas := self newLeaf: html point: tempContext currentPoint.
+			cell monster ifNotNil: [ :m | m canvas: tempCanvas ].
+			array i: i j: j put: tempCanvas ] ].
+!
+
 reverseDisplay: monster cood: cood context: ctx
 	[ctx
 			translate: cood x y: 0;
@@ -470,7 +469,7 @@ CWLayer subclass: #CWCanvasLayer
 	instanceVariableNames: 'canvas'
 	package: 'Easnoth-MapUI'!
 !CWCanvasLayer commentStamp!
-I represent a layer which is implement as a unique canvas!
+I represent a layer which is implement as a unique canvas. Used for background.!
 
 !CWCanvasLayer methodsFor: 'accessing'!
 
@@ -675,7 +674,6 @@ initializeForMap: aMap
 
 initializeImageLayers
 	CWGlobalDrawingContext default reset: self. "hack for render on of CWImageLayer"
-
 	layers at: 2 put: self newGOTLayer.
 	layers at: 3 put: self newMonsterLayer.
 !
@@ -747,10 +745,6 @@ drawBackground: object
 	self backgroundLayer drawIsometric: object point: self currentPoint
 !
 
-drawGOT: got
-	self gotLayer drawGOT: got point: self currentCoods
-!
-
 drawHeros: heros
 	self monsterLayer drawHeros: heros point: self currentCoods
 !
@@ -766,7 +760,7 @@ visitCell: aCell
 !
 
 visitGameOverTile: got
-	self executionContext visitGameOverTile: got
+	"do nothing anymore"
 !
 
 visitHeros: heros
@@ -882,10 +876,6 @@ reset: aDrawer
 ! !
 
 !CWGlobalDrawingContext methodsFor: 'visiting'!
-
-visitGameOverTile: got
-	drawer drawGOT: got
-!
 
 visitHeros: heros
 	drawer drawHeros: heros

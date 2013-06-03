@@ -326,15 +326,15 @@ function mod(n, mod) {
 		var cosothergridy = -0.882947593;
 		var sinothergridy = 0.469471563;
 		
-		var nb = ((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)) | 0;
-		var nb2 = ((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)) | 0;
+		var nb = Math.floor(((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)));
+		var nb2 = Math.floor(((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)));
 		
 		var xConstante = 9 + (mod(nb,3));
 		var yConstante = 20 + (mod(nb2,2));
 		if (nb2%2 == 0) {yConstante += mod(nb+1,2);}
 		
-		xHex = ((xConstante-nb)/6)+((yConstante-nb2)/2) | 0;
-		yHex = ((nb-xConstante)/4)+((yConstante-nb2)/4) | 0;
+		xHex = Math.floor(((xConstante-nb)/6)+((yConstante-nb2)/2));
+		yHex = Math.floor(((nb-xConstante)/4)+((yConstante-nb2)/4));
 		
 		if (mod(nb,6)==1 && nb2%2==0){
 			xHex++;
@@ -344,13 +344,13 @@ function mod(n, mod) {
 		
 		if (nb%3==0) {		
 			if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {
-				var nb3 = ((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)) | 0;
+				var nb3 = Math.floor(((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)));
 				var nbCheck = 3+2*yHex+(xHex%2);
 				if (nb3 == nbCheck) {yHex--;}
 			}
 			else {
-				var nb4 = ((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)) | 0;
-				var nbCheck = 7-((3*xHex/2) | 0)+yHex;
+				var nb4 = Math.floor(((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)));
+				var nbCheck = 7-(Math.floor(3*xHex/2))+yHex;
 				if (nb4 == nbCheck) {
 					if (xHex%2 == 0) {yHex--;}
 					xHex++;
@@ -363,7 +363,7 @@ function mod(n, mod) {
         return a;
 return self}, function($ctx1) {$ctx1.fill(self,"mouseCoodToHexCoodX:y:mapX:mapY:",{x:x,y:y,mapDisplayX:mapDisplayX,mapDisplayY:mapDisplayY},smalltalk.CWEventDispatcher)})},
 args: ["x", "y", "mapDisplayX", "mapDisplayY"],
-source: "mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY\x0a\x09\x22function that take mouse cood in pixel and return the coods of the tile selected\x22\x0a\x0a\x09\x09<function mod(n, mod) {\x0a\x09\x09\x09return ((mod+(n%mod))%mod);\x0a\x09\x09}\x0a\x0a\x09\x09var cosmaingridx = 0.882947593;\x0a\x09\x09var sinmaingridx = 0.469471563;\x0a\x09\x09var cosmaingridy = -0.130526192;\x0a\x09\x09var sinmaingridy = 0.991444861;\x0a\x09\x09\x0a\x09\x09var cosothergridx = 0.4539905;\x0a\x09\x09var sinothergridx = 0.891006524;\x0a\x09\x09var cosothergridy = -0.882947593;\x0a\x09\x09var sinothergridy = 0.469471563;\x0a\x09\x09\x0a\x09\x09var nb = ((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)) | 0;\x0a\x09\x09var nb2 = ((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)) | 0;\x0a\x09\x09\x0a\x09\x09var xConstante = 9 + (mod(nb,3));\x0a\x09\x09var yConstante = 20 + (mod(nb2,2));\x0a\x09\x09if (nb2%2 == 0) {yConstante += mod(nb+1,2);}\x0a\x09\x09\x0a\x09\x09xHex = ((xConstante-nb)/6)+((yConstante-nb2)/2) | 0;\x0a\x09\x09yHex = ((nb-xConstante)/4)+((yConstante-nb2)/4) | 0;\x0a\x09\x09\x0a\x09\x09if (mod(nb,6)==1 && nb2%2==0){\x0a\x09\x09\x09xHex++;\x0a\x09\x09\x09if (nb2%4==0 && mod(nb,12)!=7){yHex++;}\x0a\x09\x09\x09if (mod(nb2,4)==2 && mod(nb,12)==7){yHex++;}\x0a\x09\x09}\x0a\x09\x09\x0a\x09\x09if (nb%3==0) {\x09\x09\x0a\x09\x09\x09if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {\x0a\x09\x09\x09\x09var nb3 = ((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)) | 0;\x0a\x09\x09\x09\x09var nbCheck = 3+2*yHex+(xHex%2);\x0a\x09\x09\x09\x09if (nb3 == nbCheck) {yHex--;}\x0a\x09\x09\x09}\x0a\x09\x09\x09else {\x0a\x09\x09\x09\x09var nb4 = ((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)) | 0;\x0a\x09\x09\x09\x09var nbCheck = 7-((3*xHex/2) | 0)+yHex;\x0a\x09\x09\x09\x09if (nb4 == nbCheck) {\x0a\x09\x09\x09\x09\x09if (xHex%2 == 0) {yHex--;}\x0a\x09\x09\x09\x09\x09xHex++;\x0a\x09\x09\x09\x09}\x0a\x09\x09\x09}\x0a\x09\x09}\x0a        var a = new Array(2);\x0a        a[0] = xHex;\x0a        a[1] = yHex;\x0a        return a>",
+source: "mouseCoodToHexCoodX: x y: y mapX: mapDisplayX mapY: mapDisplayY\x0a\x09\x22function that take mouse cood in pixel and return the coods of the tile selected\x22\x0a\x0a\x09\x09<function mod(n, mod) {\x0a\x09\x09\x09return ((mod+(n%mod))%mod);\x0a\x09\x09}\x0a\x0a\x09\x09var cosmaingridx = 0.882947593;\x0a\x09\x09var sinmaingridx = 0.469471563;\x0a\x09\x09var cosmaingridy = -0.130526192;\x0a\x09\x09var sinmaingridy = 0.991444861;\x0a\x09\x09\x0a\x09\x09var cosothergridx = 0.4539905;\x0a\x09\x09var sinothergridx = 0.891006524;\x0a\x09\x09var cosothergridy = -0.882947593;\x0a\x09\x09var sinothergridy = 0.469471563;\x0a\x09\x09\x0a\x09\x09var nb = Math.floor(((y-(cosmaingridx/sinmaingridx)*x-(mapDisplayY+0)+(cosmaingridx/sinmaingridx)*(mapDisplayX+320))/(55*cosmaingridx)));\x0a\x09\x09var nb2 = Math.floor(((y-(cosmaingridy/sinmaingridy)*x-(mapDisplayY+480)+(cosmaingridy/sinmaingridy)*(mapDisplayX+206))/(173.2*cosmaingridy)));\x0a\x09\x09\x0a\x09\x09var xConstante = 9 + (mod(nb,3));\x0a\x09\x09var yConstante = 20 + (mod(nb2,2));\x0a\x09\x09if (nb2%2 == 0) {yConstante += mod(nb+1,2);}\x0a\x09\x09\x0a\x09\x09xHex = Math.floor(((xConstante-nb)/6)+((yConstante-nb2)/2));\x0a\x09\x09yHex = Math.floor(((nb-xConstante)/4)+((yConstante-nb2)/4));\x0a\x09\x09\x0a\x09\x09if (mod(nb,6)==1 && nb2%2==0){\x0a\x09\x09\x09xHex++;\x0a\x09\x09\x09if (nb2%4==0 && mod(nb,12)!=7){yHex++;}\x0a\x09\x09\x09if (mod(nb2,4)==2 && mod(nb,12)==7){yHex++;}\x0a\x09\x09}\x0a\x09\x09\x0a\x09\x09if (nb%3==0) {\x09\x09\x0a\x09\x09\x09if ((nb2%2==0 && nb%6==0) || (mod(nb2,2)==1 && mod(nb,6)==3)) {\x0a\x09\x09\x09\x09var nb3 = Math.floor(((y-(cosothergridx/sinothergridx)*x-(mapDisplayY+0)+(cosothergridx/sinothergridx)*(mapDisplayX+301))/(68*cosothergridx)));\x0a\x09\x09\x09\x09var nbCheck = 3+2*yHex+(xHex%2);\x0a\x09\x09\x09\x09if (nb3 == nbCheck) {yHex--;}\x0a\x09\x09\x09}\x0a\x09\x09\x09else {\x0a\x09\x09\x09\x09var nb4 = Math.floor(((y-(cosothergridy/sinothergridy)*x-(mapDisplayY+480)+(cosothergridy/sinothergridy)*(mapDisplayX+212.5))/(95.75*cosothergridy)));\x0a\x09\x09\x09\x09var nbCheck = 7-(Math.floor(3*xHex/2))+yHex;\x0a\x09\x09\x09\x09if (nb4 == nbCheck) {\x0a\x09\x09\x09\x09\x09if (xHex%2 == 0) {yHex--;}\x0a\x09\x09\x09\x09\x09xHex++;\x0a\x09\x09\x09\x09}\x0a\x09\x09\x09}\x0a\x09\x09}\x0a        var a = new Array(2);\x0a        a[0] = xHex;\x0a        a[1] = yHex;\x0a        return a>",
 messageSends: [],
 referencedClasses: []
 }),
@@ -575,15 +575,13 @@ selector: "initializeForMap:",
 category: 'initialize-release',
 fn: function (aMap){
 var self=this;
-function $CWTwoDimArray(){return smalltalk.CWTwoDimArray||(typeof CWTwoDimArray=="undefined"?nil:CWTwoDimArray)}
 return smalltalk.withContext(function($ctx1) { 
-self["@array"]=_st($CWTwoDimArray())._new_(_st(_st(_st(aMap)._children())._size()).__at(_st(_st(_st(aMap)._childAt_((1)))._children())._size()));
-_st(self)._appendToJQuery_(_st(_st(self)._id())._asJQuery());
-return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWImageLayer)})},
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWArrayLayer)})},
 args: ["aMap"],
-source: "initializeForMap: aMap\x0a\x09array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.\x0a\x09self appendToJQuery: self id asJQuery",
-messageSends: ["new:", "@", "size", "children", "childAt:", "appendToJQuery:", "asJQuery", "id"],
-referencedClasses: ["CWTwoDimArray"]
+source: "initializeForMap: aMap\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
 }),
 smalltalk.CWArrayLayer);
 
@@ -703,26 +701,13 @@ selector: "renderOn:",
 category: 'rendering',
 fn: function (html){
 var self=this;
-var tempContext,tempImage;
-function $CWGlobalDrawingContext(){return smalltalk.CWGlobalDrawingContext||(typeof CWGlobalDrawingContext=="undefined"?nil:CWGlobalDrawingContext)}
 return smalltalk.withContext(function($ctx1) { 
-tempContext=_st(_st($CWGlobalDrawingContext())._default())._reset();
-_st(self["@array"])._rowsWithIndexDo_((function(row,i){
-return smalltalk.withContext(function($ctx2) {
-_st(tempContext)._nextRow();
-return _st(row)._withIndexDo_((function(cell,j){
-return smalltalk.withContext(function($ctx3) {
-_st(tempContext)._nextCell();
-tempImage=_st(self)._newLeaf_point_(html,_st(tempContext)._currentPoint());
-tempImage;
-return _st(self["@array"])._i_j_put_(i,j,tempImage);
-}, function($ctx3) {$ctx3.fillBlock({cell:cell,j:j},$ctx1)})}));
-}, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html,tempContext:tempContext,tempImage:tempImage},smalltalk.CWArrayLayer)})},
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWArrayLayer)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09| tempContext tempImage |\x0a\x09tempContext := CWGlobalDrawingContext default reset.\x0a\x09array rowsWithIndexDo: [ :row :i |\x0a\x09\x09tempContext nextRow.\x0a\x09\x09row withIndexDo: [ :cell :j |\x0a\x09\x09\x09tempContext nextCell.\x0a\x09\x09\x09tempImage := self newLeaf: html point: tempContext currentPoint.\x0a\x09\x09\x09array i: i j: j put: tempImage ] ].",
-messageSends: ["reset", "default", "rowsWithIndexDo:", "nextRow", "withIndexDo:", "nextCell", "newLeaf:point:", "currentPoint", "i:j:put:"],
-referencedClasses: ["CWGlobalDrawingContext"]
+source: "renderOn: html\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
 }),
 smalltalk.CWArrayLayer);
 
@@ -808,28 +793,7 @@ smalltalk.CWArrayLayer);
 
 
 
-smalltalk.addClass('CWImageLayer', smalltalk.CWArrayLayer, [], 'Easnoth-MapUI');
-smalltalk.addMethod(
-smalltalk.method({
-selector: "newLeaf:",
-category: 'factory',
-fn: function (html){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(html)._img();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"newLeaf:",{html:html},smalltalk.CWImageLayer)})},
-args: ["html"],
-source: "newLeaf: html \x0a\x09^ html img",
-messageSends: ["img"],
-referencedClasses: []
-}),
-smalltalk.CWImageLayer);
-
-
-
-smalltalk.addClass('CWGOTLayer', smalltalk.CWImageLayer, ['invis'], 'Easnoth-MapUI');
+smalltalk.addClass('CWGOTLayer', smalltalk.CWArrayLayer, ['invis'], 'Easnoth-MapUI');
 smalltalk.CWGOTLayer.comment="This layer is specific to GOTs"
 smalltalk.addMethod(
 smalltalk.method({
@@ -846,23 +810,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"clean",{},smalltalk.CWGOTLayer)}
 args: [],
 source: "clean\x0a\x09array do: [:each |\x0a\x09    each asJQuery attr: 'src' put: invis src ]",
 messageSends: ["do:", "attr:put:", "src", "asJQuery"],
-referencedClasses: []
-}),
-smalltalk.CWGOTLayer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "drawGOT:point:",
-category: 'rendering',
-fn: function (got,point){
-var self=this;
-var image;
-return smalltalk.withContext(function($ctx1) { 
-image=_st(self["@array"])._i_j_(_st(point)._x(),_st(point)._y());
-return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:point:",{got:got,point:point,image:image},smalltalk.CWGOTLayer)})},
-args: ["got", "point"],
-source: "drawGOT: got point: point\x0a\x09| image |\x0a\x09image := array i: point x j: point y.\x0a\x09\x22image src: got image src\x22",
-messageSends: ["i:j:", "x", "y"],
 referencedClasses: []
 }),
 smalltalk.CWGOTLayer);
@@ -936,6 +883,24 @@ return $1;
 args: [],
 source: "leafWidth\x0a\x09^ 126",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWGOTLayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "newLeaf:",
+category: 'initialize-release',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(html)._img();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"newLeaf:",{html:html},smalltalk.CWGOTLayer)})},
+args: ["html"],
+source: "newLeaf: html \x0a\x09^ html img",
+messageSends: ["img"],
 referencedClasses: []
 }),
 smalltalk.CWGOTLayer);
@@ -1138,6 +1103,25 @@ smalltalk.CWMonsterLayer);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initializeForMap:",
+category: 'initialize-release',
+fn: function (aMap){
+var self=this;
+function $CWTwoDimArray(){return smalltalk.CWTwoDimArray||(typeof CWTwoDimArray=="undefined"?nil:CWTwoDimArray)}
+function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
+return smalltalk.withContext(function($ctx1) { 
+self["@array"]=_st($CWTwoDimArray())._new_(_st(_st(_st(aMap)._children())._size()).__at(_st(_st(_st(aMap)._childAt_((1)))._children())._size()));
+_st(self)._renderOn_map_(_st($HTMLCanvas())._onJQuery_(_st(_st(self)._id())._asJQuery()),aMap);
+return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWMonsterLayer)})},
+args: ["aMap"],
+source: "initializeForMap: aMap\x0a\x09array := CWTwoDimArray new: aMap children size @ (aMap childAt: 1) children size.\x0a\x09self renderOn: (HTMLCanvas onJQuery: self id asJQuery) map: aMap",
+messageSends: ["new:", "@", "size", "children", "childAt:", "renderOn:map:", "onJQuery:", "asJQuery", "id"],
+referencedClasses: ["CWTwoDimArray", "HTMLCanvas"]
+}),
+smalltalk.CWMonsterLayer);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "leafHeight",
 category: 'accessing',
 fn: function (){
@@ -1187,6 +1171,44 @@ args: ["html"],
 source: "newLeaf: html\x0a\x09^ html canvas",
 messageSends: ["canvas"],
 referencedClasses: []
+}),
+smalltalk.CWMonsterLayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:map:",
+category: 'rendering',
+fn: function (html,map){
+var self=this;
+var tempContext,tempCanvas;
+function $CWGlobalDrawingContext(){return smalltalk.CWGlobalDrawingContext||(typeof CWGlobalDrawingContext=="undefined"?nil:CWGlobalDrawingContext)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+tempContext=_st(_st($CWGlobalDrawingContext())._default())._reset();
+_st(_st(map)._children())._withIndexDo_((function(row,i){
+return smalltalk.withContext(function($ctx2) {
+_st(tempContext)._nextRow();
+return _st(_st(row)._children())._withIndexDo_((function(cell,j){
+return smalltalk.withContext(function($ctx3) {
+_st(tempContext)._nextCell();
+tempCanvas=_st(self)._newLeaf_point_(html,_st(tempContext)._currentPoint());
+tempCanvas;
+$1=_st(cell)._monster();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var m;
+m=$receiver;
+_st(m)._canvas_(tempCanvas);
+};
+return _st(self["@array"])._i_j_put_(i,j,tempCanvas);
+}, function($ctx3) {$ctx3.fillBlock({cell:cell,j:j},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"renderOn:map:",{html:html,map:map,tempContext:tempContext,tempCanvas:tempCanvas},smalltalk.CWMonsterLayer)})},
+args: ["html", "map"],
+source: "renderOn: html map: map\x0a\x09| tempContext tempCanvas |\x0a\x09tempContext := CWGlobalDrawingContext default reset.\x0a\x09map children withIndexDo: [ :row :i |\x0a\x09\x09tempContext nextRow.\x0a\x09\x09row children withIndexDo: [ :cell :j |\x0a\x09\x09\x09tempContext nextCell.\x0a\x09\x09\x09tempCanvas := self newLeaf: html point: tempContext currentPoint.\x0a\x09\x09\x09cell monster ifNotNil: [ :m | m canvas: tempCanvas ].\x0a\x09\x09\x09array i: i j: j put: tempCanvas ] ].",
+messageSends: ["reset", "default", "withIndexDo:", "nextRow", "nextCell", "newLeaf:point:", "currentPoint", "ifNotNil:", "canvas:", "monster", "i:j:put:", "children"],
+referencedClasses: ["CWGlobalDrawingContext"]
 }),
 smalltalk.CWMonsterLayer);
 
@@ -1259,7 +1281,7 @@ smalltalk.CWMonsterLayer);
 
 
 smalltalk.addClass('CWCanvasLayer', smalltalk.CWLayer, ['canvas'], 'Easnoth-MapUI');
-smalltalk.CWCanvasLayer.comment="I represent a layer which is implement as a unique canvas"
+smalltalk.CWCanvasLayer.comment="I represent a layer which is implement as a unique canvas. Used for background."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "canvasForId:",
@@ -1683,22 +1705,6 @@ smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "drawGOT:",
-category: 'rendering',
-fn: function (got){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._gotLayer())._drawGOT_point_(got,_st(self)._currentCoods());
-return self}, function($ctx1) {$ctx1.fill(self,"drawGOT:",{got:got},smalltalk.CWMapDrawer)})},
-args: ["got"],
-source: "drawGOT: got\x0a\x09self gotLayer drawGOT: got point: self currentCoods",
-messageSends: ["drawGOT:point:", "currentCoods", "gotLayer"],
-referencedClasses: []
-}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "drawHeros:",
 category: 'rendering',
 fn: function (heros){
@@ -1857,7 +1863,7 @@ _st(self["@layers"])._at_put_((2),_st(self)._newGOTLayer());
 _st(self["@layers"])._at_put_((3),_st(self)._newMonsterLayer());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeImageLayers",{},smalltalk.CWMapDrawer)})},
 args: [],
-source: "initializeImageLayers\x0a\x09CWGlobalDrawingContext default reset: self. \x22hack for render on of CWImageLayer\x22\x0a\x0a\x09layers at: 2 put: self newGOTLayer.\x0a\x09layers at: 3 put: self newMonsterLayer.",
+source: "initializeImageLayers\x0a\x09CWGlobalDrawingContext default reset: self. \x22hack for render on of CWImageLayer\x22\x0a\x09layers at: 2 put: self newGOTLayer.\x0a\x09layers at: 3 put: self newMonsterLayer.",
 messageSends: ["reset:", "default", "at:put:", "newGOTLayer", "newMonsterLayer"],
 referencedClasses: ["CWGlobalDrawingContext"]
 }),
@@ -2181,11 +2187,10 @@ category: 'visiting',
 fn: function (got){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._executionContext())._visitGameOverTile_(got);
 return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{got:got},smalltalk.CWMapDrawer)})},
 args: ["got"],
-source: "visitGameOverTile: got\x0a\x09self executionContext visitGameOverTile: got",
-messageSends: ["visitGameOverTile:", "executionContext"],
+source: "visitGameOverTile: got\x0a\x09\x22do nothing anymore\x22",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);
@@ -2469,22 +2474,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"reset:",{aDrawer:aDrawer},smallt
 args: ["aDrawer"],
 source: "reset: aDrawer\x0a\x09super reset.\x0a\x09currentPointCache := nil.\x0a\x09drawer := aDrawer",
 messageSends: ["reset"],
-referencedClasses: []
-}),
-smalltalk.CWGlobalDrawingContext);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "visitGameOverTile:",
-category: 'visiting',
-fn: function (got){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._drawGOT_(got);
-return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{got:got},smalltalk.CWGlobalDrawingContext)})},
-args: ["got"],
-source: "visitGameOverTile: got\x0a\x09drawer drawGOT: got",
-messageSends: ["drawGOT:"],
 referencedClasses: []
 }),
 smalltalk.CWGlobalDrawingContext);

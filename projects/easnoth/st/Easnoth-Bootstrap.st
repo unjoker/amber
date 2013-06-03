@@ -207,7 +207,8 @@ startBeta
 
 initialize
 	super initialize. 
-	gameSettings := CWGameSettings new
+	gameSettings := CWGameSettings new.
+	CWBootstrapper new. "setUp side panels ..."
 ! !
 
 !CWStartMenu methodsFor: 'rendering'!

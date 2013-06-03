@@ -450,9 +450,11 @@ selector: "initialize",
 fn: function (){
 var self=this;
 function $CWGameSettings(){return smalltalk.CWGameSettings||(typeof CWGameSettings=="undefined"?nil:CWGameSettings)}
+function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
 self["@gameSettings"]=_st($CWGameSettings())._new();
+_st($CWBootstrapper())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWStartMenu)})},
 messageSends: ["initialize", "new"]}),
 smalltalk.CWStartMenu);

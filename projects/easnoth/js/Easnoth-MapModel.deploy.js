@@ -2001,7 +2001,7 @@ messageSends: []}),
 smalltalk.CWGameOverTile.klass);
 
 
-smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy'], 'Easnoth-MapModel');
+smalltalk.addClass('CWMonster', smalltalk.CWImageLeaf, ['currentMove', 'move', 'attack', 'dices', 'hp', 'range', 'state', 'player', 'special', 'strategy', 'typeStrategy', 'canvas'], 'Easnoth-MapModel');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -2232,6 +2232,30 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "canvas",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@canvas"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"canvas",{},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "canvas:",
+fn: function (aCanvas){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@canvas"]=aCanvas;
+return self}, function($ctx1) {$ctx1.fill(self,"canvas:",{aCanvas:aCanvas},smalltalk.CWMonster)})},
+messageSends: []}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "cellToMoveBeforeAttack:context:",
 fn: function (cellLast,gameContext){
 var self=this;
@@ -2311,6 +2335,32 @@ return $2;
 _st(_st(self)._state())._checkForNextTurn_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"checkForNextTurn",{},smalltalk.CWMonster)})},
 messageSends: ["ifTrue:", ">", "currentMove", "checkForNextTurn:", "state"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "cleanUI",
+fn: function (){
+var self=this;
+var elem;
+return smalltalk.withContext(function($ctx1) { 
+elem=_st(_st(self)._canvas())._element();
+_st(_st(self)._context())._clearRect_y_width_height_((0),(0),_st(elem)._width(),_st(elem)._height());
+return self}, function($ctx1) {$ctx1.fill(self,"cleanUI",{elem:elem},smalltalk.CWMonster)})},
+messageSends: ["element", "canvas", "clearRect:y:width:height:", "width", "height", "context"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "context",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self["@canvas"])._getContext_("2d");
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"context",{},smalltalk.CWMonster)})},
+messageSends: ["getContext:"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2424,6 +2474,17 @@ _st(_st(self)._parent())._removeMonster();
 _st(_st(self)._player())._removeMonster_(self);
 return self}, function($ctx1) {$ctx1.fill(self,"die",{},smalltalk.CWMonster)})},
 messageSends: ["removeMonster", "parent", "removeMonster:", "player"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "display:cood:",
+fn: function (monster,aPoint){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._context())._drawImage_x_y_(_st(monster)._image(),_st(aPoint)._x(),_st(aPoint)._y());
+return self}, function($ctx1) {$ctx1.fill(self,"display:cood:",{monster:monster,aPoint:aPoint},smalltalk.CWMonster)})},
+messageSends: ["drawImage:x:y:", "image", "x", "y", "context"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2854,6 +2915,31 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "reverseDisplay:cood:",
+fn: function (monster,cood){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+_st((function(){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(self)._context();
+_st($1)._translate_y_(_st(cood)._x(),(0));
+$2=_st($1)._scale_y_((-1),(1));
+$2;
+return _st(self)._display_cood_(monster,_st((0)).__at(_st(cood)._y()));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}))._ensure_((function(){
+return smalltalk.withContext(function($ctx2) {
+$3=_st(self)._context();
+_st($3)._scale_y_((-1),(1));
+$4=_st($3)._translate_y_(_st(_st(cood)._x())._negated(),(0));
+return $4;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"reverseDisplay:cood:",{monster:monster,cood:cood},smalltalk.CWMonster)})},
+messageSends: ["ensure:", "scale:y:", "context", "translate:y:", "negated", "x", "display:cood:", "@", "y"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "rollDicesCallBack:bonusDices:bonusAttack:",
 fn: function (aBlock,bonusDices,bonusAttack){
 var self=this;
@@ -3052,6 +3138,18 @@ return _st(each)._canBeAttackedBy_(_st(self)._side());
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"support",{},smalltalk.CWMonster)})},
 messageSends: ["select:", "canBeAttackedBy:", "side", "neighbours", "parent"]}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._cleanUI();
+_st(self["@strategy"])._updateUI_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWMonster)})},
+messageSends: ["cleanUI", "updateUI:"]}),
 smalltalk.CWMonster);
 
 

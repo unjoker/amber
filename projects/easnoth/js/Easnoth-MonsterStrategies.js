@@ -94,6 +94,22 @@ referencedClasses: []
 }),
 smalltalk.CWMonsterStrategy);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI:",
+category: 'monster strategy API',
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI:",{aMonster:aMonster},smalltalk.CWMonsterStrategy)})},
+args: ["aMonster"],
+source: "updateUI: aMonster\x0a\x09self subclassResponsibility",
+messageSends: ["subclassResponsibility"],
+referencedClasses: []
+}),
+smalltalk.CWMonsterStrategy);
+
 
 
 smalltalk.addClass('CWHerosStrategy', smalltalk.CWMonsterStrategy, [], 'Easnoth-MonsterStrategies');
@@ -165,6 +181,28 @@ referencedClasses: []
 }),
 smalltalk.CWHerosStrategy);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI:",
+category: 'monster strategy API',
+fn: function (heros){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(heros)._side())._negative();
+if(smalltalk.assert($1)){
+_st(self)._reverseDisplay_cood_(heros,_st((87)).__at((28)));
+} else {
+_st(self)._display_cood_(heros,_st((15)).__at((28)));
+};
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI:",{heros:heros},smalltalk.CWHerosStrategy)})},
+args: ["heros"],
+source: "updateUI: heros\x0a\x09(heros side negative) \x0a\x09\x09ifTrue: [ self reverseDisplay: heros cood: 87@28 ] \x0a\x09\x09ifFalse: [ self display: heros cood: 15@28 ]",
+messageSends: ["ifTrue:ifFalse:", "reverseDisplay:cood:", "@", "display:cood:", "negative", "side"],
+referencedClasses: []
+}),
+smalltalk.CWHerosStrategy);
+
 
 
 smalltalk.addClass('CWUnitStrategy', smalltalk.CWMonsterStrategy, [], 'Easnoth-MonsterStrategies');
@@ -232,6 +270,34 @@ return "";
 args: [],
 source: "key\x0a\x09^ ''",
 messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWUnitStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI:",
+category: 'monster strategy API',
+fn: function (aUnit){
+var self=this;
+var xArray,yArray;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+xArray=[(9), (37), (-11), (17)];
+yArray=[(15), (23), (26), (33)];
+_st(_st((1))._to_(_st(aUnit)._hp()))._do_((function(i){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(_st(aUnit)._side())._negative();
+if(smalltalk.assert($1)){
+return _st(self)._reverseDisplay_cood_(aUnit,_st(_st((72)).__plus(_st(xArray)._at_(i))).__at(_st(yArray)._at_(i)));
+} else {
+return _st(self)._display_cood_(aUnit,_st(_st(xArray)._at_(i)).__at(_st(yArray)._at_(i)));
+};
+}, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI:",{aUnit:aUnit,xArray:xArray,yArray:yArray},smalltalk.CWUnitStrategy)})},
+args: ["aUnit"],
+source: "updateUI: aUnit\x0a\x09| xArray yArray |\x0a\x09\x0a\x09xArray := #(9 37 -11 17).\x0a\x09yArray := #(15 23 26 33).\x0a\x0a\x09(1 to: aUnit hp) do: [ :i |\x0a\x09\x09(aUnit side negative) \x0a\x09\x09\x09ifTrue: [ self reverseDisplay: aUnit cood: 72 + (xArray at: i)@(yArray at: i) ] \x0a\x09\x09\x09ifFalse: [ self display: aUnit cood: (xArray at: i)@(yArray at: i) ]\x0a\x09]",
+messageSends: ["do:", "ifTrue:ifFalse:", "reverseDisplay:cood:", "@", "at:", "+", "display:cood:", "negative", "side", "to:", "hp"],
 referencedClasses: []
 }),
 smalltalk.CWUnitStrategy);

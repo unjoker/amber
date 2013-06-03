@@ -35,6 +35,10 @@ isHeros
 
 key
 	self subclassResponsibility
+!
+
+updateUI: aMonster
+	self subclassResponsibility
 ! !
 
 CWMonsterStrategy subclass: #CWHerosStrategy
@@ -57,6 +61,12 @@ isHeros
 
 key
 	^ '-heros'
+!
+
+updateUI: heros
+	(heros side negative) 
+		ifTrue: [ self reverseDisplay: heros cood: 87@28 ] 
+		ifFalse: [ self display: heros cood: 15@28 ]
 ! !
 
 CWMonsterStrategy subclass: #CWUnitStrategy
@@ -79,6 +89,19 @@ isHeros
 
 key
 	^ ''
+!
+
+updateUI: aUnit
+	| xArray yArray |
+	
+	xArray := #(9 37 -11 17).
+	yArray := #(15 23 26 33).
+
+	(1 to: aUnit hp) do: [ :i |
+		(aUnit side negative) 
+			ifTrue: [ self reverseDisplay: aUnit cood: 72 + (xArray at: i)@(yArray at: i) ] 
+			ifFalse: [ self display: aUnit cood: (xArray at: i)@(yArray at: i) ]
+	]
 ! !
 
 CWStrategy subclass: #CWMonsterTypeStrategy
