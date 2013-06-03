@@ -902,7 +902,7 @@ white
 ! !
 
 CWImageLeaf subclass: #CWMonster
-	instanceVariableNames: 'currentMove move attack dices hp range state player special strategy typeStrategy'
+	instanceVariableNames: 'currentMove move attack dices hp range state player special strategy typeStrategy canvas'
 	package: 'Easnoth-MapModel'!
 !CWMonster commentStamp!
 I represent people on the map. My instances variables are the stats of the guy I represent.!
@@ -939,6 +939,18 @@ bonusVSRange
 
 bonusVSTroop
 	^ typeStrategy bonusVSTroop
+!
+
+canvas
+	^ canvas
+!
+
+canvas: aCanvas
+	canvas := aCanvas
+!
+
+context
+	^ canvas getContext: '2d'
 !
 
 currentMove
@@ -1200,6 +1212,32 @@ printOn: aStream
 	aStream nextPutAll: ')'.
 ! !
 
+!CWMonster methodsFor: 'rendering'!
+
+cleanUI
+	| elem |
+	elem := self canvas element.
+	self context clearRect: 0 y: 0 width: elem width height: elem height.
+!
+
+display: monster cood: aPoint
+	self context
+		drawImage: monster image
+		x: aPoint x
+		y: aPoint y.
+!
+
+reverseDisplay: monster cood: cood
+	[self context
+			translate: cood x y: 0;
+			scale: -1 y: 1.
+	self display: monster cood: 0@(cood y) ]
+	ensure: ["faster than save and restore"
+	self context
+		scale: -1 y: 1;
+		translate: cood x negated y: 0]
+! !
+
 !CWMonster methodsFor: 'selection'!
 
 addSelectorsTo: cells
@@ -1355,6 +1393,11 @@ isUnit
 
 key
 	^ typeStrategy key, strategy key
+!
+
+updateUI
+	self cleanUI.
+	strategy updateUI: self
 ! !
 
 CWMonster class instanceVariableNames: 'jsonStatCache'!

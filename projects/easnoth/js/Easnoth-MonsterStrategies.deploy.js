@@ -67,6 +67,17 @@ return self}, function($ctx1) {$ctx1.fill(self,"key",{},smalltalk.CWMonsterStrat
 messageSends: ["subclassResponsibility"]}),
 smalltalk.CWMonsterStrategy);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI:",
+fn: function (aMonster){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI:",{aMonster:aMonster},smalltalk.CWMonsterStrategy)})},
+messageSends: ["subclassResponsibility"]}),
+smalltalk.CWMonsterStrategy);
+
 
 
 smalltalk.addClass('CWHerosStrategy', smalltalk.CWMonsterStrategy, [], 'Easnoth-MonsterStrategies');
@@ -118,6 +129,23 @@ return "-heros";
 messageSends: []}),
 smalltalk.CWHerosStrategy);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI:",
+fn: function (heros){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(heros)._side())._negative();
+if(smalltalk.assert($1)){
+_st(self)._reverseDisplay_cood_(heros,_st((87)).__at((28)));
+} else {
+_st(self)._display_cood_(heros,_st((15)).__at((28)));
+};
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI:",{heros:heros},smalltalk.CWHerosStrategy)})},
+messageSends: ["ifTrue:ifFalse:", "reverseDisplay:cood:", "@", "display:cood:", "negative", "side"]}),
+smalltalk.CWHerosStrategy);
+
 
 
 smalltalk.addClass('CWUnitStrategy', smalltalk.CWMonsterStrategy, [], 'Easnoth-MonsterStrategies');
@@ -167,6 +195,29 @@ return smalltalk.withContext(function($ctx1) {
 return "";
 }, function($ctx1) {$ctx1.fill(self,"key",{},smalltalk.CWUnitStrategy)})},
 messageSends: []}),
+smalltalk.CWUnitStrategy);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI:",
+fn: function (aUnit){
+var self=this;
+var xArray,yArray;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+xArray=[(9), (37), (-11), (17)];
+yArray=[(15), (23), (26), (33)];
+_st(_st((1))._to_(_st(aUnit)._hp()))._do_((function(i){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(_st(aUnit)._side())._negative();
+if(smalltalk.assert($1)){
+return _st(self)._reverseDisplay_cood_(aUnit,_st(_st((72)).__plus(_st(xArray)._at_(i))).__at(_st(yArray)._at_(i)));
+} else {
+return _st(self)._display_cood_(aUnit,_st(_st(xArray)._at_(i)).__at(_st(yArray)._at_(i)));
+};
+}, function($ctx2) {$ctx2.fillBlock({i:i},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI:",{aUnit:aUnit,xArray:xArray,yArray:yArray},smalltalk.CWUnitStrategy)})},
+messageSends: ["do:", "ifTrue:ifFalse:", "reverseDisplay:cood:", "@", "at:", "+", "display:cood:", "negative", "side", "to:", "hp"]}),
 smalltalk.CWUnitStrategy);
 
 

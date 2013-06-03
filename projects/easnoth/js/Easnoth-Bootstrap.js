@@ -574,14 +574,16 @@ category: 'initalize-release',
 fn: function (){
 var self=this;
 function $CWGameSettings(){return smalltalk.CWGameSettings||(typeof CWGameSettings=="undefined"?nil:CWGameSettings)}
+function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
 self["@gameSettings"]=_st($CWGameSettings())._new();
+_st($CWBootstrapper())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09gameSettings := CWGameSettings new",
+source: "initialize\x0a\x09super initialize. \x0a\x09gameSettings := CWGameSettings new.\x0a\x09CWBootstrapper new. \x22setUp side panels ...\x22\x0a\x09",
 messageSends: ["initialize", "new"],
-referencedClasses: ["CWGameSettings"]
+referencedClasses: ["CWGameSettings", "CWBootstrapper"]
 }),
 smalltalk.CWStartMenu);
 
