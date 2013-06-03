@@ -112,6 +112,13 @@ SystemAnnouncer subclass: #CWEasnothAnnouncer
 !CWEasnothAnnouncer methodsFor: 'not yet classified'!
 
 reset
-	subscriptions reset
+	subscriptions reset.
+	self class reset
+! !
+
+!CWEasnothAnnouncer class methodsFor: 'not yet classified'!
+
+reset
+	current := nil
 ! !
 

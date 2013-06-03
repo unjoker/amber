@@ -1486,10 +1486,10 @@ var self=this;
 function $CWGlobalDrawingContext(){return smalltalk.CWGlobalDrawingContext||(typeof CWGlobalDrawingContext=="undefined"?nil:CWGlobalDrawingContext)}
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(_st($CWGlobalDrawingContext())._default())._reset_(self);
+$1=_st(_st($CWGlobalDrawingContext())._new())._reset_(self);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"newGlobalDrawingContext",{},smalltalk.CWMapDrawer)})},
-messageSends: ["reset:", "default"]}),
+messageSends: ["reset:", "new"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1744,26 +1744,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWMapInterpr
 messageSends: []}),
 smalltalk.CWMapInterpreterContext);
 
-
-smalltalk.CWMapInterpreterContext.klass.iVarNames = ['default'];
-smalltalk.addMethod(
-smalltalk.method({
-selector: "default",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $2,$1;
-$2=self["@default"];
-if(($receiver = $2) == nil || $receiver == undefined){
-self["@default"]=_st(self)._new();
-$1=self["@default"];
-} else {
-$1=$2;
-};
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"default",{},smalltalk.CWMapInterpreterContext.klass)})},
-messageSends: ["ifNil:", "new"]}),
-smalltalk.CWMapInterpreterContext.klass);
 
 
 smalltalk.addClass('CWGlobalDrawingContext', smalltalk.CWMapInterpreterContext, ['currentPointCache', 'drawer'], 'Easnoth-MapUI');
