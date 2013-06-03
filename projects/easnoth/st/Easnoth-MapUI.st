@@ -274,9 +274,10 @@ left: incr
 move: incr way: way
 	| t px |
 	array do: [ :each |
+		each ifNotNil: [
 		t := each asJQuery css: way. 
 		px := (t tokenize: 'px') first.
-		each asJQuery css: way value: (px asNumber + incr) asString , 'px' ]
+		each asJQuery css: way value: (px asNumber + incr) asString , 'px' ] ]
 !
 
 right: incr
@@ -321,18 +322,6 @@ leafWidth
 	^ 126
 !
 
-renderOn: html map: map
-	| tempContext tempImage |
-	tempContext := CWGlobalDrawingContext default reset.
-	map children withIndexDo: [ :row :i |
-		tempContext nextRow.
-		row children withIndexDo: [ :cell :j |
-			tempContext nextCell.
-			tempImage := self newLeaf: html point: tempContext currentPoint.
-			cell gameOverTile htmlImage: tempImage.
-			array i: i j: j put: tempImage ] ].
-!
-
 xShift
 	^ 14 negated
 !
@@ -358,6 +347,15 @@ newLeaf: html
 clean
 	array do: [:each |
 	    each asJQuery attr: 'src' put: invis src ]
+!
+
+renderOn: html map: map
+	| tempImage |
+	map children withIndexDo: [ :row :i |
+		row children withIndexDo: [ :cell :j |
+			tempImage := self newLeaf: html point: cell firstCoods.
+			cell gameOverTile htmlImage: tempImage.
+			array i: i j: j put: tempImage ] ].
 ! !
 
 CWArrayLayer subclass: #CWMonsterLayer
@@ -409,8 +407,9 @@ initializeForMap: aMap
 
 clean
 		array do: [:each | | elem |
-			elem := each element.
-			(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height. ]
+			each ifNotNil: [
+				elem := each element.
+				(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height ]. ]
 !
 
 display: monster cood: aPoint context: ctx
@@ -443,15 +442,13 @@ drawUnit: aUnit point: point
 !
 
 renderOn: html map: map
-	| tempContext tempCanvas |
-	tempContext := CWGlobalDrawingContext default reset.
+	| tempCanvas |
 	map children withIndexDo: [ :row :i |
-		tempContext nextRow.
 		row children withIndexDo: [ :cell :j |
-			tempContext nextCell.
-			tempCanvas := self newLeaf: html point: tempContext currentPoint.
-			cell monster ifNotNil: [ :m | m canvas: tempCanvas ].
-			array i: i j: j put: tempCanvas ] ].
+			cell monster ifNotNil: [ :m | 
+				tempCanvas := self newLeaf: html point: cell firstCoods.
+				m canvas: tempCanvas.
+				array i: i j: j put: tempCanvas ] ] ].
 !
 
 reverseDisplay: monster cood: cood context: ctx
@@ -636,10 +633,6 @@ newGlobalDrawingContext
 	^ CWGlobalDrawingContext default reset: self
 !
 
-newMonsterAndGOTDrawingContext
-	^ CWMonsterAndGOTDrawingContext default reset: self
-!
-
 newMonsterLayer
 	^ CWMonsterLayer new initializeForMap: map
 ! !
@@ -673,13 +666,23 @@ initializeForMap: aMap
 !
 
 initializeImageLayers
-	CWGlobalDrawingContext default reset: self. "hack for render on of CWImageLayer"
+	self setUpFirstCoods.
 	layers at: 2 put: self newGOTLayer.
 	layers at: 3 put: self newMonsterLayer.
 !
 
 initializeMenus
 	"CWDices new appendToJQuery: 'body' asJQuery."
+!
+
+setUpFirstCoods
+	| tempContext tempCoods |
+	tempContext := self newGlobalDrawingContext.
+	map children withIndexDo: [ :row :i |
+		tempContext nextRow.
+		row children withIndexDo: [ :cell :j |
+			tempContext nextCell.
+			cell firstCoods: tempContext currentPoint ] ].
 ! !
 
 !CWMapDrawer methodsFor: 'map move'!
@@ -723,15 +726,8 @@ clean
 !
 
 updateMap
-	self monsterLayer clean.
 	self backgroundLayer clean.
 	executionContext := self newGlobalDrawingContext.
-	self visitTree: map.
-!
-
-updateMonstersAndGOTs
-	self monsterLayer clean.
-	executionContext := self newMonsterAndGOTDrawingContext.
 	self visitTree: map.
 ! !
 
@@ -764,7 +760,7 @@ visitGameOverTile: got
 !
 
 visitHeros: heros
-	self executionContext visitHeros: heros
+	"do nothing anymore"
 !
 
 visitMap: aMap
@@ -784,7 +780,7 @@ visitTile: aTile
 !
 
 visitUnit: aUnit
-	self executionContext visitUnit: aUnit
+	"do nothing anymore"
 ! !
 
 Object subclass: #CWMapInterpreterContext
@@ -877,10 +873,6 @@ reset: aDrawer
 
 !CWGlobalDrawingContext methodsFor: 'visiting'!
 
-visitHeros: heros
-	drawer drawHeros: heros
-!
-
 visitOverTile: ot
 	drawer drawBackground: ot
 !
@@ -888,26 +880,6 @@ visitOverTile: ot
 visitTile: aTile
 	drawer drawBackTile.
 	drawer drawBackground: aTile
-!
-
-visitUnit: aUnit
-	drawer drawUnit: aUnit
-! !
-
-CWGlobalDrawingContext subclass: #CWMonsterAndGOTDrawingContext
-	instanceVariableNames: ''
-	package: 'Easnoth-MapUI'!
-!CWMonsterAndGOTDrawingContext commentStamp!
-With this context, the CWMap drawer will redraw only monsters and game over tiles.!
-
-!CWMonsterAndGOTDrawingContext methodsFor: 'visiting'!
-
-visitOverTile: ot
-	"do nothing"
-!
-
-visitTile: aTile
-	"do nothing"
 ! !
 
 Object subclass: #CWTwoDimArray

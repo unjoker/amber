@@ -252,16 +252,19 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateMonstersAndGOTs",
-category: 'rendering',
+selector: "updateUI",
+category: 'selection',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._root())._updateMonstersAndGOTs();
-return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWComponent)})},
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._updateUI();
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWComponent)})},
 args: [],
-source: "updateMonstersAndGOTs\x0a\x09self root updateMonstersAndGOTs",
-messageSends: ["updateMonstersAndGOTs", "root"],
+source: "updateUI\x0a\x09self children do: [ :child |\x0a\x09\x09child updateUI ]",
+messageSends: ["do:", "updateUI", "children"],
 referencedClasses: []
 }),
 smalltalk.CWComponent);
@@ -357,7 +360,7 @@ smalltalk.CWComposite);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark'], 'Easnoth-MapModel');
+smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark', 'firstCoods'], 'Easnoth-MapModel');
 smalltalk.CWCell.comment="I represent an hexagon cell in the map."
 smalltalk.addMethod(
 smalltalk.method({
@@ -619,6 +622,40 @@ return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltal
 args: [],
 source: "desactivateMonsters\x0a\x09\x22you can remove this method, but it makes the game faster.\x22\x0a\x09self monster ifNotNil: [ :m | m desactivateMonsters ]",
 messageSends: ["ifNotNil:", "desactivateMonsters", "monster"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "firstCoods",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@firstCoods"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"firstCoods",{},smalltalk.CWCell)})},
+args: [],
+source: "firstCoods\x0a\x09^ firstCoods",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "firstCoods:",
+category: 'accessing',
+fn: function (aPoint){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@firstCoods"]=aPoint;
+return self}, function($ctx1) {$ctx1.fill(self,"firstCoods:",{aPoint:aPoint},smalltalk.CWCell)})},
+args: ["aPoint"],
+source: "firstCoods: aPoint\x0a\x09firstCoods := aPoint",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -1255,6 +1292,30 @@ referencedClasses: []
 }),
 smalltalk.CWCell);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI",
+category: 'forwarding optimization',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._monster();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var m;
+m=$receiver;
+_st(m)._updateUI();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWCell)})},
+args: [],
+source: "updateUI\x0a\x09\x22you can remove this method, but it makes the game faster.\x22\x0a\x09self monster ifNotNil: [ :m | m updateUI ]",
+messageSends: ["ifNotNil:", "updateUI", "monster"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
 
 
 smalltalk.addClass('CWOneChildClass', smalltalk.CWComposite, [], 'Easnoth-MapModel');
@@ -1485,10 +1546,11 @@ function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="unde
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._prefillCaches();
 self["@drawer"]=_st(_st($CWMapDrawer())._new())._initializeForMap_(self);
+_st(self)._updateUI();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeDrawer",{},smalltalk.CWMap)})},
 args: [],
-source: "initializeDrawer\x0a\x09self prefillCaches.\x0a\x09drawer := CWMapDrawer new initializeForMap: self",
-messageSends: ["prefillCaches", "initializeForMap:", "new"],
+source: "initializeDrawer\x0a\x09self prefillCaches.\x0a\x09drawer := CWMapDrawer new initializeForMap: self.\x0a\x09self updateUI.",
+messageSends: ["prefillCaches", "initializeForMap:", "new", "updateUI"],
 referencedClasses: ["CWMapDrawer"]
 }),
 smalltalk.CWMap);
@@ -1729,16 +1791,19 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateMonstersAndGOTs",
-category: 'rendering',
+selector: "updateUI",
+category: 'selection',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._updateMonstersAndGOTs();
-return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMap)})},
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._updateUI();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWMap)})},
 args: [],
-source: "updateMonstersAndGOTs\x0a\x09drawer updateMonstersAndGOTs",
-messageSends: ["updateMonstersAndGOTs"],
+source: "updateUI\x0a\x09\x22just for speed ... If you play only on chrome remove that crap\x22\x0a\x09cellsCache do: [ :each |\x0a\x09\x09each updateUI ]",
+messageSends: ["do:", "updateUI"],
 referencedClasses: []
 }),
 smalltalk.CWMap);
@@ -2802,19 +2867,24 @@ _st(_st(cellLast)._root())._removeSelection();
 _st((1))._to_do_(moveNumber,(function(j){
 return smalltalk.withContext(function($ctx2) {
 return _st((function(){
+var cell1,cell2;
 return smalltalk.withContext(function($ctx3) {
-_st(_st(path)._at_(_st(_st(path)._size()).__minus(j)))._addMonster_(self);
-_st(_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j)))._removeMonster();
-_st(_st(cellLast)._root())._updateMonstersAndGOTs();
+cell1=_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j));
+cell1;
+cell2=_st(path)._at_(_st(_st(path)._size()).__minus(j));
+cell2;
+_st(cell2)._addMonster_(self);
+_st(cell1)._removeMonster();
+_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(_st(cell1)._firstCoods())._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(_st(cell1)._firstCoods())._y()))).__comma("px"))]),(300),"linear");
 _st(self)._currentMove_(_st(_st(self)._currentMove()).__minus((1)));
 return _st(self)._announceUpdate();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
+}, function($ctx3) {$ctx3.fillBlock({cell1:cell1,cell2:cell2},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
 }, function($ctx2) {$ctx2.fillBlock({j:j},$ctx1)})}));
 _st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
 return self}, function($ctx1) {$ctx1.fill(self,"animationMoveTo:callback:",{cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonster)})},
 args: ["cellLast", "callback"],
-source: "animationMoveTo: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := self pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a\x09cellLast root removeSelection.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ (path at: path size - j) addMonster: self.\x0a        (path at: path size + 1 - j) removeMonster.\x0a\x09\x09cellLast root updateMonstersAndGOTs.\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
-messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "addMonster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove", "announceUpdate"],
+source: "animationMoveTo: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := self pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a\x09cellLast root removeSelection.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ | cell1 cell2 |\x0a\x09\x09cell1 := path at: path size + 1 - j.\x0a\x09\x09cell2 := path at: path size - j.\x0a\x09\x09cell2 addMonster: self.\x0a        cell1 removeMonster.\x0a\x09\x09\x0a\x09\x09self canvas asJQuery\x0a\x09\x09\x09animate: #{ \x0a\x09\x09\x09   'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .\x0a\x09\x09\x09   'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }\x0a       \x09\x09duration: 300\x0a     \x09\x09easing: 'linear'\x0a\x09\x09\x09\x22complete: [ window alert: 'foo' ]\x22.\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
+messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "at:", "+", "addMonster:", "removeMonster", "animate:duration:easing:", "->", ",", "x", "firstCoods", "y", "asJQuery", "canvas", "currentMove:", "currentMove", "announceUpdate"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3202,12 +3272,12 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self["@canvas"])._getContext_("2d");
+$1=_st(_st(self["@canvas"])._element())._getContext_("2d");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"context",{},smalltalk.CWMonster)})},
 args: [],
-source: "context\x0a\x09^ canvas getContext: '2d'",
-messageSends: ["getContext:"],
+source: "context\x0a\x09^ canvas element getContext: '2d'",
+messageSends: ["getContext:", "element"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3924,11 +3994,14 @@ _st(self)._hp_(_st(_st(self)._hp()).__minus(anInt));
 $1=_st(_st(self)._hp()).__lt((1));
 if(smalltalk.assert($1)){
 _st(self)._die();
+_st(self)._cleanUI();
+} else {
+_st(self)._updateUI();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"removeHP:",{anInt:anInt},smalltalk.CWMonster)})},
 args: ["anInt"],
-source: "removeHP: anInt\x0a     self hp: self hp - anInt.\x0a     self hp < 1 ifTrue: [\x0a           self die ].",
-messageSends: ["hp:", "-", "hp", "ifTrue:", "die", "<"],
+source: "removeHP: anInt\x0a     self hp: self hp - anInt.\x0a     self hp < 1 \x0a\x09\x09ifTrue: [ self die. self cleanUI ]\x0a\x09\x09ifFalse: [ self updateUI ]",
+messageSends: ["hp:", "-", "hp", "ifTrue:ifFalse:", "die", "cleanUI", "updateUI", "<"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3946,13 +4019,12 @@ _st(self)._rollDicesCallBack_bonusDices_bonusAttack_((function(diceRes){
 return smalltalk.withContext(function($ctx2) {
 _st(anotherMonster)._removeHP_(_st(diceRes)._kills());
 _st(self)._selectInContext_(gameContext);
-_st(self)._checkForNextTurn();
-return _st(self)._updateMonstersAndGOTs();
+return _st(self)._checkForNextTurn();
 }, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}),bonusDices,bonusAttack);
 return self}, function($ctx1) {$ctx1.fill(self,"resolveAttack:inContext:bonusDices:bonusAttack:",{anotherMonster:anotherMonster,gameContext:gameContext,bonusDices:bonusDices,bonusAttack:bonusAttack},smalltalk.CWMonster)})},
 args: ["anotherMonster", "gameContext", "bonusDices", "bonusAttack"],
-source: "resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack\x0a\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self selectInContext: gameContext.\x0a\x09\x09self checkForNextTurn.\x0a\x09\x09self updateMonstersAndGOTs ] bonusDices: bonusDices bonusAttack: bonusAttack",
-messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs"],
+source: "resolveAttack: anotherMonster inContext: gameContext bonusDices: bonusDices bonusAttack: bonusAttack\x0a\x0a\x09self state changeStateAfterAttacking: self.\x0a    self root removeSelection.\x0a\x0a\x09self rollDicesCallBack: [ :diceRes |\x0a\x09\x09anotherMonster removeHP: diceRes kills.\x0a        self selectInContext: gameContext.\x0a\x09\x09self checkForNextTurn ] bonusDices: bonusDices bonusAttack: bonusAttack",
+messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);

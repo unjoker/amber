@@ -181,13 +181,16 @@ smalltalk.CWComponent);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateMonstersAndGOTs",
+selector: "updateUI",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._root())._updateMonstersAndGOTs();
-return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWComponent)})},
-messageSends: ["updateMonstersAndGOTs", "root"]}),
+_st(_st(self)._children())._do_((function(child){
+return smalltalk.withContext(function($ctx2) {
+return _st(child)._updateUI();
+}, function($ctx2) {$ctx2.fillBlock({child:child},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWComponent)})},
+messageSends: ["do:", "updateUI", "children"]}),
 smalltalk.CWComponent);
 
 
@@ -256,7 +259,7 @@ smalltalk.CWComposite);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark'], 'Easnoth-MapModel');
+smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark', 'firstCoods'], 'Easnoth-MapModel');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -449,6 +452,30 @@ _st(m)._desactivateMonsters();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"desactivateMonsters",{},smalltalk.CWCell)})},
 messageSends: ["ifNotNil:", "desactivateMonsters", "monster"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "firstCoods",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@firstCoods"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"firstCoods",{},smalltalk.CWCell)})},
+messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "firstCoods:",
+fn: function (aPoint){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@firstCoods"]=aPoint;
+return self}, function($ctx1) {$ctx1.fill(self,"firstCoods:",{aPoint:aPoint},smalltalk.CWCell)})},
+messageSends: []}),
 smalltalk.CWCell);
 
 smalltalk.addMethod(
@@ -908,6 +935,25 @@ return self}, function($ctx1) {$ctx1.fill(self,"unmark",{},smalltalk.CWCell)})},
 messageSends: []}),
 smalltalk.CWCell);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "updateUI",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(self)._monster();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+var m;
+m=$receiver;
+_st(m)._updateUI();
+};
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWCell)})},
+messageSends: ["ifNotNil:", "updateUI", "monster"]}),
+smalltalk.CWCell);
+
 
 
 smalltalk.addClass('CWOneChildClass', smalltalk.CWComposite, [], 'Easnoth-MapModel');
@@ -1075,8 +1121,9 @@ function $CWMapDrawer(){return smalltalk.CWMapDrawer||(typeof CWMapDrawer=="unde
 return smalltalk.withContext(function($ctx1) { 
 _st(self)._prefillCaches();
 self["@drawer"]=_st(_st($CWMapDrawer())._new())._initializeForMap_(self);
+_st(self)._updateUI();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeDrawer",{},smalltalk.CWMap)})},
-messageSends: ["prefillCaches", "initializeForMap:", "new"]}),
+messageSends: ["prefillCaches", "initializeForMap:", "new", "updateUI"]}),
 smalltalk.CWMap);
 
 smalltalk.addMethod(
@@ -1260,13 +1307,16 @@ smalltalk.CWMap);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "updateMonstersAndGOTs",
+selector: "updateUI",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@drawer"])._updateMonstersAndGOTs();
-return self}, function($ctx1) {$ctx1.fill(self,"updateMonstersAndGOTs",{},smalltalk.CWMap)})},
-messageSends: ["updateMonstersAndGOTs"]}),
+_st(self["@cellsCache"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._updateUI();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWMap)})},
+messageSends: ["do:", "updateUI"]}),
 smalltalk.CWMap);
 
 
@@ -2057,17 +2107,22 @@ _st(_st(cellLast)._root())._removeSelection();
 _st((1))._to_do_(moveNumber,(function(j){
 return smalltalk.withContext(function($ctx2) {
 return _st((function(){
+var cell1,cell2;
 return smalltalk.withContext(function($ctx3) {
-_st(_st(path)._at_(_st(_st(path)._size()).__minus(j)))._addMonster_(self);
-_st(_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j)))._removeMonster();
-_st(_st(cellLast)._root())._updateMonstersAndGOTs();
+cell1=_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j));
+cell1;
+cell2=_st(path)._at_(_st(_st(path)._size()).__minus(j));
+cell2;
+_st(cell2)._addMonster_(self);
+_st(cell1)._removeMonster();
+_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(_st(cell1)._firstCoods())._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(_st(cell1)._firstCoods())._y()))).__comma("px"))]),(300),"linear");
 _st(self)._currentMove_(_st(_st(self)._currentMove()).__minus((1)));
 return _st(self)._announceUpdate();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
+}, function($ctx3) {$ctx3.fillBlock({cell1:cell1,cell2:cell2},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
 }, function($ctx2) {$ctx2.fillBlock({j:j},$ctx1)})}));
 _st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
 return self}, function($ctx1) {$ctx1.fill(self,"animationMoveTo:callback:",{cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonster)})},
-messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "addMonster:", "at:", "removeMonster", "+", "updateMonstersAndGOTs", "currentMove:", "currentMove", "announceUpdate"]}),
+messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "at:", "+", "addMonster:", "removeMonster", "animate:duration:easing:", "->", ",", "x", "firstCoods", "y", "asJQuery", "canvas", "currentMove:", "currentMove", "announceUpdate"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2357,10 +2412,10 @@ fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-$1=_st(self["@canvas"])._getContext_("2d");
+$1=_st(_st(self["@canvas"])._element())._getContext_("2d");
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"context",{},smalltalk.CWMonster)})},
-messageSends: ["getContext:"]}),
+messageSends: ["getContext:", "element"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2889,9 +2944,12 @@ _st(self)._hp_(_st(_st(self)._hp()).__minus(anInt));
 $1=_st(_st(self)._hp()).__lt((1));
 if(smalltalk.assert($1)){
 _st(self)._die();
+_st(self)._cleanUI();
+} else {
+_st(self)._updateUI();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"removeHP:",{anInt:anInt},smalltalk.CWMonster)})},
-messageSends: ["hp:", "-", "hp", "ifTrue:", "die", "<"]}),
+messageSends: ["hp:", "-", "hp", "ifTrue:ifFalse:", "die", "cleanUI", "updateUI", "<"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(
@@ -2906,11 +2964,10 @@ _st(self)._rollDicesCallBack_bonusDices_bonusAttack_((function(diceRes){
 return smalltalk.withContext(function($ctx2) {
 _st(anotherMonster)._removeHP_(_st(diceRes)._kills());
 _st(self)._selectInContext_(gameContext);
-_st(self)._checkForNextTurn();
-return _st(self)._updateMonstersAndGOTs();
+return _st(self)._checkForNextTurn();
 }, function($ctx2) {$ctx2.fillBlock({diceRes:diceRes},$ctx1)})}),bonusDices,bonusAttack);
 return self}, function($ctx1) {$ctx1.fill(self,"resolveAttack:inContext:bonusDices:bonusAttack:",{anotherMonster:anotherMonster,gameContext:gameContext,bonusDices:bonusDices,bonusAttack:bonusAttack},smalltalk.CWMonster)})},
-messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn", "updateMonstersAndGOTs"]}),
+messageSends: ["changeStateAfterAttacking:", "state", "removeSelection", "root", "rollDicesCallBack:bonusDices:bonusAttack:", "removeHP:", "kills", "selectInContext:", "checkForNextTurn"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

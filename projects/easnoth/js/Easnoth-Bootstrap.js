@@ -445,14 +445,14 @@ return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._option())._with_("elves");
-_st(_st(html)._option())._with_("human-kingdom");
+_st(_st(html)._option())._with_("kingdom");
 _st(_st(html)._option())._with_("merfolks");
 _st(_st(html)._option())._with_("dwarves");
-return _st(_st(html)._option())._with_("human-outlaws");
+return _st(_st(html)._option())._with_("outlaws");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: ["playerNumber", "html"],
-source: "armySelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select.\x0a\x09selectBox\x0a\x09\x09class:  (self selectBoxClasses at: playerNumber);\x0a\x09\x09onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09html option with: 'human-kingdom'.\x0a\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09html option with: 'dwarves'.\x0a\x09\x09\x09html option with: 'human-outlaws' ].",
+source: "armySelectBox: playerNumber on: html\x0a\x09| selectBox |\x0a\x09selectBox := html select.\x0a\x09selectBox\x0a\x09\x09class:  (self selectBoxClasses at: playerNumber);\x0a\x09\x09onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];\x0a\x09\x09with: [\x0a\x09\x09\x09html option with: 'elves'.\x0a\x09\x09\x09html option with: 'kingdom'.\x0a\x09\x09\x09html option with: 'merfolks'.\x0a\x09\x09\x09html option with: 'dwarves'.\x0a\x09\x09\x09html option with: 'outlaws' ].",
 messageSends: ["select", "class:", "at:", "selectBoxClasses", "onChange:", "team:", "val", "asJQuery", "players", "with:", "option"],
 referencedClasses: []
 }),
