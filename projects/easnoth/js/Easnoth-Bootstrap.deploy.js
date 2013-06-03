@@ -333,6 +333,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 selectBox=_st(html)._select();
 $1=selectBox;
+_st($1)._class_(_st(_st(self)._selectBoxClasses())._at_(playerNumber));
 _st($1)._onChange_((function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(_st(self["@gameSettings"])._players())._at_(playerNumber))._team_(_st(_st(selectBox)._asJQuery())._val());
@@ -346,7 +347,7 @@ _st(_st(html)._option())._with_("dwarves");
 return _st(_st(html)._option())._with_("human-outlaws");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"armySelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["select", "onChange:", "team:", "val", "asJQuery", "at:", "players", "with:", "option"]}),
+messageSends: ["select", "class:", "at:", "selectBoxClasses", "onChange:", "team:", "val", "asJQuery", "players", "with:", "option"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -502,32 +503,29 @@ fn: function (){
 var self=this;
 var selectBox;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$2;
+var $1,$2,$3,$4;
 _st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
 $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st((1))._to_do_((2),(function(n){
+return _st((1))._to_do_((2),(function(n){
 return smalltalk.withContext(function($ctx4) {
 return _st(self)._playerSelection_on_(n,html);
 }, function($ctx4) {$ctx4.fillBlock({n:n},$ctx1)})}));
-return _st(_st(html)._li())._with_((function(){
-return smalltalk.withContext(function($ctx4) {
-$3=_st(html)._button();
-_st($3)._with_("start");
-$4=_st($3)._onClick_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(self)._startBeta();
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $4;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $2;
+$2;
+$3=_st(html)._button();
+_st($3)._class_("startButton");
+$4=_st($3)._onClick_((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self)._startBeta();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $4;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "class:", "ul", "with:", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta", "li"]}),
+messageSends: ["contents:", "class:", "ul", "with:", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -541,6 +539,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$3,$4,$5,$6,$2;
 selectBox=_st(html)._select();
 $1=selectBox;
+_st($1)._class_(_st(_st(self)._selectBoxClasses())._at_(playerNumber));
 _st($1)._onChange_((function(){
 var oldTeam;
 return smalltalk.withContext(function($ctx2) {
@@ -561,7 +560,7 @@ $6=_st($5)._value_("CWAggressWeakestAI");
 return $6;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerSelectBox:on:",{playerNumber:playerNumber,html:html,selectBox:selectBox},smalltalk.CWStartMenu)})},
-messageSends: ["select", "onChange:", "team", "at:", "players", "at:put:", "new", "val", "asJQuery", "current", "team:", "with:", "option", "value:"]}),
+messageSends: ["select", "class:", "at:", "selectBoxClasses", "onChange:", "team", "players", "at:put:", "new", "val", "asJQuery", "current", "team:", "with:", "option", "value:"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -598,6 +597,24 @@ self["@box"]=$2;
 _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWStartMenu)})},
 messageSends: ["class:", "div", "with:", "menuOn:with:", "startingMenuDict"]}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "selectBoxClasses",
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $2,$3,$1;
+$2=_st($Array())._new_((2));
+_st($2)._at_put_((1),"styledSelectGreen");
+_st($2)._at_put_((2),"styledSelectRed");
+$3=_st($2)._yourself();
+$1=$3;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"selectBoxClasses",{},smalltalk.CWStartMenu)})},
+messageSends: ["at:put:", "new:", "yourself"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(

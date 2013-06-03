@@ -178,6 +178,13 @@ defaultPlayer
 	^ CWHuman new team: 'elves'
 !
 
+selectBoxClasses
+	^ (Array new: 2)
+		at: 1 put: 'styledSelectGreen';
+		at: 2 put: 'styledSelectRed';
+		yourself
+!
+
 startingMenuDict
 	^ Dictionary new
 		at: 'Tutorial' put: [ self tutorial ];
@@ -217,6 +224,7 @@ armySelectBox: playerNumber on: html
 	| selectBox |
 	selectBox := html select.
 	selectBox
+		class:  (self selectBoxClasses at: playerNumber);
 		onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];
 		with: [
 			html option with: 'elves'.
@@ -289,29 +297,29 @@ playerMenu
 					class: 'menu';
 					with: [
 						1 to: 2 do: [ :n |
-							self playerSelection: n on: html ].
-						html li with: [
-							html button
-								with: 'start';
-								onClick: [ self startBeta ] ] ] ]
+							self playerSelection: n on: html ] ].
+				html button
+								class: 'startButton';
+								onClick: [ self startBeta ] ]
 !
 
 playerSelectBox: playerNumber on: html
 	| selectBox |
-	selectBox := html select. 
-	selectBox 
-		onChange: [ 
-			| oldTeam |
-			oldTeam := (gameSettings players at: playerNumber) team.
-			gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.
-			(gameSettings players at: playerNumber) team: oldTeam ];
-		with: [
-			html option 
-				with: 'human';
-				value: 'CWHuman'.
-			html option 
-				with: 'AI type 1';
-				value: 'CWAggressWeakestAI'].
+		selectBox := html select. 
+		selectBox 
+			class: (self selectBoxClasses at: playerNumber);
+			onChange: [ 
+				| oldTeam |
+				oldTeam := (gameSettings players at: playerNumber) team.
+				gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.
+				(gameSettings players at: playerNumber) team: oldTeam ];
+			with: [
+				html option 
+					with: 'human';
+					value: 'CWHuman'.
+				html option 
+					with: 'AI type 1';
+					value: 'CWAggressWeakestAI'].
 !
 
 playerSelection: playerNumber on: html
