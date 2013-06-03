@@ -185,9 +185,10 @@ function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEve
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
 self["@map"]=nil;
 self["@map"];
+_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
+_st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("click");
 self["@drawer"]=nil;
 self["@drawer"];
 self["@game"]=nil;
@@ -199,7 +200,7 @@ return self["@canvas"];
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "endGameEvent\x0a\x09self announcer \x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ \x0a\x09\x09\x09\x22reinitialize eventHandling for new game\x22\x0a\x09\x09\x09self canvas element asJQuery off: 'mousemove'.\x0a\x09\x09\x09map := nil.\x0a\x09\x09\x09drawer := nil.\x0a\x09\x09\x09game := nil.\x0a\x09\x09\x09currentCell := nil.\x0a\x09\x09\x09canvas := nil ]",
+source: "endGameEvent\x0a\x09self announcer \x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ \x0a\x09\x09\x09\x22reinitialize eventHandling for new game\x22\x0a\x09\x09\x09map := nil.\x0a\x09\x09\x09self canvas element asJQuery off: 'mousemove'.\x0a\x09\x09\x09self canvas element asJQuery off: 'click'.\x0a\x09\x09\x09drawer := nil.\x0a\x09\x09\x09game := nil.\x0a\x09\x09\x09currentCell := nil.\x0a\x09\x09\x09canvas := nil ]",
 messageSends: ["on:do:", "off:", "asJQuery", "element", "canvas", "announcer"],
 referencedClasses: ["CWEndGameEvent"]
 }),

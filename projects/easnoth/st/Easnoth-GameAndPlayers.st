@@ -70,6 +70,8 @@ initializeEventHandling
 	self announcer
 		on: CWEndGameEvent
 		do: [ self announcer reset. 
+			map removeSelection.
+			map desactivateMonsters.
 			map clean.
 			[ map clean ] valueWithTimeout: 500.
 			CWStartMenu start ].

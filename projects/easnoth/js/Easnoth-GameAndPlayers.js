@@ -164,6 +164,8 @@ return _st(self)._nextTurn();
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(self)._announcer())._reset();
+_st(self["@map"])._removeSelection();
+_st(self["@map"])._desactivateMonsters();
 _st(self["@map"])._clean();
 _st((function(){
 return smalltalk.withContext(function($ctx3) {
@@ -173,8 +175,8 @@ return _st($CWStartMenu())._start();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ].\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09map clean.\x0a\x09\x09\x09[ map clean ] valueWithTimeout: 500.\x0a\x09\x09\x09CWStartMenu start ].",
-messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "clean", "valueWithTimeout:", "start"],
+source: "initializeEventHandling\x0a\x09self announcer\x0a\x09\x09on: CWGameStart\x0a\x09\x09do: [ self startGame ].\x0a\x09self announcer\x0a\x09\x09on: CWNextTurnEvent\x0a\x09\x09do: [ self nextTurn ].\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09map removeSelection.\x0a\x09\x09\x09map desactivateMonsters.\x0a\x09\x09\x09map clean.\x0a\x09\x09\x09[ map clean ] valueWithTimeout: 500.\x0a\x09\x09\x09CWStartMenu start ].",
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "start"],
 referencedClasses: ["CWGameStart", "CWNextTurnEvent", "CWEndGameEvent", "CWStartMenu"]
 }),
 smalltalk.CWGame);
