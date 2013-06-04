@@ -674,28 +674,67 @@ selector: "tutorial",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$2;
+var $1,$3,$5,$6,$7,$8,$9,$11,$12,$10,$13,$15,$16,$14,$17,$18,$19,$20,$4,$2;
 _st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/coverempty.jpg)");
-_st(self["@subBox"])._contents_((function(html){
+$1=self["@subBox"];
+_st($1)._style_("font-size: 15px");
+$2=_st($1)._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-$1=_st(html)._ul();
-_st($1)._class_("menu");
-_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%");
-$2=_st($1)._with_((function(){
+$3=_st(html)._div();
+_st($3)._style_("margin-top: 7%; margin-left: 26%; width: 100%");
+$4=_st($3)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-$3=_st(html)._button();
-_st($3)._with_("> back <");
-$4=_st($3)._onClick_((function(){
+$5=_st(html)._h3();
+_st($5)._style_("text-align: center");
+$6=_st($5)._with_("Goal : kill all your ennemy army");
+$6;
+$7=_st(html)._h4();
+_st($7)._style_("text-align: center");
+$8=_st($7)._with_("Basics");
+$8;
+$9=_st(html)._div();
+_st($9)._style_("height: 61px");
+$10=_st($9)._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._img_("ressources/images/tuto1.png"))._style_("height: 56px; width: auto; float: left; margin-right: 6px;");
+$11=_st(html)._p();
+_st($11)._style_("padding-top: 10px");
+$12=_st($11)._with_("When you start your turn, all your activable creatures are surrounded by a white halo. \x0a\x09\x09\x09\x09\x09\x09Click on one of them to activate it. You can activate only one creature per turn.");
+return $12;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+$10;
+$13=_st(html)._div();
+_st($13)._style_("height: 72px");
+$14=_st($13)._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._img_("ressources/images/tuto2.png"))._style_("height: 67px; width: auto; float: right; margin-left: 6px;");
+$15=_st(html)._p();
+_st($15)._style_("padding-top: 10px");
+$16=_st($15)._with_("When a creature is activated, a bunch of tiles become colored, \x0a\x09\x09\x09\x09\x09\x09these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.");
+return $16;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+$14;
+_st(_st(html)._p())._with_("When the creature has moved its full move and attacked (or cannot attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the next turn button.");
+$17=_st(html)._h4();
+_st($17)._style_("text-align: center");
+$18=_st($17)._with_("Advanced");
+$18;
+_st(_st(html)._p())._with_("When you click on a creature, you can see on the top left its capabilities. \x0a\x09\x09\x09\x09For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.");
+_st(_st(html)._p())._with_("Lastly, fast or cavalry creatures are better against range creatures, \x0a\x09\x09\x09\x09which are better against foot creatures, which are then better against fast or cavalry ones.");
+$19=_st(html)._button();
+_st($19)._with_("> back <");
+$20=_st($19)._onClick_((function(){
 return smalltalk.withContext(function($ctx4) {
 _st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/covergame.jpg)");
+_st(self["@subBox"])._style_("font-size: 20px");
 return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-return $4;
+return $20;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $2;
+return $4;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"tutorial",{},smalltalk.CWStartMenu)})},
-messageSends: ["css:value:", "asJQuery", "contents:", "class:", "ul", "style:", "with:", "button", "onClick:", "menuOn:with:", "startingMenuDict"]}),
+messageSends: ["css:value:", "asJQuery", "style:", "contents:", "div", "with:", "h3", "h4", "img:", "p", "button", "onClick:", "menuOn:with:", "startingMenuDict"]}),
 smalltalk.CWStartMenu);
 
 

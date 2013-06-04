@@ -50,6 +50,29 @@ nextTurn
 
 !CWGame methodsFor: 'initialize-release'!
 
+endGameEvent
+	self announcer
+		on: CWEndGameEvent
+		do: [ self announcer reset. 
+			map removeSelection.
+			map desactivateMonsters.
+			map clean.
+			[ map clean ] valueWithTimeout: 500.
+			CWStartMenu start ].
+!
+
+endGameEvent: ev
+	self announcer
+		on: CWEndGameEvent
+		do: [ self announcer reset. 
+			ev endGame.
+			map removeSelection.
+			map desactivateMonsters.
+			map clean.
+			[ map clean ] valueWithTimeout: 500.
+			CWStartMenu start ].
+!
+
 initialize
 	super initialize.
 	context := CWGameContext new.
@@ -67,14 +90,6 @@ initializeEventHandling
 	self announcer
 		on: CWNextTurnEvent
 		do: [ self nextTurn ].
-	self announcer
-		on: CWEndGameEvent
-		do: [ self announcer reset. 
-			map removeSelection.
-			map desactivateMonsters.
-			map clean.
-			[ map clean ] valueWithTimeout: 500.
-			CWStartMenu start ].
 !
 
 initializePlayerMonsters
@@ -105,6 +120,7 @@ startGame
 	map initializeDrawer.
 	eventDispatcher := CWEventDispatcher new initializeForMap: map game: self.
 	self initializeAI: eventDispatcher.
+	self endGameEvent: eventDispatcher.
 	map updateMap.
 	map removeSelection. "initialize got to invis image"
 	self firstTurn.

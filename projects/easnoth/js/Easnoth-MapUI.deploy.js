@@ -141,29 +141,20 @@ smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "endGameEvent",
+selector: "endGame",
 fn: function (){
 var self=this;
-function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
+_st(_st(self["@canvas"])._asJQuery())._css_put_("z-index",(990));
 self["@map"]=nil;
-self["@map"];
-_st(_st(self["@canvas"])._asJQuery())._css_put_("z-index",(1));
 _st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
 _st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("click");
 self["@drawer"]=nil;
-self["@drawer"];
 self["@game"]=nil;
-self["@game"];
 self["@currentCell"]=nil;
-self["@currentCell"];
 self["@canvas"]=nil;
-return self["@canvas"];
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWEventDispatcher)})},
-messageSends: ["on:do:", "css:put:", "asJQuery", "off:", "element", "canvas", "announcer"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"endGame",{},smalltalk.CWEventDispatcher)})},
+messageSends: ["css:put:", "asJQuery", "off:", "element", "canvas"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(
@@ -207,9 +198,8 @@ _st(_st(self)._canvas())._onMouseMove_((function(e){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._dispatchMouseMove_(e);
 }, function($ctx2) {$ctx2.fillBlock({e:e},$ctx1)})}));
-_st(self)._endGameEvent();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWEventDispatcher)})},
-messageSends: ["onClick:", "dispatchMouseClick:", "canvas", "onMouseMove:", "dispatchMouseMove:", "endGameEvent"]}),
+messageSends: ["onClick:", "dispatchMouseClick:", "canvas", "onMouseMove:", "dispatchMouseMove:"]}),
 smalltalk.CWEventDispatcher);
 
 smalltalk.addMethod(

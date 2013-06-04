@@ -40,6 +40,55 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "endGameEvent",
+fn: function (){
+var self=this;
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(self)._announcer())._reset();
+_st(self["@map"])._removeSelection();
+_st(self["@map"])._desactivateMonsters();
+_st(self["@map"])._clean();
+_st((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self["@map"])._clean();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((500));
+return _st($CWStartMenu())._start();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWGame)})},
+messageSends: ["on:do:", "reset", "announcer", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "start"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "endGameEvent:",
+fn: function (ev){
+var self=this;
+function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
+return smalltalk.withContext(function($ctx2) {
+_st(_st(self)._announcer())._reset();
+_st(ev)._endGame();
+_st(self["@map"])._removeSelection();
+_st(self["@map"])._desactivateMonsters();
+_st(self["@map"])._clean();
+_st((function(){
+return smalltalk.withContext(function($ctx3) {
+return _st(self["@map"])._clean();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((500));
+return _st($CWStartMenu())._start();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent:",{ev:ev},smalltalk.CWGame)})},
+messageSends: ["on:do:", "reset", "announcer", "endGame", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "start"]}),
+smalltalk.CWGame);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "eventManagerLayerId",
 fn: function (){
 var self=this;
@@ -108,8 +157,6 @@ fn: function (){
 var self=this;
 function $CWGameStart(){return smalltalk.CWGameStart||(typeof CWGameStart=="undefined"?nil:CWGameStart)}
 function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurnEvent=="undefined"?nil:CWNextTurnEvent)}
-function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWGameStart(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -119,20 +166,8 @@ _st(_st(self)._announcer())._on_do_($CWNextTurnEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._nextTurn();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-_st(_st(self)._announcer())._reset();
-_st(self["@map"])._removeSelection();
-_st(self["@map"])._desactivateMonsters();
-_st(self["@map"])._clean();
-_st((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(self["@map"])._clean();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((500));
-return _st($CWStartMenu())._start();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWGame)})},
-messageSends: ["on:do:", "startGame", "announcer", "nextTurn", "reset", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "start"]}),
+messageSends: ["on:do:", "startGame", "announcer", "nextTurn"]}),
 smalltalk.CWGame);
 
 smalltalk.addMethod(
@@ -230,11 +265,12 @@ _st(self)._initializePlayerMonsters();
 _st(self["@map"])._initializeDrawer();
 eventDispatcher=_st(_st($CWEventDispatcher())._new())._initializeForMap_game_(self["@map"],self);
 _st(self)._initializeAI_(eventDispatcher);
+_st(self)._endGameEvent_(eventDispatcher);
 _st(self["@map"])._updateMap();
 _st(self["@map"])._removeSelection();
 _st(self)._firstTurn();
 return self}, function($ctx1) {$ctx1.fill(self,"startGame",{eventDispatcher:eventDispatcher},smalltalk.CWGame)})},
-messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "updateMap", "removeSelection", "firstTurn"]}),
+messageSends: ["initializePlayerMonsters", "initializeDrawer", "initializeForMap:game:", "new", "initializeAI:", "endGameEvent:", "updateMap", "removeSelection", "firstTurn"]}),
 smalltalk.CWGame);
 
 

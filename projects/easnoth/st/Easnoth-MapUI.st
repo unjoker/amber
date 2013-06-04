@@ -143,19 +143,16 @@ dispatchMouseMove: event
 
 !CWEventDispatcher methodsFor: 'initialize-release'!
 
-endGameEvent
-	self announcer 
-		on: CWEndGameEvent
-		do: [ 
-			"reinitialize eventHandling for new game"
-			map := nil.
-			canvas asJQuery css: 'z-index' put: 1.
-			self canvas element asJQuery off: 'mousemove'.
-			self canvas element asJQuery off: 'click'.
-			drawer := nil.
-			game := nil.
-			currentCell := nil.
-			canvas := nil ]
+endGame
+	"reinitialize eventHandling for new game"
+	canvas asJQuery css: 'z-index' put: 990.
+	map := nil.
+	self canvas element asJQuery off: 'mousemove'.
+	self canvas element asJQuery off: 'click'.
+	drawer := nil.
+	game := nil.
+	currentCell := nil.
+	canvas := nil
 !
 
 initialize
@@ -170,7 +167,6 @@ initializeEventHandling
 		self dispatchMouseClick: e].
 	self canvas onMouseMove: [:e | 
 		self dispatchMouseMove: e].
-	self endGameEvent.
 !
 
 initializeForMap: aMap game: aGame
