@@ -187,6 +187,7 @@ _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 self["@map"]=nil;
 self["@map"];
+_st(_st(self["@canvas"])._asJQuery())._css_put_("z-index",(1));
 _st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("mousemove");
 _st(_st(_st(_st(self)._canvas())._element())._asJQuery())._off_("click");
 self["@drawer"]=nil;
@@ -200,8 +201,8 @@ return self["@canvas"];
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "endGameEvent\x0a\x09self announcer \x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ \x0a\x09\x09\x09\x22reinitialize eventHandling for new game\x22\x0a\x09\x09\x09map := nil.\x0a\x09\x09\x09self canvas element asJQuery off: 'mousemove'.\x0a\x09\x09\x09self canvas element asJQuery off: 'click'.\x0a\x09\x09\x09drawer := nil.\x0a\x09\x09\x09game := nil.\x0a\x09\x09\x09currentCell := nil.\x0a\x09\x09\x09canvas := nil ]",
-messageSends: ["on:do:", "off:", "asJQuery", "element", "canvas", "announcer"],
+source: "endGameEvent\x0a\x09self announcer \x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ \x0a\x09\x09\x09\x22reinitialize eventHandling for new game\x22\x0a\x09\x09\x09map := nil.\x0a\x09\x09\x09canvas asJQuery css: 'z-index' put: 1.\x0a\x09\x09\x09self canvas element asJQuery off: 'mousemove'.\x0a\x09\x09\x09self canvas element asJQuery off: 'click'.\x0a\x09\x09\x09drawer := nil.\x0a\x09\x09\x09game := nil.\x0a\x09\x09\x09currentCell := nil.\x0a\x09\x09\x09canvas := nil ]",
+messageSends: ["on:do:", "css:put:", "asJQuery", "off:", "element", "canvas", "announcer"],
 referencedClasses: ["CWEndGameEvent"]
 }),
 smalltalk.CWEventDispatcher);
@@ -233,12 +234,12 @@ function $TagBrush(){return smalltalk.TagBrush||(typeof TagBrush=="undefined"?ni
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
 self["@suspended"]=false;
-self["@activeCheck"]=false;
 self["@canvas"]=_st($TagBrush())._fromJQuery_canvas_(_st(_st(self)._eventManagerLayerId())._asJQuery(),_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery()));
+_st(_st(self["@canvas"])._asJQuery())._css_put_("z-index",(998));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWEventDispatcher)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09activeCheck := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).",
-messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:"],
+source: "initialize\x0a\x09super initialize. \x0a\x09suspended := false.\x0a\x09canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).\x0a\x09canvas asJQuery css: 'z-index' put: 998.",
+messageSends: ["initialize", "fromJQuery:canvas:", "asJQuery", "eventManagerLayerId", "onJQuery:", "css:put:"],
 referencedClasses: ["HTMLCanvas", "TagBrush"]
 }),
 smalltalk.CWEventDispatcher);
@@ -2079,8 +2080,9 @@ selector: "setUpFirstCoods",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-var tempContext,tempCoods;
+var tempContext,tempCoods,rowSize;
 return smalltalk.withContext(function($ctx1) { 
+rowSize=_st(_st(self["@map"])._children())._size();
 tempContext=_st(self)._newGlobalDrawingContext();
 _st(_st(self["@map"])._children())._withIndexDo_((function(row,i){
 return smalltalk.withContext(function($ctx2) {
@@ -2088,13 +2090,14 @@ _st(tempContext)._nextRow();
 return _st(_st(row)._children())._withIndexDo_((function(cell,j){
 return smalltalk.withContext(function($ctx3) {
 _st(tempContext)._nextCell();
-return _st(cell)._firstCoods_(_st(tempContext)._currentPoint());
+_st(cell)._firstCoods_(_st(tempContext)._currentPoint());
+return _st(cell)._zIndex_(_st(_st((100)).__plus(j)).__plus(_st(i).__star(rowSize)));
 }, function($ctx3) {$ctx3.fillBlock({cell:cell,j:j},$ctx1)})}));
 }, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"setUpFirstCoods",{tempContext:tempContext,tempCoods:tempCoods},smalltalk.CWMapDrawer)})},
+return self}, function($ctx1) {$ctx1.fill(self,"setUpFirstCoods",{tempContext:tempContext,tempCoods:tempCoods,rowSize:rowSize},smalltalk.CWMapDrawer)})},
 args: [],
-source: "setUpFirstCoods\x0a\x09| tempContext tempCoods |\x0a\x09tempContext := self newGlobalDrawingContext.\x0a\x09map children withIndexDo: [ :row :i |\x0a\x09\x09tempContext nextRow.\x0a\x09\x09row children withIndexDo: [ :cell :j |\x0a\x09\x09\x09tempContext nextCell.\x0a\x09\x09\x09cell firstCoods: tempContext currentPoint ] ].",
-messageSends: ["newGlobalDrawingContext", "withIndexDo:", "nextRow", "nextCell", "firstCoods:", "currentPoint", "children"],
+source: "setUpFirstCoods\x0a\x09| tempContext tempCoods rowSize |\x0a\x09rowSize := map children size.\x0a\x09tempContext := self newGlobalDrawingContext.\x0a\x09map children withIndexDo: [ :row :i |\x0a\x09\x09tempContext nextRow.\x0a\x09\x09row children withIndexDo: [ :cell :j |\x0a\x09\x09\x09tempContext nextCell.\x0a\x09\x09\x09cell firstCoods: tempContext currentPoint.\x0a\x09\x09\x09cell zIndex: 100 + j + (i * rowSize) ] ].",
+messageSends: ["size", "children", "newGlobalDrawingContext", "withIndexDo:", "nextRow", "nextCell", "firstCoods:", "currentPoint", "zIndex:", "+", "*"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);

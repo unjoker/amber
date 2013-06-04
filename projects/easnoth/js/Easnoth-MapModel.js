@@ -360,7 +360,7 @@ smalltalk.CWComposite);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark', 'firstCoods'], 'Easnoth-MapModel');
+smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark', 'firstCoods', 'zIndex'], 'Easnoth-MapModel');
 smalltalk.CWCell.comment="I represent an hexagon cell in the map."
 smalltalk.addMethod(
 smalltalk.method({
@@ -1312,6 +1312,40 @@ return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWCell)})
 args: [],
 source: "updateUI\x0a\x09\x22you can remove this method, but it makes the game faster.\x22\x0a\x09self monster ifNotNil: [ :m | m updateUI ]",
 messageSends: ["ifNotNil:", "updateUI", "monster"],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "zIndex",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@zIndex"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"zIndex",{},smalltalk.CWCell)})},
+args: [],
+source: "zIndex\x0a\x09^ zIndex",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "zIndex:",
+category: 'accessing',
+fn: function (anInt){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@zIndex"]=anInt;
+return self}, function($ctx1) {$ctx1.fill(self,"zIndex:",{anInt:anInt},smalltalk.CWCell)})},
+args: ["anInt"],
+source: "zIndex: anInt\x0a\x09zIndex := anInt",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -3231,10 +3265,11 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._parent())._removeMonster();
 _st(aCell)._addMonster_(self);
+_st(_st(_st(self)._canvas())._asJQuery())._css_put_("z-index",_st(aCell)._zIndex());
 return self}, function($ctx1) {$ctx1.fill(self,"changeCell:",{aCell:aCell},smalltalk.CWMonster)})},
 args: ["aCell"],
-source: "changeCell: aCell\x0a    self parent removeMonster.\x0a\x09aCell addMonster: self.",
-messageSends: ["removeMonster", "parent", "addMonster:"],
+source: "changeCell: aCell\x0a    self parent removeMonster.\x0a\x09aCell addMonster: self.\x0a\x09self canvas asJQuery css: 'z-index' put: aCell zIndex",
+messageSends: ["removeMonster", "parent", "addMonster:", "css:put:", "zIndex", "asJQuery", "canvas"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);

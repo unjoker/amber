@@ -259,7 +259,7 @@ smalltalk.CWComposite);
 
 
 
-smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark', 'firstCoods'], 'Easnoth-MapModel');
+smalltalk.addClass('CWCell', smalltalk.CWComposite, ['neighboursCache', 'background', 'gameOverTile', 'monster', 'state', 'prevCell', 'mark', 'firstCoods', 'zIndex'], 'Easnoth-MapModel');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "accept:",
@@ -952,6 +952,30 @@ _st(m)._updateUI();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"updateUI",{},smalltalk.CWCell)})},
 messageSends: ["ifNotNil:", "updateUI", "monster"]}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "zIndex",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@zIndex"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"zIndex",{},smalltalk.CWCell)})},
+messageSends: []}),
+smalltalk.CWCell);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "zIndex:",
+fn: function (anInt){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@zIndex"]=anInt;
+return self}, function($ctx1) {$ctx1.fill(self,"zIndex:",{anInt:anInt},smalltalk.CWCell)})},
+messageSends: []}),
 smalltalk.CWCell);
 
 
@@ -2381,8 +2405,9 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._parent())._removeMonster();
 _st(aCell)._addMonster_(self);
+_st(_st(_st(self)._canvas())._asJQuery())._css_put_("z-index",_st(aCell)._zIndex());
 return self}, function($ctx1) {$ctx1.fill(self,"changeCell:",{aCell:aCell},smalltalk.CWMonster)})},
-messageSends: ["removeMonster", "parent", "addMonster:"]}),
+messageSends: ["removeMonster", "parent", "addMonster:", "css:put:", "zIndex", "asJQuery", "canvas"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

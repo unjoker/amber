@@ -149,6 +149,7 @@ endGameEvent
 		do: [ 
 			"reinitialize eventHandling for new game"
 			map := nil.
+			canvas asJQuery css: 'z-index' put: 1.
 			self canvas element asJQuery off: 'mousemove'.
 			self canvas element asJQuery off: 'click'.
 			drawer := nil.
@@ -160,8 +161,8 @@ endGameEvent
 initialize
 	super initialize. 
 	suspended := false.
-	activeCheck := false.
 	canvas := (TagBrush fromJQuery: self eventManagerLayerId asJQuery canvas: (HTMLCanvas onJQuery: 'body' asJQuery)).
+	canvas asJQuery css: 'z-index' put: 998.
 !
 
 initializeEventHandling
@@ -677,13 +678,15 @@ initializeMenus
 !
 
 setUpFirstCoods
-	| tempContext tempCoods |
+	| tempContext tempCoods rowSize |
+	rowSize := map children size.
 	tempContext := self newGlobalDrawingContext.
 	map children withIndexDo: [ :row :i |
 		tempContext nextRow.
 		row children withIndexDo: [ :cell :j |
 			tempContext nextCell.
-			cell firstCoods: tempContext currentPoint ] ].
+			cell firstCoods: tempContext currentPoint.
+			cell zIndex: 100 + j + (i * rowSize) ] ].
 ! !
 
 !CWMapDrawer methodsFor: 'map move'!
