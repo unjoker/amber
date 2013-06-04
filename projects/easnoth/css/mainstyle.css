@@ -110,6 +110,7 @@ button {
     width:100%;
 	padding:0;
 	margin:0;
+	z-index: 999;
 	background-color:#383838;
 	background-image:url(../ressources/images/covergame.jpg);
 	background-repeat:no-repeat;
