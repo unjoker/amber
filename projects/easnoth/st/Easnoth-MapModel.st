@@ -117,7 +117,7 @@ accept: aVisitor
 ! !
 
 CWComposite subclass: #CWCell
-	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell mark firstCoods'
+	instanceVariableNames: 'neighboursCache background gameOverTile monster state prevCell mark firstCoods zIndex'
 	package: 'Easnoth-MapModel'!
 !CWCell commentStamp!
 I represent an hexagon cell in the map.!
@@ -173,6 +173,14 @@ monster: aMonster
 
 side
 	^ self monster side
+!
+
+zIndex
+	^ zIndex
+!
+
+zIndex: anInt
+	zIndex := anInt
 ! !
 
 !CWCell methodsFor: 'accessing - pathfinding'!
@@ -1213,6 +1221,7 @@ cellToMoveBeforeRangeAttack: cellLast
 changeCell: aCell
     self parent removeMonster.
 	aCell addMonster: self.
+	self canvas asJQuery css: 'z-index' put: aCell zIndex
 !
 
 decreaseCurrentMove

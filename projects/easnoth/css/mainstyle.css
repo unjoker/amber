@@ -9,9 +9,13 @@
 	height: 640px;
 }
 
+.menuEditor {
+	z-index: 999;
+}
+
 .sidePanel {
 	background-color: #383838;
-	z-index: 999;
+	z-index: 998;
 }
 
 body {

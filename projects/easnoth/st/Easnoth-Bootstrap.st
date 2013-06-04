@@ -247,26 +247,31 @@ credits
 							html br.
 							html a 
 								with: 'Clément Béra';
+								target: '_blank';
 								href: 'http://clementbera.wordpress.com/' ].
 						html li with: [
 							html strong with: 'Graphics : '.
 							html br.
 							html a
 								with: 'Lusy Dolia';
+								target: '_blank';
 								href: 'https://www.facebook.com/lusy.dolya'.
 							html br.
 							html a
 								with: 'Battle for Wesnoth';
+								target: '_blank';
 								href: 'http://www.wesnoth.org/' ].
 						html li with: [
 							html strong with: 'Thanks to : '.
 							html br.
 							html a
 								with: 'Amber web framework';
+								target: '_blank';
 								href: 'http://amber-lang.net/'.
 							html br.
 							html a
 								with: 'Nicolas Petton (Amber core developer)';
+								target: '_blank';
 								href: 'http://www.nicolas-petton.fr/' ].
 						html li with: [
 							html button

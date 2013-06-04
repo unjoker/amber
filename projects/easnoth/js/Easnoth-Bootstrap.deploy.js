@@ -383,6 +383,7 @@ _st(_st(html)._strong())._with_("Development : ");
 _st(html)._br();
 $3=_st(html)._a();
 _st($3)._with_("Clément Béra");
+_st($3)._target_("_blank");
 $4=_st($3)._href_("http://clementbera.wordpress.com/");
 return $4;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
@@ -392,11 +393,13 @@ _st(_st(html)._strong())._with_("Graphics : ");
 _st(html)._br();
 $5=_st(html)._a();
 _st($5)._with_("Lusy Dolia");
+_st($5)._target_("_blank");
 $6=_st($5)._href_("https://www.facebook.com/lusy.dolya");
 $6;
 _st(html)._br();
 $7=_st(html)._a();
 _st($7)._with_("Battle for Wesnoth");
+_st($7)._target_("_blank");
 $8=_st($7)._href_("http://www.wesnoth.org/");
 return $8;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
@@ -406,11 +409,13 @@ _st(_st(html)._strong())._with_("Thanks to : ");
 _st(html)._br();
 $9=_st(html)._a();
 _st($9)._with_("Amber web framework");
+_st($9)._target_("_blank");
 $10=_st($9)._href_("http://amber-lang.net/");
 $10;
 _st(html)._br();
 $11=_st(html)._a();
 _st($11)._with_("Nicolas Petton (Amber core developer)");
+_st($11)._target_("_blank");
 $12=_st($11)._href_("http://www.nicolas-petton.fr/");
 return $12;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
@@ -428,7 +433,7 @@ return $14;
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
-messageSends: ["contents:", "class:", "ul", "style:", "with:", "strong", "br", "a", "href:", "li", "button", "onClick:", "menuOn:with:", "startingMenuDict"]}),
+messageSends: ["contents:", "class:", "ul", "style:", "with:", "strong", "br", "a", "target:", "href:", "li", "button", "onClick:", "menuOn:with:", "startingMenuDict"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
