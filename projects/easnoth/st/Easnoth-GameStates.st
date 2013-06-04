@@ -228,7 +228,7 @@ mouseClick: aCell context: gameContext
 mouseMove: cell context: gameContext
 	| path |
 	super mouseMove: cell context: gameContext.
-	(gameContext currentMonster cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext
+	(gameContext currentMonster cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext.
 !
 
 removeMonster: aCell

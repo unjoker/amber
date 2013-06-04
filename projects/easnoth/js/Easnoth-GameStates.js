@@ -728,7 +728,7 @@ smalltalk.CWCellState.fn.prototype._mouseMove_context_.apply(_st(self), [cell,ga
 _st(_st(_st(gameContext)._currentMonster())._cellToMoveBeforeAttack_context_(cell,gameContext))._mouseMove_(gameContext);
 return self}, function($ctx1) {$ctx1.fill(self,"mouseMove:context:",{cell:cell,gameContext:gameContext,path:path},smalltalk.CWHasMonsterSelected)})},
 args: ["cell", "gameContext"],
-source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09(gameContext currentMonster cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext",
+source: "mouseMove: cell context: gameContext\x0a\x09| path |\x0a\x09super mouseMove: cell context: gameContext.\x0a\x09(gameContext currentMonster cellToMoveBeforeAttack: cell context: gameContext) mouseMove: gameContext.",
 messageSends: ["mouseMove:context:", "mouseMove:", "cellToMoveBeforeAttack:context:", "currentMonster"],
 referencedClasses: []
 }),

@@ -1159,36 +1159,36 @@ stats: jsonStats
 
 !CWMonster methodsFor: 'move'!
 
-animationMoveTo: cellLast callback: callback
+animPath: path iterator: j callback: callback
+	| cell1 cell2 pathSize |
 	
-	| path moveNumber |
+	pathSize := path size.
 	
-	path := self pathTo: cellLast.
-	moveNumber := path size - 1.
-	cellLast root removeSelection.
-
-	1 to: moveNumber do: [ :j |
-		[ | cell1 cell2 |
-		cell1 := path at: path size + 1 - j.
-		cell2 := path at: path size - j.
-		cell2 addMonster: self.
-        cell1 removeMonster.
+	j = pathSize
+		ifTrue: [ ^ callback value ].
+			
+	cell1 := self parent.
+	cell2 := path at: pathSize - j.
+	self changeCell: cell2.
+	self decreaseCurrentMove.
 		
-		self canvas asJQuery
-			animate: #{ 
-			   'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .
-			   'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }
-       		duration: 300
-     		easing: 'linear'
-			"complete: [ window alert: 'foo' ]".
-		self currentMove: self currentMove - 1.
-		self announceUpdate ] valueWithTimeout: 300 * j ].
-	
-	callback valueWithTimeout: 300 * moveNumber
+	self canvas asJQuery
+		animate: #{ 
+			'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .
+			'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }
+       	duration: 300
+     	easing: 'linear'
+		complete: [ self animPath: path iterator: j + 1 callback: callback ].
 !
 
-announceUpdate
-	self announce: (CWMonsterUpdateEvent new monster: self)
+animationMoveTo: cellLast callback: callback
+	
+	| path |
+	
+	path := self pathTo: cellLast.
+	cellLast root removeSelection.
+	
+	self animPath: path iterator: 1 callback: callback
 !
 
 cellToMoveBeforeAttack: cellLast context: gameContext
@@ -1208,6 +1208,16 @@ cellToMoveBeforeRangeAttack: cellLast
 	shortestPath := self pathTo: cellLast. "shortest fake track to ennemy"
 	shortestPath size < (self range + 1) ifTrue: [ ^ self parent ]. "for AI move calculs only"
 	^ shortestPath at: self range + 1. "in fake track, get furthest from ennemy cell where you can attack him"
+!
+
+changeCell: aCell
+    self parent removeMonster.
+	aCell addMonster: self.
+!
+
+decreaseCurrentMove
+	self currentMove: self currentMove - 1.
+	self announceUpdate. "shows it on the monster selected panel"
 !
 
 moveTo: aCell inContext: gameContext callback: callback
@@ -1240,6 +1250,10 @@ printOn: aStream
 ! !
 
 !CWMonster methodsFor: 'rendering'!
+
+announceUpdate
+	self announce: (CWMonsterUpdateEvent new monster: self)
+!
 
 cleanUI
 	| elem |

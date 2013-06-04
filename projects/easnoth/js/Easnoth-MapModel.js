@@ -2855,36 +2855,50 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "animPath:iterator:callback:",
+category: 'move',
+fn: function (path,j,callback){
+var self=this;
+var cell1,cell2,pathSize;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+pathSize=_st(path)._size();
+$1=_st(j).__eq(pathSize);
+if(smalltalk.assert($1)){
+$2=_st(callback)._value();
+return $2;
+};
+cell1=_st(self)._parent();
+cell2=_st(path)._at_(_st(pathSize).__minus(j));
+_st(self)._changeCell_(cell2);
+_st(self)._decreaseCurrentMove();
+_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_complete_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(_st(cell1)._firstCoods())._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(_st(cell1)._firstCoods())._y()))).__comma("px"))]),(300),"linear",(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._animPath_iterator_callback_(path,_st(j).__plus((1)),callback);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"animPath:iterator:callback:",{path:path,j:j,callback:callback,cell1:cell1,cell2:cell2,pathSize:pathSize},smalltalk.CWMonster)})},
+args: ["path", "j", "callback"],
+source: "animPath: path iterator: j callback: callback\x0a\x09| cell1 cell2 pathSize |\x0a\x09\x0a\x09pathSize := path size.\x0a\x09\x0a\x09j = pathSize\x0a\x09\x09ifTrue: [ ^ callback value ].\x0a\x09\x09\x09\x0a\x09cell1 := self parent.\x0a\x09cell2 := path at: pathSize - j.\x0a\x09self changeCell: cell2.\x0a\x09self decreaseCurrentMove.\x0a\x09\x09\x0a\x09self canvas asJQuery\x0a\x09\x09animate: #{ \x0a\x09\x09\x09'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .\x0a\x09\x09\x09'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }\x0a       \x09duration: 300\x0a     \x09easing: 'linear'\x0a\x09\x09complete: [ self animPath: path iterator: j + 1 callback: callback ].",
+messageSends: ["size", "ifTrue:", "value", "=", "parent", "at:", "-", "changeCell:", "decreaseCurrentMove", "animate:duration:easing:complete:", "->", ",", "x", "firstCoods", "y", "animPath:iterator:callback:", "+", "asJQuery", "canvas"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "animationMoveTo:callback:",
 category: 'move',
 fn: function (cellLast,callback){
 var self=this;
-var path,moveNumber;
+var path;
 return smalltalk.withContext(function($ctx1) { 
 path=_st(self)._pathTo_(cellLast);
-moveNumber=_st(_st(path)._size()).__minus((1));
 _st(_st(cellLast)._root())._removeSelection();
-_st((1))._to_do_(moveNumber,(function(j){
-return smalltalk.withContext(function($ctx2) {
-return _st((function(){
-var cell1,cell2;
-return smalltalk.withContext(function($ctx3) {
-cell1=_st(path)._at_(_st(_st(_st(path)._size()).__plus((1))).__minus(j));
-cell1;
-cell2=_st(path)._at_(_st(_st(path)._size()).__minus(j));
-cell2;
-_st(cell2)._addMonster_(self);
-_st(cell1)._removeMonster();
-_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(_st(cell1)._firstCoods())._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(_st(cell1)._firstCoods())._y()))).__comma("px"))]),(300),"linear");
-_st(self)._currentMove_(_st(_st(self)._currentMove()).__minus((1)));
-return _st(self)._announceUpdate();
-}, function($ctx3) {$ctx3.fillBlock({cell1:cell1,cell2:cell2},$ctx1)})}))._valueWithTimeout_(_st((300)).__star(j));
-}, function($ctx2) {$ctx2.fillBlock({j:j},$ctx1)})}));
-_st(callback)._valueWithTimeout_(_st((300)).__star(moveNumber));
-return self}, function($ctx1) {$ctx1.fill(self,"animationMoveTo:callback:",{cellLast:cellLast,callback:callback,path:path,moveNumber:moveNumber},smalltalk.CWMonster)})},
+_st(self)._animPath_iterator_callback_(path,(1),callback);
+return self}, function($ctx1) {$ctx1.fill(self,"animationMoveTo:callback:",{cellLast:cellLast,callback:callback,path:path},smalltalk.CWMonster)})},
 args: ["cellLast", "callback"],
-source: "animationMoveTo: cellLast callback: callback\x0a\x09\x0a\x09| path moveNumber |\x0a\x09\x0a\x09path := self pathTo: cellLast.\x0a\x09moveNumber := path size - 1.\x0a\x09cellLast root removeSelection.\x0a\x0a\x091 to: moveNumber do: [ :j |\x0a\x09\x09[ | cell1 cell2 |\x0a\x09\x09cell1 := path at: path size + 1 - j.\x0a\x09\x09cell2 := path at: path size - j.\x0a\x09\x09cell2 addMonster: self.\x0a        cell1 removeMonster.\x0a\x09\x09\x0a\x09\x09self canvas asJQuery\x0a\x09\x09\x09animate: #{ \x0a\x09\x09\x09   'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .\x0a\x09\x09\x09   'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }\x0a       \x09\x09duration: 300\x0a     \x09\x09easing: 'linear'\x0a\x09\x09\x09\x22complete: [ window alert: 'foo' ]\x22.\x0a\x09\x09self currentMove: self currentMove - 1.\x0a\x09\x09self announceUpdate ] valueWithTimeout: 300 * j ].\x0a\x09\x0a\x09callback valueWithTimeout: 300 * moveNumber",
-messageSends: ["pathTo:", "-", "size", "removeSelection", "root", "to:do:", "valueWithTimeout:", "*", "at:", "+", "addMonster:", "removeMonster", "animate:duration:easing:", "->", ",", "x", "firstCoods", "y", "asJQuery", "canvas", "currentMove:", "currentMove", "announceUpdate"],
+source: "animationMoveTo: cellLast callback: callback\x0a\x09\x0a\x09| path |\x0a\x09\x0a\x09path := self pathTo: cellLast.\x0a\x09cellLast root removeSelection.\x0a\x09\x0a\x09self animPath: path iterator: 1 callback: callback",
+messageSends: ["pathTo:", "removeSelection", "root", "animPath:iterator:callback:"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -2892,7 +2906,7 @@ smalltalk.CWMonster);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "announceUpdate",
-category: 'move',
+category: 'rendering',
 fn: function (){
 var self=this;
 function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
@@ -3210,6 +3224,23 @@ smalltalk.CWMonster);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "changeCell:",
+category: 'move',
+fn: function (aCell){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._parent())._removeMonster();
+_st(aCell)._addMonster_(self);
+return self}, function($ctx1) {$ctx1.fill(self,"changeCell:",{aCell:aCell},smalltalk.CWMonster)})},
+args: ["aCell"],
+source: "changeCell: aCell\x0a    self parent removeMonster.\x0a\x09aCell addMonster: self.",
+messageSends: ["removeMonster", "parent", "addMonster:"],
+referencedClasses: []
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "changeState:",
 category: 'state machine',
 fn: function (stateClass){
@@ -3315,6 +3346,23 @@ args: ["int"],
 source: "currentMove: int\x0a\x09currentMove := int.\x0a\x09self announce: CWMonsterUpdateEvent new",
 messageSends: ["announce:", "new"],
 referencedClasses: ["CWMonsterUpdateEvent"]
+}),
+smalltalk.CWMonster);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "decreaseCurrentMove",
+category: 'move',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._currentMove_(_st(_st(self)._currentMove()).__minus((1)));
+_st(self)._announceUpdate();
+return self}, function($ctx1) {$ctx1.fill(self,"decreaseCurrentMove",{},smalltalk.CWMonster)})},
+args: [],
+source: "decreaseCurrentMove\x0a\x09self currentMove: self currentMove - 1.\x0a\x09self announceUpdate. \x22shows it on the monster selected panel\x22",
+messageSends: ["currentMove:", "-", "currentMove", "announceUpdate"],
+referencedClasses: []
 }),
 smalltalk.CWMonster);
 
