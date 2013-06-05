@@ -624,7 +624,7 @@ $9=_st(html)._iframe();
 _st($9)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
 _st($9)._at_put_("frameborder",(0));
 _st($9)._at_put_("scrolling","no");
-_st($9)._style_("border:none; overflow:hidden; width:90px; height:21px;");
+_st($9)._style_("border:none; overflow:hidden; width:80px; height:21px;");
 $10=_st($9)._at_put_("allowTransparency","true");
 return $10;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));

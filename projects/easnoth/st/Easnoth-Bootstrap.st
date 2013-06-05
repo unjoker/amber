@@ -89,17 +89,23 @@ preloadImages
 !
 
 updateSidePanels
-	| global |
+	| global height width |
+	
 	global := '#global' asJQuery.
-	global css: 'margin-top' put: ((window innerHeight - 640) / 2) asString, 'px'.
+	height := window asJQuery height.
+	width := window asJQuery width.
+	
+	height > 640 ifTrue: [
+		global css: 'margin-top' put: ((height - 640) / 2) asString, 'px' ].
+		
 	(sidePanels at: 1)
-		style: 'position: absolute; top: 0; left: 0; height: ', window innerHeight, 'px; width:', (global css: 'margin-left').
+		style: 'position: absolute; top: 0; left: 0; height: ', height, 'px; width:', (global css: 'margin-left').
 	(sidePanels at: 2)
-		style: 'position: absolute; top: 0; right: 0; height: ', window innerHeight, 'px; width:', (global css: 'margin-right').
+		style: 'position: absolute; top: 0; right: 0; height: ', height, 'px; width:', (global css: 'margin-right').
 	(sidePanels at: 3)
-		style: 'position: absolute; top: 0; left: 0; height: ', (global css: 'margin-top'), '; width:', window innerWidth, 'px'.
+		style: 'position: absolute; top: 0; left: 0; height: ', (global css: 'margin-top'), '; width:', width, 'px'.
 	(sidePanels at: 4)
-		style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', window innerWidth, 'px'.
+		style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', width, 'px'.
 ! !
 
 !CWBootstrapper class methodsFor: 'instance creation'!
