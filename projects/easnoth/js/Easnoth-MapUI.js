@@ -2086,7 +2086,7 @@ return _st(cell)._zIndex_(_st(_st((100)).__plus(j)).__plus(_st(i).__star(rowSize
 }, function($ctx2) {$ctx2.fillBlock({row:row,i:i},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"setUpFirstCoods",{tempContext:tempContext,tempCoods:tempCoods,rowSize:rowSize},smalltalk.CWMapDrawer)})},
 args: [],
-source: "setUpFirstCoods\x0a\x09| tempContext tempCoods rowSize |\x0a\x09rowSize := map children size.\x0a\x09tempContext := self newGlobalDrawingContext.\x0a\x09map children withIndexDo: [ :row :i |\x0a\x09\x09tempContext nextRow.\x0a\x09\x09row children withIndexDo: [ :cell :j |\x0a\x09\x09\x09tempContext nextCell.\x0a\x09\x09\x09cell firstCoods: tempContext currentPoint.\x0a\x09\x09\x09cell zIndex: 100 + j + (i * rowSize) ] ].",
+source: "setUpFirstCoods\x0a\x09\x22initialize the coods in the web pages of the cells and their z-index\x22\x0a\x0a\x09| tempContext tempCoods rowSize |\x0a\x09rowSize := map children size.\x0a\x09tempContext := self newGlobalDrawingContext.\x0a\x09map children withIndexDo: [ :row :i |\x0a\x09\x09tempContext nextRow.\x0a\x09\x09row children withIndexDo: [ :cell :j |\x0a\x09\x09\x09tempContext nextCell.\x0a\x09\x09\x09cell firstCoods: tempContext currentPoint.\x0a\x09\x09\x09cell zIndex: 100 + j + (i * rowSize) ] ].",
 messageSends: ["size", "children", "newGlobalDrawingContext", "withIndexDo:", "nextRow", "nextCell", "firstCoods:", "currentPoint", "zIndex:", "+", "*"],
 referencedClasses: []
 }),
