@@ -182,16 +182,22 @@ smalltalk.method({
 selector: "updateSidePanels",
 fn: function (){
 var self=this;
-var global;
+var global,height,width;
 return smalltalk.withContext(function($ctx1) { 
+var $1;
 global=_st("#global")._asJQuery();
-_st(global)._css_put_("margin-top",_st(_st(_st(_st(_st(window)._innerHeight()).__minus((640))).__slash((2)))._asString()).__comma("px"));
-_st(_st(self["@sidePanels"])._at_((1)))._style_(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(window)._innerHeight())).__comma("px; width:")).__comma(_st(global)._css_("margin-left")));
-_st(_st(self["@sidePanels"])._at_((2)))._style_(_st(_st(_st("position: absolute; top: 0; right: 0; height: ").__comma(_st(window)._innerHeight())).__comma("px; width:")).__comma(_st(global)._css_("margin-right")));
-_st(_st(self["@sidePanels"])._at_((3)))._style_(_st(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(global)._css_("margin-top"))).__comma("; width:")).__comma(_st(window)._innerWidth())).__comma("px"));
-_st(_st(self["@sidePanels"])._at_((4)))._style_(_st(_st(_st(_st("position: absolute; bottom: 0; left: 0; height: ").__comma(_st(global)._css_("margin-bottom"))).__comma("; width:")).__comma(_st(window)._innerWidth())).__comma("px"));
-return self}, function($ctx1) {$ctx1.fill(self,"updateSidePanels",{global:global},smalltalk.CWBootstrapper)})},
-messageSends: ["asJQuery", "css:put:", ",", "asString", "/", "-", "innerHeight", "style:", "css:", "at:", "innerWidth"]}),
+height=_st(_st(window)._asJQuery())._height();
+width=_st(_st(window)._asJQuery())._width();
+$1=_st(height).__gt((640));
+if(smalltalk.assert($1)){
+_st(global)._css_put_("margin-top",_st(_st(_st(_st(height).__minus((640))).__slash((2)))._asString()).__comma("px"));
+};
+_st(_st(self["@sidePanels"])._at_((1)))._style_(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(height)).__comma("px; width:")).__comma(_st(global)._css_("margin-left")));
+_st(_st(self["@sidePanels"])._at_((2)))._style_(_st(_st(_st("position: absolute; top: 0; right: 0; height: ").__comma(height)).__comma("px; width:")).__comma(_st(global)._css_("margin-right")));
+_st(_st(self["@sidePanels"])._at_((3)))._style_(_st(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(global)._css_("margin-top"))).__comma("; width:")).__comma(width)).__comma("px"));
+_st(_st(self["@sidePanels"])._at_((4)))._style_(_st(_st(_st(_st("position: absolute; bottom: 0; left: 0; height: ").__comma(_st(global)._css_("margin-bottom"))).__comma("; width:")).__comma(width)).__comma("px"));
+return self}, function($ctx1) {$ctx1.fill(self,"updateSidePanels",{global:global,height:height,width:width},smalltalk.CWBootstrapper)})},
+messageSends: ["asJQuery", "height", "width", "ifTrue:", "css:put:", ",", "asString", "/", "-", ">", "style:", "css:", "at:"]}),
 smalltalk.CWBootstrapper);
 
 

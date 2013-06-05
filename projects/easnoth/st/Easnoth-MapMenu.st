@@ -340,7 +340,7 @@ renderOn: html
 					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';
 					at: 'frameborder' put: 0;
 					at: 'scrolling' put: 'no';
-					style:'border:none; overflow:hidden; width:90px; height:21px;';
+					style:'border:none; overflow:hidden; width:80px; height:21px;';
 					at: 'allowTransparency' put: 'true'.
 	].
 !
