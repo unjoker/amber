@@ -157,7 +157,7 @@ Widget subclass: #CWLoadingBar
 !CWLoadingBar methodsFor: 'rendering'!
 
 hide
-	box hidden
+	box asJQuery toggle
 !
 
 renderOn: html
@@ -205,7 +205,7 @@ choosePlayers
 !
 
 startBeta
-	box hidden.
+	box asJQuery toggle.
 	gameSettings mapNumber: 8.
 	CWBootstrapper bootstrap: gameSettings
 ! !
@@ -349,31 +349,38 @@ tutorial
 		html div
 			style: 'margin-top: 7%; margin-left: 26%; width: 100%';
 			with: [
-			html h3 style: 'text-align: center'; with: 'Goal : kill all your ennemy army'.
+			html h3 style: 'text-align: center'; with: 'GOAL : kill all your ennemy army'.
 			html h4  style: 'text-align: center'; with: 'Basics'.
 			html div 
-				style: 'height: 61px';
+				style: 'height: 70px';
 				with: [
-				(html img: 'ressources/images/tuto1.png') style: 'height: 56px; width: auto; float: left; margin-right: 6px;'.
+				(html img: 'ressources/images/tuto1.png') style: 'height: 84px; width: auto; float: left; margin-right: 6px;'.
 				html p 
-					style: 'padding-top: 10px';
+					style: 'padding-top: 12px';
 					with: 'When you start your turn, all your activable creatures are surrounded by a white halo. 
 						Click on one of them to activate it. You can activate only one creature per turn.'. ].
 			html div 
-				style: 'height: 72px';
+				style: 'height: 105px';
 				with: [
-				(html img: 'ressources/images/tuto2.png') style: 'height: 67px; width: auto; float: right; margin-left: 6px;'.
+				(html img: 'ressources/images/tuto2.png') style: 'height: 100px; width: auto; float: right; margin-left: 6px;'.
 				html p
-					style: 'padding-top: 10px';
+					style: 'padding-top: 25px';
 					with: 'When a creature is activated, a bunch of tiles become colored, 
 						these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.'. ].
-				html p with: 'When the creature has moved its full move and attacked (or cannot attack), it is the other player turn. 
+				html p with: 'When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. 
 					If you have remaining move but you want to finish your turn, please click on the next turn button.'.
 			html h4 style: 'text-align: center'; with: 'Advanced'.
-			html p with: 'When you click on a creature, you can see on the top left its capabilities. 
-				For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.'.
-			html p with: 'Lastly, fast or cavalry creatures are better against range creatures, 
-				which are better against foot creatures, which are then better against fast or cavalry ones.'.
+			html div 
+				style: 'height: 145px';
+				with: [
+					(html img: 'ressources/images/tuto3.png') style: 'height: 140px; width: auto; float: left; margin-right: 6px;'.
+					html p 
+						style: 'padding-top: 2px';
+						with: 'When you click on a creature, you can see on the top left its capabilities. 
+							For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.'.
+					html p 
+						with: 'Lastly, fast or cavalry creatures are better against range creatures, 
+							which are better against foot creatures, which are then better against fast or cavalry ones.'. ].
 			html button
 					with: '> back <';
 					onClick: [ 

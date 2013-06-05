@@ -674,6 +674,8 @@ initializeMenus
 !
 
 setUpFirstCoods
+	"initialize the coods in the web pages of the cells and their z-index"
+
 	| tempContext tempCoods rowSize |
 	rowSize := map children size.
 	tempContext := self newGlobalDrawingContext.
