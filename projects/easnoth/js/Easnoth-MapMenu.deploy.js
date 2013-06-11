@@ -413,6 +413,7 @@ fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
+_st(self)._setUpShortCuts();
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 _st($1)._width_((500));
@@ -451,7 +452,40 @@ return $9;
 $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
-messageSends: ["class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"]}),
+messageSends: ["setUpShortCuts", "class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"]}),
+smalltalk.CWMapControls);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setUpShortCuts",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+_st(_st("body")._asJQuery())._keyup_((function(event){
+var k;
+return smalltalk.withContext(function($ctx2) {
+k=_st(event)._keyCode();
+k;
+$1=_st(_st(_st(k).__eq((37))).__or(k)).__eq((65));
+if(smalltalk.assert($1)){
+_st(self)._go_("left");
+};
+$2=_st(_st(_st(k).__eq((39))).__or(k)).__eq((68));
+if(smalltalk.assert($2)){
+_st(self)._go_("right");
+};
+$3=_st(_st(_st(k).__eq((38))).__or(k)).__eq((87));
+if(smalltalk.assert($3)){
+_st(self)._go_("up");
+};
+$4=_st(_st(_st(k).__eq((40))).__or(k)).__eq((83));
+if(smalltalk.assert($4)){
+return _st(self)._go_("down");
+};
+}, function($ctx2) {$ctx2.fillBlock({event:event,k:k},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"setUpShortCuts",{},smalltalk.CWMapControls)})},
+messageSends: ["keyup:", "keyCode", "ifTrue:", "go:", "=", "|", "asJQuery"]}),
 smalltalk.CWMapControls);
 
 
@@ -591,7 +625,6 @@ $1=_st(html)._div();
 _st($1)._class_("stuff");
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(html)._h5();
 $2=_st(html)._button();
 _st($2)._with_("next turn");
 $3=_st($2)._onClick_((function(){
@@ -625,7 +658,7 @@ return $9;
 $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"]}),
+messageSends: ["class:", "div", "with:", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"]}),
 smalltalk.CWTurnWatcher);
 
 
