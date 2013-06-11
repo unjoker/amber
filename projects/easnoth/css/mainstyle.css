@@ -9,22 +9,21 @@
 	height: 640px;
 }
 
-.menuEditor {
-	z-index: 999;
-}
-
 .sidePanel {
 	background-color: #383838;
 	z-index: 998;
 }
 
+html {
+	background-color: #383838;
+}
+
 body {
-	overflow: hidden;
 	padding:0;
 	margin:0;
 	background-color: #383838;
 	color:#000;
-	font-family: Verdana;
+	font-family: Georgia, serif;
 	font-size: 20px;
 }
 
@@ -45,7 +44,7 @@ button {
 /*intro.html*/
 
 .styledSelectGreen {
-   background-image: url(../ressources/images/green_list_background.png);
+   background-image: url(../ressources/images/start/green_list_background.png);
    background-repeat: no-repeat;
    background-color:transparent;
    width: 134px;
@@ -67,7 +66,7 @@ button {
 }
   
 .styledSelectRed {
-  	  background-image: url(../ressources/images/brown_list_background.png);
+  	  background-image: url(../ressources/images/start/brown_list_background.png);
       background-repeat: no-repeat;
 	  background-color:transparent;
 	  color:#aead7a;
@@ -95,7 +94,7 @@ button {
 	width: 122px;
 	height: 107px;
 	border: none;
-	background-image: url(../ressources/images/startBoth.png);
+	background-image: url(../ressources/images/start/startBoth.png);
 }
 
 .startButton:hover {
@@ -112,7 +111,7 @@ button {
 	margin:0;
 	z-index: 999;
 	background-color:#383838;
-	background-image:url(../ressources/images/covergame.jpg);
+	background-image:url(../ressources/images/start/coverempty.jpg);
 	background-repeat:no-repeat;
 	background-attachment:inherit;
 	background-position:center center;
@@ -149,10 +148,35 @@ button {
 	margin:3%;
 }
 
+.backButton {
+	background-color:transparent;
+    text-decoration:none;
+	border: none;
+	position: absolute; 
+	top: 9%; 
+	left: 23%;
+	width: 30px;
+	height: 32px;
+	background-image: url(../ressources/images/start/backButton.png);
+}
+
+.backButton:hover {
+	background-position: 0 -32px;
+}
+
 .intro .menu li a{
 	color:#aead7a;
 	text-decoration:none;
 }
+
+.intro .menu .creditLink {
+	color: #f9e6d6;
+}
+
+.intro .menu .creditLink:hover {
+	color: #aead7a;
+}
+
 
 .intro .menu li a:hover{
 	color:#f9e6d6;
@@ -187,7 +211,8 @@ canvas {
 	top:30%;
 	left:20%;
 }
-/*fight.html*/
+
+/*Map menu*/
 
 .tableStats {
 	width: 96%;
@@ -195,57 +220,50 @@ canvas {
 }
 
 .monsterWatcher {
+	z-index: 999;
+	font-size: 75%;
+	text-align: center;
+	position:absolute;
+	top:0;
+	left:0;
 	border: 1px solid black;
 	background-color: #ccaa6a;
 }
 
-.monsterWatcher img{
-	border: 1px solid black;
-	width: 72px;
-	height: 72px;
-}
-
 .dices {
+	z-index: 999;
+	font-size: 75%;
+	text-align: center;
+	position:absolute;
+	top:0;
+	right:0;
 	border: 1px solid black;
 	background-color: #aaaacc;
 }
 
-.tileWatcher {
-	border: 1px solid black;
-	background-color: #ccccaa;
-}
-
-.tileWatcher img{
-	border: 1px solid black;
-	width: 72px;
-	height: 72px;
-}
-
 .mapWatcher {
+	z-index: 999;
+	font-size: 75%;
+	text-align: center;
+	position:absolute;
+	bottom:0;
+	left:0;
 	border: 1px solid black;
 	background-color: #aacccc;
 }
 
 .stuff {
+	z-index: 999;
+	font-size: 75%;
+	text-align: center;
+	position:absolute;
+	bottom:0;
+	right:0;
 	border: 1px solid black;
 	background-color: #aaccaa;
 }
 
-.editor .menuEditor {
-	font-size: 75%;
-}
-
 /*mapEditor.html*/
-
-.editor #main {
-	margin:0;
-	padding:0;
-	position:absolute;
-	top:0;
-	left:0;	
-	border:none;
-	text-align:left;
-}
 
 .editor {
 	display:inline;
@@ -253,20 +271,6 @@ canvas {
 	width:100%;
 	padding:0;
 	margin:0;
-}
-
-.editor .menuEditor {
-	text-align: center;
-	position:absolute;
-	top:0;
-	right:0;
-	margin:0;
-	padding:0;
-    width:20%;
-	/*background-image:url(../ressources/images/toolBox.jpg);*/
-	background-color:#ccc;
-	background-size:100% auto;
-	background-repeat: repeat-y;
 }
 
 .selector {

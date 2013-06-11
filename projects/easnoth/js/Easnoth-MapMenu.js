@@ -312,15 +312,15 @@ _st(self)._addComponent_($CWMonsterWatcher());
 _st(self)._addComponent_($CWDices());
 _st(self)._addComponent_($CWMapControls());
 _st(self)._addComponent_($CWTurnWatcher());
-_st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
+_st(self)._appendToJQuery_(_st("#global")._asJQuery());
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09components := Array new.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: self menuClass asJQuery.\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self menuClass asJQuery empty ]",
-messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"],
+source: "initialize\x0a\x09super initialize.\x0a\x09components := Array new.\x0a\x09self addComponent: CWMonsterWatcher.\x0a\x09self addComponent: CWDices.\x0a\x09self addComponent: CWMapControls.\x0a\x09self addComponent: CWTurnWatcher.\x0a\x09self appendToJQuery: '#global' asJQuery.\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self menuClass asJQuery empty ]",
+messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "on:do:", "empty", "menuClass", "announcer"],
 referencedClasses: ["Array", "CWMonsterWatcher", "CWDices", "CWMapControls", "CWTurnWatcher", "CWEndGameEvent"]
 }),
 smalltalk.CWFightMenu);
