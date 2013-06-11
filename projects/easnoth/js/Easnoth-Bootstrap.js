@@ -1031,14 +1031,14 @@ function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
 $2=_st($Array())._new_((2));
-_st($2)._at_put_((1),"styledSelectGreen");
-_st($2)._at_put_((2),"styledSelectRed");
+_st($2)._at_put_((1),"styledSelect styledSelectGreen");
+_st($2)._at_put_((2),"styledSelect styledSelectRed");
 $3=_st($2)._yourself();
 $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"selectBoxClasses",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "selectBoxClasses\x0a\x09^ (Array new: 2)\x0a\x09\x09at: 1 put: 'styledSelectGreen';\x0a\x09\x09at: 2 put: 'styledSelectRed';\x0a\x09\x09yourself",
+source: "selectBoxClasses\x0a\x09^ (Array new: 2)\x0a\x09\x09at: 1 put: 'styledSelect styledSelectGreen';\x0a\x09\x09at: 2 put: 'styledSelect styledSelectRed';\x0a\x09\x09yourself",
 messageSends: ["at:put:", "new:", "yourself"],
 referencedClasses: ["Array"]
 }),

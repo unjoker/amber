@@ -421,13 +421,13 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._div();
-_st($1)._class_("dices");
+_st($1)._class_("mapMenuPanel dices");
 $2=_st($1)._yourself();
 self["@box"]=$2;
 _st(self)._firstLoad();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDices)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'dices';\x0a\x09\x09yourself).\x0a\x09self firstLoad",
+source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel dices';\x0a\x09\x09yourself).\x0a\x09self firstLoad",
 messageSends: ["class:", "div", "yourself", "firstLoad"],
 referencedClasses: []
 }),
@@ -547,7 +547,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
 _st(self)._setUpShortCuts();
 $1=_st(html)._div();
-_st($1)._class_("mapWatcher");
+_st($1)._class_("mapMenuPanel mapWatcher");
 _st($1)._width_((500));
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -585,7 +585,7 @@ $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self go: 'left'].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self go: 'right'].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self go: 'down'].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self go: 'up'].\x0a\x09];\x0a\x09yourself",
+source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self go: 'left'].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self go: 'right'].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self go: 'down'].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self go: 'up'].\x0a\x09];\x0a\x09yourself",
 messageSends: ["setUpShortCuts", "class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"],
 referencedClasses: []
 }),
@@ -704,13 +704,13 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._div();
-_st($1)._class_("monsterWatcher");
+_st($1)._class_("mapMenuPanel monsterWatcher");
 $2=_st($1)._yourself();
 self["@box"]=$2;
 _st(self)._update();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMonsterWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'monsterWatcher';\x0a\x09\x09yourself).\x0a\x09self update",
+source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel monsterWatcher';\x0a\x09\x09yourself).\x0a\x09self update",
 messageSends: ["class:", "div", "yourself", "update"],
 referencedClasses: []
 }),
@@ -794,25 +794,30 @@ function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEve
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
 $1=_st(html)._div();
-_st($1)._class_("stuff");
+_st($1)._class_("mapMenuPanel stuff");
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-$2=_st(html)._button();
-_st($2)._with_("next turn");
+$2=_st(html)._a();
+_st($2)._href_("#");
+_st($2)._with_("End turn");
 $3=_st($2)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._announce_(_st($CWNextTurnEvent())._new());
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $3;
-$4=_st(html)._button();
-_st($4)._with_("class browser");
+_st(html)._br();
+$4=_st(html)._a();
+_st($4)._href_("#");
+_st($4)._with_("Class browser");
 $5=_st($4)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $5;
-$6=_st(html)._button();
-_st($6)._with_("menu");
+_st(html)._br();
+$6=_st(html)._a();
+_st($6)._href_("#");
+_st($6)._with_("Menu");
 $7=_st($6)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._announce_(_st($CWEndGameEvent())._new());
@@ -831,8 +836,8 @@ $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html div class: 'stuff'; with: [\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09   html button with: 'menu';\x0a                        onClick: [\x0a\x09\x09\x09\x09\x09\x09\x09self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09];\x0a\x09yourself.",
-messageSends: ["class:", "div", "with:", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"],
+source: "renderOn: html\x0a\x09box := html div class: 'mapMenuPanel stuff'; with: [\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'End turn'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Class browser'; \x0a\x09\x09\x09\x09\x09onClick: [Browser open].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Menu'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09];\x0a\x09yourself.",
+messageSends: ["class:", "div", "with:", "href:", "a", "onClick:", "announce:", "new", "br", "open", "src:", "iframe", "at:put:", "style:", "yourself"],
 referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent"]
 }),
 smalltalk.CWTurnWatcher);
@@ -868,7 +873,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var i = 0;
     function roll() {
-		dice.animate({'border-spacing': -40},
+		dice.animate({'border-spacing': -50},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
                         },
@@ -880,7 +885,7 @@ var i = 0;
                                         roll();
                                 } else {
                                         i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},
                                                 {step: function(now, fx) {
                                                         $(fx.elem).css('background-position', '1px '+now+'px');
                                                         },
@@ -897,7 +902,7 @@ var i = 0;
 	roll();;
 return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:random:url:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
 args: ["dice", "animationFinished", "random", "url"],
-source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -40},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
+source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -50},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
 messageSends: [],
 referencedClasses: []
 }),

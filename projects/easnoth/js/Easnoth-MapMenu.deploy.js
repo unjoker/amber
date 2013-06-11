@@ -314,7 +314,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._div();
-_st($1)._class_("dices");
+_st($1)._class_("mapMenuPanel dices");
 $2=_st($1)._yourself();
 self["@box"]=$2;
 _st(self)._firstLoad();
@@ -415,7 +415,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
 _st(self)._setUpShortCuts();
 $1=_st(html)._div();
-_st($1)._class_("mapWatcher");
+_st($1)._class_("mapMenuPanel mapWatcher");
 _st($1)._width_((500));
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
@@ -547,7 +547,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 $1=_st(html)._div();
-_st($1)._class_("monsterWatcher");
+_st($1)._class_("mapMenuPanel monsterWatcher");
 $2=_st($1)._yourself();
 self["@box"]=$2;
 _st(self)._update();
@@ -622,25 +622,30 @@ function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEve
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
 $1=_st(html)._div();
-_st($1)._class_("stuff");
+_st($1)._class_("mapMenuPanel stuff");
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-$2=_st(html)._button();
-_st($2)._with_("next turn");
+$2=_st(html)._a();
+_st($2)._href_("#");
+_st($2)._with_("End turn");
 $3=_st($2)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._announce_(_st($CWNextTurnEvent())._new());
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $3;
-$4=_st(html)._button();
-_st($4)._with_("class browser");
+_st(html)._br();
+$4=_st(html)._a();
+_st($4)._href_("#");
+_st($4)._with_("Class browser");
 $5=_st($4)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 $5;
-$6=_st(html)._button();
-_st($6)._with_("menu");
+_st(html)._br();
+$6=_st(html)._a();
+_st($6)._href_("#");
+_st($6)._with_("Menu");
 $7=_st($6)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._announce_(_st($CWEndGameEvent())._new());
@@ -658,7 +663,7 @@ return $9;
 $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
-messageSends: ["class:", "div", "with:", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"]}),
+messageSends: ["class:", "div", "with:", "href:", "a", "onClick:", "announce:", "new", "br", "open", "src:", "iframe", "at:put:", "style:", "yourself"]}),
 smalltalk.CWTurnWatcher);
 
 
@@ -686,7 +691,7 @@ var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var i = 0;
     function roll() {
-		dice.animate({'border-spacing': -40},
+		dice.animate({'border-spacing': -50},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
                         },
@@ -698,7 +703,7 @@ var i = 0;
                                         roll();
                                 } else {
                                         i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},
                                                 {step: function(now, fx) {
                                                         $(fx.elem).css('background-position', '1px '+now+'px');
                                                         },
