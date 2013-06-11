@@ -213,6 +213,7 @@ go: direction
 !CWMapControls methodsFor: 'rendering'!
 
 renderOn: html
+	self setUpShortCuts.
 	box := html div 
 		class: 'mapWatcher';
 		width: 500;
@@ -233,6 +234,16 @@ renderOn: html
                         onClick: [self go: 'up'].
 	];
 	yourself
+!
+
+setUpShortCuts
+	'body' asJQuery keyup:[:event |  | k |
+		k := event keyCode.
+		(k = 37 | k = 65) ifTrue: [self go: 'left'].
+		(k = 39 | k = 68) ifTrue: [self go: 'right'].
+		(k = 38 | k = 87) ifTrue: [self go: 'up'].
+		(k = 40 | k = 83) ifTrue: [self go: 'down'].
+	].
 ! !
 
 CWActionMenuComponent subclass: #CWMonsterWatcher
@@ -313,7 +324,6 @@ CWActionMenuComponent subclass: #CWTurnWatcher
 
 renderOn: html
 	box := html div class: 'stuff'; with: [
-		 html h5.
                 html button with: 'next turn';
                         onClick: [self announce: CWNextTurnEvent new].
                 html button with: 'class browser';

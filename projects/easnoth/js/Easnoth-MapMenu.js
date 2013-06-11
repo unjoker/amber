@@ -545,6 +545,7 @@ fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
+_st(self)._setUpShortCuts();
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 _st($1)._width_((500));
@@ -584,8 +585,46 @@ $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self go: 'left'].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self go: 'right'].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self go: 'down'].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self go: 'up'].\x0a\x09];\x0a\x09yourself",
-messageSends: ["class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"],
+source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self go: 'left'].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self go: 'right'].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self go: 'down'].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self go: 'up'].\x0a\x09];\x0a\x09yourself",
+messageSends: ["setUpShortCuts", "class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"],
+referencedClasses: []
+}),
+smalltalk.CWMapControls);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "setUpShortCuts",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3,$4;
+_st(_st("body")._asJQuery())._keyup_((function(event){
+var k;
+return smalltalk.withContext(function($ctx2) {
+k=_st(event)._keyCode();
+k;
+$1=_st(_st(_st(k).__eq((37))).__or(k)).__eq((65));
+if(smalltalk.assert($1)){
+_st(self)._go_("left");
+};
+$2=_st(_st(_st(k).__eq((39))).__or(k)).__eq((68));
+if(smalltalk.assert($2)){
+_st(self)._go_("right");
+};
+$3=_st(_st(_st(k).__eq((38))).__or(k)).__eq((87));
+if(smalltalk.assert($3)){
+_st(self)._go_("up");
+};
+$4=_st(_st(_st(k).__eq((40))).__or(k)).__eq((83));
+if(smalltalk.assert($4)){
+return _st(self)._go_("down");
+};
+}, function($ctx2) {$ctx2.fillBlock({event:event,k:k},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"setUpShortCuts",{},smalltalk.CWMapControls)})},
+args: [],
+source: "setUpShortCuts\x0a\x09'body' asJQuery keyup:[:event |  | k |\x0a\x09\x09k := event keyCode.\x0a\x09\x09(k = 37 | k = 65) ifTrue: [self go: 'left'].\x0a\x09\x09(k = 39 | k = 68) ifTrue: [self go: 'right'].\x0a\x09\x09(k = 38 | k = 87) ifTrue: [self go: 'up'].\x0a\x09\x09(k = 40 | k = 83) ifTrue: [self go: 'down'].\x0a\x09].",
+messageSends: ["keyup:", "keyCode", "ifTrue:", "go:", "=", "|", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.CWMapControls);
@@ -758,7 +797,6 @@ $1=_st(html)._div();
 _st($1)._class_("stuff");
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(html)._h5();
 $2=_st(html)._button();
 _st($2)._with_("next turn");
 $3=_st($2)._onClick_((function(){
@@ -793,8 +831,8 @@ $10=_st($1)._yourself();
 self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html div class: 'stuff'; with: [\x0a\x09\x09 html h5.\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09   html button with: 'menu';\x0a                        onClick: [\x0a\x09\x09\x09\x09\x09\x09\x09self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09];\x0a\x09yourself.",
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"],
+source: "renderOn: html\x0a\x09box := html div class: 'stuff'; with: [\x0a                html button with: 'next turn';\x0a                        onClick: [self announce: CWNextTurnEvent new].\x0a                html button with: 'class browser';\x0a                        onClick: [Browser open].\x0a\x09\x09\x09\x09   html button with: 'menu';\x0a                        onClick: [\x0a\x09\x09\x09\x09\x09\x09\x09self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09];\x0a\x09yourself.",
+messageSends: ["class:", "div", "with:", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"],
 referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent"]
 }),
 smalltalk.CWTurnWatcher);
