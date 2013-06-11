@@ -91,7 +91,7 @@ smalltalk.CWWidget);
 
 
 
-smalltalk.addClass('CWActionMenu', smalltalk.CWWidget, ['components', 'boxes'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWActionMenu', smalltalk.CWWidget, ['components'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addComponent:",
@@ -101,19 +101,6 @@ return smalltalk.withContext(function($ctx1) {
 _st(_st(self)._components())._add_(_st(self)._newChild_(aClass));
 return self}, function($ctx1) {$ctx1.fill(self,"addComponent:",{aClass:aClass},smalltalk.CWActionMenu)})},
 messageSends: ["add:", "newChild:", "components"]}),
-smalltalk.CWActionMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "boxes",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@boxes"];
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"boxes",{},smalltalk.CWActionMenu)})},
-messageSends: []}),
 smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
@@ -140,18 +127,6 @@ $1=self["@components"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"components",{},smalltalk.CWActionMenu)})},
 messageSends: []}),
-smalltalk.CWActionMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeBoxesWith:",
-fn: function (html){
-var self=this;
-function $Dictionary(){return smalltalk.Dictionary||(typeof Dictionary=="undefined"?nil:Dictionary)}
-return smalltalk.withContext(function($ctx1) { 
-self["@boxes"]=_st($Dictionary())._new();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeBoxesWith:",{html:html},smalltalk.CWActionMenu)})},
-messageSends: ["new"]}),
 smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
@@ -191,28 +166,35 @@ smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "remove",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self)._components())._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(each)._remove();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"remove",{},smalltalk.CWActionMenu)})},
+messageSends: ["do:", "remove", "components"]}),
+smalltalk.CWActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=self["@boxes"];
-if(($receiver = $1) == nil || $receiver == undefined){
-_st(self)._initializeBoxesWith_(html);
-} else {
-$1;
-};
 _st(_st(self)._components())._do_((function(each){
 return smalltalk.withContext(function($ctx2) {
 return _st(each)._renderOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWActionMenu)})},
-messageSends: ["ifNil:", "initializeBoxesWith:", "do:", "renderOn:", "components"]}),
+messageSends: ["do:", "renderOn:", "components"]}),
 smalltalk.CWActionMenu);
 
 
 
-smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, ['boxes'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, [], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -234,10 +216,10 @@ _st(self)._addComponent_($CWTurnWatcher());
 _st(self)._appendToJQuery_(_st("#global")._asJQuery());
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
-return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
+return _st(self)._remove();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
-messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "on:do:", "empty", "menuClass", "announcer"]}),
+messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "on:do:", "remove", "announcer"]}),
 smalltalk.CWFightMenu);
 
 smalltalk.addMethod(
@@ -253,7 +235,7 @@ smalltalk.CWFightMenu);
 
 
 
-smalltalk.addClass('CWActionMenuComponent', smalltalk.CWWidget, [], 'Easnoth-MapMenu');
+smalltalk.addClass('CWActionMenuComponent', smalltalk.CWWidget, ['box'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "children",
@@ -267,9 +249,20 @@ return $1;
 messageSends: []}),
 smalltalk.CWActionMenuComponent);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "remove",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self["@box"])._asJQuery())._remove();
+return self}, function($ctx1) {$ctx1.fill(self,"remove",{},smalltalk.CWActionMenuComponent)})},
+messageSends: ["remove", "asJQuery"]}),
+smalltalk.CWActionMenuComponent);
 
 
-smalltalk.addClass('CWDices', smalltalk.CWActionMenuComponent, ['box'], 'Easnoth-MapMenu');
+
+smalltalk.addClass('CWDices', smalltalk.CWActionMenuComponent, [], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "firstLoad",
@@ -419,49 +412,51 @@ selector: "renderOn:",
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
+var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
 $1=_st(html)._div();
 _st($1)._class_("mapWatcher");
 _st($1)._width_((500));
-$2=_st($1)._with_((function(){
+_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(_st(html)._h4())._with_("map controls");
-$3=_st(html)._button();
-_st($3)._with_("left");
-$4=_st($3)._onClick_((function(){
+$2=_st(html)._button();
+_st($2)._with_("left");
+$3=_st($2)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._go_("left");
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$4;
-$5=_st(html)._button();
-_st($5)._with_("right");
-$6=_st($5)._onClick_((function(){
+$3;
+$4=_st(html)._button();
+_st($4)._with_("right");
+$5=_st($4)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._go_("right");
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$6;
-$7=_st(html)._button();
-_st($7)._with_("down");
-$8=_st($7)._onClick_((function(){
+$5;
+$6=_st(html)._button();
+_st($6)._with_("down");
+$7=_st($6)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._go_("down");
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$8;
-$9=_st(html)._button();
-_st($9)._with_("up");
-$10=_st($9)._onClick_((function(){
+$7;
+$8=_st(html)._button();
+_st($8)._with_("up");
+$9=_st($8)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._go_("up");
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $10;
+return $9;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$10=_st($1)._yourself();
+self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
-messageSends: ["class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:"]}),
+messageSends: ["class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"]}),
 smalltalk.CWMapControls);
 
 
 
-smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'box', 'imgBox'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'imgBox'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "emptyMonster",
@@ -581,7 +576,7 @@ smalltalk.CWMonsterWatcher);
 
 
 
-smalltalk.addClass('CWTurnWatcher', smalltalk.CWActionMenuComponent, ['box'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWTurnWatcher', smalltalk.CWActionMenuComponent, [], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
@@ -591,56 +586,46 @@ function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurn
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
+var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
 $1=_st(html)._div();
 _st($1)._class_("stuff");
-$2=_st($1)._with_((function(){
+_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-self["@box"]=_st(html)._h5();
-self["@box"];
-$3=_st(html)._button();
-_st($3)._with_("next turn");
-$4=_st($3)._onClick_((function(){
+_st(html)._h5();
+$2=_st(html)._button();
+_st($2)._with_("next turn");
+$3=_st($2)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._announce_(_st($CWNextTurnEvent())._new());
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$4;
-$5=_st(html)._button();
-_st($5)._with_("class browser");
-$6=_st($5)._onClick_((function(){
+$3;
+$4=_st(html)._button();
+_st($4)._with_("class browser");
+$5=_st($4)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st($Browser())._open();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$6;
-$7=_st(html)._button();
-_st($7)._with_("menu");
-$8=_st($7)._onClick_((function(){
+$5;
+$6=_st(html)._button();
+_st($6)._with_("menu");
+$7=_st($6)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self)._announce_(_st($CWEndGameEvent())._new());
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$8;
+$7;
 _st(html)._br();
-$9=_st(html)._iframe();
-_st($9)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
-_st($9)._at_put_("frameborder",(0));
-_st($9)._at_put_("scrolling","no");
-_st($9)._style_("border:none; overflow:hidden; width:80px; height:21px;");
-$10=_st($9)._at_put_("allowTransparency","true");
-return $10;
+$8=_st(html)._iframe();
+_st($8)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
+_st($8)._at_put_("frameborder",(0));
+_st($8)._at_put_("scrolling","no");
+_st($8)._style_("border:none; overflow:hidden; width:80px; height:21px;");
+$9=_st($8)._at_put_("allowTransparency","true");
+return $9;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$10=_st($1)._yourself();
+self["@box"]=$10;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
-messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:"]}),
-smalltalk.CWTurnWatcher);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "update",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._turnDisplay())._contents_(_st("turn number : ").__comma(_st(self)._turnNumber()));
-return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWTurnWatcher)})},
-messageSends: ["contents:", ",", "turnNumber", "turnDisplay"]}),
+messageSends: ["class:", "div", "with:", "h5", "button", "onClick:", "announce:", "new", "open", "br", "src:", "iframe", "at:put:", "style:", "yourself"]}),
 smalltalk.CWTurnWatcher);
 
 

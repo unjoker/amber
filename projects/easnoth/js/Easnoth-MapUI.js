@@ -1837,11 +1837,10 @@ return smalltalk.withContext(function($ctx1) {
 self["@map"]=aMap;
 _st(_st(self)._padding())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(self["@map"])._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
 _st(self)._initializeImageLayers();
-_st(self)._initializeMenus();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWMapDrawer)})},
 args: ["aMap"],
-source: "initializeForMap: aMap\x0a\x09map := aMap.\x0a\x09self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).\x0a\x09self initializeImageLayers.\x0a\x09self initializeMenus.",
-messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "initializeImageLayers", "initializeMenus"],
+source: "initializeForMap: aMap\x0a\x09map := aMap.\x0a\x09self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).\x0a\x09self initializeImageLayers.",
+messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "initializeImageLayers"],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);
@@ -1860,21 +1859,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"initializeImageLayers",{},smallt
 args: [],
 source: "initializeImageLayers\x0a\x09self setUpFirstCoods.\x0a\x09layers at: 2 put: self newGOTLayer.\x0a\x09layers at: 3 put: self newMonsterLayer.",
 messageSends: ["setUpFirstCoods", "at:put:", "newGOTLayer", "newMonsterLayer"],
-referencedClasses: []
-}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeMenus",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"initializeMenus",{},smalltalk.CWMapDrawer)})},
-args: [],
-source: "initializeMenus\x0a\x09\x22CWDices new appendToJQuery: 'body' asJQuery.\x22",
-messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMapDrawer);

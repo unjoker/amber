@@ -1375,9 +1375,8 @@ return smalltalk.withContext(function($ctx1) {
 self["@map"]=aMap;
 _st(_st(self)._padding())._x_(_st(_st(self)._canvasPadding()).__plus(_st(_st(_st(_st(_st(_st(self["@map"])._children())._at_((1)))._children())._size()).__star(_st(self)._tileUnit())).__star((1.17))));
 _st(self)._initializeImageLayers();
-_st(self)._initializeMenus();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeForMap:",{aMap:aMap},smalltalk.CWMapDrawer)})},
-messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "initializeImageLayers", "initializeMenus"]}),
+messageSends: ["x:", "+", "*", "tileUnit", "size", "children", "at:", "canvasPadding", "padding", "initializeImageLayers"]}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(
@@ -1391,16 +1390,6 @@ _st(self["@layers"])._at_put_((2),_st(self)._newGOTLayer());
 _st(self["@layers"])._at_put_((3),_st(self)._newMonsterLayer());
 return self}, function($ctx1) {$ctx1.fill(self,"initializeImageLayers",{},smalltalk.CWMapDrawer)})},
 messageSends: ["setUpFirstCoods", "at:put:", "newGOTLayer", "newMonsterLayer"]}),
-smalltalk.CWMapDrawer);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeMenus",
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"initializeMenus",{},smalltalk.CWMapDrawer)})},
-messageSends: []}),
 smalltalk.CWMapDrawer);
 
 smalltalk.addMethod(

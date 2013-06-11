@@ -660,17 +660,12 @@ initializeForMap: aMap
 	map := aMap.
 	self padding x: self canvasPadding + ((map children at: 1) children size * self tileUnit * 1.17).
 	self initializeImageLayers.
-	self initializeMenus.
 !
 
 initializeImageLayers
 	self setUpFirstCoods.
 	layers at: 2 put: self newGOTLayer.
 	layers at: 3 put: self newMonsterLayer.
-!
-
-initializeMenus
-	"CWDices new appendToJQuery: 'body' asJQuery."
 !
 
 setUpFirstCoods
