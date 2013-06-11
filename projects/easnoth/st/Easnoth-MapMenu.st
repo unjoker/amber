@@ -39,17 +39,13 @@ isRoot
 ! !
 
 CWWidget subclass: #CWActionMenu
-	instanceVariableNames: 'components boxes'
+	instanceVariableNames: 'components'
 	package: 'Easnoth-MapMenu'!
 
 !CWActionMenu methodsFor: 'accessing'!
 
 addComponent: aClass
 	self components add: (self newChild: aClass)
-!
-
-boxes
-	^ boxes
 !
 
 children
@@ -68,28 +64,18 @@ newChild: aClass
 
 !CWActionMenu methodsFor: 'initialize-release'!
 
-initializeBoxesWith: html
-	boxes := Dictionary new.
-	"boxes 
-		at: 'top-left' 
-		put: (html div 
-			style: 'position: absolute;
-			top: 90px;
-			left: 30px;
-			width: 290px;
-			height: 60px;
-			background: black;
-			border: 1px solid white;')"
-!
-
 initializeWithGame: aGame
 	self subclassResponsibility
 ! !
 
 !CWActionMenu methodsFor: 'rendering'!
 
+remove
+	self components do: [:each |
+		each remove].
+!
+
 renderOn: html
-	boxes ifNil: [ self initializeBoxesWith: html ].
 	self components do: [:each |
 		each renderOn: html ].
 ! !
@@ -101,7 +87,7 @@ isRoot
 ! !
 
 CWActionMenu subclass: #CWFightMenu
-	instanceVariableNames: 'boxes'
+	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
 
 !CWFightMenu methodsFor: 'accessing'!
@@ -122,11 +108,11 @@ initialize
 	self appendToJQuery: '#global' asJQuery.
 	self announcer
 		on: CWEndGameEvent
-		do: [ self menuClass asJQuery empty ]
+		do: [ self remove ]
 ! !
 
 CWWidget subclass: #CWActionMenuComponent
-	instanceVariableNames: ''
+	instanceVariableNames: 'box'
 	package: 'Easnoth-MapMenu'!
 
 !CWActionMenuComponent methodsFor: 'accessing'!
@@ -135,8 +121,14 @@ children
 	^ #()
 ! !
 
+!CWActionMenuComponent methodsFor: 'rendering'!
+
+remove
+	box asJQuery remove
+! !
+
 CWActionMenuComponent subclass: #CWDices
-	instanceVariableNames: 'box'
+	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
 !CWDices commentStamp!
 SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.!
@@ -161,12 +153,6 @@ initialize
 !
 
 renderOn: html
-	"(self parent boxes at: 'top-left') 
-		contents: [ :c |
-			box := c div 
-				class: 'dices';
-				yourself
-		]."
 	box := (html div 
 		class: 'dices';
 		yourself).
@@ -227,7 +213,7 @@ go: direction
 !CWMapControls methodsFor: 'rendering'!
 
 renderOn: html
-	html div 
+	box := html div 
 		class: 'mapWatcher';
 		width: 500;
 		with: [
@@ -245,11 +231,12 @@ renderOn: html
                 html button
                         with: 'up';
                         onClick: [self go: 'up'].
-	].
+	];
+	yourself
 ! !
 
 CWActionMenuComponent subclass: #CWMonsterWatcher
-	instanceVariableNames: 'monster box imgBox'
+	instanceVariableNames: 'monster imgBox'
 	package: 'Easnoth-MapMenu'!
 
 !CWMonsterWatcher methodsFor: 'accessing'!
@@ -319,17 +306,16 @@ update
 ! !
 
 CWActionMenuComponent subclass: #CWTurnWatcher
-	instanceVariableNames: 'box'
+	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
 
 !CWTurnWatcher methodsFor: 'rendering'!
 
 renderOn: html
-	html div class: 'stuff'; with: [
-		box := html h5.
+	box := html div class: 'stuff'; with: [
+		 html h5.
                 html button with: 'next turn';
                         onClick: [self announce: CWNextTurnEvent new].
-		"'body' asJQuery keyup:[:event | (event keyCode = 13) ifTrue: [self nextTurn]]."
                 html button with: 'class browser';
                         onClick: [Browser open].
 				   html button with: 'menu';
@@ -342,11 +328,8 @@ renderOn: html
 					at: 'scrolling' put: 'no';
 					style:'border:none; overflow:hidden; width:80px; height:21px;';
 					at: 'allowTransparency' put: 'true'.
-	].
-!
-
-update
-	self turnDisplay contents: 'turn number : ', self turnNumber.
+	];
+	yourself.
 ! !
 
 CWWidget subclass: #CWDice
