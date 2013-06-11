@@ -479,10 +479,21 @@ fn: function (){
 var self=this;
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
-_st(window)._alert_(_st("Someone just won. Guess who ? loser : ").__comma(_st(self)._printString()));
+_st(window)._alert_(_st("Someone just won. Guess who ? loser : ").__comma(_st(self)._endGamePrintString()));
 _st(self)._announce_(_st($CWEndGameEvent())._new());
 return self}, function($ctx1) {$ctx1.fill(self,"endGame",{},smalltalk.CWPlayer)})},
-messageSends: ["alert:", ",", "printString", "announce:", "new"]}),
+messageSends: ["alert:", ",", "endGamePrintString", "announce:", "new"]}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "endGamePrintString",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._subclassResponsibility();
+return self}, function($ctx1) {$ctx1.fill(self,"endGamePrintString",{},smalltalk.CWPlayer)})},
+messageSends: ["subclassResponsibility"]}),
 smalltalk.CWPlayer);
 
 smalltalk.addMethod(
@@ -769,6 +780,17 @@ smalltalk.CWPlayer);
 smalltalk.addClass('CWAI', smalltalk.CWPlayer, ['gameContext', 'eventDispatcher'], 'Easnoth-GameAndPlayers');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "endGamePrintString",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "Artificial Intelligence player";
+}, function($ctx1) {$ctx1.fill(self,"endGamePrintString",{},smalltalk.CWAI)})},
+messageSends: []}),
+smalltalk.CWAI);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "endTurn:",
 fn: function (aMap){
 var self=this;
@@ -1036,6 +1058,17 @@ smalltalk.CWAggressWeakestAI);
 
 
 smalltalk.addClass('CWHuman', smalltalk.CWPlayer, [], 'Easnoth-GameAndPlayers');
+smalltalk.addMethod(
+smalltalk.method({
+selector: "endGamePrintString",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "Human player";
+}, function($ctx1) {$ctx1.fill(self,"endGamePrintString",{},smalltalk.CWHuman)})},
+messageSends: []}),
+smalltalk.CWHuman);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "eventDispatcher:",

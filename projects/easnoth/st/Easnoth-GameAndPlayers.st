@@ -229,7 +229,7 @@ announcer
 !
 
 endGame
-	window alert: 'Someone just won. Guess who ? loser : ' , self printString.
+	window alert: 'Someone just won. Guess who ? loser : ' , self endGamePrintString.
 	self announce: CWEndGameEvent new.
 ! !
 
@@ -326,6 +326,10 @@ initializeWithMap: aMap army: data
 
 !CWPlayer methodsFor: 'printing'!
 
+endGamePrintString
+	self subclassResponsibility
+!
+
 printOn: aStream
 	aStream 
 		nextPutAll: self class name;
@@ -359,6 +363,10 @@ gameContext: aCtx
 ! !
 
 !CWAI methodsFor: 'game logic'!
+
+endGamePrintString
+	^ 'Artificial Intelligence player'
+!
 
 endTurn: aMap
 	super endTurn: aMap.
@@ -475,6 +483,10 @@ CWPlayer subclass: #CWHuman
 	package: 'Easnoth-GameAndPlayers'!
 
 !CWHuman methodsFor: 'accessing'!
+
+endGamePrintString
+	^ 'Human player'
+!
 
 eventDispatcher: anObject
 	"not used for humans"
