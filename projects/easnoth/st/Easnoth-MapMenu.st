@@ -154,7 +154,7 @@ initialize
 
 renderOn: html
 	box := (html div 
-		class: 'dices';
+		class: 'mapMenuPanel dices';
 		yourself).
 	self firstLoad
 ! !
@@ -215,7 +215,7 @@ go: direction
 renderOn: html
 	self setUpShortCuts.
 	box := html div 
-		class: 'mapWatcher';
+		class: 'mapMenuPanel mapWatcher';
 		width: 500;
 		with: [
                 html h4
@@ -280,7 +280,7 @@ watchMonster: aMonster
 
 renderOn: html
 	box := (html div 
-		class: 'monsterWatcher';
+		class: 'mapMenuPanel monsterWatcher';
 		yourself).
 	self update
 !
@@ -323,14 +323,21 @@ CWActionMenuComponent subclass: #CWTurnWatcher
 !CWTurnWatcher methodsFor: 'rendering'!
 
 renderOn: html
-	box := html div class: 'stuff'; with: [
-                html button with: 'next turn';
-                        onClick: [self announce: CWNextTurnEvent new].
-                html button with: 'class browser';
-                        onClick: [Browser open].
-				   html button with: 'menu';
-                        onClick: [
-							self announce: CWEndGameEvent new].
+	box := html div class: 'mapMenuPanel stuff'; with: [
+				html a 
+					href: '#';
+					with: 'End turn'; 
+					onClick: [self announce: CWNextTurnEvent new].
+				html br.
+				html a 
+					href: '#';
+					with: 'Class browser'; 
+					onClick: [Browser open].
+				html br.
+				html a 
+					href: '#';
+					with: 'Menu'; 
+					onClick: [self announce: CWEndGameEvent new].
 				html br.
 				html iframe
 					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';
@@ -390,7 +397,7 @@ animate: dice callBack: animationFinished
 animate: dice callBack: animationFinished random: random url: url
 <var i = 0;
     function roll() {
-		dice.animate({'border-spacing': -40},
+		dice.animate({'border-spacing': -50},
                         {step: function(now, fx) {
                                 $(fx.elem).css('background-position', '1px '+now+'px');
                         },
@@ -402,7 +409,7 @@ animate: dice callBack: animationFinished random: random url: url
                                         roll();
                                 } else {
                                         i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 40px').css('background-repeat','no-repeat').animate({'border-spacing': -40},
+                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},
                                                 {step: function(now, fx) {
                                                         $(fx.elem).css('background-position', '1px '+now+'px');
                                                         },

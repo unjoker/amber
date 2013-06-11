@@ -222,8 +222,8 @@ ressourcesFolder
 
 selectBoxClasses
 	^ (Array new: 2)
-		at: 1 put: 'styledSelectGreen';
-		at: 2 put: 'styledSelectRed';
+		at: 1 put: 'styledSelect styledSelectGreen';
+		at: 2 put: 'styledSelect styledSelectRed';
 		yourself
 !
 
