@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Easnoth-Bootstrap'!
 Object subclass: #CWBootstrapper
-	instanceVariableNames: 'objectToLoad objectLoaded loadingBar hasStarted sidePanels'
+	instanceVariableNames: 'objectToLoad objectLoaded loadingBar hasStarted'
 	package: 'Easnoth-Bootstrap'!
 !CWBootstrapper commentStamp!
 Bootstrap the system. Currently work only for games, not for the map editor!
@@ -37,7 +37,7 @@ startGame
 !CWBootstrapper methodsFor: 'initialize-release'!
 
 bootstrap: gameSettings
-	loadingBar := CWLoadingBar new appendToJQuery: '#global' asJQuery.
+	loadingBar := CWLoadingBar new.
 	CWGame new initializeWithSettings: gameSettings.
 	hasStarted := false.
 !
@@ -63,18 +63,16 @@ initializeEventHandling
 	self announcer
 		on: CWMapMoveEvent
 		do: [ self updateSidePanels ].
-	self onWindowResize: [ self updateSidePanels ].
 !
 
 initializeSidePanels
-	| html global |
+	| html global sidePanels |
+	self class sidePanels ifNotNil: [ ^ self ].
 	html := HTMLCanvas onJQuery: 'body' asJQuery.
 	global := '#global' asJQuery.
-	sidePanels := Array new.
-	sidePanels add: (html div class: 'sidePanel').
-	sidePanels add: (html div class: 'sidePanel').
-	sidePanels add: (html div class: 'sidePanel').
-	sidePanels add: (html div class: 'sidePanel').
+	self class sidePanels: Array new.
+	4 timesRepeat: [ self class sidePanels add: (html div class: 'sidePanel') ].
+	self onWindowResize: [ self updateSidePanels ].
 	self updateSidePanels.
 !
 
@@ -89,11 +87,12 @@ preloadImages
 !
 
 updateSidePanels
-	| global height width |
+	| global height width sidePanels |
 	
 	global := '#global' asJQuery.
 	height := window asJQuery height.
 	width := window asJQuery width.
+	sidePanels := self class sidePanels.
 	
 	height > 640 ifTrue: [
 		global css: 'margin-top' put: ((height - 640) / 2) asString, 'px' ].
@@ -108,11 +107,22 @@ updateSidePanels
 		style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', width, 'px'.
 ! !
 
+CWBootstrapper class instanceVariableNames: 'sidePanels'!
+
+!CWBootstrapper class methodsFor: 'accessing'!
+
+sidePanels
+	^ sidePanels
+!
+
+sidePanels: object
+	sidePanels := object
+! !
+
 !CWBootstrapper class methodsFor: 'instance creation'!
 
 bootstrap: gameSettings
-	^ self new
-		bootstrap: gameSettings
+	^ self new bootstrap: gameSettings
 ! !
 
 Object subclass: #CWGameSettings
@@ -137,13 +147,17 @@ mapNumber: int
 
 players
 	^ players
+!
+
+resetPlayers
+	^ players := Array new.
 ! !
 
 !CWGameSettings methodsFor: 'intialize-release'!
 
 initialize
 	super initialize.
-	players := Array new
+	self resetPlayers.
 !
 
 printOn: aStream
@@ -163,17 +177,35 @@ Widget subclass: #CWLoadingBar
 !CWLoadingBar methodsFor: 'rendering'!
 
 hide
-	box asJQuery toggle
+	box asJQuery hide
+!
+
+initialize
+	self appendToJQuery: '#global' asJQuery.
 !
 
 renderOn: html
 	box := html img
 		class: 'loadBar';
-		src: 'ressources/images/loading.png'.
+		src: 'ressources/images/start/loading.png'.
+!
+
+show
+	box asJQuery show
+! !
+
+CWLoadingBar class instanceVariableNames: 'default'!
+
+!CWLoadingBar class methodsFor: 'not yet classified'!
+
+new
+	default ifNil: [ ^ default := super new].
+	default show.
+	^ default
 ! !
 
 Widget subclass: #CWStartMenu
-	instanceVariableNames: 'box subBox gameSettings'
+	instanceVariableNames: 'box subBox frontImages backButton history gameSettings'
 	package: 'Easnoth-Bootstrap'!
 !CWStartMenu commentStamp!
 Should implement the menu with multiplayer and stuff here!
@@ -184,6 +216,10 @@ defaultPlayer
 	^ CWHuman new team: 'elves'
 !
 
+ressourcesFolder
+	^ 'ressources/images/start/'
+!
+
 selectBoxClasses
 	^ (Array new: 2)
 		at: 1 put: 'styledSelectGreen';
@@ -191,27 +227,35 @@ selectBoxClasses
 		yourself
 !
 
+startingBlock
+	^ [ self menuWith: self startingMenuDict ]
+!
+
 startingMenuDict
 	^ Dictionary new
-		at: 'Tutorial' put: [ self tutorial ];
+		at: 'Tutorial' put: [ history add: self startingBlock. self tutorial. ];
 		at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];
-		at: 'Custom game' put: [ self choosePlayers ];
-		"at: 'Network game' put: [window alert: 'for future use, click on custom game' ];
-		at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];"
-		at: 'Credits' put: [ self credits ];
+		at: 'Custom game' put: [ history add: self startingBlock. self choosePlayers ];
+		"at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];"
+		at: 'Credits' put: [ history add: self startingBlock. self credits ];
 		yourself
+!
+
+toggle
+	box asJQuery toggle
 ! !
 
 !CWStartMenu methodsFor: 'game settings'!
 
 choosePlayers
+	gameSettings resetPlayers.
 	gameSettings addPlayer: self defaultPlayer.
 	gameSettings addPlayer: self defaultPlayer.
 	self playerMenu
 !
 
 startBeta
-	box asJQuery toggle.
+	self toggle.
 	gameSettings mapNumber: 8.
 	CWBootstrapper bootstrap: gameSettings
 ! !
@@ -220,11 +264,34 @@ startBeta
 
 initialize
 	super initialize. 
-	gameSettings := CWGameSettings new.
+	self reset.
 	CWBootstrapper new. "setUp side panels ..."
+!
+
+reset
+	gameSettings := CWGameSettings new.
+	history :=  Array new.
 ! !
 
 !CWStartMenu methodsFor: 'rendering'!
+
+addFrontImages
+	frontImages := Array new: 3.
+	"frontImages at: 1 put:" 
+	box append: [ :html2 | html2 div
+		style: 'height: 100%; width: 100%; position: relative';
+		with: [
+			frontImages at: 1 put: (html2 img 
+				src: self ressourcesFolder, 'fey.png';
+				style: 'position: absolute; bottom: 1px; left: 121px').
+			frontImages at: 2 put: (html2 img 
+				src: self ressourcesFolder, 'monster.png';
+				style: 'position: absolute; top: 1px; right: 121px').
+			frontImages at: 3 put: (html2 img 
+				src: self ressourcesFolder, 'battle_text.png';
+				style: 'position: absolute; bottom: 65px; right: 150px').
+		] ].
+!
 
 armySelectBox: playerNumber on: html
 	| selectBox |
@@ -240,54 +307,69 @@ armySelectBox: playerNumber on: html
 			html option with: 'outlaws' ].
 !
 
+back
+	| last |
+	last := history last.
+	history remove: last.
+	last value
+!
+
+backButton
+	history isEmpty ifTrue: [ ^ backButton asJQuery hide ].
+	backButton asJQuery show.
+!
+
 credits
 	subBox 
 		contents: [ :html | 
+				self renderBackButtonOn: html.
 				html ul 
 					class: 'menu';
 					style: 'font-size: 16px;
-					margin-top: -0.5%';
+					margin-top: 2%';
 					with: [
 						html li with: [
-							html strong with: 'Development : '.
+							html strong with: 'Development '.
 							html br.
 							html a 
+								class: 'creditLink';
 								with: 'Clément Béra';
 								target: '_blank';
 								href: 'http://clementbera.wordpress.com/' ].
 						html li with: [
-							html strong with: 'Graphics : '.
+							html strong with: 'Graphics '.
 							html br.
 							html a
+								class: 'creditLink';
 								with: 'Lusy Dolia';
 								target: '_blank';
 								href: 'https://www.facebook.com/lusy.dolya'.
 							html br.
 							html a
+								class: 'creditLink';
 								with: 'Battle for Wesnoth';
 								target: '_blank';
 								href: 'http://www.wesnoth.org/' ].
 						html li with: [
-							html strong with: 'Thanks to : '.
+							html strong with: 'Thanks to '.
 							html br.
 							html a
+								class: 'creditLink';
 								with: 'Amber web framework';
 								target: '_blank';
 								href: 'http://amber-lang.net/'.
 							html br.
 							html a
+								class: 'creditLink';
 								with: 'Nicolas Petton (Amber core developer)';
 								target: '_blank';
-								href: 'http://www.nicolas-petton.fr/' ].
-						html li with: [
-							html button
-								with: '> back <';
-								onClick: [ self menuOn: html with: self startingMenuDict. ] ] ] ]
+								href: 'http://www.nicolas-petton.fr/' ] ] ]
 !
 
-menuOn: html with: dict
+menuWith: dict
 	^ subBox
-				contents: [
+				contents: [ :html |
+					self renderBackButtonOn: html.
 					html ul 
 						class: 'menu';
 						style: 'margin-top: 5%';
@@ -304,6 +386,7 @@ menuOn: html with: dict
 playerMenu
 	| selectBox |
 	subBox contents: [ :html | 
+				self renderBackButtonOn: html.
 				html ul 
 					class: 'menu';
 					with: [
@@ -340,64 +423,82 @@ playerSelection: playerNumber on: html
 		self armySelectBox: playerNumber on: html ].
 !
 
+renderBackButtonOn: html
+		backButton := html button 
+				class: 'backButton';
+				onClick: [ self back ].
+		self backButton.
+!
+
 renderOn: html
 	box := html div
-		class: 'intro';
-		with: [ subBox := html div class: 'introMenu' ].
-	self menuOn: html with: self startingMenuDict
+		class: 'intro'.
+	self addFrontImages.
+	box append: [ subBox := html div class: 'introMenu' ].
+	self menuWith: self startingMenuDict.
+!
+
+toggleFrontImages
+	frontImages do: [ :each | each asJQuery toggle]
 !
 
 tutorial
-	box asJQuery css: 'background-image' value: 'url(ressources/images/coverempty.jpg)'.
+	self toggleFrontImages.
 	subBox 
-		style: 'font-size: 15px';
+		style: 'font-size: 18px';
 		contents: [ :html | 
+		backButton := html button 
+			class: 'backButton';
+			onClick: [ 
+				self toggleFrontImages.
+				subBox style: 'font-size: 20px'.
+				self back ].
+		self backButton.
 		html div
-			style: 'margin-top: 7%; margin-left: 26%; width: 100%';
+			style: 'margin-top: 6%; margin-left: 26%; width: 100%';
 			with: [
-			html h3 style: 'text-align: center'; with: 'GOAL : kill all your ennemy army'.
-			html h4  style: 'text-align: center'; with: 'Basics'.
+			html h3 style: 'text-align: center; font-size: 25px'; with: 'GOAL : kill all your ennemy army'.
+			html h4  style: 'text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0'; with: 'Basics'.
 			html div 
-				style: 'height: 70px';
+				style: 'height: 50px';
 				with: [
-				(html img: 'ressources/images/tuto1.png') style: 'height: 84px; width: auto; float: left; margin-right: 6px;'.
+				(html img: self ressourcesFolder, 'tuto1.png') style: 'height: 84px; width: auto; float: left; margin-right: 6px; border: 3px solid gray'.
 				html p 
-					style: 'padding-top: 12px';
+					style: 'padding-top: 10px';
 					with: 'When you start your turn, all your activable creatures are surrounded by a white halo. 
 						Click on one of them to activate it. You can activate only one creature per turn.'. ].
 			html div 
 				style: 'height: 105px';
 				with: [
-				(html img: 'ressources/images/tuto2.png') style: 'height: 100px; width: auto; float: right; margin-left: 6px;'.
+				(html img: self ressourcesFolder, 'tuto2.png') style: 'height: 100px; width: auto; float: right; margin-left: 6px; border: 3px solid gray'.
 				html p
 					style: 'padding-top: 25px';
 					with: 'When a creature is activated, a bunch of tiles become colored, 
 						these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.'. ].
 				html p with: 'When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. 
 					If you have remaining move but you want to finish your turn, please click on the next turn button.'.
-			html h4 style: 'text-align: center'; with: 'Advanced'.
+			html h4 style: 'text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0'; with: 'Advanced'.
 			html div 
 				style: 'height: 145px';
 				with: [
-					(html img: 'ressources/images/tuto3.png') style: 'height: 140px; width: auto; float: left; margin-right: 6px;'.
+					(html img: self ressourcesFolder, 'tuto3.png') style: 'height: 140px; width: auto; float: left; margin-right: 6px;'.
 					html p 
-						style: 'padding-top: 2px';
 						with: 'When you click on a creature, you can see on the top left its capabilities. 
 							For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.'.
 					html p 
 						with: 'Lastly, fast or cavalry creatures are better against range creatures, 
-							which are better against foot creatures, which are then better against fast or cavalry ones.'. ].
-			html button
-					with: '> back <';
-					onClick: [ 
-						box asJQuery css: 'background-image' value: 'url(ressources/images/covergame.jpg)'.
-						subBox style: 'font-size: 20px'.
-						self menuOn: html with: self startingMenuDict. ] ] ]
+							which are better against foot creatures, which are then better against fast or cavalry ones.'. ] ] ]
 ! !
+
+CWStartMenu class instanceVariableNames: 'default'!
 
 !CWStartMenu class methodsFor: 'not yet classified'!
 
 start
-	^ self new appendToJQuery: '#global' asJQuery
+	default ifNil: [ ^ default := self new appendToJQuery: '#global' asJQuery ].
+	^ default 
+		reset;
+		menuWith: default startingMenuDict;
+		toggle
 ! !
 

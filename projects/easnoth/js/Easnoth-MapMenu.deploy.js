@@ -231,13 +231,13 @@ _st(self)._addComponent_($CWMonsterWatcher());
 _st(self)._addComponent_($CWDices());
 _st(self)._addComponent_($CWMapControls());
 _st(self)._addComponent_($CWTurnWatcher());
-_st(self)._appendToJQuery_(_st(_st(self)._menuClass())._asJQuery());
+_st(self)._appendToJQuery_(_st("#global")._asJQuery());
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(_st(_st(self)._menuClass())._asJQuery())._empty();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWFightMenu)})},
-messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "menuClass", "on:do:", "empty", "announcer"]}),
+messageSends: ["initialize", "new", "addComponent:", "appendToJQuery:", "asJQuery", "on:do:", "empty", "menuClass", "announcer"]}),
 smalltalk.CWFightMenu);
 
 smalltalk.addMethod(

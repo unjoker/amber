@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-Bootstrap');
-smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted', 'sidePanels'], 'Easnoth-Bootstrap');
+smalltalk.addClass('CWBootstrapper', smalltalk.Object, ['objectToLoad', 'objectLoaded', 'loadingBar', 'hasStarted'], 'Easnoth-Bootstrap');
 smalltalk.CWBootstrapper.comment="Bootstrap the system. Currently work only for games, not for the map editor"
 smalltalk.addMethod(
 smalltalk.method({
@@ -29,13 +29,13 @@ var self=this;
 function $CWLoadingBar(){return smalltalk.CWLoadingBar||(typeof CWLoadingBar=="undefined"?nil:CWLoadingBar)}
 function $CWGame(){return smalltalk.CWGame||(typeof CWGame=="undefined"?nil:CWGame)}
 return smalltalk.withContext(function($ctx1) { 
-self["@loadingBar"]=_st(_st($CWLoadingBar())._new())._appendToJQuery_(_st("#global")._asJQuery());
+self["@loadingBar"]=_st($CWLoadingBar())._new();
 _st(_st($CWGame())._new())._initializeWithSettings_(gameSettings);
 self["@hasStarted"]=false;
 return self}, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09loadingBar := CWLoadingBar new appendToJQuery: '#global' asJQuery.\x0a\x09CWGame new initializeWithSettings: gameSettings.\x0a\x09hasStarted := false.",
-messageSends: ["appendToJQuery:", "asJQuery", "new", "initializeWithSettings:"],
+source: "bootstrap: gameSettings\x0a\x09loadingBar := CWLoadingBar new.\x0a\x09CWGame new initializeWithSettings: gameSettings.\x0a\x09hasStarted := false.",
+messageSends: ["new", "initializeWithSettings:"],
 referencedClasses: ["CWLoadingBar", "CWGame"]
 }),
 smalltalk.CWBootstrapper);
@@ -133,14 +133,10 @@ _st(_st(self)._announcer())._on_do_($CWMapMoveEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._updateSidePanels();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-_st(self)._onWindowResize_((function(){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._updateSidePanels();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initializeEventHandling",{},smalltalk.CWBootstrapper)})},
 args: [],
-source: "initializeEventHandling\x0a\x09self announcer \x0a\x09\x09on: CWWaitForObject \x0a\x09\x09do: [ objectToLoad := objectToLoad + 1 ].\x0a\x09self announcer \x0a\x09\x09on: CWObjectLoaded \x0a\x09\x09do: [ objectLoaded := objectLoaded + 1.\x0a\x09\x09\x09\x09self checkIfReady].\x0a\x09self announcer\x0a\x09\x09on: CWMapMoveEvent\x0a\x09\x09do: [ self updateSidePanels ].\x0a\x09self onWindowResize: [ self updateSidePanels ].",
-messageSends: ["on:do:", "+", "announcer", "checkIfReady", "updateSidePanels", "onWindowResize:"],
+source: "initializeEventHandling\x0a\x09self announcer \x0a\x09\x09on: CWWaitForObject \x0a\x09\x09do: [ objectToLoad := objectToLoad + 1 ].\x0a\x09self announcer \x0a\x09\x09on: CWObjectLoaded \x0a\x09\x09do: [ objectLoaded := objectLoaded + 1.\x0a\x09\x09\x09\x09self checkIfReady].\x0a\x09self announcer\x0a\x09\x09on: CWMapMoveEvent\x0a\x09\x09do: [ self updateSidePanels ].",
+messageSends: ["on:do:", "+", "announcer", "checkIfReady", "updateSidePanels"],
 referencedClasses: ["CWWaitForObject", "CWObjectLoaded", "CWMapMoveEvent"]
 }),
 smalltalk.CWBootstrapper);
@@ -151,22 +147,34 @@ selector: "initializeSidePanels",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-var html,global;
+var html,global,sidePanels;
 function $HTMLCanvas(){return smalltalk.HTMLCanvas||(typeof HTMLCanvas=="undefined"?nil:HTMLCanvas)}
 function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(_st(self)._class())._sidePanels();
+if(($receiver = $1) == nil || $receiver == undefined){
+$1;
+} else {
+$2=self;
+return $2;
+};
 html=_st($HTMLCanvas())._onJQuery_(_st("body")._asJQuery());
 global=_st("#global")._asJQuery();
-self["@sidePanels"]=_st($Array())._new();
-_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
-_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
-_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
-_st(self["@sidePanels"])._add_(_st(_st(html)._div())._class_("sidePanel"));
+_st(_st(self)._class())._sidePanels_(_st($Array())._new());
+_st((4))._timesRepeat_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(self)._class())._sidePanels())._add_(_st(_st(html)._div())._class_("sidePanel"));
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+_st(self)._onWindowResize_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._updateSidePanels();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st(self)._updateSidePanels();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeSidePanels",{html:html,global:global},smalltalk.CWBootstrapper)})},
+return self}, function($ctx1) {$ctx1.fill(self,"initializeSidePanels",{html:html,global:global,sidePanels:sidePanels},smalltalk.CWBootstrapper)})},
 args: [],
-source: "initializeSidePanels\x0a\x09| html global |\x0a\x09html := HTMLCanvas onJQuery: 'body' asJQuery.\x0a\x09global := '#global' asJQuery.\x0a\x09sidePanels := Array new.\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09sidePanels add: (html div class: 'sidePanel').\x0a\x09self updateSidePanels.",
-messageSends: ["onJQuery:", "asJQuery", "new", "add:", "class:", "div", "updateSidePanels"],
+source: "initializeSidePanels\x0a\x09| html global sidePanels |\x0a\x09self class sidePanels ifNotNil: [ ^ self ].\x0a\x09html := HTMLCanvas onJQuery: 'body' asJQuery.\x0a\x09global := '#global' asJQuery.\x0a\x09self class sidePanels: Array new.\x0a\x094 timesRepeat: [ self class sidePanels add: (html div class: 'sidePanel') ].\x0a\x09self onWindowResize: [ self updateSidePanels ].\x0a\x09self updateSidePanels. ",
+messageSends: ["ifNotNil:", "sidePanels", "class", "onJQuery:", "asJQuery", "sidePanels:", "new", "timesRepeat:", "add:", "class:", "div", "onWindowResize:", "updateSidePanels"],
 referencedClasses: ["HTMLCanvas", "Array"]
 }),
 smalltalk.CWBootstrapper);
@@ -234,29 +242,31 @@ selector: "updateSidePanels",
 category: 'initialize-release',
 fn: function (){
 var self=this;
-var global,height,width;
+var global,height,width,sidePanels;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
 global=_st("#global")._asJQuery();
 height=_st(_st(window)._asJQuery())._height();
 width=_st(_st(window)._asJQuery())._width();
+sidePanels=_st(_st(self)._class())._sidePanels();
 $1=_st(height).__gt((640));
 if(smalltalk.assert($1)){
 _st(global)._css_put_("margin-top",_st(_st(_st(_st(height).__minus((640))).__slash((2)))._asString()).__comma("px"));
 };
-_st(_st(self["@sidePanels"])._at_((1)))._style_(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(height)).__comma("px; width:")).__comma(_st(global)._css_("margin-left")));
-_st(_st(self["@sidePanels"])._at_((2)))._style_(_st(_st(_st("position: absolute; top: 0; right: 0; height: ").__comma(height)).__comma("px; width:")).__comma(_st(global)._css_("margin-right")));
-_st(_st(self["@sidePanels"])._at_((3)))._style_(_st(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(global)._css_("margin-top"))).__comma("; width:")).__comma(width)).__comma("px"));
-_st(_st(self["@sidePanels"])._at_((4)))._style_(_st(_st(_st(_st("position: absolute; bottom: 0; left: 0; height: ").__comma(_st(global)._css_("margin-bottom"))).__comma("; width:")).__comma(width)).__comma("px"));
-return self}, function($ctx1) {$ctx1.fill(self,"updateSidePanels",{global:global,height:height,width:width},smalltalk.CWBootstrapper)})},
+_st(_st(sidePanels)._at_((1)))._style_(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(height)).__comma("px; width:")).__comma(_st(global)._css_("margin-left")));
+_st(_st(sidePanels)._at_((2)))._style_(_st(_st(_st("position: absolute; top: 0; right: 0; height: ").__comma(height)).__comma("px; width:")).__comma(_st(global)._css_("margin-right")));
+_st(_st(sidePanels)._at_((3)))._style_(_st(_st(_st(_st("position: absolute; top: 0; left: 0; height: ").__comma(_st(global)._css_("margin-top"))).__comma("; width:")).__comma(width)).__comma("px"));
+_st(_st(sidePanels)._at_((4)))._style_(_st(_st(_st(_st("position: absolute; bottom: 0; left: 0; height: ").__comma(_st(global)._css_("margin-bottom"))).__comma("; width:")).__comma(width)).__comma("px"));
+return self}, function($ctx1) {$ctx1.fill(self,"updateSidePanels",{global:global,height:height,width:width,sidePanels:sidePanels},smalltalk.CWBootstrapper)})},
 args: [],
-source: "updateSidePanels\x0a\x09| global height width |\x0a\x09\x0a\x09global := '#global' asJQuery.\x0a\x09height := window asJQuery height.\x0a\x09width := window asJQuery width.\x0a\x09\x0a\x09height > 640 ifTrue: [\x0a\x09\x09global css: 'margin-top' put: ((height - 640) / 2) asString, 'px' ].\x0a\x09\x09\x0a\x09(sidePanels at: 1)\x0a\x09\x09style: 'position: absolute; top: 0; left: 0; height: ', height, 'px; width:', (global css: 'margin-left').\x0a\x09(sidePanels at: 2)\x0a\x09\x09style: 'position: absolute; top: 0; right: 0; height: ', height, 'px; width:', (global css: 'margin-right').\x0a\x09(sidePanels at: 3)\x0a\x09\x09style: 'position: absolute; top: 0; left: 0; height: ', (global css: 'margin-top'), '; width:', width, 'px'.\x0a\x09(sidePanels at: 4)\x0a\x09\x09style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', width, 'px'.",
-messageSends: ["asJQuery", "height", "width", "ifTrue:", "css:put:", ",", "asString", "/", "-", ">", "style:", "css:", "at:"],
+source: "updateSidePanels\x0a\x09| global height width sidePanels |\x0a\x09\x0a\x09global := '#global' asJQuery.\x0a\x09height := window asJQuery height.\x0a\x09width := window asJQuery width.\x0a\x09sidePanels := self class sidePanels.\x0a\x09\x0a\x09height > 640 ifTrue: [\x0a\x09\x09global css: 'margin-top' put: ((height - 640) / 2) asString, 'px' ].\x0a\x09\x09\x0a\x09(sidePanels at: 1)\x0a\x09\x09style: 'position: absolute; top: 0; left: 0; height: ', height, 'px; width:', (global css: 'margin-left').\x0a\x09(sidePanels at: 2)\x0a\x09\x09style: 'position: absolute; top: 0; right: 0; height: ', height, 'px; width:', (global css: 'margin-right').\x0a\x09(sidePanels at: 3)\x0a\x09\x09style: 'position: absolute; top: 0; left: 0; height: ', (global css: 'margin-top'), '; width:', width, 'px'.\x0a\x09(sidePanels at: 4)\x0a\x09\x09style: 'position: absolute; bottom: 0; left: 0; height: ', (global css: 'margin-bottom'), '; width:', width, 'px'.",
+messageSends: ["asJQuery", "height", "width", "sidePanels", "class", "ifTrue:", "css:put:", ",", "asString", "/", "-", ">", "style:", "css:", "at:"],
 referencedClasses: []
 }),
 smalltalk.CWBootstrapper);
 
 
+smalltalk.CWBootstrapper.klass.iVarNames = ['sidePanels'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "bootstrap:",
@@ -269,8 +279,42 @@ $1=_st(_st(self)._new())._bootstrap_(gameSettings);
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"bootstrap:",{gameSettings:gameSettings},smalltalk.CWBootstrapper.klass)})},
 args: ["gameSettings"],
-source: "bootstrap: gameSettings\x0a\x09^ self new\x0a\x09\x09bootstrap: gameSettings",
+source: "bootstrap: gameSettings\x0a\x09^ self new bootstrap: gameSettings",
 messageSends: ["bootstrap:", "new"],
+referencedClasses: []
+}),
+smalltalk.CWBootstrapper.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sidePanels",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self["@sidePanels"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"sidePanels",{},smalltalk.CWBootstrapper.klass)})},
+args: [],
+source: "sidePanels\x0a\x09^ sidePanels",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWBootstrapper.klass);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "sidePanels:",
+category: 'accessing',
+fn: function (object){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@sidePanels"]=object;
+return self}, function($ctx1) {$ctx1.fill(self,"sidePanels:",{object:object},smalltalk.CWBootstrapper.klass)})},
+args: ["object"],
+source: "sidePanels: object\x0a\x09sidePanels := object",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWBootstrapper.klass);
@@ -300,15 +344,14 @@ selector: "initialize",
 category: 'intialize-release',
 fn: function (){
 var self=this;
-function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Object.fn.prototype._initialize.apply(_st(self), []);
-self["@players"]=_st($Array())._new();
+_st(self)._resetPlayers();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWGameSettings)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09players := Array new",
-messageSends: ["initialize", "new"],
-referencedClasses: ["Array"]
+source: "initialize\x0a\x09super initialize.\x0a\x09self resetPlayers.",
+messageSends: ["initialize", "resetPlayers"],
+referencedClasses: []
 }),
 smalltalk.CWGameSettings);
 
@@ -389,6 +432,26 @@ referencedClasses: []
 }),
 smalltalk.CWGameSettings);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "resetPlayers",
+category: 'accessing',
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@players"]=_st($Array())._new();
+$1=self["@players"];
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"resetPlayers",{},smalltalk.CWGameSettings)})},
+args: [],
+source: "resetPlayers\x0a\x09^ players := Array new.",
+messageSends: ["new"],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWGameSettings);
+
 
 
 smalltalk.addClass('CWLoadingBar', smalltalk.Widget, ['box'], 'Easnoth-Bootstrap');
@@ -399,11 +462,27 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self["@box"])._asJQuery())._toggle();
+_st(_st(self["@box"])._asJQuery())._hide();
 return self}, function($ctx1) {$ctx1.fill(self,"hide",{},smalltalk.CWLoadingBar)})},
 args: [],
-source: "hide\x0a\x09box asJQuery toggle",
-messageSends: ["toggle", "asJQuery"],
+source: "hide\x0a\x09box asJQuery hide",
+messageSends: ["hide", "asJQuery"],
+referencedClasses: []
+}),
+smalltalk.CWLoadingBar);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "initialize",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self)._appendToJQuery_(_st("#global")._asJQuery());
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWLoadingBar)})},
+args: [],
+source: "initialize\x0a\x09self appendToJQuery: '#global' asJQuery.",
+messageSends: ["appendToJQuery:", "asJQuery"],
 referencedClasses: []
 }),
 smalltalk.CWLoadingBar);
@@ -418,20 +497,103 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2;
 $1=_st(html)._img();
 _st($1)._class_("loadBar");
-$2=_st($1)._src_("ressources/images/loading.png");
+$2=_st($1)._src_("ressources/images/start/loading.png");
 self["@box"]=$2;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWLoadingBar)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html img\x0a\x09\x09class: 'loadBar';\x0a\x09\x09src: 'ressources/images/loading.png'.",
+source: "renderOn: html\x0a\x09box := html img\x0a\x09\x09class: 'loadBar';\x0a\x09\x09src: 'ressources/images/start/loading.png'.",
 messageSends: ["class:", "img", "src:"],
 referencedClasses: []
 }),
 smalltalk.CWLoadingBar);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "show",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self["@box"])._asJQuery())._show();
+return self}, function($ctx1) {$ctx1.fill(self,"show",{},smalltalk.CWLoadingBar)})},
+args: [],
+source: "show\x0a\x09box asJQuery show",
+messageSends: ["show", "asJQuery"],
+referencedClasses: []
+}),
+smalltalk.CWLoadingBar);
 
 
-smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'subBox', 'gameSettings'], 'Easnoth-Bootstrap');
+smalltalk.CWLoadingBar.klass.iVarNames = ['default'];
+smalltalk.addMethod(
+smalltalk.method({
+selector: "new",
+category: 'not yet classified',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2,$3;
+$1=self["@default"];
+if(($receiver = $1) == nil || $receiver == undefined){
+self["@default"]=smalltalk.Widget.klass.fn.prototype._new.apply(_st(self), []);
+$2=self["@default"];
+return $2;
+} else {
+$1;
+};
+_st(self["@default"])._show();
+$3=self["@default"];
+return $3;
+}, function($ctx1) {$ctx1.fill(self,"new",{},smalltalk.CWLoadingBar.klass)})},
+args: [],
+source: "new\x0a\x09default ifNil: [ ^ default := super new].\x0a\x09default show.\x0a\x09^ default",
+messageSends: ["ifNil:", "new", "show"],
+referencedClasses: []
+}),
+smalltalk.CWLoadingBar.klass);
+
+
+smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'subBox', 'frontImages', 'backButton', 'history', 'gameSettings'], 'Easnoth-Bootstrap');
 smalltalk.CWStartMenu.comment="Should implement the menu with multiplayer and stuff here"
+smalltalk.addMethod(
+smalltalk.method({
+selector: "addFrontImages",
+category: 'rendering',
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+var $1,$3,$4,$5,$6,$7,$8,$2;
+self["@frontImages"]=_st($Array())._new_((3));
+_st(self["@box"])._append_((function(html2){
+return smalltalk.withContext(function($ctx2) {
+$1=_st(html2)._div();
+_st($1)._style_("height: 100%; width: 100%; position: relative");
+$2=_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+$3=_st(html2)._img();
+_st($3)._src_(_st(_st(self)._ressourcesFolder()).__comma("fey.png"));
+$4=_st($3)._style_("position: absolute; bottom: 1px; left: 121px");
+_st(self["@frontImages"])._at_put_((1),$4);
+$5=_st(html2)._img();
+_st($5)._src_(_st(_st(self)._ressourcesFolder()).__comma("monster.png"));
+$6=_st($5)._style_("position: absolute; top: 1px; right: 121px");
+_st(self["@frontImages"])._at_put_((2),$6);
+$7=_st(html2)._img();
+_st($7)._src_(_st(_st(self)._ressourcesFolder()).__comma("battle_text.png"));
+$8=_st($7)._style_("position: absolute; bottom: 65px; right: 150px");
+return _st(self["@frontImages"])._at_put_((3),$8);
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $2;
+}, function($ctx2) {$ctx2.fillBlock({html2:html2},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"addFrontImages",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "addFrontImages\x0a\x09frontImages := Array new: 3.\x0a\x09\x22frontImages at: 1 put:\x22 \x0a\x09box append: [ :html2 | html2 div\x0a\x09\x09style: 'height: 100%; width: 100%; position: relative';\x0a\x09\x09with: [\x0a\x09\x09\x09frontImages at: 1 put: (html2 img \x0a\x09\x09\x09\x09src: self ressourcesFolder, 'fey.png';\x0a\x09\x09\x09\x09style: 'position: absolute; bottom: 1px; left: 121px').\x0a\x09\x09\x09frontImages at: 2 put: (html2 img \x0a\x09\x09\x09\x09src: self ressourcesFolder, 'monster.png';\x0a\x09\x09\x09\x09style: 'position: absolute; top: 1px; right: 121px').\x0a\x09\x09\x09frontImages at: 3 put: (html2 img \x0a\x09\x09\x09\x09src: self ressourcesFolder, 'battle_text.png';\x0a\x09\x09\x09\x09style: 'position: absolute; bottom: 65px; right: 150px').\x0a\x09\x09] ].",
+messageSends: ["new:", "append:", "style:", "div", "with:", "at:put:", "src:", ",", "ressourcesFolder", "img"],
+referencedClasses: ["Array"]
+}),
+smalltalk.CWStartMenu);
+
 smalltalk.addMethod(
 smalltalk.method({
 selector: "armySelectBox:on:",
@@ -466,18 +628,60 @@ smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "back",
+category: 'rendering',
+fn: function (){
+var self=this;
+var last;
+return smalltalk.withContext(function($ctx1) { 
+last=_st(self["@history"])._last();
+_st(self["@history"])._remove_(last);
+_st(last)._value();
+return self}, function($ctx1) {$ctx1.fill(self,"back",{last:last},smalltalk.CWStartMenu)})},
+args: [],
+source: "back\x0a\x09| last |\x0a\x09last := history last.\x0a\x09history remove: last.\x0a\x09last value",
+messageSends: ["last", "remove:", "value"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "backButton",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1,$2;
+$1=_st(self["@history"])._isEmpty();
+if(smalltalk.assert($1)){
+$2=_st(_st(self["@backButton"])._asJQuery())._hide();
+return $2;
+};
+_st(_st(self["@backButton"])._asJQuery())._show();
+return self}, function($ctx1) {$ctx1.fill(self,"backButton",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "backButton\x0a\x09history isEmpty ifTrue: [ ^ backButton asJQuery hide ].\x0a\x09backButton asJQuery show.",
+messageSends: ["ifTrue:", "hide", "asJQuery", "isEmpty", "show"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "choosePlayers",
 category: 'game settings',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
+_st(self["@gameSettings"])._resetPlayers();
 _st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self)._playerMenu();
 return self}, function($ctx1) {$ctx1.fill(self,"choosePlayers",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "choosePlayers\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09self playerMenu",
-messageSends: ["addPlayer:", "defaultPlayer", "playerMenu"],
+source: "choosePlayers\x0a\x09gameSettings resetPlayers.\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09gameSettings addPlayer: self defaultPlayer.\x0a\x09self playerMenu",
+messageSends: ["resetPlayers", "addPlayer:", "defaultPlayer", "playerMenu"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -489,19 +693,21 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$2;
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$2;
 _st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
+_st(self)._renderBackButtonOn_(html);
 $1=_st(html)._ul();
 _st($1)._class_("menu");
-_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%");
+_st($1)._style_("font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: 2%");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._strong())._with_("Development : ");
+_st(_st(html)._strong())._with_("Development ");
 _st(html)._br();
 $3=_st(html)._a();
+_st($3)._class_("creditLink");
 _st($3)._with_("Clément Béra");
 _st($3)._target_("_blank");
 $4=_st($3)._href_("http://clementbera.wordpress.com/");
@@ -509,53 +715,47 @@ return $4;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._strong())._with_("Graphics : ");
+_st(_st(html)._strong())._with_("Graphics ");
 _st(html)._br();
 $5=_st(html)._a();
+_st($5)._class_("creditLink");
 _st($5)._with_("Lusy Dolia");
 _st($5)._target_("_blank");
 $6=_st($5)._href_("https://www.facebook.com/lusy.dolya");
 $6;
 _st(html)._br();
 $7=_st(html)._a();
+_st($7)._class_("creditLink");
 _st($7)._with_("Battle for Wesnoth");
 _st($7)._target_("_blank");
 $8=_st($7)._href_("http://www.wesnoth.org/");
 return $8;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-_st(_st(html)._li())._with_((function(){
+return _st(_st(html)._li())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._strong())._with_("Thanks to : ");
+_st(_st(html)._strong())._with_("Thanks to ");
 _st(html)._br();
 $9=_st(html)._a();
+_st($9)._class_("creditLink");
 _st($9)._with_("Amber web framework");
 _st($9)._target_("_blank");
 $10=_st($9)._href_("http://amber-lang.net/");
 $10;
 _st(html)._br();
 $11=_st(html)._a();
+_st($11)._class_("creditLink");
 _st($11)._with_("Nicolas Petton (Amber core developer)");
 _st($11)._target_("_blank");
 $12=_st($11)._href_("http://www.nicolas-petton.fr/");
 return $12;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-return _st(_st(html)._li())._with_((function(){
-return smalltalk.withContext(function($ctx4) {
-$13=_st(html)._button();
-_st($13)._with_("> back <");
-$14=_st($13)._onClick_((function(){
-return smalltalk.withContext(function($ctx5) {
-return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
-}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return $14;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"credits",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "credits\x0a\x09subBox \x0a\x09\x09contents: [ :html | \x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09style: 'font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: -0.5%';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Development : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Clément Béra';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://clementbera.wordpress.com/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Graphics : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Lusy Dolia';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'https://www.facebook.com/lusy.dolya'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Battle for Wesnoth';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.wesnoth.org/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Thanks to : '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Amber web framework';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://amber-lang.net/'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Nicolas Petton (Amber core developer)';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.nicolas-petton.fr/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self menuOn: html with: self startingMenuDict. ] ] ] ] ",
-messageSends: ["contents:", "class:", "ul", "style:", "with:", "strong", "br", "a", "target:", "href:", "li", "button", "onClick:", "menuOn:with:", "startingMenuDict"],
+source: "credits\x0a\x09subBox \x0a\x09\x09contents: [ :html | \x0a\x09\x09\x09\x09self renderBackButtonOn: html.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09style: 'font-size: 16px;\x0a\x09\x09\x09\x09\x09margin-top: 2%';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Development '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'creditLink';\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Clément Béra';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://clementbera.wordpress.com/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Graphics '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'creditLink';\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Lusy Dolia';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'https://www.facebook.com/lusy.dolya'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'creditLink';\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Battle for Wesnoth';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.wesnoth.org/' ].\x0a\x09\x09\x09\x09\x09\x09html li with: [\x0a\x09\x09\x09\x09\x09\x09\x09html strong with: 'Thanks to '.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'creditLink';\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Amber web framework';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://amber-lang.net/'.\x0a\x09\x09\x09\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09\x09\x09\x09html a\x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'creditLink';\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: 'Nicolas Petton (Amber core developer)';\x0a\x09\x09\x09\x09\x09\x09\x09\x09target: '_blank';\x0a\x09\x09\x09\x09\x09\x09\x09\x09href: 'http://www.nicolas-petton.fr/' ] ] ] ",
+messageSends: ["contents:", "renderBackButtonOn:", "class:", "ul", "style:", "with:", "strong", "br", "a", "target:", "href:", "li"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -585,31 +785,31 @@ selector: "initialize",
 category: 'initalize-release',
 fn: function (){
 var self=this;
-function $CWGameSettings(){return smalltalk.CWGameSettings||(typeof CWGameSettings=="undefined"?nil:CWGameSettings)}
 function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.Widget.fn.prototype._initialize.apply(_st(self), []);
-self["@gameSettings"]=_st($CWGameSettings())._new();
+_st(self)._reset();
 _st($CWBootstrapper())._new();
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "initialize\x0a\x09super initialize. \x0a\x09gameSettings := CWGameSettings new.\x0a\x09CWBootstrapper new. \x22setUp side panels ...\x22\x0a\x09",
-messageSends: ["initialize", "new"],
-referencedClasses: ["CWGameSettings", "CWBootstrapper"]
+source: "initialize\x0a\x09super initialize. \x0a\x09self reset.\x0a\x09CWBootstrapper new. \x22setUp side panels ...\x22",
+messageSends: ["initialize", "reset", "new"],
+referencedClasses: ["CWBootstrapper"]
 }),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "menuOn:with:",
+selector: "menuWith:",
 category: 'rendering',
-fn: function (html,dict){
+fn: function (dict){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$5,$6,$4,$7,$1;
 $2=self["@subBox"];
-_st($2)._contents_((function(){
+_st($2)._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
+_st(self)._renderBackButtonOn_(html);
 $3=_st(html)._ul();
 _st($3)._class_("menu");
 _st($3)._style_("margin-top: 5%");
@@ -628,14 +828,14 @@ return $6;
 }, function($ctx4) {$ctx4.fillBlock({key:key,value:value},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $4;
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+}, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 $7=_st($2)._yourself();
 $1=$7;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"menuOn:with:",{html:html,dict:dict},smalltalk.CWStartMenu)})},
-args: ["html", "dict"],
-source: "menuOn: html with: dict\x0a\x09^ subBox\x0a\x09\x09\x09\x09contents: [\x0a\x09\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09\x09style: 'margin-top: 5%';\x0a\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09dict keysAndValuesDo: [ :key :value |\x0a\x09\x09\x09\x09\x09\x09\x09html li\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [ html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09with: key; \x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: value ] ] ] ];\x0a\x09\x09yourself",
-messageSends: ["contents:", "class:", "ul", "style:", "with:", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"],
+}, function($ctx1) {$ctx1.fill(self,"menuWith:",{dict:dict},smalltalk.CWStartMenu)})},
+args: ["dict"],
+source: "menuWith: dict\x0a\x09^ subBox\x0a\x09\x09\x09\x09contents: [ :html |\x0a\x09\x09\x09\x09\x09self renderBackButtonOn: html.\x0a\x09\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09\x09style: 'margin-top: 5%';\x0a\x09\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x09\x09dict keysAndValuesDo: [ :key :value |\x0a\x09\x09\x09\x09\x09\x09\x09html li\x0a\x09\x09\x09\x09\x09\x09\x09\x09with: [ html a \x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09\x09\x09\x09\x09with: key; \x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: value ] ] ] ];\x0a\x09\x09yourself",
+messageSends: ["contents:", "renderBackButtonOn:", "class:", "ul", "style:", "with:", "keysAndValuesDo:", "href:", "a", "onClick:", "li", "yourself"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -651,6 +851,7 @@ return smalltalk.withContext(function($ctx1) {
 var $1,$2,$3,$4;
 _st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
+_st(self)._renderBackButtonOn_(html);
 $1=_st(html)._ul();
 _st($1)._class_("menu");
 $2=_st($1)._with_((function(){
@@ -671,8 +872,8 @@ return $4;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"playerMenu",{selectBox:selectBox},smalltalk.CWStartMenu)})},
 args: [],
-source: "playerMenu\x0a\x09| selectBox |\x0a\x09subBox contents: [ :html | \x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ] ].\x0a\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'startButton';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ",
-messageSends: ["contents:", "class:", "ul", "with:", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"],
+source: "playerMenu\x0a\x09| selectBox |\x0a\x09subBox contents: [ :html | \x0a\x09\x09\x09\x09self renderBackButtonOn: html.\x0a\x09\x09\x09\x09html ul \x0a\x09\x09\x09\x09\x09class: 'menu';\x0a\x09\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09\x091 to: 2 do: [ :n |\x0a\x09\x09\x09\x09\x09\x09\x09self playerSelection: n on: html ] ].\x0a\x09\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09\x09class: 'startButton';\x0a\x09\x09\x09\x09\x09\x09\x09\x09onClick: [ self startBeta ] ] ",
+messageSends: ["contents:", "renderBackButtonOn:", "class:", "ul", "with:", "to:do:", "playerSelection:on:", "button", "onClick:", "startBeta"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -740,25 +941,82 @@ smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "renderOn:",
+selector: "renderBackButtonOn:",
 category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-$1=_st(html)._div();
-_st($1)._class_("intro");
-$2=_st($1)._with_((function(){
+$1=_st(html)._button();
+_st($1)._class_("backButton");
+$2=_st($1)._onClick_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._back();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+self["@backButton"]=$2;
+_st(self)._backButton();
+return self}, function($ctx1) {$ctx1.fill(self,"renderBackButtonOn:",{html:html},smalltalk.CWStartMenu)})},
+args: ["html"],
+source: "renderBackButtonOn: html\x0a\x09\x09backButton := html button \x0a\x09\x09\x09\x09class: 'backButton';\x0a\x09\x09\x09\x09onClick: [ self back ].\x0a\x09\x09self backButton.\x09\x09",
+messageSends: ["class:", "button", "onClick:", "back", "backButton"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "renderOn:",
+category: 'rendering',
+fn: function (html){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+self["@box"]=_st(_st(html)._div())._class_("intro");
+_st(self)._addFrontImages();
+_st(self["@box"])._append_((function(){
 return smalltalk.withContext(function($ctx2) {
 self["@subBox"]=_st(_st(html)._div())._class_("introMenu");
 return self["@subBox"];
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-self["@box"]=$2;
-_st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
+_st(self)._menuWith_(_st(self)._startingMenuDict());
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWStartMenu)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html div\x0a\x09\x09class: 'intro';\x0a\x09\x09with: [ subBox := html div class: 'introMenu' ].\x0a\x09self menuOn: html with: self startingMenuDict",
-messageSends: ["class:", "div", "with:", "menuOn:with:", "startingMenuDict"],
+source: "renderOn: html\x0a\x09box := html div\x0a\x09\x09class: 'intro'.\x0a\x09self addFrontImages.\x0a\x09box append: [ subBox := html div class: 'introMenu' ].\x0a\x09self menuWith: self startingMenuDict.",
+messageSends: ["class:", "div", "addFrontImages", "append:", "menuWith:", "startingMenuDict"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "reset",
+category: 'initalize-release',
+fn: function (){
+var self=this;
+function $CWGameSettings(){return smalltalk.CWGameSettings||(typeof CWGameSettings=="undefined"?nil:CWGameSettings)}
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+self["@gameSettings"]=_st($CWGameSettings())._new();
+self["@history"]=_st($Array())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"reset",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "reset\x0a\x09gameSettings := CWGameSettings new.\x0a\x09history :=  Array new.",
+messageSends: ["new"],
+referencedClasses: ["CWGameSettings", "Array"]
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "ressourcesFolder",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+return "ressources/images/start/";
+}, function($ctx1) {$ctx1.fill(self,"ressourcesFolder",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "ressourcesFolder\x0a\x09^ 'ressources/images/start/'",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
@@ -794,14 +1052,35 @@ fn: function (){
 var self=this;
 function $CWBootstrapper(){return smalltalk.CWBootstrapper||(typeof CWBootstrapper=="undefined"?nil:CWBootstrapper)}
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self["@box"])._asJQuery())._toggle();
+_st(self)._toggle();
 _st(self["@gameSettings"])._mapNumber_((8));
 _st($CWBootstrapper())._bootstrap_(self["@gameSettings"]);
 return self}, function($ctx1) {$ctx1.fill(self,"startBeta",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startBeta\x0a\x09box asJQuery toggle.\x0a\x09gameSettings mapNumber: 8.\x0a\x09CWBootstrapper bootstrap: gameSettings",
-messageSends: ["toggle", "asJQuery", "mapNumber:", "bootstrap:"],
+source: "startBeta\x0a\x09self toggle.\x0a\x09gameSettings mapNumber: 8.\x0a\x09CWBootstrapper bootstrap: gameSettings",
+messageSends: ["toggle", "mapNumber:", "bootstrap:"],
 referencedClasses: ["CWBootstrapper"]
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "startingBlock",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._menuWith_(_st(self)._startingMenuDict());
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})});
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"startingBlock",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "startingBlock\x0a\x09^ [ self menuWith: self startingMenuDict ]",
+messageSends: ["menuWith:", "startingMenuDict"],
+referencedClasses: []
 }),
 smalltalk.CWStartMenu);
 
@@ -817,6 +1096,7 @@ var $2,$3,$1;
 $2=_st($Dictionary())._new();
 _st($2)._at_put_("Tutorial",(function(){
 return smalltalk.withContext(function($ctx2) {
+_st(self["@history"])._add_(_st(self)._startingBlock());
 return _st(self)._tutorial();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Campaign",(function(){
@@ -825,10 +1105,12 @@ return _st(window)._alert_("for future use, click on custom game");
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Custom game",(function(){
 return smalltalk.withContext(function($ctx2) {
+_st(self["@history"])._add_(_st(self)._startingBlock());
 return _st(self)._choosePlayers();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st($2)._at_put_("Credits",(function(){
 return smalltalk.withContext(function($ctx2) {
+_st(self["@history"])._add_(_st(self)._startingBlock());
 return _st(self)._credits();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 $3=_st($2)._yourself();
@@ -836,9 +1118,44 @@ $1=$3;
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"startingMenuDict",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [ self tutorial ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ self choosePlayers ];\x0a\x09\x09\x22at: 'Network game' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x22\x0a\x09\x09at: 'Credits' put: [ self credits ];\x0a\x09\x09yourself",
-messageSends: ["at:put:", "tutorial", "new", "alert:", "choosePlayers", "credits", "yourself"],
+source: "startingMenuDict\x0a\x09^ Dictionary new\x0a\x09\x09at: 'Tutorial' put: [ history add: self startingBlock. self tutorial. ];\x0a\x09\x09at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];\x0a\x09\x09at: 'Custom game' put: [ history add: self startingBlock. self choosePlayers ];\x0a\x09\x09\x22at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];\x22\x0a\x09\x09at: 'Credits' put: [ history add: self startingBlock. self credits ];\x0a\x09\x09yourself",
+messageSends: ["at:put:", "add:", "startingBlock", "tutorial", "new", "alert:", "choosePlayers", "credits", "yourself"],
 referencedClasses: ["Dictionary"]
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toggle",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(_st(self["@box"])._asJQuery())._toggle();
+return self}, function($ctx1) {$ctx1.fill(self,"toggle",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "toggle\x0a\x09box asJQuery toggle",
+messageSends: ["toggle", "asJQuery"],
+referencedClasses: []
+}),
+smalltalk.CWStartMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "toggleFrontImages",
+category: 'rendering',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(self["@frontImages"])._do_((function(each){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(each)._asJQuery())._toggle();
+}, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"toggleFrontImages",{},smalltalk.CWStartMenu)})},
+args: [],
+source: "toggleFrontImages\x0a\x09frontImages do: [ :each | each asJQuery toggle]",
+messageSends: ["do:", "toggle", "asJQuery"],
+referencedClasses: []
 }),
 smalltalk.CWStartMenu);
 
@@ -849,84 +1166,84 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$3,$5,$6,$7,$8,$9,$11,$12,$10,$13,$15,$16,$14,$17,$18,$19,$21,$22,$20,$23,$24,$4,$2;
-_st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/coverempty.jpg)");
+var $1,$3,$4,$5,$7,$8,$9,$10,$11,$13,$14,$12,$15,$17,$18,$16,$19,$20,$21,$22,$6,$2;
+_st(self)._toggleFrontImages();
 $1=self["@subBox"];
-_st($1)._style_("font-size: 15px");
+_st($1)._style_("font-size: 18px");
 $2=_st($1)._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-$3=_st(html)._div();
-_st($3)._style_("margin-top: 7%; margin-left: 26%; width: 100%");
-$4=_st($3)._with_((function(){
+$3=_st(html)._button();
+_st($3)._class_("backButton");
+$4=_st($3)._onClick_((function(){
 return smalltalk.withContext(function($ctx3) {
-$5=_st(html)._h3();
-_st($5)._style_("text-align: center");
-$6=_st($5)._with_("GOAL : kill all your ennemy army");
-$6;
-$7=_st(html)._h4();
-_st($7)._style_("text-align: center");
-$8=_st($7)._with_("Basics");
+_st(self)._toggleFrontImages();
+_st(self["@subBox"])._style_("font-size: 20px");
+return _st(self)._back();
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+self["@backButton"]=$4;
+self["@backButton"];
+_st(self)._backButton();
+$5=_st(html)._div();
+_st($5)._style_("margin-top: 6%; margin-left: 26%; width: 100%");
+$6=_st($5)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+$7=_st(html)._h3();
+_st($7)._style_("text-align: center; font-size: 25px");
+$8=_st($7)._with_("GOAL : kill all your ennemy army");
 $8;
-$9=_st(html)._div();
-_st($9)._style_("height: 70px");
-$10=_st($9)._with_((function(){
-return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._img_("ressources/images/tuto1.png"))._style_("height: 84px; width: auto; float: left; margin-right: 6px;");
-$11=_st(html)._p();
-_st($11)._style_("padding-top: 12px");
-$12=_st($11)._with_("When you start your turn, all your activable creatures are surrounded by a white halo. \x0a\x09\x09\x09\x09\x09\x09Click on one of them to activate it. You can activate only one creature per turn.");
-return $12;
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+$9=_st(html)._h4();
+_st($9)._style_("text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0");
+$10=_st($9)._with_("Basics");
 $10;
-$13=_st(html)._div();
-_st($13)._style_("height: 105px");
-$14=_st($13)._with_((function(){
+$11=_st(html)._div();
+_st($11)._style_("height: 50px");
+$12=_st($11)._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._img_("ressources/images/tuto2.png"))._style_("height: 100px; width: auto; float: right; margin-left: 6px;");
-$15=_st(html)._p();
-_st($15)._style_("padding-top: 25px");
-$16=_st($15)._with_("When a creature is activated, a bunch of tiles become colored, \x0a\x09\x09\x09\x09\x09\x09these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.");
-return $16;
+_st(_st(html)._img_(_st(_st(self)._ressourcesFolder()).__comma("tuto1.png")))._style_("height: 84px; width: auto; float: left; margin-right: 6px; border: 3px solid gray");
+$13=_st(html)._p();
+_st($13)._style_("padding-top: 10px");
+$14=_st($13)._with_("When you start your turn, all your activable creatures are surrounded by a white halo. \x0a\x09\x09\x09\x09\x09\x09Click on one of them to activate it. You can activate only one creature per turn.");
+return $14;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-$14;
-_st(_st(html)._p())._with_("When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the next turn button.");
-$17=_st(html)._h4();
-_st($17)._style_("text-align: center");
-$18=_st($17)._with_("Advanced");
-$18;
-$19=_st(html)._div();
-_st($19)._style_("height: 145px");
-$20=_st($19)._with_((function(){
+$12;
+$15=_st(html)._div();
+_st($15)._style_("height: 105px");
+$16=_st($15)._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._img_("ressources/images/tuto3.png"))._style_("height: 140px; width: auto; float: left; margin-right: 6px;");
-$21=_st(html)._p();
-_st($21)._style_("padding-top: 2px");
-$22=_st($21)._with_("When you click on a creature, you can see on the top left its capabilities. \x0a\x09\x09\x09\x09\x09\x09\x09For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.");
-$22;
+_st(_st(html)._img_(_st(_st(self)._ressourcesFolder()).__comma("tuto2.png")))._style_("height: 100px; width: auto; float: right; margin-left: 6px; border: 3px solid gray");
+$17=_st(html)._p();
+_st($17)._style_("padding-top: 25px");
+$18=_st($17)._with_("When a creature is activated, a bunch of tiles become colored, \x0a\x09\x09\x09\x09\x09\x09these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.");
+return $18;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+$16;
+_st(_st(html)._p())._with_("When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the next turn button.");
+$19=_st(html)._h4();
+_st($19)._style_("text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0");
+$20=_st($19)._with_("Advanced");
+$20;
+$21=_st(html)._div();
+_st($21)._style_("height: 145px");
+$22=_st($21)._with_((function(){
+return smalltalk.withContext(function($ctx4) {
+_st(_st(html)._img_(_st(_st(self)._ressourcesFolder()).__comma("tuto3.png")))._style_("height: 140px; width: auto; float: left; margin-right: 6px;");
+_st(_st(html)._p())._with_("When you click on a creature, you can see on the top left its capabilities. \x0a\x09\x09\x09\x09\x09\x09\x09For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.");
 return _st(_st(html)._p())._with_("Lastly, fast or cavalry creatures are better against range creatures, \x0a\x09\x09\x09\x09\x09\x09\x09which are better against foot creatures, which are then better against fast or cavalry ones.");
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-$20;
-$23=_st(html)._button();
-_st($23)._with_("> back <");
-$24=_st($23)._onClick_((function(){
-return smalltalk.withContext(function($ctx4) {
-_st(_st(self["@box"])._asJQuery())._css_value_("background-image","url(ressources/images/covergame.jpg)");
-_st(self["@subBox"])._style_("font-size: 20px");
-return _st(self)._menuOn_with_(html,_st(self)._startingMenuDict());
-}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
-return $24;
+return $22;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $4;
+return $6;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"tutorial",{},smalltalk.CWStartMenu)})},
 args: [],
-source: "tutorial\x0a\x09box asJQuery css: 'background-image' value: 'url(ressources/images/coverempty.jpg)'.\x0a\x09subBox \x0a\x09\x09style: 'font-size: 15px';\x0a\x09\x09contents: [ :html | \x0a\x09\x09html div\x0a\x09\x09\x09style: 'margin-top: 7%; margin-left: 26%; width: 100%';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html h3 style: 'text-align: center'; with: 'GOAL : kill all your ennemy army'.\x0a\x09\x09\x09html h4  style: 'text-align: center'; with: 'Basics'.\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09style: 'height: 70px';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09(html img: 'ressources/images/tuto1.png') style: 'height: 84px; width: auto; float: left; margin-right: 6px;'.\x0a\x09\x09\x09\x09html p \x0a\x09\x09\x09\x09\x09style: 'padding-top: 12px';\x0a\x09\x09\x09\x09\x09with: 'When you start your turn, all your activable creatures are surrounded by a white halo. \x0a\x09\x09\x09\x09\x09\x09Click on one of them to activate it. You can activate only one creature per turn.'. ].\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09style: 'height: 105px';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09(html img: 'ressources/images/tuto2.png') style: 'height: 100px; width: auto; float: right; margin-left: 6px;'.\x0a\x09\x09\x09\x09html p\x0a\x09\x09\x09\x09\x09style: 'padding-top: 25px';\x0a\x09\x09\x09\x09\x09with: 'When a creature is activated, a bunch of tiles become colored, \x0a\x09\x09\x09\x09\x09\x09these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.'. ].\x0a\x09\x09\x09\x09html p with: 'When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the next turn button.'.\x0a\x09\x09\x09html h4 style: 'text-align: center'; with: 'Advanced'.\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09style: 'height: 145px';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09(html img: 'ressources/images/tuto3.png') style: 'height: 140px; width: auto; float: left; margin-right: 6px;'.\x0a\x09\x09\x09\x09\x09html p \x0a\x09\x09\x09\x09\x09\x09style: 'padding-top: 2px';\x0a\x09\x09\x09\x09\x09\x09with: 'When you click on a creature, you can see on the top left its capabilities. \x0a\x09\x09\x09\x09\x09\x09\x09For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.'.\x0a\x09\x09\x09\x09\x09html p \x0a\x09\x09\x09\x09\x09\x09with: 'Lastly, fast or cavalry creatures are better against range creatures, \x0a\x09\x09\x09\x09\x09\x09\x09which are better against foot creatures, which are then better against fast or cavalry ones.'. ].\x0a\x09\x09\x09html button\x0a\x09\x09\x09\x09\x09with: '> back <';\x0a\x09\x09\x09\x09\x09onClick: [ \x0a\x09\x09\x09\x09\x09\x09box asJQuery css: 'background-image' value: 'url(ressources/images/covergame.jpg)'.\x0a\x09\x09\x09\x09\x09\x09subBox style: 'font-size: 20px'.\x0a\x09\x09\x09\x09\x09\x09self menuOn: html with: self startingMenuDict. ] ] ]",
-messageSends: ["css:value:", "asJQuery", "style:", "contents:", "div", "with:", "h3", "h4", "img:", "p", "button", "onClick:", "menuOn:with:", "startingMenuDict"],
+source: "tutorial\x0a\x09self toggleFrontImages.\x0a\x09subBox \x0a\x09\x09style: 'font-size: 18px';\x0a\x09\x09contents: [ :html | \x0a\x09\x09backButton := html button \x0a\x09\x09\x09class: 'backButton';\x0a\x09\x09\x09onClick: [ \x0a\x09\x09\x09\x09self toggleFrontImages.\x0a\x09\x09\x09\x09subBox style: 'font-size: 20px'.\x0a\x09\x09\x09\x09self back ].\x0a\x09\x09self backButton.\x0a\x09\x09html div\x0a\x09\x09\x09style: 'margin-top: 6%; margin-left: 26%; width: 100%';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html h3 style: 'text-align: center; font-size: 25px'; with: 'GOAL : kill all your ennemy army'.\x0a\x09\x09\x09html h4  style: 'text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0'; with: 'Basics'.\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09style: 'height: 50px';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09(html img: self ressourcesFolder, 'tuto1.png') style: 'height: 84px; width: auto; float: left; margin-right: 6px; border: 3px solid gray'.\x0a\x09\x09\x09\x09html p \x0a\x09\x09\x09\x09\x09style: 'padding-top: 10px';\x0a\x09\x09\x09\x09\x09with: 'When you start your turn, all your activable creatures are surrounded by a white halo. \x0a\x09\x09\x09\x09\x09\x09Click on one of them to activate it. You can activate only one creature per turn.'. ].\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09style: 'height: 105px';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09(html img: self ressourcesFolder, 'tuto2.png') style: 'height: 100px; width: auto; float: right; margin-left: 6px; border: 3px solid gray'.\x0a\x09\x09\x09\x09html p\x0a\x09\x09\x09\x09\x09style: 'padding-top: 25px';\x0a\x09\x09\x09\x09\x09with: 'When a creature is activated, a bunch of tiles become colored, \x0a\x09\x09\x09\x09\x09\x09these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.'. ].\x0a\x09\x09\x09\x09html p with: 'When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the next turn button.'.\x0a\x09\x09\x09html h4 style: 'text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0'; with: 'Advanced'.\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09style: 'height: 145px';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09(html img: self ressourcesFolder, 'tuto3.png') style: 'height: 140px; width: auto; float: left; margin-right: 6px;'.\x0a\x09\x09\x09\x09\x09html p \x0a\x09\x09\x09\x09\x09\x09with: 'When you click on a creature, you can see on the top left its capabilities. \x0a\x09\x09\x09\x09\x09\x09\x09For example a creature can roll from 1 to 6 dices to attack, each dices having from 30% to 70% chances of hitting.'.\x0a\x09\x09\x09\x09\x09html p \x0a\x09\x09\x09\x09\x09\x09with: 'Lastly, fast or cavalry creatures are better against range creatures, \x0a\x09\x09\x09\x09\x09\x09\x09which are better against foot creatures, which are then better against fast or cavalry ones.'. ] ] ]",
+messageSends: ["toggleFrontImages", "style:", "contents:", "class:", "button", "onClick:", "back", "backButton", "div", "with:", "h3", "h4", "img:", ",", "ressourcesFolder", "p"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu);
 
 
+smalltalk.CWStartMenu.klass.iVarNames = ['default'];
 smalltalk.addMethod(
 smalltalk.method({
 selector: "start",
@@ -934,13 +1251,25 @@ category: 'not yet classified',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._appendToJQuery_(_st("#global")._asJQuery());
-return $1;
+var $1,$2,$4,$5,$3;
+$1=self["@default"];
+if(($receiver = $1) == nil || $receiver == undefined){
+self["@default"]=_st(_st(self)._new())._appendToJQuery_(_st("#global")._asJQuery());
+$2=self["@default"];
+return $2;
+} else {
+$1;
+};
+$4=self["@default"];
+_st($4)._reset();
+_st($4)._menuWith_(_st(self["@default"])._startingMenuDict());
+$5=_st($4)._toggle();
+$3=$5;
+return $3;
 }, function($ctx1) {$ctx1.fill(self,"start",{},smalltalk.CWStartMenu.klass)})},
 args: [],
-source: "start\x0a\x09^ self new appendToJQuery: '#global' asJQuery ",
-messageSends: ["appendToJQuery:", "asJQuery", "new"],
+source: "start\x0a\x09default ifNil: [ ^ default := self new appendToJQuery: '#global' asJQuery ].\x0a\x09^ default \x0a\x09\x09reset;\x0a\x09\x09menuWith: default startingMenuDict;\x0a\x09\x09toggle",
+messageSends: ["ifNil:", "appendToJQuery:", "asJQuery", "new", "reset", "menuWith:", "startingMenuDict", "toggle"],
 referencedClasses: []
 }),
 smalltalk.CWStartMenu.klass);

@@ -119,7 +119,7 @@ initialize
 	self addComponent: CWDices.
 	self addComponent: CWMapControls.
 	self addComponent: CWTurnWatcher.
-	self appendToJQuery: self menuClass asJQuery.
+	self appendToJQuery: '#global' asJQuery.
 	self announcer
 		on: CWEndGameEvent
 		do: [ self menuClass asJQuery empty ]
