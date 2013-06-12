@@ -1168,22 +1168,22 @@ stats: jsonStats
 !CWMonster methodsFor: 'move'!
 
 animPath: path iterator: j callback: callback
-	| cell1 cell2 pathSize |
+	| cell1FirstCoods cell2 pathSize |
 	
 	pathSize := path size.
 	
 	j = pathSize
 		ifTrue: [ ^ callback value ].
 			
-	cell1 := self parent.
+	cell1FirstCoods := self parent firstCoods.
 	cell2 := path at: pathSize - j.
 	self changeCell: cell2.
 	self decreaseCurrentMove.
 		
 	self canvas asJQuery
 		animate: #{ 
-			'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .
-			'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }
+			'left' -> ('+=' , (cell2 firstCoods x - cell1FirstCoods x) , 'px') .
+			'top' -> ('+=' , (cell2 firstCoods y - cell1FirstCoods y) , 'px') }
        	duration: 300
      	easing: 'linear'
 		complete: [ self animPath: path iterator: j + 1 callback: callback ].

@@ -108,18 +108,13 @@ category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-$1=_st(self)._isRoot();
-if(smalltalk.assert($1)){
-$2=self;
-return $2;
-};
-$3=_st(_st(self)._parent())._root();
-return $3;
+var $1;
+$1=_st(_st(self)._parent())._root();
+return $1;
 }, function($ctx1) {$ctx1.fill(self,"root",{},smalltalk.CWWidget)})},
 args: [],
-source: "root\x0a\x09self isRoot ifTrue: [ ^ self ].\x0a\x09^ self parent root",
-messageSends: ["ifTrue:", "isRoot", "root", "parent"],
+source: "root\x0a\x09^ self parent root",
+messageSends: ["root", "parent"],
 referencedClasses: []
 }),
 smalltalk.CWWidget);
@@ -175,22 +170,6 @@ return $1;
 args: [],
 source: "components\x0a\x09^ components",
 messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWActionMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeWithGame:",
-category: 'initialize-release',
-fn: function (aGame){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeWithGame:",{aGame:aGame},smalltalk.CWActionMenu)})},
-args: ["aGame"],
-source: "initializeWithGame: aGame\x0a\x09self subclassResponsibility",
-messageSends: ["subclassResponsibility"],
 referencedClasses: []
 }),
 smalltalk.CWActionMenu);
@@ -267,9 +246,28 @@ referencedClasses: []
 }),
 smalltalk.CWActionMenu);
 
+smalltalk.addMethod(
+smalltalk.method({
+selector: "root",
+category: 'accessing',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"root",{},smalltalk.CWActionMenu)})},
+args: [],
+source: "root\x0a\x09^ self",
+messageSends: [],
+referencedClasses: []
+}),
+smalltalk.CWActionMenu);
+
 
 
 smalltalk.addClass('CWFightMenu', smalltalk.CWActionMenu, [], 'Easnoth-MapMenu');
+smalltalk.CWFightMenu.comment="This action menu is dedicated fo fights."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initialize",
@@ -358,7 +356,7 @@ smalltalk.CWActionMenuComponent);
 
 
 smalltalk.addClass('CWDices', smalltalk.CWActionMenuComponent, [], 'Easnoth-MapMenu');
-smalltalk.CWDices.comment="SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW."
+smalltalk.CWDices.comment="SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.\x0a\x0aThis is top right menu. It displays the results of any fight."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "firstLoad",
@@ -393,22 +391,17 @@ category: 'initialize-release',
 fn: function (){
 var self=this;
 function $CWDicesRolledEvent(){return smalltalk.CWDicesRolledEvent||(typeof CWDicesRolledEvent=="undefined"?nil:CWDicesRolledEvent)}
-function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenuComponent.fn.prototype._initialize.apply(_st(self), []);
 _st(_st(self)._announcer())._on_do_($CWDicesRolledEvent(),(function(event){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._showDices_(event);
 }, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWMonsterUpdateEvent(),(function(event){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._showDicesNoAnimation_(_st(event)._monster());
-}, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDices)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09self announcer \x0a\x09\x09on: CWDicesRolledEvent\x0a\x09\x09do: [ :event | self showDices: event ].\x0a\x09self announcer \x0a\x09\x09on: CWMonsterUpdateEvent\x0a\x09\x09do: [ :event | self showDicesNoAnimation: event monster ]",
-messageSends: ["initialize", "on:do:", "showDices:", "announcer", "showDicesNoAnimation:", "monster"],
-referencedClasses: ["CWDicesRolledEvent", "CWMonsterUpdateEvent"]
+source: "initialize\x0a\x09super initialize.\x0a\x09self announcer \x0a\x09\x09on: CWDicesRolledEvent\x0a\x09\x09do: [ :event | self showDices: event ].",
+messageSends: ["initialize", "on:do:", "showDices:", "announcer"],
+referencedClasses: ["CWDicesRolledEvent"]
 }),
 smalltalk.CWDices);
 
@@ -450,21 +443,6 @@ return self}, function($ctx1) {$ctx1.fill(self,"showDices:",{aResDices:aResDices
 args: ["aResDices"],
 source: "showDices: aResDices\x0a\x09| cb |\x0a\x09cb := [ aResDices callback value: aResDices ].\x0a\x09self updateDices: aResDices dices kills: aResDices kills callBack: cb.",
 messageSends: ["value:", "callback", "updateDices:kills:callBack:", "dices", "kills"],
-referencedClasses: []
-}),
-smalltalk.CWDices);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "showDicesNoAnimation:",
-category: 'public',
-fn: function (monster){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"showDicesNoAnimation:",{monster:monster},smalltalk.CWDices)})},
-args: ["monster"],
-source: "showDicesNoAnimation: monster\x0a\x09\x22should change the number of dices without animation\x22\x0a\x09\x22monster ifNotNil: [\x0a\x09\x09box contents: [:html | \x0a\x09\x09\x09html h4 with: 'Fight result'.\x0a\x09\x09\x091 to: monster dices do: [\x0a\x09\x09\x09\x09CWDiceDeath new renderOn: html ] ] ]\x22",
-messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWDices);
@@ -520,6 +498,7 @@ smalltalk.CWDices);
 
 
 smalltalk.addClass('CWMapControls', smalltalk.CWActionMenuComponent, [], 'Easnoth-MapMenu');
+smalltalk.CWMapControls.comment="This represents the bottom left map controls menu. It permits to move the map."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "go:",
@@ -598,33 +577,10 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
-_st(_st("body")._asJQuery())._keyup_((function(event){
-var k;
-return smalltalk.withContext(function($ctx2) {
-k=_st(event)._keyCode();
-k;
-$1=_st(_st(_st(k).__eq((37))).__or(k)).__eq((65));
-if(smalltalk.assert($1)){
-_st(self)._go_("left");
-};
-$2=_st(_st(_st(k).__eq((39))).__or(k)).__eq((68));
-if(smalltalk.assert($2)){
-_st(self)._go_("right");
-};
-$3=_st(_st(_st(k).__eq((38))).__or(k)).__eq((87));
-if(smalltalk.assert($3)){
-_st(self)._go_("up");
-};
-$4=_st(_st(_st(k).__eq((40))).__or(k)).__eq((83));
-if(smalltalk.assert($4)){
-return _st(self)._go_("down");
-};
-}, function($ctx2) {$ctx2.fillBlock({event:event,k:k},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"setUpShortCuts",{},smalltalk.CWMapControls)})},
 args: [],
-source: "setUpShortCuts\x0a\x09'body' asJQuery keyup:[:event |  | k |\x0a\x09\x09k := event keyCode.\x0a\x09\x09(k = 37 | k = 65) ifTrue: [self go: 'left'].\x0a\x09\x09(k = 39 | k = 68) ifTrue: [self go: 'right'].\x0a\x09\x09(k = 38 | k = 87) ifTrue: [self go: 'up'].\x0a\x09\x09(k = 40 | k = 83) ifTrue: [self go: 'down'].\x0a\x09].",
-messageSends: ["keyup:", "keyCode", "ifTrue:", "go:", "=", "|", "asJQuery"],
+source: "setUpShortCuts\x0a\x09\x22'body' asJQuery keyup:[:event |  | k |\x0a\x09\x09k := event keyCode.\x0a\x09\x09(k = 37 | k = 65) ifTrue: [self go: 'left'].\x0a\x09\x09(k = 39 | k = 68) ifTrue: [self go: 'right'].\x0a\x09\x09(k = 38 | k = 87) ifTrue: [self go: 'up'].\x0a\x09\x09(k = 40 | k = 83) ifTrue: [self go: 'down'].\x0a\x09].\x22",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWMapControls);
@@ -632,6 +588,7 @@ smalltalk.CWMapControls);
 
 
 smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'imgBox'], 'Easnoth-MapMenu');
+smalltalk.CWMonsterWatcher.comment="This represetns a view on the monster for the user. It is the top left menu."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "emptyMonster",
@@ -782,6 +739,7 @@ smalltalk.CWMonsterWatcher);
 
 
 smalltalk.addClass('CWTurnWatcher', smalltalk.CWActionMenuComponent, [], 'Easnoth-MapMenu');
+smalltalk.CWTurnWatcher.comment="This represents additional informations for the game. This is the bottom right menu."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "renderOn:",
@@ -844,66 +802,39 @@ smalltalk.CWTurnWatcher);
 
 
 
-smalltalk.addClass('CWDice', smalltalk.CWWidget, [], 'Easnoth-MapMenu');
+smalltalk.addClass('CWDice', smalltalk.CWWidget, ['counter'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "animate:callBack:",
 category: 'rendering',
 fn: function (dice,animationFinished){
 var self=this;
-var random,url;
 return smalltalk.withContext(function($ctx1) { 
-random=_st((2)).__plus(_st((7))._atRandom());
-url=_st(self)._url();
-_st(self)._animate_callBack_random_url_(dice,animationFinished,random,url);
-return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
+self["@counter"]=(0);
+_st(self)._animation_callBack_(dice,animationFinished);
+return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
 args: ["dice", "animationFinished"],
-source: "animate: dice callBack: animationFinished\x0a\x09\x22This method calls the jquery animation that is implemented in javascript\x0a\x09To refactor later\x22\x0a\x09\x0a\x09\x22dice \x0a\x09animate: #{'border-spacing' -> -40 }\x0a    optons:  #{\x0a\x09\x09'step' -> [ :now ;fx |\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        ].\x0a        'duration' -> 200.\x0a        'easing' -> 'linear' }\x22\x0a\x09\x0a\x09| random url |\x0a\x0a\x09random := 2 + 7 atRandom.\x0a\x09url := self url.\x0a\x0a\x09self animate: dice callBack: animationFinished random: random url: url",
-messageSends: ["+", "atRandom", "url", "animate:callBack:random:url:"],
+source: "animate: dice callBack: animationFinished\x0a\x09counter := 0.\x0a\x09self animation: dice callBack: animationFinished.",
+messageSends: ["animation:callBack:"],
 referencedClasses: []
 }),
 smalltalk.CWDice);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "animate:callBack:random:url:",
+selector: "animation:callBack:",
 category: 'rendering',
-fn: function (dice,animationFinished,random,url){
+fn: function (dice,animationFinished){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var i = 0;
-    function roll() {
-		dice.animate({'border-spacing': -50},
-                        {step: function(now, fx) {
-                                $(fx.elem).css('background-position', '1px '+now+'px');
-                        },
-                        duration: 200,
-                        easing: 'linear',
-                        complete: function (){
-                                i++;
-                                if (i< random){
-                                        roll();
-                                } else {
-                                        i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},
-                                                {step: function(now, fx) {
-                                                        $(fx.elem).css('background-position', '1px '+now+'px');
-                                                        },
-                                                        duration: 200,
-                                                        easing: 'linear',
-							complete: function(){
-								animationFinished();
-							}
-                                                })
-                                }
-                        }
-		})
-	}
-	roll();;
-return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:random:url:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
-args: ["dice", "animationFinished", "random", "url"],
-source: "animate: dice callBack: animationFinished random: random url: url\x0a<var i = 0;\x0a    function roll() {\x0a\x09\x09dice.animate({'border-spacing': -50},\x0a                        {step: function(now, fx) {\x0a                                $(fx.elem).css('background-position', '1px '+now+'px');\x0a                        },\x0a                        duration: 200,\x0a                        easing: 'linear',\x0a                        complete: function (){\x0a                                i++;\x0a                                if (i< random){\x0a                                        roll();\x0a                                } else {\x0a                                        i = 0;\x0a                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},\x0a                                                {step: function(now, fx) {\x0a                                                        $(fx.elem).css('background-position', '1px '+now+'px');\x0a                                                        },\x0a                                                        duration: 200,\x0a                                                        easing: 'linear',\x0a\x09\x09\x09\x09\x09\x09\x09complete: function(){\x0a\x09\x09\x09\x09\x09\x09\x09\x09animationFinished();\x0a\x09\x09\x09\x09\x09\x09\x09}\x0a                                                })\x0a                                }\x0a                        }\x0a\x09\x09})\x0a\x09}\x0a\x09roll();>",
-messageSends: [],
+_st(self)._jqueryAnimate_callBack_(dice,(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._nextAnimation_callBack_(dice,animationFinished);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"animation:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+args: ["dice", "animationFinished"],
+source: "animation: dice callBack: animationFinished\x0a\x09\x22Triggers once the rolling dice animation and checks what to do next\x22\x0a\x09self jqueryAnimate: dice callBack: [ self nextAnimation: dice callBack: animationFinished ]",
+messageSends: ["jqueryAnimate:callBack:", "nextAnimation:callBack:"],
 referencedClasses: []
 }),
 smalltalk.CWDice);
@@ -944,16 +875,59 @@ smalltalk.CWDice);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "renderOn:",
+selector: "endAnimation:callBack:",
 category: 'rendering',
-fn: function (html){
+fn: function (dice,animationFinished){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background",_st(_st("url(").__comma(_st(self)._url())).__comma(") 1px 40px"));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDice)})},
-args: ["html"],
-source: "renderOn: html\x0a\x09(html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(',self url,') 1px 40px'",
-messageSends: ["css:put:", ",", "url", "asJQuery", "img:", "backgroundPictureUrl"],
+_st(dice)._css_put_("background-image",_st(_st("url(").__comma(_st(self)._url())).__comma(")"));
+_st(self)._jqueryAnimate_callBack_(dice,animationFinished);
+return self}, function($ctx1) {$ctx1.fill(self,"endAnimation:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+args: ["dice", "animationFinished"],
+source: "endAnimation: dice callBack: animationFinished\x0a\x09\x22Terminates the rolling dice animation. Displays the result and executes the callback\x22\x0a\x09dice css: 'background-image' put: 'url(' , self url , ')'.\x0a\x09self jqueryAnimate: dice callBack: animationFinished ",
+messageSends: ["css:put:", ",", "url", "jqueryAnimate:callBack:"],
+referencedClasses: []
+}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jqueryAnimate:callBack:",
+category: 'rendering',
+fn: function (dice,nextAnim){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(dice)._animate_options_(smalltalk.HashedCollection._fromPairs_([_st("border-spacing").__minus_gt((-50))]),smalltalk.HashedCollection._fromPairs_([_st("step").__minus_gt((function(now,fx){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(fx)._elem())._asJQuery())._css_put_("background-position",_st(_st("1px ").__comma(_st(now)._asString())).__comma("px"));
+}, function($ctx2) {$ctx2.fillBlock({now:now,fx:fx},$ctx1)})})),_st("duration").__minus_gt((200)),_st("easing").__minus_gt("linear"),_st("complete").__minus_gt(nextAnim)]));
+return self}, function($ctx1) {$ctx1.fill(self,"jqueryAnimate:callBack:",{dice:dice,nextAnim:nextAnim},smalltalk.CWDice)})},
+args: ["dice", "nextAnim"],
+source: "jqueryAnimate: dice callBack: nextAnim\x0a\x09\x22Rolling dice animation with jquery\x22\x0a\x09dice \x0a\x09\x09animate: #{'border-spacing' -> -50 }\x0a   \x09 \x09options:  #{\x0a\x09\x09\x09'step' -> [ :now :fx | fx elem asJQuery css: 'background-position' put: '1px ', now asString,'px' ] .\x0a        \x09'duration' -> 200 .\x0a        \x09'easing' -> 'linear' .\x0a\x09\x09\x09'complete' -> nextAnim }",
+messageSends: ["animate:options:", "->", "css:put:", ",", "asString", "asJQuery", "elem"],
+referencedClasses: []
+}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextAnimation:callBack:",
+category: 'rendering',
+fn: function (dice,animationFinished){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@counter"]=_st(self["@counter"]).__plus((1));
+$1=_st(self["@counter"]).__lt(_st((2)).__plus(_st((7))._atRandom()));
+if(smalltalk.assert($1)){
+_st(self)._animation_callBack_(dice,animationFinished);
+} else {
+_st(self)._endAnimation_callBack_(dice,animationFinished);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"nextAnimation:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+args: ["dice", "animationFinished"],
+source: "nextAnimation: dice callBack: animationFinished \x0a\x09\x22After a random delay, the rolling dice animation stops, displaying the result and executing the callback\x22\x0a\x09counter := counter + 1.\x0a\x09counter < (2 + 7 atRandom) \x0a\x09\x09ifTrue: [ self animation: dice callBack: animationFinished ] \x0a\x09\x09ifFalse: [self endAnimation: dice callBack: animationFinished ]",
+messageSends: ["+", "ifTrue:ifFalse:", "animation:callBack:", "endAnimation:callBack:", "<", "atRandom"],
 referencedClasses: []
 }),
 smalltalk.CWDice);

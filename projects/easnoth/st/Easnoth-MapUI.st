@@ -5,7 +5,7 @@ Object subclass: #CWEventDispatcher
 !CWEventDispatcher commentStamp!
 I dispatch event from eventManager canvas to cells. 
 
-activeCheck permits to limit the number of mousemove events.!
+This class is a huge hack that is why it has so many instance variables ...!
 
 !CWEventDispatcher methodsFor: 'accessing'!
 
@@ -362,12 +362,6 @@ CWArrayLayer subclass: #CWMonsterLayer
 
 !CWMonsterLayer methodsFor: 'accessing'!
 
-contextForPoint: point
-	| canvas |
-	canvas := array i: point x j: point y.
-	^ canvas element getContext: '2d'.
-!
-
 id
 	^ '#monster'
 !
@@ -410,35 +404,6 @@ clean
 				(elem getContext: '2d') clearRect: 0 y: 0 width: elem width height: elem height ]. ]
 !
 
-display: monster cood: aPoint context: ctx
-	ctx
-		drawImage: monster image
-		x: aPoint x
-		y: aPoint y.
-!
-
-drawHeros: heros point: point
-	| ctx |
-	ctx := self contextForPoint: point.
-	(heros side negative) 
-		ifTrue: [ self reverseDisplay: heros cood: 87@28 context: ctx ] 
-		ifFalse: [ self display: heros cood: 15@28 context: ctx ]
-!
-
-drawUnit: aUnit point: point
-	| xArray yArray ctx |
-	
-	ctx := self contextForPoint: point.
-	xArray := #(9 37 -11 17).
-	yArray := #(15 23 26 33).
-
-	(1 to: aUnit hp) do: [ :i |
-		(aUnit side negative) 
-			ifTrue: [ self reverseDisplay: aUnit cood: 72 + (xArray at: i)@(yArray at: i) context: ctx ] 
-			ifFalse: [ self display: aUnit cood: (xArray at: i)@(yArray at: i) context: ctx ]
-	]
-!
-
 renderOn: html map: map
 	| tempCanvas |
 	map children withIndexDo: [ :row :i |
@@ -446,18 +411,8 @@ renderOn: html map: map
 			cell monster ifNotNil: [ :m | 
 				tempCanvas := self newLeaf: html point: cell firstCoods.
 				m canvas: tempCanvas.
+				tempCanvas asJQuery css: 'z-index' put: cell zIndex.
 				array i: i j: j put: tempCanvas ] ] ].
-!
-
-reverseDisplay: monster cood: cood context: ctx
-	[ctx
-			translate: cood x y: 0;
-			scale: -1 y: 1.
-	self display: monster cood: 0@(cood y) context: ctx ]
-	ensure: ["faster than save and restore"
-	ctx
-		scale: -1 y: 1;
-		translate: cood x negated y: 0]
 ! !
 
 CWLayer subclass: #CWCanvasLayer
@@ -561,24 +516,12 @@ backgroundLayer
 	^ layers at: 1
 !
 
-currentCoods
-	^ self executionContext currentCoods
-!
-
 currentPoint
 	^ self executionContext currentPoint
 !
 
 executionContext
 	^ executionContext
-!
-
-gotLayer
-	^ layers at: 2
-!
-
-monsterLayer
-	^ layers at: 3
 !
 
 padding
@@ -601,12 +544,6 @@ canvasPadding
 	"padding between the border of the web page and the map (left and top)"
 
 	^ 50
-!
-
-monsterCanvasId
-	"id of the monster canvas for the css"
-
-	^ '#monster'
 !
 
 tileUnit
@@ -736,14 +673,6 @@ drawBackTile
 
 drawBackground: object
 	self backgroundLayer drawIsometric: object point: self currentPoint
-!
-
-drawHeros: heros
-	self monsterLayer drawHeros: heros point: self currentCoods
-!
-
-drawUnit: aUnit
-	self monsterLayer drawUnit: aUnit point: self currentCoods
 ! !
 
 !CWMapDrawer methodsFor: 'visiting'!
@@ -785,12 +714,6 @@ Object subclass: #CWMapInterpreterContext
 	package: 'Easnoth-MapUI'!
 !CWMapInterpreterContext commentStamp!
 general context just to know the coods in the map of cells!
-
-!CWMapInterpreterContext methodsFor: 'accessing'!
-
-currentCoods
-	^ rowIndex @ cellIndex
-! !
 
 !CWMapInterpreterContext methodsFor: 'context alteration'!
 

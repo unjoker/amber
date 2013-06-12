@@ -262,6 +262,8 @@ visitUnit: aUnit
 CWJsonWriter subclass: #CWNoMonsterWriter
 	instanceVariableNames: ''
 	package: 'Easnoth-Export'!
+!CWNoMonsterWriter commentStamp!
+This one may not work... Use superclass if problem.!
 
 !CWNoMonsterWriter methodsFor: 'not yet classified'!
 
