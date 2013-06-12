@@ -2893,7 +2893,7 @@ selector: "animPath:iterator:callback:",
 category: 'move',
 fn: function (path,j,callback){
 var self=this;
-var cell1,cell2,pathSize;
+var cell1FirstCoods,cell2,pathSize;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 pathSize=_st(path)._size();
@@ -2902,18 +2902,18 @@ if(smalltalk.assert($1)){
 $2=_st(callback)._value();
 return $2;
 };
-cell1=_st(self)._parent();
+cell1FirstCoods=_st(_st(self)._parent())._firstCoods();
 cell2=_st(path)._at_(_st(pathSize).__minus(j));
 _st(self)._changeCell_(cell2);
 _st(self)._decreaseCurrentMove();
-_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_complete_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(_st(cell1)._firstCoods())._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(_st(cell1)._firstCoods())._y()))).__comma("px"))]),(300),"linear",(function(){
+_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_complete_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(cell1FirstCoods)._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(cell1FirstCoods)._y()))).__comma("px"))]),(300),"linear",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._animPath_iterator_callback_(path,_st(j).__plus((1)),callback);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"animPath:iterator:callback:",{path:path,j:j,callback:callback,cell1:cell1,cell2:cell2,pathSize:pathSize},smalltalk.CWMonster)})},
+return self}, function($ctx1) {$ctx1.fill(self,"animPath:iterator:callback:",{path:path,j:j,callback:callback,cell1FirstCoods:cell1FirstCoods,cell2:cell2,pathSize:pathSize},smalltalk.CWMonster)})},
 args: ["path", "j", "callback"],
-source: "animPath: path iterator: j callback: callback\x0a\x09| cell1 cell2 pathSize |\x0a\x09\x0a\x09pathSize := path size.\x0a\x09\x0a\x09j = pathSize\x0a\x09\x09ifTrue: [ ^ callback value ].\x0a\x09\x09\x09\x0a\x09cell1 := self parent.\x0a\x09cell2 := path at: pathSize - j.\x0a\x09self changeCell: cell2.\x0a\x09self decreaseCurrentMove.\x0a\x09\x09\x0a\x09self canvas asJQuery\x0a\x09\x09animate: #{ \x0a\x09\x09\x09'left' -> ('+=' , (cell2 firstCoods x - cell1 firstCoods x) , 'px') .\x0a\x09\x09\x09'top' -> ('+=' , (cell2 firstCoods y - cell1 firstCoods y) , 'px') }\x0a       \x09duration: 300\x0a     \x09easing: 'linear'\x0a\x09\x09complete: [ self animPath: path iterator: j + 1 callback: callback ].",
-messageSends: ["size", "ifTrue:", "value", "=", "parent", "at:", "-", "changeCell:", "decreaseCurrentMove", "animate:duration:easing:complete:", "->", ",", "x", "firstCoods", "y", "animPath:iterator:callback:", "+", "asJQuery", "canvas"],
+source: "animPath: path iterator: j callback: callback\x0a\x09| cell1FirstCoods cell2 pathSize |\x0a\x09\x0a\x09pathSize := path size.\x0a\x09\x0a\x09j = pathSize\x0a\x09\x09ifTrue: [ ^ callback value ].\x0a\x09\x09\x09\x0a\x09cell1FirstCoods := self parent firstCoods.\x0a\x09cell2 := path at: pathSize - j.\x0a\x09self changeCell: cell2.\x0a\x09self decreaseCurrentMove.\x0a\x09\x09\x0a\x09self canvas asJQuery\x0a\x09\x09animate: #{ \x0a\x09\x09\x09'left' -> ('+=' , (cell2 firstCoods x - cell1FirstCoods x) , 'px') .\x0a\x09\x09\x09'top' -> ('+=' , (cell2 firstCoods y - cell1FirstCoods y) , 'px') }\x0a       \x09duration: 300\x0a     \x09easing: 'linear'\x0a\x09\x09complete: [ self animPath: path iterator: j + 1 callback: callback ].",
+messageSends: ["size", "ifTrue:", "value", "=", "firstCoods", "parent", "at:", "-", "changeCell:", "decreaseCurrentMove", "animate:duration:easing:complete:", "->", ",", "x", "y", "animPath:iterator:callback:", "+", "asJQuery", "canvas"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);

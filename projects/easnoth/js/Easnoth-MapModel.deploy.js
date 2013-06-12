@@ -2123,7 +2123,7 @@ smalltalk.method({
 selector: "animPath:iterator:callback:",
 fn: function (path,j,callback){
 var self=this;
-var cell1,cell2,pathSize;
+var cell1FirstCoods,cell2,pathSize;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
 pathSize=_st(path)._size();
@@ -2132,16 +2132,16 @@ if(smalltalk.assert($1)){
 $2=_st(callback)._value();
 return $2;
 };
-cell1=_st(self)._parent();
+cell1FirstCoods=_st(_st(self)._parent())._firstCoods();
 cell2=_st(path)._at_(_st(pathSize).__minus(j));
 _st(self)._changeCell_(cell2);
 _st(self)._decreaseCurrentMove();
-_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_complete_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(_st(cell1)._firstCoods())._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(_st(cell1)._firstCoods())._y()))).__comma("px"))]),(300),"linear",(function(){
+_st(_st(_st(self)._canvas())._asJQuery())._animate_duration_easing_complete_(smalltalk.HashedCollection._fromPairs_([_st("left").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._x()).__minus(_st(cell1FirstCoods)._x()))).__comma("px")),_st("top").__minus_gt(_st(_st("+=").__comma(_st(_st(_st(cell2)._firstCoods())._y()).__minus(_st(cell1FirstCoods)._y()))).__comma("px"))]),(300),"linear",(function(){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._animPath_iterator_callback_(path,_st(j).__plus((1)),callback);
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"animPath:iterator:callback:",{path:path,j:j,callback:callback,cell1:cell1,cell2:cell2,pathSize:pathSize},smalltalk.CWMonster)})},
-messageSends: ["size", "ifTrue:", "value", "=", "parent", "at:", "-", "changeCell:", "decreaseCurrentMove", "animate:duration:easing:complete:", "->", ",", "x", "firstCoods", "y", "animPath:iterator:callback:", "+", "asJQuery", "canvas"]}),
+return self}, function($ctx1) {$ctx1.fill(self,"animPath:iterator:callback:",{path:path,j:j,callback:callback,cell1FirstCoods:cell1FirstCoods,cell2:cell2,pathSize:pathSize},smalltalk.CWMonster)})},
+messageSends: ["size", "ifTrue:", "value", "=", "firstCoods", "parent", "at:", "-", "changeCell:", "decreaseCurrentMove", "animate:duration:easing:complete:", "->", ",", "x", "y", "animPath:iterator:callback:", "+", "asJQuery", "canvas"]}),
 smalltalk.CWMonster);
 
 smalltalk.addMethod(

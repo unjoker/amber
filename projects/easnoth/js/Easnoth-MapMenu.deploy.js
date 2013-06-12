@@ -77,16 +77,11 @@ selector: "root",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3;
-$1=_st(self)._isRoot();
-if(smalltalk.assert($1)){
-$2=self;
-return $2;
-};
-$3=_st(_st(self)._parent())._root();
-return $3;
+var $1;
+$1=_st(_st(self)._parent())._root();
+return $1;
 }, function($ctx1) {$ctx1.fill(self,"root",{},smalltalk.CWWidget)})},
-messageSends: ["ifTrue:", "isRoot", "root", "parent"]}),
+messageSends: ["root", "parent"]}),
 smalltalk.CWWidget);
 
 
@@ -127,17 +122,6 @@ $1=self["@components"];
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"components",{},smalltalk.CWActionMenu)})},
 messageSends: []}),
-smalltalk.CWActionMenu);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeWithGame:",
-fn: function (aGame){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-_st(self)._subclassResponsibility();
-return self}, function($ctx1) {$ctx1.fill(self,"initializeWithGame:",{aGame:aGame},smalltalk.CWActionMenu)})},
-messageSends: ["subclassResponsibility"]}),
 smalltalk.CWActionMenu);
 
 smalltalk.addMethod(
@@ -190,6 +174,19 @@ return _st(each)._renderOn_(html);
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWActionMenu)})},
 messageSends: ["do:", "renderOn:", "components"]}),
+smalltalk.CWActionMenu);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "root",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=self;
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"root",{},smalltalk.CWActionMenu)})},
+messageSends: []}),
 smalltalk.CWActionMenu);
 
 
@@ -291,19 +288,14 @@ selector: "initialize",
 fn: function (){
 var self=this;
 function $CWDicesRolledEvent(){return smalltalk.CWDicesRolledEvent||(typeof CWDicesRolledEvent=="undefined"?nil:CWDicesRolledEvent)}
-function $CWMonsterUpdateEvent(){return smalltalk.CWMonsterUpdateEvent||(typeof CWMonsterUpdateEvent=="undefined"?nil:CWMonsterUpdateEvent)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWActionMenuComponent.fn.prototype._initialize.apply(_st(self), []);
 _st(_st(self)._announcer())._on_do_($CWDicesRolledEvent(),(function(event){
 return smalltalk.withContext(function($ctx2) {
 return _st(self)._showDices_(event);
 }, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
-_st(_st(self)._announcer())._on_do_($CWMonsterUpdateEvent(),(function(event){
-return smalltalk.withContext(function($ctx2) {
-return _st(self)._showDicesNoAnimation_(_st(event)._monster());
-}, function($ctx2) {$ctx2.fillBlock({event:event},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWDices)})},
-messageSends: ["initialize", "on:do:", "showDices:", "announcer", "showDicesNoAnimation:", "monster"]}),
+messageSends: ["initialize", "on:do:", "showDices:", "announcer"]}),
 smalltalk.CWDices);
 
 smalltalk.addMethod(
@@ -336,16 +328,6 @@ return _st(_st(aResDices)._callback())._value_(aResDices);
 _st(self)._updateDices_kills_callBack_(_st(aResDices)._dices(),_st(aResDices)._kills(),cb);
 return self}, function($ctx1) {$ctx1.fill(self,"showDices:",{aResDices:aResDices,cb:cb},smalltalk.CWDices)})},
 messageSends: ["value:", "callback", "updateDices:kills:callBack:", "dices", "kills"]}),
-smalltalk.CWDices);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "showDicesNoAnimation:",
-fn: function (monster){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-return self}, function($ctx1) {$ctx1.fill(self,"showDicesNoAnimation:",{monster:monster},smalltalk.CWDices)})},
-messageSends: []}),
 smalltalk.CWDices);
 
 smalltalk.addMethod(
@@ -461,31 +443,8 @@ selector: "setUpShortCuts",
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
-_st(_st("body")._asJQuery())._keyup_((function(event){
-var k;
-return smalltalk.withContext(function($ctx2) {
-k=_st(event)._keyCode();
-k;
-$1=_st(_st(_st(k).__eq((37))).__or(k)).__eq((65));
-if(smalltalk.assert($1)){
-_st(self)._go_("left");
-};
-$2=_st(_st(_st(k).__eq((39))).__or(k)).__eq((68));
-if(smalltalk.assert($2)){
-_st(self)._go_("right");
-};
-$3=_st(_st(_st(k).__eq((38))).__or(k)).__eq((87));
-if(smalltalk.assert($3)){
-_st(self)._go_("up");
-};
-$4=_st(_st(_st(k).__eq((40))).__or(k)).__eq((83));
-if(smalltalk.assert($4)){
-return _st(self)._go_("down");
-};
-}, function($ctx2) {$ctx2.fillBlock({event:event,k:k},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"setUpShortCuts",{},smalltalk.CWMapControls)})},
-messageSends: ["keyup:", "keyCode", "ifTrue:", "go:", "=", "|", "asJQuery"]}),
+messageSends: []}),
 smalltalk.CWMapControls);
 
 
@@ -668,58 +627,31 @@ smalltalk.CWTurnWatcher);
 
 
 
-smalltalk.addClass('CWDice', smalltalk.CWWidget, [], 'Easnoth-MapMenu');
+smalltalk.addClass('CWDice', smalltalk.CWWidget, ['counter'], 'Easnoth-MapMenu');
 smalltalk.addMethod(
 smalltalk.method({
 selector: "animate:callBack:",
 fn: function (dice,animationFinished){
 var self=this;
-var random,url;
 return smalltalk.withContext(function($ctx1) { 
-random=_st((2)).__plus(_st((7))._atRandom());
-url=_st(self)._url();
-_st(self)._animate_callBack_random_url_(dice,animationFinished,random,url);
-return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
-messageSends: ["+", "atRandom", "url", "animate:callBack:random:url:"]}),
+self["@counter"]=(0);
+_st(self)._animation_callBack_(dice,animationFinished);
+return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+messageSends: ["animation:callBack:"]}),
 smalltalk.CWDice);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "animate:callBack:random:url:",
-fn: function (dice,animationFinished,random,url){
+selector: "animation:callBack:",
+fn: function (dice,animationFinished){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var i = 0;
-    function roll() {
-		dice.animate({'border-spacing': -50},
-                        {step: function(now, fx) {
-                                $(fx.elem).css('background-position', '1px '+now+'px');
-                        },
-                        duration: 200,
-                        easing: 'linear',
-                        complete: function (){
-                                i++;
-                                if (i< random){
-                                        roll();
-                                } else {
-                                        i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},
-                                                {step: function(now, fx) {
-                                                        $(fx.elem).css('background-position', '1px '+now+'px');
-                                                        },
-                                                        duration: 200,
-                                                        easing: 'linear',
-							complete: function(){
-								animationFinished();
-							}
-                                                })
-                                }
-                        }
-		})
-	}
-	roll();;
-return self}, function($ctx1) {$ctx1.fill(self,"animate:callBack:random:url:",{dice:dice,animationFinished:animationFinished,random:random,url:url},smalltalk.CWDice)})},
-messageSends: []}),
+_st(self)._jqueryAnimate_callBack_(dice,(function(){
+return smalltalk.withContext(function($ctx2) {
+return _st(self)._nextAnimation_callBack_(dice,animationFinished);
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+return self}, function($ctx1) {$ctx1.fill(self,"animation:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+messageSends: ["jqueryAnimate:callBack:", "nextAnimation:callBack:"]}),
 smalltalk.CWDice);
 
 smalltalk.addMethod(
@@ -748,13 +680,46 @@ smalltalk.CWDice);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "renderOn:",
-fn: function (html){
+selector: "endAnimation:callBack:",
+fn: function (dice,animationFinished){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(_st(html)._img_(_st(self)._backgroundPictureUrl()))._asJQuery())._css_put_("background",_st(_st("url(").__comma(_st(self)._url())).__comma(") 1px 40px"));
-return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDice)})},
-messageSends: ["css:put:", ",", "url", "asJQuery", "img:", "backgroundPictureUrl"]}),
+_st(dice)._css_put_("background-image",_st(_st("url(").__comma(_st(self)._url())).__comma(")"));
+_st(self)._jqueryAnimate_callBack_(dice,animationFinished);
+return self}, function($ctx1) {$ctx1.fill(self,"endAnimation:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+messageSends: ["css:put:", ",", "url", "jqueryAnimate:callBack:"]}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "jqueryAnimate:callBack:",
+fn: function (dice,nextAnim){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+_st(dice)._animate_options_(smalltalk.HashedCollection._fromPairs_([_st("border-spacing").__minus_gt((-50))]),smalltalk.HashedCollection._fromPairs_([_st("step").__minus_gt((function(now,fx){
+return smalltalk.withContext(function($ctx2) {
+return _st(_st(_st(fx)._elem())._asJQuery())._css_put_("background-position",_st(_st("1px ").__comma(_st(now)._asString())).__comma("px"));
+}, function($ctx2) {$ctx2.fillBlock({now:now,fx:fx},$ctx1)})})),_st("duration").__minus_gt((200)),_st("easing").__minus_gt("linear"),_st("complete").__minus_gt(nextAnim)]));
+return self}, function($ctx1) {$ctx1.fill(self,"jqueryAnimate:callBack:",{dice:dice,nextAnim:nextAnim},smalltalk.CWDice)})},
+messageSends: ["animate:options:", "->", "css:put:", ",", "asString", "asJQuery", "elem"]}),
+smalltalk.CWDice);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "nextAnimation:callBack:",
+fn: function (dice,animationFinished){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+self["@counter"]=_st(self["@counter"]).__plus((1));
+$1=_st(self["@counter"]).__lt(_st((2)).__plus(_st((7))._atRandom()));
+if(smalltalk.assert($1)){
+_st(self)._animation_callBack_(dice,animationFinished);
+} else {
+_st(self)._endAnimation_callBack_(dice,animationFinished);
+};
+return self}, function($ctx1) {$ctx1.fill(self,"nextAnimation:callBack:",{dice:dice,animationFinished:animationFinished},smalltalk.CWDice)})},
+messageSends: ["+", "ifTrue:ifFalse:", "animation:callBack:", "endAnimation:callBack:", "<", "atRandom"]}),
 smalltalk.CWDice);
 
 smalltalk.addMethod(

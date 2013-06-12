@@ -208,7 +208,9 @@ Widget subclass: #CWStartMenu
 	instanceVariableNames: 'box subBox frontImages backButton history gameSettings'
 	package: 'Easnoth-Bootstrap'!
 !CWStartMenu commentStamp!
-Should implement the menu with multiplayer and stuff here!
+menu with custom game and stuff here.
+
+This is currently the worst class of the system in term of code quality.!
 
 !CWStartMenu methodsFor: 'accessing'!
 

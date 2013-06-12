@@ -22,7 +22,6 @@ parent: object
 !
 
 root
-	self isRoot ifTrue: [ ^ self ].
 	^ self parent root
 ! !
 
@@ -54,18 +53,16 @@ children
 
 components
 	^ components
+!
+
+root
+	^ self
 ! !
 
 !CWActionMenu methodsFor: 'factory'!
 
 newChild: aClass
 	^ aClass new parent: self
-! !
-
-!CWActionMenu methodsFor: 'initialize-release'!
-
-initializeWithGame: aGame
-	self subclassResponsibility
 ! !
 
 !CWActionMenu methodsFor: 'rendering'!
@@ -89,6 +86,8 @@ isRoot
 CWActionMenu subclass: #CWFightMenu
 	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
+!CWFightMenu commentStamp!
+This action menu is dedicated fo fights.!
 
 !CWFightMenu methodsFor: 'accessing'!
 
@@ -131,7 +130,9 @@ CWActionMenuComponent subclass: #CWDices
 	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
 !CWDices commentStamp!
-SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.!
+SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.
+
+This is top right menu. It displays the results of any fight.!
 
 !CWDices methodsFor: 'initialize-release'!
 
@@ -147,9 +148,6 @@ initialize
 	self announcer 
 		on: CWDicesRolledEvent
 		do: [ :event | self showDices: event ].
-	self announcer 
-		on: CWMonsterUpdateEvent
-		do: [ :event | self showDicesNoAnimation: event monster ]
 !
 
 renderOn: html
@@ -189,20 +187,13 @@ showDices: aResDices
 	| cb |
 	cb := [ aResDices callback value: aResDices ].
 	self updateDices: aResDices dices kills: aResDices kills callBack: cb.
-!
-
-showDicesNoAnimation: monster
-	"should change the number of dices without animation"
-	"monster ifNotNil: [
-		box contents: [:html | 
-			html h4 with: 'Fight result'.
-			1 to: monster dices do: [
-				CWDiceDeath new renderOn: html ] ] ]"
 ! !
 
 CWActionMenuComponent subclass: #CWMapControls
 	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
+!CWMapControls commentStamp!
+This represents the bottom left map controls menu. It permits to move the map.!
 
 !CWMapControls methodsFor: 'actions'!
 
@@ -237,18 +228,20 @@ renderOn: html
 !
 
 setUpShortCuts
-	'body' asJQuery keyup:[:event |  | k |
+	"'body' asJQuery keyup:[:event |  | k |
 		k := event keyCode.
 		(k = 37 | k = 65) ifTrue: [self go: 'left'].
 		(k = 39 | k = 68) ifTrue: [self go: 'right'].
 		(k = 38 | k = 87) ifTrue: [self go: 'up'].
 		(k = 40 | k = 83) ifTrue: [self go: 'down'].
-	].
+	]."
 ! !
 
 CWActionMenuComponent subclass: #CWMonsterWatcher
 	instanceVariableNames: 'monster imgBox'
 	package: 'Easnoth-MapMenu'!
+!CWMonsterWatcher commentStamp!
+This represetns a view on the monster for the user. It is the top left menu.!
 
 !CWMonsterWatcher methodsFor: 'accessing'!
 
@@ -319,6 +312,8 @@ update
 CWActionMenuComponent subclass: #CWTurnWatcher
 	instanceVariableNames: ''
 	package: 'Easnoth-MapMenu'!
+!CWTurnWatcher commentStamp!
+This represents additional informations for the game. This is the bottom right menu.!
 
 !CWTurnWatcher methodsFor: 'rendering'!
 
@@ -350,7 +345,7 @@ renderOn: html
 ! !
 
 CWWidget subclass: #CWDice
-	instanceVariableNames: ''
+	instanceVariableNames: 'counter'
 	package: 'Easnoth-MapMenu'!
 
 !CWDice methodsFor: 'accessing'!
@@ -374,60 +369,38 @@ urlRoll
 !CWDice methodsFor: 'rendering'!
 
 animate: dice callBack: animationFinished
-	"This method calls the jquery animation that is implemented in javascript
-	To refactor later"
-	
-	"dice 
-	animate: #{'border-spacing' -> -40 }
-    optons:  #{
-		'step' -> [ :now ;fx |
-                                $(fx.elem).css('background-position', '1px '+now+'px');
-                        ].
-        'duration' -> 200.
-        'easing' -> 'linear' }"
-	
-	| random url |
-
-	random := 2 + 7 atRandom.
-	url := self url.
-
-	self animate: dice callBack: animationFinished random: random url: url
+	counter := 0.
+	self animation: dice callBack: animationFinished.
 !
 
-animate: dice callBack: animationFinished random: random url: url
-<var i = 0;
-    function roll() {
-		dice.animate({'border-spacing': -50},
-                        {step: function(now, fx) {
-                                $(fx.elem).css('background-position', '1px '+now+'px');
-                        },
-                        duration: 200,
-                        easing: 'linear',
-                        complete: function (){
-                                i++;
-                                if (i< random){
-                                        roll();
-                                } else {
-                                        i = 0;
-                                        dice.css('background-image', 'url(' + url + ')').css('background-position','1px 50px').css('background-repeat','no-repeat').animate({'border-spacing': -50},
-                                                {step: function(now, fx) {
-                                                        $(fx.elem).css('background-position', '1px '+now+'px');
-                                                        },
-                                                        duration: 200,
-                                                        easing: 'linear',
-							complete: function(){
-								animationFinished();
-							}
-                                                })
-                                }
-                        }
-		})
-	}
-	roll();>
+animation: dice callBack: animationFinished
+	"Triggers once the rolling dice animation and checks what to do next"
+	self jqueryAnimate: dice callBack: [ self nextAnimation: dice callBack: animationFinished ]
 !
 
-renderOn: html
-	(html img: self backgroundPictureUrl) asJQuery css: 'background' put: 'url(',self url,') 1px 40px'
+endAnimation: dice callBack: animationFinished
+	"Terminates the rolling dice animation. Displays the result and executes the callback"
+	dice css: 'background-image' put: 'url(' , self url , ')'.
+	self jqueryAnimate: dice callBack: animationFinished
+!
+
+jqueryAnimate: dice callBack: nextAnim
+	"Rolling dice animation with jquery"
+	dice 
+		animate: #{'border-spacing' -> -50 }
+   	 	options:  #{
+			'step' -> [ :now :fx | fx elem asJQuery css: 'background-position' put: '1px ', now asString,'px' ] .
+        	'duration' -> 200 .
+        	'easing' -> 'linear' .
+			'complete' -> nextAnim }
+!
+
+nextAnimation: dice callBack: animationFinished 
+	"After a random delay, the rolling dice animation stops, displaying the result and executing the callback"
+	counter := counter + 1.
+	counter < (2 + 7 atRandom) 
+		ifTrue: [ self animation: dice callBack: animationFinished ] 
+		ifFalse: [self endAnimation: dice callBack: animationFinished ]
 !
 
 renderOn: html callback: cb

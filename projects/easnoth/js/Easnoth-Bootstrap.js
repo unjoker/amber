@@ -554,7 +554,7 @@ smalltalk.CWLoadingBar.klass);
 
 
 smalltalk.addClass('CWStartMenu', smalltalk.Widget, ['box', 'subBox', 'frontImages', 'backButton', 'history', 'gameSettings'], 'Easnoth-Bootstrap');
-smalltalk.CWStartMenu.comment="Should implement the menu with multiplayer and stuff here"
+smalltalk.CWStartMenu.comment="menu with custom game and stuff here.\x0a\x0aThis is currently the worst class of the system in term of code quality."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "addFrontImages",

@@ -734,6 +734,7 @@ smalltalk.CWJsonWriter);
 
 
 smalltalk.addClass('CWNoMonsterWriter', smalltalk.CWJsonWriter, [], 'Easnoth-Export');
+smalltalk.CWNoMonsterWriter.comment="This one may not work... Use superclass if problem."
 smalltalk.addMethod(
 smalltalk.method({
 selector: "visitChildren:",
