@@ -65,14 +65,6 @@ showActiveMonster: aCell
 	self subclassResponsibility
 ! !
 
-!CWCellState class methodsFor: 'instance creation'!
-
-initializeStateFor: aCell
-	aCell free 
-		ifTrue: [ aCell changeState: CWFree ] 
-		ifFalse: [ aCell changeState: CWHasMonster ]
-! !
-
 CWCellState subclass: #CWFree
 	instanceVariableNames: ''
 	package: 'Easnoth-GameStates'!

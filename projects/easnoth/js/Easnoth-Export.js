@@ -329,14 +329,13 @@ fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1;
-_st(aMap)._removeSelection();
 _st(self)._visitMap_(aMap);
 $1=_st(_st(self["@stream"])._collection())._asString();
 return $1;
 }, function($ctx1) {$ctx1.fill(self,"exportMap:",{aMap:aMap},smalltalk.CWJsonWriter)})},
 args: ["aMap"],
-source: "exportMap: aMap\x0a\x09\x22returns the string to write down in the json file\x22\x0a\x0a\x09aMap removeSelection.\x0a\x09self visitMap: aMap.\x0a\x09^ stream collection asString",
-messageSends: ["removeSelection", "visitMap:", "asString", "collection"],
+source: "exportMap: aMap\x0a\x09\x22returns the string to write down in the json file\x22\x0a\x0a\x09self visitMap: aMap.\x0a\x09^ stream collection asString",
+messageSends: ["visitMap:", "asString", "collection"],
 referencedClasses: []
 }),
 smalltalk.CWJsonWriter);
@@ -584,11 +583,10 @@ category: 'visiting',
 fn: function (aGameOverTile){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._error_("gameOverTile should have been removed before exportation");
 return self}, function($ctx1) {$ctx1.fill(self,"visitGameOverTile:",{aGameOverTile:aGameOverTile},smalltalk.CWJsonWriter)})},
 args: ["aGameOverTile"],
-source: "visitGameOverTile: aGameOverTile\x0a\x09self error: 'gameOverTile should have been removed before exportation'",
-messageSends: ["error:"],
+source: "visitGameOverTile: aGameOverTile\x0a\x09\x22do nothing\x22",
+messageSends: [],
 referencedClasses: []
 }),
 smalltalk.CWJsonWriter);

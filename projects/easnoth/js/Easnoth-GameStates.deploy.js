@@ -154,25 +154,6 @@ messageSends: ["subclassResponsibility"]}),
 smalltalk.CWCellState);
 
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeStateFor:",
-fn: function (aCell){
-var self=this;
-function $CWFree(){return smalltalk.CWFree||(typeof CWFree=="undefined"?nil:CWFree)}
-function $CWHasMonster(){return smalltalk.CWHasMonster||(typeof CWHasMonster=="undefined"?nil:CWHasMonster)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aCell)._free();
-if(smalltalk.assert($1)){
-_st(aCell)._changeState_($CWFree());
-} else {
-_st(aCell)._changeState_($CWHasMonster());
-};
-return self}, function($ctx1) {$ctx1.fill(self,"initializeStateFor:",{aCell:aCell},smalltalk.CWCellState.klass)})},
-messageSends: ["ifTrue:ifFalse:", "changeState:", "free"]}),
-smalltalk.CWCellState.klass);
-
 
 smalltalk.addClass('CWFree', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.addMethod(

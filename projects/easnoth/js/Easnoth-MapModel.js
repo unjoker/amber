@@ -540,15 +540,15 @@ smalltalk.CWCell);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "changeState:",
-category: 'state machine',
+category: 'accessing',
 fn: function (stateClass){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._state_(_st(stateClass)._default());
+self["@state"]=_st(stateClass)._default();
 return self}, function($ctx1) {$ctx1.fill(self,"changeState:",{stateClass:stateClass},smalltalk.CWCell)})},
 args: ["stateClass"],
-source: "changeState: stateClass\x0a\x09self state: stateClass default",
-messageSends: ["state:", "default"],
+source: "changeState: stateClass\x0a\x09state := stateClass default",
+messageSends: ["default"],
 referencedClasses: []
 }),
 smalltalk.CWCell);
@@ -662,24 +662,6 @@ smalltalk.CWCell);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "free",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._monster())._isNil();
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"free",{},smalltalk.CWCell)})},
-args: [],
-source: "free\x0a\x09\x22used to initialize State, so should not rely on state. see isFree\x22\x0a\x09^ self monster isNil",
-messageSends: ["isNil", "monster"],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "gameOverTile",
 category: 'accessing',
 fn: function (){
@@ -755,15 +737,17 @@ selector: "initialize",
 category: 'initialize-release',
 fn: function (){
 var self=this;
+function $CWFree(){return smalltalk.CWFree||(typeof CWFree=="undefined"?nil:CWFree)}
 return smalltalk.withContext(function($ctx1) { 
 smalltalk.CWComposite.fn.prototype._initialize.apply(_st(self), []);
 self["@mark"]=false;
 self["@gameOverTile"]=_st(self)._newGOT();
+_st(self)._changeState_($CWFree());
 return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWCell)})},
 args: [],
-source: "initialize\x0a\x09super initialize.\x0a\x09mark := false.\x0a\x09gameOverTile := self newGOT.",
-messageSends: ["initialize", "newGOT"],
-referencedClasses: []
+source: "initialize\x0a\x09super initialize.\x0a\x09mark := false.\x0a\x09gameOverTile := self newGOT.\x0a\x09self changeState: CWFree.",
+messageSends: ["initialize", "newGOT", "changeState:"],
+referencedClasses: ["CWFree"]
 }),
 smalltalk.CWCell);
 
@@ -796,23 +780,6 @@ args: ["aJsonCell"],
 source: "initializeFromJson: aJsonCell\x0a    | elements ots |\x0a    \x0a    elements := aJsonCell keys.\x0a    background := Array new.\x0a\x09\x0a\x09(elements includes: 'tile') \x0a    \x09ifTrue: [ self backgroundAdd: (self newTile initializeFromKey: aJsonCell tile) ].\x0a\x09\x22replace match: with beginsWith: later ...\x22\x0a\x09ots := aJsonCell keys select: [ :each | each match: 'overtile' ].\x0a\x09ots do: [ :each |\x0a\x09\x09self backgroundAdd: (self newOverTile initializeFromKey: (aJsonCell at: each) ) ].",
 messageSends: ["keys", "new", "ifTrue:", "backgroundAdd:", "initializeFromKey:", "tile", "newTile", "includes:", "select:", "match:", "do:", "at:", "newOverTile"],
 referencedClasses: ["Array"]
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeState",
-category: 'state machine',
-fn: function (){
-var self=this;
-function $CWCellState(){return smalltalk.CWCellState||(typeof CWCellState=="undefined"?nil:CWCellState)}
-return smalltalk.withContext(function($ctx1) { 
-_st($CWCellState())._initializeStateFor_(self);
-return self}, function($ctx1) {$ctx1.fill(self,"initializeState",{},smalltalk.CWCell)})},
-args: [],
-source: "initializeState\x0a\x09CWCellState initializeStateFor: self",
-messageSends: ["initializeStateFor:"],
-referencedClasses: ["CWCellState"]
 }),
 smalltalk.CWCell);
 
@@ -1220,38 +1187,16 @@ smalltalk.CWCell);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "state",
-category: 'state machine',
+category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1;
 $1=self["@state"];
-if(($receiver = $1) == nil || $receiver == undefined){
-_st(self)._initializeState();
-} else {
-$1;
-};
-$2=self["@state"];
-return $2;
+return $1;
 }, function($ctx1) {$ctx1.fill(self,"state",{},smalltalk.CWCell)})},
 args: [],
-source: "state\x0a\x09state ifNil: [self initializeState].\x0a\x09^state",
-messageSends: ["ifNil:", "initializeState"],
-referencedClasses: []
-}),
-smalltalk.CWCell);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "state:",
-category: 'state machine',
-fn: function (aState){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@state"]=aState;
-return self}, function($ctx1) {$ctx1.fill(self,"state:",{aState:aState},smalltalk.CWCell)})},
-args: ["aState"],
-source: "state: aState\x0a\x09state := aState",
+source: "state\x0a\x09^ state",
 messageSends: [],
 referencedClasses: []
 }),
@@ -2509,11 +2454,11 @@ category: 'accessing',
 fn: function (aHTMLElem){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-self["@htmlImage"]=aHTMLElem;
+self["@htmlImage"]=_st(aHTMLElem)._asJQuery();
 return self}, function($ctx1) {$ctx1.fill(self,"htmlImage:",{aHTMLElem:aHTMLElem},smalltalk.CWGameOverTile)})},
 args: ["aHTMLElem"],
-source: "htmlImage: aHTMLElem\x0a\x09htmlImage := aHTMLElem",
-messageSends: [],
+source: "htmlImage: aHTMLElem\x0a\x09htmlImage := aHTMLElem asJQuery",
+messageSends: ["asJQuery"],
 referencedClasses: []
 }),
 smalltalk.CWGameOverTile);
@@ -2525,11 +2470,11 @@ category: 'accessing',
 fn: function (anImage){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(_st(self["@htmlImage"])._asJQuery())._attr_put_("src",_st(anImage)._src());
+_st(self["@htmlImage"])._attr_put_("src",_st(anImage)._src());
 return self}, function($ctx1) {$ctx1.fill(self,"image:",{anImage:anImage},smalltalk.CWGameOverTile)})},
 args: ["anImage"],
-source: "image: anImage\x0a\x09htmlImage asJQuery attr: 'src' put: anImage src",
-messageSends: ["attr:put:", "src", "asJQuery"],
+source: "image: anImage\x0a\x09htmlImage attr: 'src' put: anImage src",
+messageSends: ["attr:put:", "src"],
 referencedClasses: []
 }),
 smalltalk.CWGameOverTile);
@@ -2662,24 +2607,6 @@ smalltalk.CWGameOverTile.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "green",
-category: 'instance creation',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._image_(_st(_st(self)._imageArray())._at_(_st(self)._greenIndex()));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"green",{},smalltalk.CWGameOverTile.klass)})},
-args: [],
-source: "green\x0a\x09^ self new image: (self imageArray at: self greenIndex)",
-messageSends: ["image:", "at:", "greenIndex", "imageArray", "new"],
-referencedClasses: []
-}),
-smalltalk.CWGameOverTile.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "greenIndex",
 category: 'index',
 fn: function (){
@@ -2721,24 +2648,6 @@ smalltalk.CWGameOverTile.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "invis",
-category: 'instance creation',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._image_(_st(_st(self)._imageArray())._at_(_st(self)._invisIndex()));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"invis",{},smalltalk.CWGameOverTile.klass)})},
-args: [],
-source: "invis\x0a\x09^ self new image: (self imageArray at: self invisIndex)",
-messageSends: ["image:", "at:", "invisIndex", "imageArray", "new"],
-referencedClasses: []
-}),
-smalltalk.CWGameOverTile.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "invisIndex",
 category: 'index',
 fn: function (){
@@ -2757,24 +2666,6 @@ smalltalk.CWGameOverTile.klass);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "red",
-category: 'instance creation',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._image_(_st(_st(self)._imageArray())._at_(_st(self)._redIndex()));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"red",{},smalltalk.CWGameOverTile.klass)})},
-args: [],
-source: "red\x0a\x09^ self new image: (self imageArray at: self redIndex)",
-messageSends: ["image:", "at:", "redIndex", "imageArray", "new"],
-referencedClasses: []
-}),
-smalltalk.CWGameOverTile.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "redIndex",
 category: 'index',
 fn: function (){
@@ -2787,24 +2678,6 @@ return $1;
 args: [],
 source: "redIndex\x0a\x09^ 2",
 messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWGameOverTile.klass);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "white",
-category: 'instance creation',
-fn: function (){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(_st(self)._new())._image_(_st(_st(self)._imageArray())._at_(_st(self)._whiteIndex()));
-return $1;
-}, function($ctx1) {$ctx1.fill(self,"white",{},smalltalk.CWGameOverTile.klass)})},
-args: [],
-source: "white\x0a\x09^ self new image: (self imageArray at: self whiteIndex)",
-messageSends: ["image:", "at:", "whiteIndex", "imageArray", "new"],
 referencedClasses: []
 }),
 smalltalk.CWGameOverTile.klass);
@@ -3277,15 +3150,15 @@ smalltalk.CWMonster);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "changeState:",
-category: 'state machine',
+category: 'accessing',
 fn: function (stateClass){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-_st(self)._state_(_st(stateClass)._default());
+self["@state"]=_st(stateClass)._default();
 return self}, function($ctx1) {$ctx1.fill(self,"changeState:",{stateClass:stateClass},smalltalk.CWMonster)})},
 args: ["stateClass"],
-source: "changeState: stateClass\x0a\x09self state: stateClass default",
-messageSends: ["state:", "default"],
+source: "changeState: stateClass\x0a\x09state := stateClass default",
+messageSends: ["default"],
 referencedClasses: []
 }),
 smalltalk.CWMonster);
@@ -3612,7 +3485,7 @@ smalltalk.CWMonster);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "initializeState",
-category: 'state machine',
+category: 'initialize-release',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -4341,7 +4214,7 @@ smalltalk.CWMonster);
 smalltalk.addMethod(
 smalltalk.method({
 selector: "state",
-category: 'state machine',
+category: 'accessing',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
@@ -4351,22 +4224,6 @@ return $1;
 }, function($ctx1) {$ctx1.fill(self,"state",{},smalltalk.CWMonster)})},
 args: [],
 source: "state\x0a\x09^ state",
-messageSends: [],
-referencedClasses: []
-}),
-smalltalk.CWMonster);
-
-smalltalk.addMethod(
-smalltalk.method({
-selector: "state:",
-category: 'state machine',
-fn: function (aState){
-var self=this;
-return smalltalk.withContext(function($ctx1) { 
-self["@state"]=aState;
-return self}, function($ctx1) {$ctx1.fill(self,"state:",{aState:aState},smalltalk.CWMonster)})},
-args: ["aState"],
-source: "state: aState\x0a\x09state := aState",
 messageSends: [],
 referencedClasses: []
 }),
