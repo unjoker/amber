@@ -136,6 +136,10 @@ backgroundAddAll: aCol
 	^ self background addAll: aCol
 !
 
+changeState: stateClass
+	state := stateClass default
+!
+
 children
 	| children | 
 	children := Array new.
@@ -173,6 +177,10 @@ monster: aMonster
 
 side
 	^ self monster side
+!
+
+state
+	^ state
 !
 
 zIndex
@@ -249,15 +257,11 @@ updateUI
 
 !CWCell methodsFor: 'initialize-release'!
 
-free
-	"used to initialize State, so should not rely on state. see isFree"
-	^ self monster isNil
-!
-
 initialize
 	super initialize.
 	mark := false.
 	gameOverTile := self newGOT.
+	self changeState: CWFree.
 !
 
 initializeFromJson: aJsonCell
@@ -362,25 +366,6 @@ removeSelection
 
 showActiveMonsters
 	self state showActiveMonster: self.
-! !
-
-!CWCell methodsFor: 'state machine'!
-
-changeState: stateClass
-	self state: stateClass default
-!
-
-initializeState
-	CWCellState initializeStateFor: self
-!
-
-state
-	state ifNil: [self initializeState].
-	^state
-!
-
-state: aState
-	state := aState
 ! !
 
 !CWCell methodsFor: 'visiting'!
@@ -822,11 +807,11 @@ class side I have an image array to crete got faster as they are the most create
 !CWGameOverTile methodsFor: 'accessing'!
 
 htmlImage: aHTMLElem
-	htmlImage := aHTMLElem
+	htmlImage := aHTMLElem asJQuery
 !
 
 image: anImage
-	htmlImage asJQuery attr: 'src' put: anImage src
+	htmlImage attr: 'src' put: anImage src
 ! !
 
 !CWGameOverTile methodsFor: 'coloring'!
@@ -908,24 +893,6 @@ whiteIndex
 	^ 3
 ! !
 
-!CWGameOverTile class methodsFor: 'instance creation'!
-
-green
-	^ self new image: (self imageArray at: self greenIndex)
-!
-
-invis
-	^ self new image: (self imageArray at: self invisIndex)
-!
-
-red
-	^ self new image: (self imageArray at: self redIndex)
-!
-
-white
-	^ self new image: (self imageArray at: self whiteIndex)
-! !
-
 CWImageLeaf subclass: #CWMonster
 	instanceVariableNames: 'currentMove move attack dices hp range state player special strategy typeStrategy canvas'
 	package: 'Easnoth-MapModel'!
@@ -972,6 +939,10 @@ canvas
 
 canvas: aCanvas
 	canvas := aCanvas
+!
+
+changeState: stateClass
+	state := stateClass default
 !
 
 context
@@ -1047,6 +1018,10 @@ special
 
 special: aString
 	special := aString
+!
+
+state
+	^ state
 ! !
 
 !CWMonster methodsFor: 'fighting'!
@@ -1146,6 +1121,10 @@ initialize
 	super initialize.
 	self currentMove: 0.
 	self initializeState
+!
+
+initializeState
+	self changeState: self defaultState
 !
 
 initializeWithStat: jsonStat army: army player: aPlayer heros: strat type: aType
@@ -1399,24 +1378,6 @@ selectInContext: gameContext
 
 showActiveMonster
 	self state showActiveMonster: self
-! !
-
-!CWMonster methodsFor: 'state machine'!
-
-changeState: stateClass
-	self state: stateClass default
-!
-
-initializeState
-	self changeState: self defaultState
-!
-
-state
-	^ state
-!
-
-state: aState
-	state := aState
 ! !
 
 !CWMonster methodsFor: 'strategy delegation'!

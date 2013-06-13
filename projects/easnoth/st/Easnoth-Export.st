@@ -87,7 +87,6 @@ initialize
 exportMap: aMap
 	"returns the string to write down in the json file"
 
-	aMap removeSelection.
 	self visitMap: aMap.
 	^ stream collection asString
 ! !
@@ -207,7 +206,7 @@ visitChildren: aBusinessObject
 !
 
 visitGameOverTile: aGameOverTile
-	self error: 'gameOverTile should have been removed before exportation'
+	"do nothing"
 !
 
 visitHeros: aHeros

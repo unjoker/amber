@@ -219,30 +219,6 @@ referencedClasses: []
 smalltalk.CWCellState);
 
 
-smalltalk.addMethod(
-smalltalk.method({
-selector: "initializeStateFor:",
-category: 'instance creation',
-fn: function (aCell){
-var self=this;
-function $CWFree(){return smalltalk.CWFree||(typeof CWFree=="undefined"?nil:CWFree)}
-function $CWHasMonster(){return smalltalk.CWHasMonster||(typeof CWHasMonster=="undefined"?nil:CWHasMonster)}
-return smalltalk.withContext(function($ctx1) { 
-var $1;
-$1=_st(aCell)._free();
-if(smalltalk.assert($1)){
-_st(aCell)._changeState_($CWFree());
-} else {
-_st(aCell)._changeState_($CWHasMonster());
-};
-return self}, function($ctx1) {$ctx1.fill(self,"initializeStateFor:",{aCell:aCell},smalltalk.CWCellState.klass)})},
-args: ["aCell"],
-source: "initializeStateFor: aCell\x0a\x09aCell free \x0a\x09\x09ifTrue: [ aCell changeState: CWFree ] \x0a\x09\x09ifFalse: [ aCell changeState: CWHasMonster ]",
-messageSends: ["ifTrue:ifFalse:", "changeState:", "free"],
-referencedClasses: ["CWFree", "CWHasMonster"]
-}),
-smalltalk.CWCellState.klass);
-
 
 smalltalk.addClass('CWFree', smalltalk.CWCellState, [], 'Easnoth-GameStates');
 smalltalk.CWFree.comment="I am the state of a cell that has no monsters on it and that has no game selector on it."
