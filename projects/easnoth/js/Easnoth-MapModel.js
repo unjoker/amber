@@ -4296,14 +4296,9 @@ selector: "emptyMonster",
 category: 'instance creation',
 fn: function (){
 var self=this;
-var fakeImage;
-function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
-fakeImage=_st($NativeFunction())._constructor_("Image");
-_st(fakeImage)._at_put_("src","ressources/images/interro.png");
 $2=_st(self)._new();
-_st($2)._image_(fakeImage);
 _st($2)._hp_((0));
 _st($2)._move_((0));
 _st($2)._range_((0));
@@ -4312,11 +4307,11 @@ _st($2)._attack_((0));
 $3=_st($2)._special_("none");
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{fakeImage:fakeImage},smalltalk.CWMonster.klass)})},
+}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{},smalltalk.CWMonster.klass)})},
 args: [],
-source: "emptyMonster\x0a\x09\x22Answers a fake instance of a monster with empty stats.\x0a\x09Displayed by the menu when no monster is selected\x22\x0a\x09\x0a\x09| fakeImage |\x0a\x09fakeImage := NativeFunction constructor: 'Image'.\x0a\x09fakeImage at: 'src' put:'ressources/images/interro.png'.\x0a\x09^ self new\x0a\x09\x09image: fakeImage;\x0a\x09\x09hp: 0;\x0a\x09\x09move: 0;\x0a\x09\x09range: 0;\x0a\x09\x09dices: 0;\x0a\x09\x09attack: 0;\x0a\x09\x09special:'none'.",
-messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:", "special:"],
-referencedClasses: ["NativeFunction"]
+source: "emptyMonster\x0a\x09\x22Answers a fake instance of a monster with empty stats.\x0a\x09Displayed by the menu when no monster is selected\x22\x0a\x09\x0a\x09^ self new\x0a\x09\x09hp: 0;\x0a\x09\x09move: 0;\x0a\x09\x09range: 0;\x0a\x09\x09dices: 0;\x0a\x09\x09attack: 0;\x0a\x09\x09special:'none'.",
+messageSends: ["hp:", "new", "move:", "range:", "dices:", "attack:", "special:"],
+referencedClasses: []
 }),
 smalltalk.CWMonster.klass);
 

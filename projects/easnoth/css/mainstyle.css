@@ -112,6 +112,19 @@ button {
 	background-position: 0 -32px;
 }
 
+.mapButton{
+	background-color:transparent;
+    text-decoration:none;
+	border: none;
+	position: absolute; 
+	width: 20px;
+	height: 20px;
+}
+
+.mapButton:hover{
+	background-color:red;
+}
+
 .intro {
     position: absolute;
 	top:0;
@@ -213,6 +226,14 @@ canvas {
 	margin-left: 2%;
 }
 
+.rightSide {
+	text-align: right;
+}
+
+.leftSide {
+	text-align: left;
+}
+
 .mapMenuPanel{
 	margin: 3%;
 	color: gray;
@@ -223,6 +244,10 @@ canvas {
 	text-align: center;
 	position:absolute;
 	background-image: url(../ressources/images/fight/battleBack.png);
+}
+
+.mapMenuPanelContainer {
+	padding-top: 5%;
 }
 
 .monsterWatcher {
