@@ -1425,11 +1425,7 @@ emptyMonster
 	"Answers a fake instance of a monster with empty stats.
 	Displayed by the menu when no monster is selected"
 	
-	| fakeImage |
-	fakeImage := NativeFunction constructor: 'Image'.
-	fakeImage at: 'src' put:'ressources/images/interro.png'.
 	^ self new
-		image: fakeImage;
 		hp: 0;
 		move: 0;
 		range: 0;

@@ -127,7 +127,7 @@ remove
 ! !
 
 CWActionMenuComponent subclass: #CWDices
-	instanceVariableNames: ''
+	instanceVariableNames: 'subBox'
 	package: 'Easnoth-MapMenu'!
 !CWDices commentStamp!
 SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.
@@ -137,9 +137,8 @@ This is top right menu. It displays the results of any fight.!
 !CWDices methodsFor: 'initialize-release'!
 
 firstLoad
-    box contents: [ :html | 
-	html h4 with: 'Fight result'.
-           CWDiceDeath new renderOn: html callback: [ ].
+    subBox contents: [ :html | 
+		   CWDiceDeath new renderOn: html callback: [ ].
            CWDiceMiss new renderOn: html callback: [ ] ].
 !
 
@@ -153,6 +152,12 @@ initialize
 renderOn: html
 	box := (html div 
 		class: 'mapMenuPanel dices';
+		with: [
+			html div 
+				class: 'mapMenuPanelContainer';
+				with: [
+					html img: 'ressources/images/fightResult.png'.
+					subBox := html div style: 'padding-top: 7px'; yourself ] ];
 		yourself).
 	self firstLoad
 ! !
@@ -173,8 +178,7 @@ updateDices: dicesNb kills: kills callBack: cb
 	1 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].
 	kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].
 
-    box contents: [:html | 
-		html h4 with: 'Fight result'.
+    subBox contents: [:html | 
 		1 to: dicesNb do: [
 			tmp := dices atRandom.
 			tmp renderOn: html callback: callback.
@@ -209,20 +213,32 @@ renderOn: html
 		class: 'mapMenuPanel mapWatcher';
 		width: 500;
 		with: [
-                html h4
-                        with: 'map controls'.
-                html button
-                        with: 'left';
-                        onClick: [self go: 'left'].
-                html button
-                        with: 'right';
-                        onClick: [self go: 'right'].
-                html button
-                        with: 'down';
-                        onClick: [self go: 'down'].
-                html button
-                        with: 'up';
-                        onClick: [self go: 'up'].
+			html div 
+				class: 'mapMenuPanelContainer';
+				style: 'position: relative; height: 100%';
+				with: [
+            	    html h4
+                	        with: 'MAP CONTROLS';
+							style: 'position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left'.
+					html div
+						style: 'position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center';
+						with: [
+                		html button
+							class: 'mapButton';
+							style: 'position: absolute; left: 17%; top: 38%;';
+                       		onClick: [self go: 'left'].
+               	 		html button
+							class: 'mapButton';
+							style: 'position: absolute; left: 65%; top: 38%;';
+                        	onClick: [self go: 'right'].
+                		html button
+							class: 'mapButton';
+							style: 'position: absolute; left: 41%; top: 78%;';
+                        	onClick: [self go: 'down'].
+                		html button
+							class: 'mapButton';
+							style: 'position: absolute; left: 41%; top: 2%;';
+                        	onClick: [self go: 'up'] ] ]
 	];
 	yourself
 !
@@ -238,7 +254,7 @@ setUpShortCuts
 ! !
 
 CWActionMenuComponent subclass: #CWMonsterWatcher
-	instanceVariableNames: 'monster imgBox'
+	instanceVariableNames: 'monster subBox'
 	package: 'Easnoth-MapMenu'!
 !CWMonsterWatcher commentStamp!
 This represetns a view on the monster for the user. It is the top left menu.!
@@ -274,6 +290,12 @@ watchMonster: aMonster
 renderOn: html
 	box := (html div 
 		class: 'mapMenuPanel monsterWatcher';
+		with: [
+			html div 
+				class: 'mapMenuPanelContainer';
+				with: [
+					html img: 'ressources/images/selectedMonster.png'.
+					subBox := html div ] ];
 		yourself).
 	self update
 !
@@ -281,22 +303,40 @@ renderOn: html
 update
 	"I hide some stuff for release"
 
-        box contents: [:html | 
-		html h4 with: 'selected monster'.
-				"html img: (self monster image at: 'src')."
+        subBox contents: [:html | 
                 html table
 			class: 'tableStats';
 			with: [
 			html tr with: [
-				html td with: [
-                        		html tr with: 'hp : ', self monster hp.
-                        		html tr with: 'move : ', self monster currentMove, '/', self monster move.
-                        		html tr with: 'range : ', self monster range.
+				html td 
+					class: 'rightSide';
+					with: [
+                        		html tr with: 'hp : '.
+                        		html tr with: 'move : '.
+                        		html tr with: 'range : '.
 				].
-				html td with: [
-                       			html tr with: 'dices : ', self monster dices.
-                        		html tr with: 'attack : ', self monster attack,' %'.
-                       			html tr with: 'special : ', self monster special.
+				
+				html td 
+					class: 'leftSide';
+					style: 'width: 30px';
+					with: [
+                        		html tr with: self monster hp.
+                        		html tr with: self monster currentMove asString, '/', self monster move.
+                        		html tr with: self monster range.
+				].
+				html td 
+					class: 'rightSide';
+					with: [
+                       			html tr with: 'dices : '.
+                        		html tr with: 'attack : '.
+                       			html tr with: 'special : '.
+				].
+				html td 
+					class: 'leftSide';
+					with: [
+                       			html tr with: self monster dices.
+                        		html tr with: self monster attack asString,' %'.
+                       			html tr with: self monster special.
 				]
 			].
 		].
@@ -318,7 +358,12 @@ This represents additional informations for the game. This is the bottom right m
 !CWTurnWatcher methodsFor: 'rendering'!
 
 renderOn: html
-	box := html div class: 'mapMenuPanel stuff'; with: [
+	box := html div 
+		class: 'mapMenuPanel stuff'; 
+		with: [
+			html div 
+				class: 'mapMenuPanelContainer';
+				with: [
 				html a 
 					href: '#';
 					with: 'End turn'; 
@@ -340,7 +385,7 @@ renderOn: html
 					at: 'scrolling' put: 'no';
 					style:'border:none; overflow:hidden; width:80px; height:21px;';
 					at: 'allowTransparency' put: 'true'.
-	];
+	] ];
 	yourself.
 ! !
 

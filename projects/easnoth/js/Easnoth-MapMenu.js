@@ -355,7 +355,7 @@ smalltalk.CWActionMenuComponent);
 
 
 
-smalltalk.addClass('CWDices', smalltalk.CWActionMenuComponent, [], 'Easnoth-MapMenu');
+smalltalk.addClass('CWDices', smalltalk.CWActionMenuComponent, ['subBox'], 'Easnoth-MapMenu');
 smalltalk.CWDices.comment="SHOULD HAVE DICES AS IV AND THEN USE NORMAL TREE STUFF TO DRAW.\x0a\x0aThis is top right menu. It displays the results of any fight."
 smalltalk.addMethod(
 smalltalk.method({
@@ -366,9 +366,8 @@ var self=this;
 function $CWDiceDeath(){return smalltalk.CWDiceDeath||(typeof CWDiceDeath=="undefined"?nil:CWDiceDeath)}
 function $CWDiceMiss(){return smalltalk.CWDiceMiss||(typeof CWDiceMiss=="undefined"?nil:CWDiceMiss)}
 return smalltalk.withContext(function($ctx1) { 
-_st(self["@box"])._contents_((function(html){
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h4())._with_("Fight result");
 _st(_st($CWDiceDeath())._new())._renderOn_callback_(html,(function(){
 return smalltalk.withContext(function($ctx3) {
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
@@ -378,8 +377,8 @@ return smalltalk.withContext(function($ctx3) {
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"firstLoad",{},smalltalk.CWDices)})},
 args: [],
-source: "firstLoad\x0a    box contents: [ :html | \x0a\x09html h4 with: 'Fight result'.\x0a           CWDiceDeath new renderOn: html callback: [ ].\x0a           CWDiceMiss new renderOn: html callback: [ ] ].",
-messageSends: ["contents:", "with:", "h4", "renderOn:callback:", "new"],
+source: "firstLoad\x0a    subBox contents: [ :html | \x0a\x09\x09   CWDiceDeath new renderOn: html callback: [ ].\x0a           CWDiceMiss new renderOn: html callback: [ ] ].",
+messageSends: ["contents:", "renderOn:callback:", "new"],
 referencedClasses: ["CWDiceDeath", "CWDiceMiss"]
 }),
 smalltalk.CWDices);
@@ -412,16 +411,31 @@ category: 'initialize-release',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$4,$5,$3,$6;
 $1=_st(html)._div();
 _st($1)._class_("mapMenuPanel dices");
-$2=_st($1)._yourself();
-self["@box"]=$2;
+_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+$2=_st(html)._div();
+_st($2)._class_("mapMenuPanelContainer");
+$3=_st($2)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(html)._img_("ressources/images/fightResult.png");
+$4=_st(html)._div();
+_st($4)._style_("padding-top: 7px");
+$5=_st($4)._yourself();
+self["@subBox"]=$5;
+return self["@subBox"];
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $3;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$6=_st($1)._yourself();
+self["@box"]=$6;
 _st(self)._firstLoad();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDices)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel dices';\x0a\x09\x09yourself).\x0a\x09self firstLoad",
-messageSends: ["class:", "div", "yourself", "firstLoad"],
+source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel dices';\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09html img: 'ressources/images/fightResult.png'.\x0a\x09\x09\x09\x09\x09subBox := html div style: 'padding-top: 7px'; yourself ] ];\x0a\x09\x09yourself).\x0a\x09self firstLoad",
+messageSends: ["class:", "div", "with:", "img:", "style:", "yourself", "firstLoad"],
 referencedClasses: []
 }),
 smalltalk.CWDices);
@@ -476,9 +490,8 @@ _st(_st(kills).__plus((1)))._to_do_(dicesNb,(function(j){
 return smalltalk.withContext(function($ctx2) {
 return _st(dices)._at_put_(j,_st(_st($CWDiceMiss())._new())._parent_(self));
 }, function($ctx2) {$ctx2.fillBlock({j:j},$ctx1)})}));
-_st(self["@box"])._contents_((function(html){
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h4())._with_("Fight result");
 return _st((1))._to_do_(dicesNb,(function(){
 return smalltalk.withContext(function($ctx3) {
 tmp=_st(dices)._atRandom();
@@ -489,8 +502,8 @@ return _st(dices)._remove_(tmp);
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"updateDices:kills:callBack:",{dicesNb:dicesNb,kills:kills,cb:cb,tmp:tmp,dices:dices,i:i,callback:callback},smalltalk.CWDices)})},
 args: ["dicesNb", "kills", "cb"],
-source: "updateDices: dicesNb kills: kills callBack: cb\x0a\x09\x22animate the dices and display them in random order\x22\x0a\x0a\x09| tmp dices i callback |\x0a\x09dices := Array new: dicesNb.\x0a\x09i := 0.\x0a\x09callback := [\x0a\x09\x09i := i + 1. \x0a\x09\x09(i = dicesNb) \x0a\x09\x09\x09ifTrue: cb].\x0a\x0a\x091 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].\x0a\x09kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].\x0a\x0a    box contents: [:html | \x0a\x09\x09html h4 with: 'Fight result'.\x0a\x09\x091 to: dicesNb do: [\x0a\x09\x09\x09tmp := dices atRandom.\x0a\x09\x09\x09tmp renderOn: html callback: callback.\x0a\x09\x09\x09dices remove: tmp ] ]",
-messageSends: ["new:", "+", "ifTrue:", "=", "to:do:", "at:put:", "parent:", "new", "contents:", "with:", "h4", "atRandom", "renderOn:callback:", "remove:"],
+source: "updateDices: dicesNb kills: kills callBack: cb\x0a\x09\x22animate the dices and display them in random order\x22\x0a\x0a\x09| tmp dices i callback |\x0a\x09dices := Array new: dicesNb.\x0a\x09i := 0.\x0a\x09callback := [\x0a\x09\x09i := i + 1. \x0a\x09\x09(i = dicesNb) \x0a\x09\x09\x09ifTrue: cb].\x0a\x0a\x091 to: kills do: [ :k | dices at: k put: (CWDiceDeath new parent: self) ].\x0a\x09kills + 1 to: dicesNb do: [ :j | dices at: j put: (CWDiceMiss new parent: self) ].\x0a\x0a    subBox contents: [:html | \x0a\x09\x091 to: dicesNb do: [\x0a\x09\x09\x09tmp := dices atRandom.\x0a\x09\x09\x09tmp renderOn: html callback: callback.\x0a\x09\x09\x09dices remove: tmp ] ]",
+messageSends: ["new:", "+", "ifTrue:", "=", "to:do:", "at:put:", "parent:", "new", "contents:", "atRandom", "renderOn:callback:", "remove:"],
 referencedClasses: ["Array", "CWDiceDeath", "CWDiceMiss"]
 }),
 smalltalk.CWDices);
@@ -523,49 +536,69 @@ category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
+var $1,$2,$4,$5,$6,$8,$9,$10,$11,$12,$13,$14,$15,$7,$3,$16;
 _st(self)._setUpShortCuts();
 $1=_st(html)._div();
 _st($1)._class_("mapMenuPanel mapWatcher");
 _st($1)._width_((500));
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h4())._with_("map controls");
-$2=_st(html)._button();
-_st($2)._with_("left");
-$3=_st($2)._onClick_((function(){
+$2=_st(html)._div();
+_st($2)._class_("mapMenuPanelContainer");
+_st($2)._style_("position: relative; height: 100%");
+$3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-return _st(self)._go_("left");
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$3;
-$4=_st(html)._button();
-_st($4)._with_("right");
-$5=_st($4)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(self)._go_("right");
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+$4=_st(html)._h4();
+_st($4)._with_("MAP CONTROLS");
+$5=_st($4)._style_("position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left");
 $5;
-$6=_st(html)._button();
-_st($6)._with_("down");
-$7=_st($6)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(self)._go_("down");
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$7;
+$6=_st(html)._div();
+_st($6)._style_("position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center");
+$7=_st($6)._with_((function(){
+return smalltalk.withContext(function($ctx4) {
 $8=_st(html)._button();
-_st($8)._with_("up");
+_st($8)._class_("mapButton");
+_st($8)._style_("position: absolute; left: 17%; top: 38%;");
 $9=_st($8)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
+return smalltalk.withContext(function($ctx5) {
+return _st(self)._go_("left");
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+$9;
+$10=_st(html)._button();
+_st($10)._class_("mapButton");
+_st($10)._style_("position: absolute; left: 65%; top: 38%;");
+$11=_st($10)._onClick_((function(){
+return smalltalk.withContext(function($ctx5) {
+return _st(self)._go_("right");
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+$11;
+$12=_st(html)._button();
+_st($12)._class_("mapButton");
+_st($12)._style_("position: absolute; left: 41%; top: 78%;");
+$13=_st($12)._onClick_((function(){
+return smalltalk.withContext(function($ctx5) {
+return _st(self)._go_("down");
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+$13;
+$14=_st(html)._button();
+_st($14)._class_("mapButton");
+_st($14)._style_("position: absolute; left: 41%; top: 2%;");
+$15=_st($14)._onClick_((function(){
+return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("up");
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+return $15;
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+return $7;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-return $9;
+return $3;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$10=_st($1)._yourself();
-self["@box"]=$10;
+$16=_st($1)._yourself();
+self["@box"]=$16;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a                html h4\x0a                        with: 'map controls'.\x0a                html button\x0a                        with: 'left';\x0a                        onClick: [self go: 'left'].\x0a                html button\x0a                        with: 'right';\x0a                        onClick: [self go: 'right'].\x0a                html button\x0a                        with: 'down';\x0a                        onClick: [self go: 'down'].\x0a                html button\x0a                        with: 'up';\x0a                        onClick: [self go: 'up'].\x0a\x09];\x0a\x09yourself",
-messageSends: ["setUpShortCuts", "class:", "div", "width:", "with:", "h4", "button", "onClick:", "go:", "yourself"],
+source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09style: 'position: relative; height: 100%';\x0a\x09\x09\x09\x09with: [\x0a            \x09    html h4\x0a                \x09        with: 'MAP CONTROLS';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left'.\x0a\x09\x09\x09\x09\x09html div\x0a\x09\x09\x09\x09\x09\x09style: 'position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center';\x0a\x09\x09\x09\x09\x09\x09with: [\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 17%; top: 38%;';\x0a                       \x09\x09onClick: [self go: 'left'].\x0a               \x09 \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 65%; top: 38%;';\x0a                        \x09onClick: [self go: 'right'].\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 41%; top: 78%;';\x0a                        \x09onClick: [self go: 'down'].\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 41%; top: 2%;';\x0a                        \x09onClick: [self go: 'up'] ] ]\x0a\x09];\x0a\x09yourself",
+messageSends: ["setUpShortCuts", "class:", "div", "width:", "with:", "style:", "h4", "button", "onClick:", "go:", "yourself"],
 referencedClasses: []
 }),
 smalltalk.CWMapControls);
@@ -587,7 +620,7 @@ smalltalk.CWMapControls);
 
 
 
-smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'imgBox'], 'Easnoth-MapMenu');
+smalltalk.addClass('CWMonsterWatcher', smalltalk.CWActionMenuComponent, ['monster', 'subBox'], 'Easnoth-MapMenu');
 smalltalk.CWMonsterWatcher.comment="This represetns a view on the monster for the user. It is the top left menu."
 smalltalk.addMethod(
 smalltalk.method({
@@ -659,16 +692,28 @@ category: 'rendering',
 fn: function (html){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
+var $1,$2,$3,$4;
 $1=_st(html)._div();
 _st($1)._class_("mapMenuPanel monsterWatcher");
-$2=_st($1)._yourself();
-self["@box"]=$2;
+_st($1)._with_((function(){
+return smalltalk.withContext(function($ctx2) {
+$2=_st(html)._div();
+_st($2)._class_("mapMenuPanelContainer");
+$3=_st($2)._with_((function(){
+return smalltalk.withContext(function($ctx3) {
+_st(html)._img_("ressources/images/selectedMonster.png");
+self["@subBox"]=_st(html)._div();
+return self["@subBox"];
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $3;
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
+$4=_st($1)._yourself();
+self["@box"]=$4;
 _st(self)._update();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMonsterWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel monsterWatcher';\x0a\x09\x09yourself).\x0a\x09self update",
-messageSends: ["class:", "div", "yourself", "update"],
+source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel monsterWatcher';\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09html img: 'ressources/images/selectedMonster.png'.\x0a\x09\x09\x09\x09\x09subBox := html div ] ];\x0a\x09\x09yourself).\x0a\x09self update",
+messageSends: ["class:", "div", "with:", "img:", "yourself", "update"],
 referencedClasses: []
 }),
 smalltalk.CWMonsterWatcher);
@@ -680,36 +725,60 @@ category: 'rendering',
 fn: function (){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2;
-_st(self["@box"])._contents_((function(html){
+var $1,$3,$4,$5,$6,$7,$8,$9,$10,$2;
+_st(self["@subBox"])._contents_((function(html){
 return smalltalk.withContext(function($ctx2) {
-_st(_st(html)._h4())._with_("selected monster");
 $1=_st(html)._table();
 _st($1)._class_("tableStats");
 $2=_st($1)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(_st(html)._tr())._with_((function(){
 return smalltalk.withContext(function($ctx4) {
-_st(_st(html)._td())._with_((function(){
+$3=_st(html)._td();
+_st($3)._class_("rightSide");
+$4=_st($3)._with_((function(){
 return smalltalk.withContext(function($ctx5) {
-_st(_st(html)._tr())._with_(_st("hp : ").__comma(_st(_st(self)._monster())._hp()));
-_st(_st(html)._tr())._with_(_st(_st(_st("move : ").__comma(_st(_st(self)._monster())._currentMove())).__comma("/")).__comma(_st(_st(self)._monster())._move()));
-return _st(_st(html)._tr())._with_(_st("range : ").__comma(_st(_st(self)._monster())._range()));
+_st(_st(html)._tr())._with_("hp : ");
+_st(_st(html)._tr())._with_("move : ");
+return _st(_st(html)._tr())._with_("range : ");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
-return _st(_st(html)._td())._with_((function(){
+$4;
+$5=_st(html)._td();
+_st($5)._class_("leftSide");
+_st($5)._style_("width: 30px");
+$6=_st($5)._with_((function(){
 return smalltalk.withContext(function($ctx5) {
-_st(_st(html)._tr())._with_(_st("dices : ").__comma(_st(_st(self)._monster())._dices()));
-_st(_st(html)._tr())._with_(_st(_st("attack : ").__comma(_st(_st(self)._monster())._attack())).__comma(" %"));
-return _st(_st(html)._tr())._with_(_st("special : ").__comma(_st(_st(self)._monster())._special()));
+_st(_st(html)._tr())._with_(_st(_st(self)._monster())._hp());
+_st(_st(html)._tr())._with_(_st(_st(_st(_st(_st(self)._monster())._currentMove())._asString()).__comma("/")).__comma(_st(_st(self)._monster())._move()));
+return _st(_st(html)._tr())._with_(_st(_st(self)._monster())._range());
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+$6;
+$7=_st(html)._td();
+_st($7)._class_("rightSide");
+$8=_st($7)._with_((function(){
+return smalltalk.withContext(function($ctx5) {
+_st(_st(html)._tr())._with_("dices : ");
+_st(_st(html)._tr())._with_("attack : ");
+return _st(_st(html)._tr())._with_("special : ");
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+$8;
+$9=_st(html)._td();
+_st($9)._class_("leftSide");
+$10=_st($9)._with_((function(){
+return smalltalk.withContext(function($ctx5) {
+_st(_st(html)._tr())._with_(_st(_st(self)._monster())._dices());
+_st(_st(html)._tr())._with_(_st(_st(_st(_st(self)._monster())._attack())._asString()).__comma(" %"));
+return _st(_st(html)._tr())._with_(_st(_st(self)._monster())._special());
+}, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
+return $10;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return $2;
 }, function($ctx2) {$ctx2.fillBlock({html:html},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"update",{},smalltalk.CWMonsterWatcher)})},
 args: [],
-source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        box contents: [:html | \x0a\x09\x09html h4 with: 'selected monster'.\x0a\x09\x09\x09\x09\x22html img: (self monster image at: 'src').\x22\x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td with: [\x0a                        \x09\x09html tr with: 'hp : ', self monster hp.\x0a                        \x09\x09html tr with: 'move : ', self monster currentMove, '/', self monster move.\x0a                        \x09\x09html tr with: 'range : ', self monster range.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td with: [\x0a                       \x09\x09\x09html tr with: 'dices : ', self monster dices.\x0a                        \x09\x09html tr with: 'attack : ', self monster attack,' %'.\x0a                       \x09\x09\x09html tr with: 'special : ', self monster special.\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09\x22html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'attackPot : ', self monster attackPotential.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'cell : ', self monster parent printString.\x22\x0a        ].",
-messageSends: ["contents:", "with:", "h4", "class:", "table", ",", "hp", "monster", "tr", "move", "currentMove", "range", "td", "dices", "attack", "special"],
+source: "update\x0a\x09\x22I hide some stuff for release\x22\x0a\x0a        subBox contents: [:html | \x0a                html table\x0a\x09\x09\x09class: 'tableStats';\x0a\x09\x09\x09with: [\x0a\x09\x09\x09html tr with: [\x0a\x09\x09\x09\x09html td \x0a\x09\x09\x09\x09\x09class: 'rightSide';\x0a\x09\x09\x09\x09\x09with: [\x0a                        \x09\x09html tr with: 'hp : '.\x0a                        \x09\x09html tr with: 'move : '.\x0a                        \x09\x09html tr with: 'range : '.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09\x0a\x09\x09\x09\x09html td \x0a\x09\x09\x09\x09\x09class: 'leftSide';\x0a\x09\x09\x09\x09\x09style: 'width: 30px';\x0a\x09\x09\x09\x09\x09with: [\x0a                        \x09\x09html tr with: self monster hp.\x0a                        \x09\x09html tr with: self monster currentMove asString, '/', self monster move.\x0a                        \x09\x09html tr with: self monster range.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td \x0a\x09\x09\x09\x09\x09class: 'rightSide';\x0a\x09\x09\x09\x09\x09with: [\x0a                       \x09\x09\x09html tr with: 'dices : '.\x0a                        \x09\x09html tr with: 'attack : '.\x0a                       \x09\x09\x09html tr with: 'special : '.\x0a\x09\x09\x09\x09].\x0a\x09\x09\x09\x09html td \x0a\x09\x09\x09\x09\x09class: 'leftSide';\x0a\x09\x09\x09\x09\x09with: [\x0a                       \x09\x09\x09html tr with: self monster dices.\x0a                        \x09\x09html tr with: self monster attack asString,' %'.\x0a                       \x09\x09\x09html tr with: self monster special.\x0a\x09\x09\x09\x09]\x0a\x09\x09\x09].\x0a\x09\x09].\x0a\x09\x09\x22html h5 with: 'debug'.\x0a                html span with: 'state : ', self monster state class.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'attackPot : ', self monster attackPotential.\x0a\x09\x09\x09\x09html br.\x0a                html span with: 'cell : ', self monster parent printString.\x22\x0a        ].",
+messageSends: ["contents:", "class:", "table", "with:", "td", "tr", "style:", "hp", "monster", ",", "move", "asString", "currentMove", "range", "dices", "attack", "special"],
 referencedClasses: []
 }),
 smalltalk.CWMonsterWatcher);
@@ -750,51 +819,57 @@ function $CWNextTurnEvent(){return smalltalk.CWNextTurnEvent||(typeof CWNextTurn
 function $Browser(){return smalltalk.Browser||(typeof Browser=="undefined"?nil:Browser)}
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4,$5,$6,$7,$8,$9,$10;
+var $1,$2,$4,$5,$6,$7,$8,$9,$10,$11,$3,$12;
 $1=_st(html)._div();
 _st($1)._class_("mapMenuPanel stuff");
 _st($1)._with_((function(){
 return smalltalk.withContext(function($ctx2) {
-$2=_st(html)._a();
-_st($2)._href_("#");
-_st($2)._with_("End turn");
-$3=_st($2)._onClick_((function(){
+$2=_st(html)._div();
+_st($2)._class_("mapMenuPanelContainer");
+$3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-return _st(self)._announce_(_st($CWNextTurnEvent())._new());
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
-$3;
-_st(html)._br();
 $4=_st(html)._a();
 _st($4)._href_("#");
-_st($4)._with_("Class browser");
+_st($4)._with_("End turn");
 $5=_st($4)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st($Browser())._open();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return smalltalk.withContext(function($ctx4) {
+return _st(self)._announce_(_st($CWNextTurnEvent())._new());
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 $5;
 _st(html)._br();
 $6=_st(html)._a();
 _st($6)._href_("#");
-_st($6)._with_("Menu");
+_st($6)._with_("Class browser");
 $7=_st($6)._onClick_((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(self)._announce_(_st($CWEndGameEvent())._new());
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return smalltalk.withContext(function($ctx4) {
+return _st($Browser())._open();
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 $7;
 _st(html)._br();
-$8=_st(html)._iframe();
-_st($8)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
-_st($8)._at_put_("frameborder",(0));
-_st($8)._at_put_("scrolling","no");
-_st($8)._style_("border:none; overflow:hidden; width:80px; height:21px;");
-$9=_st($8)._at_put_("allowTransparency","true");
-return $9;
+$8=_st(html)._a();
+_st($8)._href_("#");
+_st($8)._with_("Menu");
+$9=_st($8)._onClick_((function(){
+return smalltalk.withContext(function($ctx4) {
+return _st(self)._announce_(_st($CWEndGameEvent())._new());
+}, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
+$9;
+_st(html)._br();
+$10=_st(html)._iframe();
+_st($10)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
+_st($10)._at_put_("frameborder",(0));
+_st($10)._at_put_("scrolling","no");
+_st($10)._style_("border:none; overflow:hidden; width:80px; height:21px;");
+$11=_st($10)._at_put_("allowTransparency","true");
+return $11;
+}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
+return $3;
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$10=_st($1)._yourself();
-self["@box"]=$10;
+$12=_st($1)._yourself();
+self["@box"]=$12;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html div class: 'mapMenuPanel stuff'; with: [\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'End turn'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Class browser'; \x0a\x09\x09\x09\x09\x09onClick: [Browser open].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Menu'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09];\x0a\x09yourself.",
+source: "renderOn: html\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel stuff'; \x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'End turn'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Class browser'; \x0a\x09\x09\x09\x09\x09onClick: [Browser open].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Menu'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09] ];\x0a\x09yourself.",
 messageSends: ["class:", "div", "with:", "href:", "a", "onClick:", "announce:", "new", "br", "open", "src:", "iframe", "at:put:", "style:", "yourself"],
 referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent"]
 }),

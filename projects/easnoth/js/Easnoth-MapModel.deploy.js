@@ -3171,14 +3171,9 @@ smalltalk.method({
 selector: "emptyMonster",
 fn: function (){
 var self=this;
-var fakeImage;
-function $NativeFunction(){return smalltalk.NativeFunction||(typeof NativeFunction=="undefined"?nil:NativeFunction)}
 return smalltalk.withContext(function($ctx1) { 
 var $2,$3,$1;
-fakeImage=_st($NativeFunction())._constructor_("Image");
-_st(fakeImage)._at_put_("src","ressources/images/interro.png");
 $2=_st(self)._new();
-_st($2)._image_(fakeImage);
 _st($2)._hp_((0));
 _st($2)._move_((0));
 _st($2)._range_((0));
@@ -3187,8 +3182,8 @@ _st($2)._attack_((0));
 $3=_st($2)._special_("none");
 $1=$3;
 return $1;
-}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{fakeImage:fakeImage},smalltalk.CWMonster.klass)})},
-messageSends: ["constructor:", "at:put:", "image:", "new", "hp:", "move:", "range:", "dices:", "attack:", "special:"]}),
+}, function($ctx1) {$ctx1.fill(self,"emptyMonster",{},smalltalk.CWMonster.klass)})},
+messageSends: ["hp:", "new", "move:", "range:", "dices:", "attack:", "special:"]}),
 smalltalk.CWMonster.klass);
 
 smalltalk.addMethod(
