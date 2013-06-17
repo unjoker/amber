@@ -221,22 +221,19 @@ renderOn: html
                 	        with: 'MAP CONTROLS';
 							style: 'position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left'.
 					html div
-						style: 'position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center';
+						style: 'position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/fight/mapControls.png); background-repeat: no-repeat; background-position: center';
 						with: [
                 		html button
-							class: 'mapButton';
-							style: 'position: absolute; left: 17%; top: 38%;';
+							class: 'mapButton mapLeft';
                        		onClick: [self go: 'left'].
                	 		html button
-							class: 'mapButton';
-							style: 'position: absolute; left: 65%; top: 38%;';
+							class: 'mapButton mapRight';
                         	onClick: [self go: 'right'].
                 		html button
-							class: 'mapButton';
-							style: 'position: absolute; left: 41%; top: 78%;';
+							class: 'mapButton mapDown';
                         	onClick: [self go: 'down'].
                 		html button
-							class: 'mapButton';
+							class: 'mapButton mapUp';
 							style: 'position: absolute; left: 41%; top: 2%;';
                         	onClick: [self go: 'up'] ] ]
 	];
@@ -383,7 +380,7 @@ renderOn: html
 					src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';
 					at: 'frameborder' put: 0;
 					at: 'scrolling' put: 'no';
-					style:'border:none; overflow:hidden; width:80px; height:21px;';
+					style:'border:none; overflow:hidden; width:80px; height:21px; margin-top: 5px;';
 					at: 'allowTransparency' put: 'true'.
 	] ];
 	yourself.

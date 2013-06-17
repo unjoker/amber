@@ -511,6 +511,12 @@ reset
 	<self.length = 0;>
 ! !
 
+!String methodsFor: '*Easnoth-GameAndPlayers'!
+
+upFirstLetter
+	^ self first asUppercase, self allButFirst
+! !
+
 !Set methodsFor: '*Easnoth-GameAndPlayers'!
 
 remove: anObject ifAbsent: aBlock

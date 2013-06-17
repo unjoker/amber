@@ -43,6 +43,19 @@ button {
 
 /*intro.html*/
 
+.mainTitle {
+	text-align: center; 
+	font-size: 25px;
+}
+
+.subTitle {
+	text-align: center; 
+	color: #f9e6d6; 
+	font-size: 20px; 
+	text-decoration: none; 
+	margin: 0
+}
+
 .styledSelect {
     background-repeat: no-repeat;
     background-color:transparent;
@@ -112,17 +125,24 @@ button {
 	background-position: 0 -32px;
 }
 
-.mapButton{
+.armyButton {
 	background-color:transparent;
     text-decoration:none;
+	margin-left: 80px;
+	margin-right: 60px;
+	margin-top: 60px;
+	margin-bottom: 60px;
+	padding: 0;
 	border: none;
-	position: absolute; 
-	width: 20px;
-	height: 20px;
+	width: 208px;
+	height: 118px;
+	text-align: center;
+	background-image: url(../ressources/images/start/armyButtonBack.png);
 }
 
-.mapButton:hover{
-	background-color:red;
+.armyButton:hover {
+	cursor: pointer;
+	background-position: 0 -118px;
 }
 
 .intro {
@@ -248,6 +268,55 @@ canvas {
 
 .mapMenuPanelContainer {
 	padding-top: 5%;
+}
+
+.mapButton{
+	background-color:transparent;
+    text-decoration:none;
+	border: none;
+	position: absolute; 
+	width: 20px;
+	height: 20px;
+}
+
+.mapLeft {
+	left: 17%; 
+	top: 38%;
+}
+
+.mapRight {
+	left: 65%; 
+	top: 38%;
+}
+
+.mapDown {
+	left: 41%; 
+	top: 78%;
+}
+
+.mapUp {
+	left: 41%; 
+	top: 2%;'
+}
+
+.mapUp:hover {
+	background-image:url(../ressources/images/fight/mapUp.png);
+}
+
+.mapRight:hover {
+	background-image:url(../ressources/images/fight/mapRight.png);
+}
+
+.mapLeft:hover {
+	background-image:url(../ressources/images/fight/mapLeft.png);
+}
+
+.mapDown:hover {
+	background-image:url(../ressources/images/fight/mapDown.png);
+}
+
+.mapButton:hover{
+	cursor: pointer;
 }
 
 .monsterWatcher {
