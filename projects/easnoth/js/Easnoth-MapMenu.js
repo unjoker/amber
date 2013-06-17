@@ -553,35 +553,32 @@ _st($4)._with_("MAP CONTROLS");
 $5=_st($4)._style_("position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left");
 $5;
 $6=_st(html)._div();
-_st($6)._style_("position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center");
+_st($6)._style_("position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/fight/mapControls.png); background-repeat: no-repeat; background-position: center");
 $7=_st($6)._with_((function(){
 return smalltalk.withContext(function($ctx4) {
 $8=_st(html)._button();
-_st($8)._class_("mapButton");
-_st($8)._style_("position: absolute; left: 17%; top: 38%;");
+_st($8)._class_("mapButton mapLeft");
 $9=_st($8)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("left");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 $9;
 $10=_st(html)._button();
-_st($10)._class_("mapButton");
-_st($10)._style_("position: absolute; left: 65%; top: 38%;");
+_st($10)._class_("mapButton mapRight");
 $11=_st($10)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("right");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 $11;
 $12=_st(html)._button();
-_st($12)._class_("mapButton");
-_st($12)._style_("position: absolute; left: 41%; top: 78%;");
+_st($12)._class_("mapButton mapDown");
 $13=_st($12)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("down");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 $13;
 $14=_st(html)._button();
-_st($14)._class_("mapButton");
+_st($14)._class_("mapButton mapUp");
 _st($14)._style_("position: absolute; left: 41%; top: 2%;");
 $15=_st($14)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
@@ -597,7 +594,7 @@ $16=_st($1)._yourself();
 self["@box"]=$16;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMapControls)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09style: 'position: relative; height: 100%';\x0a\x09\x09\x09\x09with: [\x0a            \x09    html h4\x0a                \x09        with: 'MAP CONTROLS';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left'.\x0a\x09\x09\x09\x09\x09html div\x0a\x09\x09\x09\x09\x09\x09style: 'position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center';\x0a\x09\x09\x09\x09\x09\x09with: [\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 17%; top: 38%;';\x0a                       \x09\x09onClick: [self go: 'left'].\x0a               \x09 \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 65%; top: 38%;';\x0a                        \x09onClick: [self go: 'right'].\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 41%; top: 78%;';\x0a                        \x09onClick: [self go: 'down'].\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 41%; top: 2%;';\x0a                        \x09onClick: [self go: 'up'] ] ]\x0a\x09];\x0a\x09yourself",
+source: "renderOn: html\x0a\x09self setUpShortCuts.\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel mapWatcher';\x0a\x09\x09width: 500;\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09style: 'position: relative; height: 100%';\x0a\x09\x09\x09\x09with: [\x0a            \x09    html h4\x0a                \x09        with: 'MAP CONTROLS';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left'.\x0a\x09\x09\x09\x09\x09html div\x0a\x09\x09\x09\x09\x09\x09style: 'position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/fight/mapControls.png); background-repeat: no-repeat; background-position: center';\x0a\x09\x09\x09\x09\x09\x09with: [\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton mapLeft';\x0a                       \x09\x09onClick: [self go: 'left'].\x0a               \x09 \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton mapRight';\x0a                        \x09onClick: [self go: 'right'].\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton mapDown';\x0a                        \x09onClick: [self go: 'down'].\x0a                \x09\x09html button\x0a\x09\x09\x09\x09\x09\x09\x09class: 'mapButton mapUp';\x0a\x09\x09\x09\x09\x09\x09\x09style: 'position: absolute; left: 41%; top: 2%;';\x0a                        \x09onClick: [self go: 'up'] ] ]\x0a\x09];\x0a\x09yourself",
 messageSends: ["setUpShortCuts", "class:", "div", "width:", "with:", "style:", "h4", "button", "onClick:", "go:", "yourself"],
 referencedClasses: []
 }),
@@ -859,7 +856,7 @@ $10=_st(html)._iframe();
 _st($10)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
 _st($10)._at_put_("frameborder",(0));
 _st($10)._at_put_("scrolling","no");
-_st($10)._style_("border:none; overflow:hidden; width:80px; height:21px;");
+_st($10)._style_("border:none; overflow:hidden; width:80px; height:21px; margin-top: 5px;");
 $11=_st($10)._at_put_("allowTransparency","true");
 return $11;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
@@ -869,7 +866,7 @@ $12=_st($1)._yourself();
 self["@box"]=$12;
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWTurnWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel stuff'; \x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'End turn'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Class browser'; \x0a\x09\x09\x09\x09\x09onClick: [Browser open].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Menu'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09] ];\x0a\x09yourself.",
+source: "renderOn: html\x0a\x09box := html div \x0a\x09\x09class: 'mapMenuPanel stuff'; \x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'End turn'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWNextTurnEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Class browser'; \x0a\x09\x09\x09\x09\x09onClick: [Browser open].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html a \x0a\x09\x09\x09\x09\x09href: '#';\x0a\x09\x09\x09\x09\x09with: 'Menu'; \x0a\x09\x09\x09\x09\x09onClick: [self announce: CWEndGameEvent new].\x0a\x09\x09\x09\x09html br.\x0a\x09\x09\x09\x09html iframe\x0a\x09\x09\x09\x09\x09src: '//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002';\x0a\x09\x09\x09\x09\x09at: 'frameborder' put: 0;\x0a\x09\x09\x09\x09\x09at: 'scrolling' put: 'no';\x0a\x09\x09\x09\x09\x09style:'border:none; overflow:hidden; width:80px; height:21px; margin-top: 5px;';\x0a\x09\x09\x09\x09\x09at: 'allowTransparency' put: 'true'.\x0a\x09] ];\x0a\x09yourself.",
 messageSends: ["class:", "div", "with:", "href:", "a", "onClick:", "announce:", "new", "br", "open", "src:", "iframe", "at:put:", "style:", "yourself"],
 referencedClasses: ["CWNextTurnEvent", "Browser", "CWEndGameEvent"]
 }),

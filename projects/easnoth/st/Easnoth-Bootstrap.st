@@ -126,7 +126,7 @@ bootstrap: gameSettings
 ! !
 
 Object subclass: #CWGameSettings
-	instanceVariableNames: 'players mapNumber'
+	instanceVariableNames: 'players mapNumber afterGameBlock'
 	package: 'Easnoth-Bootstrap'!
 !CWGameSettings commentStamp!
 I represent the game settings. My instance variables are set before the game, in the start menus. Then, the CWBootstrapper handles my data to launch corectly the game.!
@@ -135,6 +135,14 @@ I represent the game settings. My instance variables are set before the game, in
 
 addPlayer: aPlayer
 	players add: aPlayer
+!
+
+afterGameBlock
+	^ afterGameBlock
+!
+
+afterGameBlock: block
+	afterGameBlock := block
 !
 
 mapNumber
@@ -168,6 +176,28 @@ printOn: aStream
 	players do: [ :each |
 		each printOn: aStream ].
 	aStream nextPutAll: ')'.
+! !
+
+CWGameSettings subclass: #CWCampaignSettings
+	instanceVariableNames: 'playerArmy wonMatches'
+	package: 'Easnoth-Bootstrap'!
+
+!CWCampaignSettings methodsFor: 'accessing'!
+
+playerArmy
+	^ playerArmy
+!
+
+playerArmy: anArmy
+	playerArmy := anArmy
+!
+
+wonMatches
+	^ wonMatches
+!
+
+wonMatches: list
+	wonMatches := list
 ! !
 
 Widget subclass: #CWLoadingBar
@@ -214,6 +244,10 @@ This is currently the worst class of the system in term of code quality.!
 
 !CWStartMenu methodsFor: 'accessing'!
 
+armyNames
+	^ #( 'elves' 'kingdom' 'merfolks' 'dwarves' 'outlaws' )
+!
+
 defaultPlayer
 	^ CWHuman new team: 'elves'
 !
@@ -236,7 +270,7 @@ startingBlock
 startingMenuDict
 	^ Dictionary new
 		at: 'Tutorial' put: [ history add: self startingBlock. self tutorial. ];
-		at: 'Campaign' put: [window alert: 'for future use, click on custom game' ];
+		at: 'Campaign' put: [ history add: self startingBlock. self campaign ];
 		at: 'Custom game' put: [ history add: self startingBlock. self choosePlayers ];
 		"at: 'Map Editor' put: [window alert: 'for future use, click on custom game' ];"
 		at: 'Credits' put: [ history add: self startingBlock. self credits ];
@@ -270,6 +304,14 @@ initialize
 	CWBootstrapper new. "setUp side panels ..."
 !
 
+renderOn: html
+	box := html div
+		class: 'intro'.
+	self addFrontImages.
+	box append: [ subBox := html div class: 'introMenu' ].
+	self menuWith: self startingMenuDict.
+!
+
 reset
 	gameSettings := CWGameSettings new.
 	history :=  Array new.
@@ -295,6 +337,20 @@ addFrontImages
 		] ].
 !
 
+armyButton: armyName on: html
+	html button
+					class: 'armyButton';
+					with: [
+						html h4 
+							class: 'subTitle'; 
+							with: armyName upFirstLetter.
+						html img: 'ressources/images/monsters/', armyName, '/cavalry-heros.png'.
+						html img: 'ressources/images/monsters/', armyName, '/range-heros.png' ];
+					onClick: [ gameSettings playerArmy: armyName.
+						history add: [ self campaign].
+						self campaign2 ].
+!
+
 armySelectBox: playerNumber on: html
 	| selectBox |
 	selectBox := html select.
@@ -302,11 +358,8 @@ armySelectBox: playerNumber on: html
 		class:  (self selectBoxClasses at: playerNumber);
 		onChange: [ (gameSettings players at: playerNumber) team: selectBox asJQuery val ];
 		with: [
-			html option with: 'elves'.
-			html option with: 'kingdom'.
-			html option with: 'merfolks'.
-			html option with: 'dwarves'.
-			html option with: 'outlaws' ].
+			self armyNames do: [ :each |
+				html option with: each ] ].
 !
 
 back
@@ -319,6 +372,109 @@ back
 backButton
 	history isEmpty ifTrue: [ ^ backButton asJQuery hide ].
 	backButton asJQuery show.
+!
+
+hideFrontImages
+	frontImages do: [ :each | each asJQuery hide]
+!
+
+playerSelectBox: playerNumber on: html
+	| selectBox |
+		selectBox := html select. 
+		selectBox 
+			class: (self selectBoxClasses at: playerNumber);
+			onChange: [ 
+				| oldTeam |
+				oldTeam := (gameSettings players at: playerNumber) team.
+				gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.
+				(gameSettings players at: playerNumber) team: oldTeam ];
+			with: [
+				html option 
+					with: 'human';
+					value: 'CWHuman'.
+				html option 
+					with: 'AI type 1';
+					value: 'CWAggressWeakestAI'].
+!
+
+playerSelection: playerNumber on: html
+	html li with: 'Player ', playerNumber.
+	html li with: [
+		self playerSelectBox: playerNumber on: html.
+		self armySelectBox: playerNumber on: html ].
+!
+
+renderBackButtonOn: html
+		backButton := html button 
+				class: 'backButton';
+				onClick: [ self back ].
+		self backButton.
+!
+
+renderStartFightButton: armyName on: html
+	html button
+					class: 'armyButton';
+					with: [
+						html h4 
+							class: 'subTitle'; 
+							with: 'VS ', armyName upFirstLetter. 
+						html img: 'ressources/images/monsters/', armyName, '/troop-heros.png'.
+						html img: 'ressources/images/monsters/', armyName, '/cavalry-heros.png' ];
+					onClick: [ 
+						gameSettings resetPlayers.
+						gameSettings addPlayer: (CWHuman new team: gameSettings playerArmy).
+						gameSettings addPlayer: (CWAggressWeakestAI new team: armyName).
+						self startBeta ].
+!
+
+toggleFrontImages
+	frontImages do: [ :each | each asJQuery toggle]
+! !
+
+!CWStartMenu methodsFor: 'rendering - main'!
+
+campaign
+	self hideFrontImages.
+	gameSettings := CWCampaignSettings new.
+	subBox 
+		contents: [ :html | 
+		backButton := html button 
+			class: 'backButton';
+			onClick: [ 
+				self toggleFrontImages.
+				gameSettings := CWGameSettings new.
+				self back ].
+		self backButton.
+		html div
+			style: 'margin-top: 6%; margin-left: 26%; width: 100%';
+			with: [
+				html h3 
+					class: 'mainTitle';
+					with: 'Choose your army'.
+				self armyNames do: [:each |
+					each = 'dwarves' ifFalse: [
+						self armyButton: each on: html ] ]
+				 ].
+	]
+!
+
+campaign2
+	| armies |
+	subBox 
+		contents: [ :html | 
+		self renderBackButtonOn: html.
+		html div
+			style: 'margin-top: 6%; margin-left: 26%; width: 100%';
+			with: [
+				html h3 
+					class: 'mainTitle';
+					with: 'Choose next game opponent'.
+				armies := self armyNames select: [:each |
+					(each = 'dwarves' | (each = gameSettings playerArmy)) not ].
+				armies do: [ :each |
+					self renderStartFightButton: each on: html ].
+				 ].
+	]
 !
 
 credits
@@ -399,51 +555,6 @@ playerMenu
 								onClick: [ self startBeta ] ]
 !
 
-playerSelectBox: playerNumber on: html
-	| selectBox |
-		selectBox := html select. 
-		selectBox 
-			class: (self selectBoxClasses at: playerNumber);
-			onChange: [ 
-				| oldTeam |
-				oldTeam := (gameSettings players at: playerNumber) team.
-				gameSettings players at: playerNumber put: (Smalltalk current at: selectBox asJQuery val) new.
-				(gameSettings players at: playerNumber) team: oldTeam ];
-			with: [
-				html option 
-					with: 'human';
-					value: 'CWHuman'.
-				html option 
-					with: 'AI type 1';
-					value: 'CWAggressWeakestAI'].
-!
-
-playerSelection: playerNumber on: html
-	html li with: 'Player ', playerNumber.
-	html li with: [
-		self playerSelectBox: playerNumber on: html.
-		self armySelectBox: playerNumber on: html ].
-!
-
-renderBackButtonOn: html
-		backButton := html button 
-				class: 'backButton';
-				onClick: [ self back ].
-		self backButton.
-!
-
-renderOn: html
-	box := html div
-		class: 'intro'.
-	self addFrontImages.
-	box append: [ subBox := html div class: 'introMenu' ].
-	self menuWith: self startingMenuDict.
-!
-
-toggleFrontImages
-	frontImages do: [ :each | each asJQuery toggle]
-!
-
 tutorial
 	self toggleFrontImages.
 	subBox 
@@ -459,8 +570,12 @@ tutorial
 		html div
 			style: 'margin-top: 6%; margin-left: 26%; width: 100%';
 			with: [
-			html h3 style: 'text-align: center; font-size: 25px'; with: 'GOAL : kill all your ennemy army'.
-			html h4  style: 'text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0'; with: 'Basics'.
+			html h3 
+				class: 'mainTitle';
+				with: 'GOAL : kill all your ennemy army'.
+			html h4 
+				class: 'subTitle';
+				with: 'Basics'.
 			html div 
 				style: 'height: 50px';
 				with: [
@@ -479,7 +594,9 @@ tutorial
 						these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.'. ].
 				html p with: 'When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. 
 					If you have remaining move but you want to finish your turn, please click on the next turn button.'.
-			html h4 style: 'text-align: center; color: #f9e6d6; font-size: 20px; text-decoration: none; margin: 0'; with: 'Advanced'.
+			html h4 
+				class: 'subTitle';
+				with: 'Advanced'.
 			html div 
 				style: 'height: 145px';
 				with: [

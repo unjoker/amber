@@ -1126,6 +1126,19 @@ smalltalk.Array);
 
 smalltalk.addMethod(
 smalltalk.method({
+selector: "upFirstLetter",
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(_st(self)._first())._asUppercase()).__comma(_st(self)._allButFirst());
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"upFirstLetter",{},smalltalk.String)})},
+messageSends: [",", "allButFirst", "asUppercase", "first"]}),
+smalltalk.String);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "remove:ifAbsent:",
 fn: function (anObject,aBlock){
 var self=this;

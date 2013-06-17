@@ -424,35 +424,32 @@ _st($4)._with_("MAP CONTROLS");
 $5=_st($4)._style_("position: absolute; bottom: 15%; left: 5%; width: 50%; text-align: left");
 $5;
 $6=_st(html)._div();
-_st($6)._style_("position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/mapControls.png); background-repeat: no-repeat; background-position: center");
+_st($6)._style_("position: absolute; width: 70%; height: 70%; top: 5%; right: 5%; background-image: url(ressources/images/fight/mapControls.png); background-repeat: no-repeat; background-position: center");
 $7=_st($6)._with_((function(){
 return smalltalk.withContext(function($ctx4) {
 $8=_st(html)._button();
-_st($8)._class_("mapButton");
-_st($8)._style_("position: absolute; left: 17%; top: 38%;");
+_st($8)._class_("mapButton mapLeft");
 $9=_st($8)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("left");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 $9;
 $10=_st(html)._button();
-_st($10)._class_("mapButton");
-_st($10)._style_("position: absolute; left: 65%; top: 38%;");
+_st($10)._class_("mapButton mapRight");
 $11=_st($10)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("right");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 $11;
 $12=_st(html)._button();
-_st($12)._class_("mapButton");
-_st($12)._style_("position: absolute; left: 41%; top: 78%;");
+_st($12)._class_("mapButton mapDown");
 $13=_st($12)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
 return _st(self)._go_("down");
 }, function($ctx5) {$ctx5.fillBlock({},$ctx1)})}));
 $13;
 $14=_st(html)._button();
-_st($14)._class_("mapButton");
+_st($14)._class_("mapButton mapUp");
 _st($14)._style_("position: absolute; left: 41%; top: 2%;");
 $15=_st($14)._onClick_((function(){
 return smalltalk.withContext(function($ctx5) {
@@ -688,7 +685,7 @@ $10=_st(html)._iframe();
 _st($10)._src_("//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2FEasnoth&amp;send=false&amp;layout=box_count&amp;width=450&amp;show_faces=true&amp;font&amp;colorscheme=light&amp;action=like&amp;height=90&amp;appId=97614502002");
 _st($10)._at_put_("frameborder",(0));
 _st($10)._at_put_("scrolling","no");
-_st($10)._style_("border:none; overflow:hidden; width:80px; height:21px;");
+_st($10)._style_("border:none; overflow:hidden; width:80px; height:21px; margin-top: 5px;");
 $11=_st($10)._at_put_("allowTransparency","true");
 return $11;
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
