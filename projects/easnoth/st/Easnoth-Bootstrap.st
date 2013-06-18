@@ -184,6 +184,11 @@ CWGameSettings subclass: #CWCampaignSettings
 
 !CWCampaignSettings methodsFor: 'accessing'!
 
+initialize
+	super initialize.
+	wonMatches := Array new.
+!
+
 playerArmy
 	^ playerArmy
 !
@@ -285,6 +290,7 @@ toggle
 
 choosePlayers
 	gameSettings resetPlayers.
+	gameSettings afterGameBlock: [ CWStartMenu start ].
 	gameSettings addPlayer: self defaultPlayer.
 	gameSettings addPlayer: self defaultPlayer.
 	self playerMenu
@@ -338,7 +344,8 @@ addFrontImages
 !
 
 armyButton: armyName on: html
-	html button
+	| but |
+	but := html button
 					class: 'armyButton';
 					with: [
 						html h4 
@@ -348,7 +355,8 @@ armyButton: armyName on: html
 						html img: 'ressources/images/monsters/', armyName, '/range-heros.png' ];
 					onClick: [ gameSettings playerArmy: armyName.
 						history add: [ self campaign].
-						self campaign2 ].
+						self campaign2 ];
+						yourself.
 !
 
 armySelectBox: playerNumber on: html
@@ -412,7 +420,8 @@ renderBackButtonOn: html
 !
 
 renderStartFightButton: armyName on: html
-	html button
+	| but |
+	but := html button
 					class: 'armyButton';
 					with: [
 						html h4 
@@ -421,6 +430,13 @@ renderStartFightButton: armyName on: html
 						html img: 'ressources/images/monsters/', armyName, '/troop-heros.png'.
 						html img: 'ressources/images/monsters/', armyName, '/cavalry-heros.png' ];
 					onClick: [ 
+						gameSettings afterGameBlock: [ :loserArray |
+								self toggle.
+								loserArray size = 1 ifTrue: [ 
+									((loserArray at: 1) isKindOf: CWAI) ifTrue: [ 
+										gameSettings wonMatches add: armyName.
+										but class: 'armyButton done' 
+									] ] ].
 						gameSettings resetPlayers.
 						gameSettings addPlayer: (CWHuman new team: gameSettings playerArmy).
 						gameSettings addPlayer: (CWAggressWeakestAI new team: armyName).
