@@ -1,6 +1,6 @@
 Smalltalk current createPackage: 'Easnoth-GameAndPlayers'!
 Object subclass: #CWGame
-	instanceVariableNames: 'map context playerPool'
+	instanceVariableNames: 'map context playerPool endGameBlock'
 	package: 'Easnoth-GameAndPlayers'!
 !CWGame commentStamp!
 Represent the game. Includes the god game logic (turn system)!
@@ -50,17 +50,6 @@ nextTurn
 
 !CWGame methodsFor: 'initialize-release'!
 
-endGameEvent
-	self announcer
-		on: CWEndGameEvent
-		do: [ self announcer reset. 
-			map removeSelection.
-			map desactivateMonsters.
-			map clean.
-			[ map clean ] valueWithTimeout: 500.
-			CWStartMenu start ].
-!
-
 endGameEvent: ev
 	self announcer
 		on: CWEndGameEvent
@@ -70,7 +59,7 @@ endGameEvent: ev
 			map desactivateMonsters.
 			map clean.
 			[ map clean ] valueWithTimeout: 500.
-			CWStartMenu start ].
+			endGameBlock value: (playerPool select: [ :each | each hasLost ]) ].
 !
 
 initialize
@@ -109,6 +98,7 @@ initializePlayers
 initializeWithSettings: gameSettings
 	map := CWMap newWithMapIndex: gameSettings mapNumber.
 	CWFightMenu new.
+	endGameBlock := gameSettings afterGameBlock.
 	playerPool := gameSettings players.
 	self initializePlayers.
 	self initializeEventHandling.
@@ -271,15 +261,19 @@ endTurn: map
 	map removeSelection.
 !
 
+hasLost
+	^ self team isEmpty
+!
+
 removeMonster: aMonster
 	self team remove: aMonster.
 	aMonster player: nil.
-	self team isEmpty 
+	self hasLost
 		ifTrue: [ self endGame ]
 !
 
 startTurn: map
-	self team isEmpty ifTrue: [ ^ self endGame ].
+	self hasLost ifTrue: [ ^ self endGame ].
 	self team do: [ :each |
 		each readyToBePicked.
 		each parent showActiveMonsters ].
@@ -292,6 +286,7 @@ addMonstersToMap: aMap
 	
 	| positions |
 	positions := self monstersPositionArray.
+	"((aMap childAt: positions first x) childAt: positions first y) addMonster: (team at: 1) "
 	positions withIndexDo: [ :point :n |
 		((aMap childAt: point x) childAt: point y) addMonster: (team at: n) ].
 !
@@ -375,6 +370,7 @@ endTurn: aMap
 
 startTurn: aMap
 	self eventDispatcher suspend.
+	gameContext relatedCell: nil.
 	super startTurn: aMap
 ! !
 

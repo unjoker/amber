@@ -145,6 +145,14 @@ button {
 	background-position: 0 -118px;
 }
 
+.done {
+	background-position: 0 -236px;
+}
+
+.done:hover {
+	background-position: 0 -236px;
+}
+
 .intro {
     position: absolute;
 	top:0;

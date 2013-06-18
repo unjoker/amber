@@ -374,6 +374,19 @@ smalltalk.CWGameSettings);
 smalltalk.addClass('CWCampaignSettings', smalltalk.CWGameSettings, ['playerArmy', 'wonMatches'], 'Easnoth-Bootstrap');
 smalltalk.addMethod(
 smalltalk.method({
+selector: "initialize",
+fn: function (){
+var self=this;
+function $Array(){return smalltalk.Array||(typeof Array=="undefined"?nil:Array)}
+return smalltalk.withContext(function($ctx1) { 
+smalltalk.CWGameSettings.fn.prototype._initialize.apply(_st(self), []);
+self["@wonMatches"]=_st($Array())._new();
+return self}, function($ctx1) {$ctx1.fill(self,"initialize",{},smalltalk.CWCampaignSettings)})},
+messageSends: ["initialize", "new"]}),
+smalltalk.CWCampaignSettings);
+
+smalltalk.addMethod(
+smalltalk.method({
 selector: "playerArmy",
 fn: function (){
 var self=this;
@@ -536,6 +549,7 @@ smalltalk.method({
 selector: "armyButton:on:",
 fn: function (armyName,html){
 var self=this;
+var but;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2,$3,$4;
 $1=_st(html)._button();
@@ -549,7 +563,7 @@ $3;
 _st(html)._img_(_st(_st("ressources/images/monsters/").__comma(armyName)).__comma("/cavalry-heros.png"));
 return _st(html)._img_(_st(_st("ressources/images/monsters/").__comma(armyName)).__comma("/range-heros.png"));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-$4=_st($1)._onClick_((function(){
+_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
 _st(self["@gameSettings"])._playerArmy_(armyName);
 _st(self["@history"])._add_((function(){
@@ -558,8 +572,10 @@ return _st(self)._campaign();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
 return _st(self)._campaign2();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"armyButton:on:",{armyName:armyName,html:html},smalltalk.CWStartMenu)})},
-messageSends: ["class:", "button", "with:", "h4", "upFirstLetter", "img:", ",", "onClick:", "playerArmy:", "add:", "campaign", "campaign2"]}),
+$4=_st($1)._yourself();
+but=$4;
+return self}, function($ctx1) {$ctx1.fill(self,"armyButton:on:",{armyName:armyName,html:html,but:but},smalltalk.CWStartMenu)})},
+messageSends: ["class:", "button", "with:", "h4", "upFirstLetter", "img:", ",", "onClick:", "playerArmy:", "add:", "campaign", "campaign2", "yourself"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -719,13 +735,18 @@ smalltalk.method({
 selector: "choosePlayers",
 fn: function (){
 var self=this;
+function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(self["@gameSettings"])._resetPlayers();
+_st(self["@gameSettings"])._afterGameBlock_((function(){
+return smalltalk.withContext(function($ctx2) {
+return _st($CWStartMenu())._start();
+}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 _st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self["@gameSettings"])._addPlayer_(_st(self)._defaultPlayer());
 _st(self)._playerMenu();
 return self}, function($ctx1) {$ctx1.fill(self,"choosePlayers",{},smalltalk.CWStartMenu)})},
-messageSends: ["resetPlayers", "addPlayer:", "defaultPlayer", "playerMenu"]}),
+messageSends: ["resetPlayers", "afterGameBlock:", "start", "addPlayer:", "defaultPlayer", "playerMenu"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(
@@ -1002,10 +1023,12 @@ smalltalk.method({
 selector: "renderStartFightButton:on:",
 fn: function (armyName,html){
 var self=this;
+var but;
+function $CWAI(){return smalltalk.CWAI||(typeof CWAI=="undefined"?nil:CWAI)}
 function $CWHuman(){return smalltalk.CWHuman||(typeof CWHuman=="undefined"?nil:CWHuman)}
 function $CWAggressWeakestAI(){return smalltalk.CWAggressWeakestAI||(typeof CWAggressWeakestAI=="undefined"?nil:CWAggressWeakestAI)}
 return smalltalk.withContext(function($ctx1) { 
-var $1,$2,$3,$4;
+var $1,$2,$3,$5,$6,$4;
 $1=_st(html)._button();
 _st($1)._class_("armyButton");
 _st($1)._with_((function(){
@@ -1019,13 +1042,26 @@ return _st(html)._img_(_st(_st("ressources/images/monsters/").__comma(armyName))
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 $4=_st($1)._onClick_((function(){
 return smalltalk.withContext(function($ctx2) {
+_st(self["@gameSettings"])._afterGameBlock_((function(loserArray){
+return smalltalk.withContext(function($ctx3) {
+_st(self)._toggle();
+$5=_st(_st(loserArray)._size()).__eq((1));
+if(smalltalk.assert($5)){
+$6=_st(_st(loserArray)._at_((1)))._isKindOf_($CWAI());
+if(smalltalk.assert($6)){
+_st(_st(self["@gameSettings"])._wonMatches())._add_(armyName);
+return _st(but)._class_("armyButton done");
+};
+};
+}, function($ctx3) {$ctx3.fillBlock({loserArray:loserArray},$ctx1)})}));
 _st(self["@gameSettings"])._resetPlayers();
 _st(self["@gameSettings"])._addPlayer_(_st(_st($CWHuman())._new())._team_(_st(self["@gameSettings"])._playerArmy()));
 _st(self["@gameSettings"])._addPlayer_(_st(_st($CWAggressWeakestAI())._new())._team_(armyName));
 return _st(self)._startBeta();
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"renderStartFightButton:on:",{armyName:armyName,html:html},smalltalk.CWStartMenu)})},
-messageSends: ["class:", "button", "with:", "h4", ",", "upFirstLetter", "img:", "onClick:", "resetPlayers", "addPlayer:", "team:", "playerArmy", "new", "startBeta"]}),
+but=$4;
+return self}, function($ctx1) {$ctx1.fill(self,"renderStartFightButton:on:",{armyName:armyName,html:html,but:but},smalltalk.CWStartMenu)})},
+messageSends: ["class:", "button", "with:", "h4", ",", "upFirstLetter", "img:", "onClick:", "afterGameBlock:", "toggle", "ifTrue:", "add:", "wonMatches", "isKindOf:", "at:", "=", "size", "resetPlayers", "addPlayer:", "team:", "playerArmy", "new", "startBeta"]}),
 smalltalk.CWStartMenu);
 
 smalltalk.addMethod(

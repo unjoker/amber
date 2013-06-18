@@ -1,5 +1,5 @@
 smalltalk.addPackage('Easnoth-GameAndPlayers');
-smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context', 'playerPool'], 'Easnoth-GameAndPlayers');
+smalltalk.addClass('CWGame', smalltalk.Object, ['map', 'context', 'playerPool', 'endGameBlock'], 'Easnoth-GameAndPlayers');
 smalltalk.CWGame.comment="Represent the game. Includes the god game logic (turn system)"
 smalltalk.addMethod(
 smalltalk.method({
@@ -56,41 +56,11 @@ smalltalk.CWGame);
 
 smalltalk.addMethod(
 smalltalk.method({
-selector: "endGameEvent",
-category: 'initialize-release',
-fn: function (){
-var self=this;
-function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
-return smalltalk.withContext(function($ctx1) { 
-_st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
-return smalltalk.withContext(function($ctx2) {
-_st(_st(self)._announcer())._reset();
-_st(self["@map"])._removeSelection();
-_st(self["@map"])._desactivateMonsters();
-_st(self["@map"])._clean();
-_st((function(){
-return smalltalk.withContext(function($ctx3) {
-return _st(self["@map"])._clean();
-}, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((500));
-return _st($CWStartMenu())._start();
-}, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
-return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent",{},smalltalk.CWGame)})},
-args: [],
-source: "endGameEvent\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09map removeSelection.\x0a\x09\x09\x09map desactivateMonsters.\x0a\x09\x09\x09map clean.\x0a\x09\x09\x09[ map clean ] valueWithTimeout: 500.\x0a\x09\x09\x09CWStartMenu start ].",
-messageSends: ["on:do:", "reset", "announcer", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "start"],
-referencedClasses: ["CWEndGameEvent", "CWStartMenu"]
-}),
-smalltalk.CWGame);
-
-smalltalk.addMethod(
-smalltalk.method({
 selector: "endGameEvent:",
 category: 'initialize-release',
 fn: function (ev){
 var self=this;
 function $CWEndGameEvent(){return smalltalk.CWEndGameEvent||(typeof CWEndGameEvent=="undefined"?nil:CWEndGameEvent)}
-function $CWStartMenu(){return smalltalk.CWStartMenu||(typeof CWStartMenu=="undefined"?nil:CWStartMenu)}
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._announcer())._on_do_($CWEndGameEvent(),(function(){
 return smalltalk.withContext(function($ctx2) {
@@ -103,13 +73,16 @@ _st((function(){
 return smalltalk.withContext(function($ctx3) {
 return _st(self["@map"])._clean();
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}))._valueWithTimeout_((500));
-return _st($CWStartMenu())._start();
+return _st(self["@endGameBlock"])._value_(_st(self["@playerPool"])._select_((function(each){
+return smalltalk.withContext(function($ctx3) {
+return _st(each)._hasLost();
+}, function($ctx3) {$ctx3.fillBlock({each:each},$ctx1)})})));
 }, function($ctx2) {$ctx2.fillBlock({},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"endGameEvent:",{ev:ev},smalltalk.CWGame)})},
 args: ["ev"],
-source: "endGameEvent: ev\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09ev endGame.\x0a\x09\x09\x09map removeSelection.\x0a\x09\x09\x09map desactivateMonsters.\x0a\x09\x09\x09map clean.\x0a\x09\x09\x09[ map clean ] valueWithTimeout: 500.\x0a\x09\x09\x09CWStartMenu start ].",
-messageSends: ["on:do:", "reset", "announcer", "endGame", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "start"],
-referencedClasses: ["CWEndGameEvent", "CWStartMenu"]
+source: "endGameEvent: ev\x0a\x09self announcer\x0a\x09\x09on: CWEndGameEvent\x0a\x09\x09do: [ self announcer reset. \x0a\x09\x09\x09ev endGame.\x0a\x09\x09\x09map removeSelection.\x0a\x09\x09\x09map desactivateMonsters.\x0a\x09\x09\x09map clean.\x0a\x09\x09\x09[ map clean ] valueWithTimeout: 500.\x0a\x09\x09\x09endGameBlock value: (playerPool select: [ :each | each hasLost ]) ].",
+messageSends: ["on:do:", "reset", "announcer", "endGame", "removeSelection", "desactivateMonsters", "clean", "valueWithTimeout:", "value:", "select:", "hasLost"],
+referencedClasses: ["CWEndGameEvent"]
 }),
 smalltalk.CWGame);
 
@@ -282,13 +255,14 @@ function $CWFightMenu(){return smalltalk.CWFightMenu||(typeof CWFightMenu=="unde
 return smalltalk.withContext(function($ctx1) { 
 self["@map"]=_st($CWMap())._newWithMapIndex_(_st(gameSettings)._mapNumber());
 _st($CWFightMenu())._new();
+self["@endGameBlock"]=_st(gameSettings)._afterGameBlock();
 self["@playerPool"]=_st(gameSettings)._players();
 _st(self)._initializePlayers();
 _st(self)._initializeEventHandling();
 return self}, function($ctx1) {$ctx1.fill(self,"initializeWithSettings:",{gameSettings:gameSettings},smalltalk.CWGame)})},
 args: ["gameSettings"],
-source: "initializeWithSettings: gameSettings\x0a\x09map := CWMap newWithMapIndex: gameSettings mapNumber.\x0a\x09CWFightMenu new.\x0a\x09playerPool := gameSettings players.\x0a\x09self initializePlayers.\x0a\x09self initializeEventHandling.",
-messageSends: ["newWithMapIndex:", "mapNumber", "new", "players", "initializePlayers", "initializeEventHandling"],
+source: "initializeWithSettings: gameSettings\x0a\x09map := CWMap newWithMapIndex: gameSettings mapNumber.\x0a\x09CWFightMenu new.\x0a\x09endGameBlock := gameSettings afterGameBlock.\x0a\x09playerPool := gameSettings players.\x0a\x09self initializePlayers.\x0a\x09self initializeEventHandling.",
+messageSends: ["newWithMapIndex:", "mapNumber", "new", "afterGameBlock", "players", "initializePlayers", "initializeEventHandling"],
 referencedClasses: ["CWMap", "CWFightMenu"]
 }),
 smalltalk.CWGame);
@@ -589,7 +563,7 @@ return _st(_st(_st(aMap)._childAt_(_st(point)._x()))._childAt_(_st(point)._y()))
 }, function($ctx2) {$ctx2.fillBlock({point:point,n:n},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"addMonstersToMap:",{aMap:aMap,positions:positions},smalltalk.CWPlayer)})},
 args: ["aMap"],
-source: "addMonstersToMap: aMap\x0a\x09\x22hack for now\x22\x0a\x09\x0a\x09| positions |\x0a\x09positions := self monstersPositionArray.\x0a\x09positions withIndexDo: [ :point :n |\x0a\x09\x09((aMap childAt: point x) childAt: point y) addMonster: (team at: n) ].",
+source: "addMonstersToMap: aMap\x0a\x09\x22hack for now\x22\x0a\x09\x0a\x09| positions |\x0a\x09positions := self monstersPositionArray.\x0a\x09\x22((aMap childAt: positions first x) childAt: positions first y) addMonster: (team at: 1) \x22\x0a\x09positions withIndexDo: [ :point :n |\x0a\x09\x09((aMap childAt: point x) childAt: point y) addMonster: (team at: n) ].",
 messageSends: ["monstersPositionArray", "withIndexDo:", "addMonster:", "at:", "childAt:", "y", "x"],
 referencedClasses: []
 }),
@@ -677,6 +651,24 @@ return self}, function($ctx1) {$ctx1.fill(self,"endTurn:",{map:map},smalltalk.CW
 args: ["map"],
 source: "endTurn: map\x0a\x09map desactivateMonsters.\x0a\x09map removeSelection.",
 messageSends: ["desactivateMonsters", "removeSelection"],
+referencedClasses: []
+}),
+smalltalk.CWPlayer);
+
+smalltalk.addMethod(
+smalltalk.method({
+selector: "hasLost",
+category: 'game logic',
+fn: function (){
+var self=this;
+return smalltalk.withContext(function($ctx1) { 
+var $1;
+$1=_st(_st(self)._team())._isEmpty();
+return $1;
+}, function($ctx1) {$ctx1.fill(self,"hasLost",{},smalltalk.CWPlayer)})},
+args: [],
+source: "hasLost\x0a\x09^ self team isEmpty ",
+messageSends: ["isEmpty", "team"],
 referencedClasses: []
 }),
 smalltalk.CWPlayer);
@@ -927,14 +919,14 @@ return smalltalk.withContext(function($ctx1) {
 var $1;
 _st(_st(self)._team())._remove_(aMonster);
 _st(aMonster)._player_(nil);
-$1=_st(_st(self)._team())._isEmpty();
+$1=_st(self)._hasLost();
 if(smalltalk.assert($1)){
 _st(self)._endGame();
 };
 return self}, function($ctx1) {$ctx1.fill(self,"removeMonster:",{aMonster:aMonster},smalltalk.CWPlayer)})},
 args: ["aMonster"],
-source: "removeMonster: aMonster\x0a\x09self team remove: aMonster.\x0a\x09aMonster player: nil.\x0a\x09self team isEmpty \x0a\x09\x09ifTrue: [ self endGame ]",
-messageSends: ["remove:", "team", "player:", "ifTrue:", "endGame", "isEmpty"],
+source: "removeMonster: aMonster\x0a\x09self team remove: aMonster.\x0a\x09aMonster player: nil.\x0a\x09self hasLost\x0a\x09\x09ifTrue: [ self endGame ]",
+messageSends: ["remove:", "team", "player:", "ifTrue:", "endGame", "hasLost"],
 referencedClasses: []
 }),
 smalltalk.CWPlayer);
@@ -981,7 +973,7 @@ fn: function (map){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 var $1,$2;
-$1=_st(_st(self)._team())._isEmpty();
+$1=_st(self)._hasLost();
 if(smalltalk.assert($1)){
 $2=_st(self)._endGame();
 return $2;
@@ -993,8 +985,8 @@ return _st(_st(each)._parent())._showActiveMonsters();
 }, function($ctx2) {$ctx2.fillBlock({each:each},$ctx1)})}));
 return self}, function($ctx1) {$ctx1.fill(self,"startTurn:",{map:map},smalltalk.CWPlayer)})},
 args: ["map"],
-source: "startTurn: map\x0a\x09self team isEmpty ifTrue: [ ^ self endGame ].\x0a\x09self team do: [ :each |\x0a\x09\x09each readyToBePicked.\x0a\x09\x09each parent showActiveMonsters ].",
-messageSends: ["ifTrue:", "endGame", "isEmpty", "team", "do:", "readyToBePicked", "showActiveMonsters", "parent"],
+source: "startTurn: map\x0a\x09self hasLost ifTrue: [ ^ self endGame ].\x0a\x09self team do: [ :each |\x0a\x09\x09each readyToBePicked.\x0a\x09\x09each parent showActiveMonsters ].",
+messageSends: ["ifTrue:", "endGame", "hasLost", "do:", "readyToBePicked", "showActiveMonsters", "parent", "team"],
 referencedClasses: []
 }),
 smalltalk.CWPlayer);
@@ -1145,11 +1137,12 @@ fn: function (aMap){
 var self=this;
 return smalltalk.withContext(function($ctx1) { 
 _st(_st(self)._eventDispatcher())._suspend();
+_st(self["@gameContext"])._relatedCell_(nil);
 smalltalk.CWPlayer.fn.prototype._startTurn_.apply(_st(self), [aMap]);
 return self}, function($ctx1) {$ctx1.fill(self,"startTurn:",{aMap:aMap},smalltalk.CWAI)})},
 args: ["aMap"],
-source: "startTurn: aMap\x0a\x09self eventDispatcher suspend.\x0a\x09super startTurn: aMap",
-messageSends: ["suspend", "eventDispatcher", "startTurn:"],
+source: "startTurn: aMap\x0a\x09self eventDispatcher suspend.\x0a\x09gameContext relatedCell: nil.\x0a\x09super startTurn: aMap",
+messageSends: ["suspend", "eventDispatcher", "relatedCell:", "startTurn:"],
 referencedClasses: []
 }),
 smalltalk.CWAI);
