@@ -312,7 +312,7 @@ $2=_st(html)._div();
 _st($2)._class_("mapMenuPanelContainer");
 $3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(html)._img_("ressources/images/fightResult.png");
+_st(html)._img_("ressources/images/fight/fightResult.png");
 $4=_st(html)._div();
 _st($4)._style_("padding-top: 7px");
 $5=_st($4)._yourself();
@@ -543,7 +543,7 @@ $2=_st(html)._div();
 _st($2)._class_("mapMenuPanelContainer");
 $3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(html)._img_("ressources/images/selectedMonster.png");
+_st(html)._img_("ressources/images/fight/selectedMonster.png");
 self["@subBox"]=_st(html)._div();
 return self["@subBox"];
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));

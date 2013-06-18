@@ -156,7 +156,7 @@ renderOn: html
 			html div 
 				class: 'mapMenuPanelContainer';
 				with: [
-					html img: 'ressources/images/fightResult.png'.
+					html img: 'ressources/images/fight/fightResult.png'.
 					subBox := html div style: 'padding-top: 7px'; yourself ] ];
 		yourself).
 	self firstLoad
@@ -291,7 +291,7 @@ renderOn: html
 			html div 
 				class: 'mapMenuPanelContainer';
 				with: [
-					html img: 'ressources/images/selectedMonster.png'.
+					html img: 'ressources/images/fight/selectedMonster.png'.
 					subBox := html div ] ];
 		yourself).
 	self update

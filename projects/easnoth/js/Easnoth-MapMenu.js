@@ -420,7 +420,7 @@ $2=_st(html)._div();
 _st($2)._class_("mapMenuPanelContainer");
 $3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(html)._img_("ressources/images/fightResult.png");
+_st(html)._img_("ressources/images/fight/fightResult.png");
 $4=_st(html)._div();
 _st($4)._style_("padding-top: 7px");
 $5=_st($4)._yourself();
@@ -434,7 +434,7 @@ self["@box"]=$6;
 _st(self)._firstLoad();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWDices)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel dices';\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09html img: 'ressources/images/fightResult.png'.\x0a\x09\x09\x09\x09\x09subBox := html div style: 'padding-top: 7px'; yourself ] ];\x0a\x09\x09yourself).\x0a\x09self firstLoad",
+source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel dices';\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09html img: 'ressources/images/fight/fightResult.png'.\x0a\x09\x09\x09\x09\x09subBox := html div style: 'padding-top: 7px'; yourself ] ];\x0a\x09\x09yourself).\x0a\x09self firstLoad",
 messageSends: ["class:", "div", "with:", "img:", "style:", "yourself", "firstLoad"],
 referencedClasses: []
 }),
@@ -698,7 +698,7 @@ $2=_st(html)._div();
 _st($2)._class_("mapMenuPanelContainer");
 $3=_st($2)._with_((function(){
 return smalltalk.withContext(function($ctx3) {
-_st(html)._img_("ressources/images/selectedMonster.png");
+_st(html)._img_("ressources/images/fight/selectedMonster.png");
 self["@subBox"]=_st(html)._div();
 return self["@subBox"];
 }, function($ctx3) {$ctx3.fillBlock({},$ctx1)})}));
@@ -709,7 +709,7 @@ self["@box"]=$4;
 _st(self)._update();
 return self}, function($ctx1) {$ctx1.fill(self,"renderOn:",{html:html},smalltalk.CWMonsterWatcher)})},
 args: ["html"],
-source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel monsterWatcher';\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09html img: 'ressources/images/selectedMonster.png'.\x0a\x09\x09\x09\x09\x09subBox := html div ] ];\x0a\x09\x09yourself).\x0a\x09self update",
+source: "renderOn: html\x0a\x09box := (html div \x0a\x09\x09class: 'mapMenuPanel monsterWatcher';\x0a\x09\x09with: [\x0a\x09\x09\x09html div \x0a\x09\x09\x09\x09class: 'mapMenuPanelContainer';\x0a\x09\x09\x09\x09with: [\x0a\x09\x09\x09\x09\x09html img: 'ressources/images/fight/selectedMonster.png'.\x0a\x09\x09\x09\x09\x09subBox := html div ] ];\x0a\x09\x09yourself).\x0a\x09self update",
 messageSends: ["class:", "div", "with:", "img:", "yourself", "update"],
 referencedClasses: []
 }),
