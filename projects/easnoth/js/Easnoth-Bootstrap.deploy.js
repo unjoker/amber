@@ -1251,11 +1251,11 @@ return smalltalk.withContext(function($ctx4) {
 _st(_st(html)._img_(_st(_st(self)._ressourcesFolder()).__comma("tuto2.png")))._style_("height: 100px; width: auto; float: right; margin-left: 6px; border: 3px solid gray");
 $17=_st(html)._p();
 _st($17)._style_("padding-top: 25px");
-$18=_st($17)._with_("When a creature is activated, a bunch of tiles become colored, \x0a\x09\x09\x09\x09\x09\x09these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.");
+$18=_st($17)._with_("When a creature is activated, a bunch of tiles become colored. On click, the selected creature will move to a green tile and attack the ennemy on a red tiles.");
 return $18;
 }, function($ctx4) {$ctx4.fillBlock({},$ctx1)})}));
 $16;
-_st(_st(html)._p())._with_("When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the next turn button.");
+_st(_st(html)._p())._with_("When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. \x0a\x09\x09\x09\x09\x09If you have remaining move but you want to finish your turn, please click on the End turn button.");
 $19=_st(html)._h4();
 _st($19)._class_("subTitle");
 $20=_st($19)._with_("Advanced");

@@ -606,10 +606,9 @@ tutorial
 				(html img: self ressourcesFolder, 'tuto2.png') style: 'height: 100px; width: auto; float: right; margin-left: 6px; border: 3px solid gray'.
 				html p
 					style: 'padding-top: 25px';
-					with: 'When a creature is activated, a bunch of tiles become colored, 
-						these are the tiles you can click on. Creatures will move to green tiles and attack ennemies on red tiles.'. ].
+					with: 'When a creature is activated, a bunch of tiles become colored. On click, the selected creature will move to a green tile and attack the ennemy on a red tiles.'. ].
 				html p with: 'When the creature has moved its full move and attacked (or is not able to attack), it is the other player turn. 
-					If you have remaining move but you want to finish your turn, please click on the next turn button.'.
+					If you have remaining move but you want to finish your turn, please click on the End turn button.'.
 			html h4 
 				class: 'subTitle';
 				with: 'Advanced'.
